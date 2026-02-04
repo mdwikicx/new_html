@@ -1,9 +1,9 @@
 <?php
 
 use FixRefs\Tests\bootstrap;
-use function FixImages\remove_missing_infobox_images;
-use function FixImages\remove_missing_inline_images;
-use function FixImages\remove_missing_images;
+use function RemoveMissingImages\remove_missing_infobox_images;
+use function RemoveMissingImages\remove_missing_inline_images;
+use function RemoveMissingImages\remove_missing_images;
 
 class fix_images_test extends bootstrap
 {
