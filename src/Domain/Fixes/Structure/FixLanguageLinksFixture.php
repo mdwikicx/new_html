@@ -17,6 +17,9 @@ use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 
 */
 
+$lang_codes = [
+    "aa",
+];
 
 /**
  * Remove language links from wikitext
@@ -27,10 +30,10 @@ use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 function remove_lang_links(string $text): string
 {
 
-    global $code_to_lang;
+    global $lang_codes;
 
     // make patern like (ar|en|de)
-    $langs = implode('|', array_keys($code_to_lang));
+    $langs = implode('|', $lang_codes);
 
     preg_match_all("/\[\[($langs):[^\]]+\]\]/", $text, $matches);
 

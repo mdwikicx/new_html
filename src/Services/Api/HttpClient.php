@@ -13,8 +13,6 @@ namespace MDWiki\NewHtml\Services\Api;
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
-$usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
-
 /**
  * Send a POST request to an API endpoint with parameters
  *
@@ -24,7 +22,6 @@ $usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforg
  */
 function post_url_params_result(string $endPoint, array $params = []): string
 {
-    global $usr_agent;
     $ch = curl_init();
 
     $url = "{$endPoint}";
@@ -37,7 +34,7 @@ function post_url_params_result(string $endPoint, array $params = []): string
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
     }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, $usr_agent);
+    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
@@ -69,8 +66,6 @@ function post_url_params_result(string $endPoint, array $params = []): string
  */
 function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
 {
-    global $usr_agent;
-
     $ch = curl_init();
 
     $url = $endPoint;
@@ -89,7 +84,7 @@ function handle_url_request(string $endPoint, string $method = 'GET', array $par
     }
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, $usr_agent);
+    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 

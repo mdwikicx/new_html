@@ -20,8 +20,6 @@ use function MDWiki\NewHtml\Application\Handlers\handle_url_request_mdwiki;
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
-$usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
-
 /**
  * Handle URL requests to MDWiki with support for GET and POST methods
  *
@@ -32,8 +30,6 @@ $usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforg
  */
 function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', array $params = []): string
 {
-    global $usr_agent;
-
     $ch = curl_init();
 
     $url = $endPoint;
@@ -53,7 +49,7 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
-    curl_setopt($ch, CURLOPT_USERAGENT, $usr_agent);
+    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
