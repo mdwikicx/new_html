@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Wikitext fetching and processing
+ *
+ * Provides functions for fetching wikitext from MDWiki, processing
+ * redirect pages, and applying fixes to the content.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace Wikitext;
 /*
 use function Wikitext\get_wikitext;
