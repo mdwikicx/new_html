@@ -7,10 +7,12 @@ use FixRefs\Tests\bootstrap;
 use function APIServices\post_url_params_result;
 use function APIServices\handle_url_request;
 
+
 class PostTest extends bootstrap
 {
     protected function setUp(): void
     {
+        $this->markTestSkipped('skipping newwork tests for now');
         // Check if network is available
         if (!$this->isNetworkAvailable()) {
             $this->markTestSkipped('Network unavailable - skipping API tests');
@@ -19,7 +21,6 @@ class PostTest extends bootstrap
 
     private function isNetworkAvailable(): bool
     {
-        return false;
         $socket = @fsockopen('www.google.com', 80, $errno, $errstr, 2);
         if ($socket) {
             fclose($socket);

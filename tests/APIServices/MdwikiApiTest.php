@@ -7,10 +7,12 @@ use FixRefs\Tests\bootstrap;
 use function APIServices\get_wikitext_from_mdwiki_api;
 use function APIServices\get_wikitext_from_mdwiki_restapi;
 
+
 class MdwikiApiTest extends bootstrap
 {
     protected function setUp(): void
     {
+        $this->markTestSkipped('skipping newwork tests for now');
         // Check if mdwiki.org is accessible
         if (!$this->isMdwikiAvailable()) {
             $this->markTestSkipped('MDWiki API unavailable - skipping tests');
@@ -19,7 +21,6 @@ class MdwikiApiTest extends bootstrap
 
     private function isMdwikiAvailable(): bool
     {
-        return false;
         $socket = @fsockopen('mdwiki.org', 443, $errno, $errstr, 5);
         if ($socket) {
             fclose($socket);

@@ -6,10 +6,12 @@ use FixRefs\Tests\bootstrap;
 
 use function APIServices\convert_wikitext_to_html;
 
+
 class TransformApiTest extends bootstrap
 {
     protected function setUp(): void
     {
+        $this->markTestSkipped('skipping newwork tests for now');
         // Check if Wikipedia API is available
         if (!$this->isWikipediaApiAvailable()) {
             $this->markTestSkipped('Wikipedia Transform API unavailable - skipping tests');
@@ -18,7 +20,6 @@ class TransformApiTest extends bootstrap
 
     private function isWikipediaApiAvailable(): bool
     {
-        return false;
         $socket = @fsockopen('en.wikipedia.org', 443, $errno, $errstr, 5);
         if ($socket) {
             fclose($socket);

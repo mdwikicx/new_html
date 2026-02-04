@@ -6,10 +6,12 @@ use FixRefs\Tests\bootstrap;
 
 use function APIServices\change_html_to_seg;
 
+
 class SegApiTest extends bootstrap
 {
     protected function setUp(): void
     {
+        $this->markTestSkipped('skipping newwork tests for now');
         // Check if the segmentation API is available
         if (!$this->isSegApiAvailable()) {
             $this->markTestSkipped('Segmentation API unavailable - skipping tests');
@@ -18,7 +20,6 @@ class SegApiTest extends bootstrap
 
     private function isSegApiAvailable(): bool
     {
-        return false;
         $socket = @fsockopen('ncc2c.toolforge.org', 443, $errno, $errstr, 5);
         if ($socket) {
             fclose($socket);
