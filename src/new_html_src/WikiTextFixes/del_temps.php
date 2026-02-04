@@ -24,7 +24,7 @@ function check_temps_patterns(string $name, string $old_text_template, string $n
         "/^wikipedia articles (for|with|needing|containing).*$/",
         "/^(.*-)?stub$/"
     ];
-    // ---
+
     foreach ($temps_patterns as $pattern) {
         if (preg_match($pattern, $name)) {
             $new_text = str_replace($old_text_template, '', $new_text);
@@ -64,22 +64,22 @@ function check_temp_to_delete(string $name): bool
     if (strpos($name, "defaultsort") === 0) {
         return true;
     }
-    // ---
+
     return in_array($name, $tempsToDelete);
 }
 
 function remove_templates($text): string
 {
     $temps_in = getTemplates($text);
-    // ---
+
     $new_text = $text;
-    // ---
+
     foreach ($temps_in as $temp) {
-        // ---
+
         $name = strtolower($temp->getStripName());
-        // ---
+
         $old_text_template = $temp->getTemplateText();
-        // ---
+
         if (check_temp_to_delete($name)) {
             $new_text = str_replace($old_text_template, '', $new_text);
             continue;
@@ -89,29 +89,29 @@ function remove_templates($text): string
             $new_text = str_replace($old_text_template, '', $new_text);
             continue;
         }
-        // ---
+
         $new_text = check_temps_patterns($name, $old_text_template, $new_text);
-        // ---
+
     };
-    // ---
+
     return $new_text;
 }
 
 function remove_lead_templates($text): string
 {
-    // ---
+
     // remove any thig before {{Infobox medical condition
     $temps = [
         "{{infobox",
         "{{drugbox",
         "{{speciesbox",
     ];
-    // ---
+
     $text2 = strtolower($text);
-    // ---
+
     foreach ($temps as $temp) {
         $temp_index = strpos($text2, strtolower($temp));
-        // ---
+
         if ($temp_index !== false) {
             $text = substr($text, $temp_index);
             break;

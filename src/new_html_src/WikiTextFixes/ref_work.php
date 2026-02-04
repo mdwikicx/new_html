@@ -37,7 +37,7 @@ const SELFPUB_URL_PATTERN = "/(authorhouse\.com|createspace\.\w{2,3}|grosvenorho
 
 function check_one_cite(string $cite): bool
 {
-    // ---
+
     // echo $cite . "<br";
     //---
     $cite_d = $cite;
@@ -61,9 +61,9 @@ function check_one_cite(string $cite): bool
  */
 function remove_bad_refs($text): string
 {
-    // ---
+
     $citations = get_regex_citations($text);
-    // ---
+
     foreach ($citations as $citation) {
         $citation_tag = $citation["tag"];
         //---
@@ -74,6 +74,6 @@ function remove_bad_refs($text): string
             $text = str_replace($citation_tag, "", $text);
         }
     }
-    // ---
+
     return $text;
 }

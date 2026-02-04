@@ -20,7 +20,7 @@ function get_ref_name($options): string
     // $pa = "/name\s*=\s*\"(.*?)\"/i";
     $pa = "/name\s*\=\s*[\"\']*([^>\"\']*)[\"\']*\s*/i";
     preg_match($pa, $options, $matches);
-    // ---
+
     if (!isset($matches[1])) {
         return "";
     }
@@ -38,9 +38,9 @@ function get_ref_name($options): string
 function get_regex_citations($text): array
 {
     preg_match_all("/<ref([^\/>]*?)>(.+?)<\/ref>/is", $text, $matches);
-    // ---
+
     $citations = [];
-    // ---
+
     foreach ($matches[1] as $key => $citation_options) {
         $content = $matches[2][$key];
         $ref_tag = $matches[0][$key];
@@ -61,27 +61,27 @@ function get_full_refs($text): array
 {
     $full = [];
     $citations = get_regex_citations($text);
-    // ---
+
     foreach ($citations as $cite) {
         $name = $cite["name"];
         $ref = $cite["tag"];
-        // ---
+
         if (empty($name)) {
             continue;
         }
-        // ---
+
         $full[$name] = $ref;
     };
-    // ---
+
     return $full;
 }
 
 function get_short_citations($text): array
 {
     preg_match_all("/<ref ([^\/>]*?)\/\s*>/is", $text, $matches);
-    // ---
+
     $citations = [];
-    // ---
+
     foreach ($matches[1] as $key => $citation_options) {
         $ref_tag = $matches[0][$key];
         $options = $citation_options;

@@ -88,19 +88,22 @@ use function NewHtml\FileHelps\get_revisions_new_dir;
 use function NewHtml\JsonData\get_Data;
 use function NewHtml\JsonData\dump_both_data;
 
+/**
+ * @param string[] $files
+ */
 function make_badge(array $files, string $file): string
 {
-    // ---
+
     if (!in_array($file, $files)) {
         return "<span class='badge bg-danger'>Missing</span>";
     }
-    // ---
+
     // return "<span class='badge bg-success'>OK</span>";
     return "";
 }
-// ---
+
 $revisions_new_dir = get_revisions_new_dir();
-// ---
+
 $dirs = array_filter(glob($revisions_new_dir . '/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
@@ -108,46 +111,46 @@ usort($dirs, function ($a, $b) {
     $timeB = is_file($b . '/wikitext.txt') ? filemtime($b . '/wikitext.txt') : filemtime($b);
     return $timeB - $timeA;
 });
-// ---
+
 $tbody = '';
-// ---
+
 $number = 0;
-// ---
+
 $main_url = $_SERVER['REQUEST_URI'];
 $main_url = str_replace('/revisions_new.php', '', $main_url);
-// ---
+
 $main_data = get_Data('');
 $main_data_all = get_Data('all');
-// ---
+
 $make_dump = empty($main_data);
-// ---
+
 foreach ($dirs as $dir) {
-    // ---
+
     $number += 1;
-    // ---
+
     $wikitextFile = $dir . '/wikitext.txt';
     $lastModified = is_file($wikitextFile)
         ? date('Y-m-d H:i', filemtime($wikitextFile))
         : date('Y-m-d H:i', filemtime($dir));
-    // ---
+
     $dir = rtrim($dir, '/');
-    // ---
+
     $dir_path = basename($dir);
     $oldid_number = str_replace('_all', '', $dir_path);
-    // ---
+
     $files = array_filter(glob("$dir/*"), 'is_file');
-    // ---
+
     $files = array_map('basename', $files);
-    // ---
+
     // if wikitext.txt in $files
     $wikitext_tag = make_badge($files, 'wikitext.txt');
     $html_tag = make_badge($files, 'html.html');
     $seg_tag = make_badge($files, 'seg.html');
-    // ---
+
     $title = (is_file("$dir/title.txt")) ? file_get_contents("$dir/title.txt") : '';
-    // ---
+
     $title = str_replace('_', ' ', $title);
-    // ---
+
     if (!empty($title) && $make_dump && !empty($oldid_number)) {
         $id = (int)$oldid_number;
         if ($id > 0) {
@@ -158,17 +161,17 @@ foreach ($dirs as $dir) {
             }
         }
     }
-    // ---
+
     $title = htmlspecialchars($title);
-    // ---
+
     $url = "open.php?revid=$dir_path&file";
-    // ---
+
     $re_create_td = (isset($_GET['re'])) ? <<<HTML
         <td>
             <a class="card-link" href="/new_html/index.php?new=1&title=$title" target="_blank">Re create</a>
         </td>
     HTML : "";
-    // ---
+
     $tbody .= <<<HTML
         <tr>
             <td>$number</td>
@@ -192,13 +195,13 @@ foreach ($dirs as $dir) {
         </tr>
     HTML;
 }
-// ---
+
 if ($make_dump) {
     dump_both_data($main_data, $main_data_all);
 }
-// ---
+
 $re_create_th = (isset($_GET['re'])) ? "<th>Re create</th>" : '';
-// ---
+
 ?>
 
 <body>

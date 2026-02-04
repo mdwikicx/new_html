@@ -14,7 +14,7 @@ use function WikiParse\Reg_Citations\get_short_citations;
 
 function del_empty_refs(string $first): string
 {
-    // ---
+
     $refs = get_full_refs($first);
     // echo  "refs:" . count($refs) . "<br>";
 
@@ -24,7 +24,7 @@ function del_empty_refs(string $first): string
     foreach ($short_refs as $cite) {
         $name = $cite["name"];
         $refe = $cite["tag"];
-        // ---
+
         $rr = $refs[$name] ?? false;
         if ($rr) {
             // if $rr already in $first : continue

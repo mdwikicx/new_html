@@ -25,24 +25,24 @@ function fix_wikitext($text, $title): string
 {
     $text = str_replace("{{drugbox", "{{Infobox drug", $text);
     $text = str_replace("{{Drugbox", "{{Infobox drug", $text);
-    // ---
+
     $text = remove_templates($text);
     $text = remove_lead_templates($text);
-    // ---
+
     $text = remove_bad_refs($text);
     $text = del_empty_refs($text);
-    // ---
+
     // $text = remove_lang_links($text);
-    // ---
+
     $text = remove_videos($text);
-    // ---
+
     // $text = remove_images($text);
-    // ---
+
     $text = remove_categories($text);
-    // ---
+
     $text = remove_missing_images($text);
-    // ---
+
     $text = add_missing_title($text, $title);
-    // ---
+
     return $text;
 }

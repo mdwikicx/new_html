@@ -31,9 +31,9 @@ function get_wikitext_from_mdwiki_api($title): array
         test_print("Failed to fetch data from MDWiki API for title: $title");
         return ['', ''];
     }
-    // ---
+
     $json1 = json_decode($req, true);
-    // ---
+
     $revisions = $json1["query"]["pages"][0]["revisions"][0] ?? [];
 
     if (empty($revisions)) {
@@ -43,7 +43,7 @@ function get_wikitext_from_mdwiki_api($title): array
 
     $source = $revisions["content"] ?? '';
     $revid = $revisions["revid"] ?? '';
-    // ---
+
     return [$source, $revid];
 }
 
@@ -59,6 +59,6 @@ function get_wikitext_from_mdwiki_restapi($title): array
 
     $source = $json1["source"] ?? '';
     $revid = $json1["latest"]["id"] ?? '';
-    // ---
+
     return [$source, $revid];
 }
