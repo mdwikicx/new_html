@@ -171,95 +171,95 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 ### Phase 2: Infrastructure Layer Migration
 **Goal:** Move utilities and support code first (least dependencies)
 
-- [ ] Migrate `print.php` → `Infrastructure/Debug/PrintHelper.php`
-- [ ] Migrate `utils/files_utils.php` → `Infrastructure/Utils/FileUtils.php`
-- [ ] Migrate `utils/html_utils.php` → `Infrastructure/Utils/HtmlUtils.php`
+- [x] Migrate `print.php` → `Infrastructure/Debug/PrintHelper.php`
+- [x] Migrate `utils/files_utils.php` → `Infrastructure/Utils/FileUtils.php`
+- [x] Migrate `utils/html_utils.php` → `Infrastructure/Utils/HtmlUtils.php`
 - [ ] Create `Infrastructure/Utils/StringUtils.php` (consolidate string ops)
 - [ ] Extract JSON logic from `json_data.php` → `Infrastructure/Storage/JsonStorage.php`
 - [ ] Create `Infrastructure/Storage/FileStorage.php`
-- [ ] Update namespaces in migrated files
-- [ ] Run tests for Infrastructure layer
+- [x] Update namespaces in migrated files
+- [x] Run tests for Infrastructure layer
 
 ### Phase 3: Domain Layer Migration
 **Goal:** Move core business logic (parsers and fixes)
 
 #### 3.1: Parser Migration
-- [ ] Migrate `WikiParse/Category.php` → `Domain/Parser/CategoryParser.php`
-- [ ] Migrate `WikiParse/Citations_reg.php` → `Domain/Parser/CitationsParser.php`
-- [ ] Migrate `WikiParse/lead_section.php` → `Domain/Parser/LeadSectionParser.php`
-- [ ] Migrate `WikiParse/ParserTemplates.php` → `Domain/Parser/TemplateParser.php`
-- [ ] Update namespaces and imports
-- [ ] Run parser tests
+- [x] Migrate `WikiParse/Category.php` → `Domain/Parser/CategoryParser.php`
+- [x] Migrate `WikiParse/Citations_reg.php` → `Domain/Parser/CitationsParser.php`
+- [x] Migrate `WikiParse/lead_section.php` → `Domain/Parser/LeadSectionParser.php`
+- [x] Migrate `WikiParse/ParserTemplates.php` → `Domain/Parser/TemplateParser.php`
+- [x] Update namespaces and imports
+- [x] Run parser tests
 
 #### 3.2: Fixes Migration (References)
-- [ ] Migrate `WikiTextFixes/del_mt_refs.php` → `Domain/Fixes/References/DeleteEmptyRefsFixture.php`
-- [ ] Migrate `WikiTextFixes/expend_refs.php` → `Domain/Fixes/References/ExpandRefsFixture.php`
-- [ ] Migrate `WikiTextFixes/ref_work.php` → `Domain/Fixes/References/RefWorkerFixture.php`
-- [ ] Update namespaces and imports
-- [ ] Run reference tests
+- [x] Migrate `WikiTextFixes/del_mt_refs.php` → `Domain/Fixes/References/DeleteEmptyRefsFixture.php`
+- [x] Migrate `WikiTextFixes/expend_refs.php` → `Domain/Fixes/References/ExpandRefsFixture.php`
+- [x] Migrate `WikiTextFixes/ref_work.php` → `Domain/Fixes/References/RefWorkerFixture.php`
+- [x] Update namespaces and imports
+- [x] Run reference tests
 
 #### 3.3: Fixes Migration (Templates)
-- [ ] Migrate `WikiTextFixes/del_temps.php` → `Domain/Fixes/Templates/DeleteTemplatesFixture.php`
-- [ ] Migrate `WikiTextFixes/fix_temps.php` → `Domain/Fixes/Templates/FixTemplatesFixture.php`
-- [ ] Update namespaces and imports
-- [ ] Run template tests
+- [x] Migrate `WikiTextFixes/del_temps.php` → `Domain/Fixes/Templates/DeleteTemplatesFixture.php`
+- [x] Migrate `WikiTextFixes/fix_temps.php` → `Domain/Fixes/Templates/FixTemplatesFixture.php`
+- [x] Update namespaces and imports
+- [x] Run template tests
 
 #### 3.4: Fixes Migration (Media)
-- [ ] Migrate `WikiTextFixes/fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
-- [ ] Migrate `WikiTextFixes/remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
-- [ ] Update namespaces and imports
-- [ ] Run media tests
+- [x] Migrate `WikiTextFixes/fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
+- [x] Migrate `WikiTextFixes/remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
+- [x] Update namespaces and imports
+- [x] Run media tests
 
 #### 3.5: Fixes Migration (Structure)
-- [ ] Migrate `WikiTextFixes/fix_cats.php` → `Domain/Fixes/Structure/FixCategoriesFixture.php`
-- [ ] Migrate `WikiTextFixes/fix_langs_links.php` → `Domain/Fixes/Structure/FixLanguageLinksFixture.php`
-- [ ] Update namespaces and imports
-- [ ] Run structure tests
+- [x] Migrate `WikiTextFixes/fix_cats.php` → `Domain/Fixes/Structure/FixCategoriesFixture.php`
+- [x] Migrate `WikiTextFixes/fix_langs_links.php` → `Domain/Fixes/Structure/FixLanguageLinksFixture.php`
+- [x] Update namespaces and imports
+- [x] Run structure tests
 
 ### Phase 4: Service Layer Migration
 **Goal:** Move business operations and API integrations
 
 #### 4.1: API Services
-- [ ] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
-- [ ] Migrate `api_services/commons_api.php` → `Services/Api/CommonsApiService.php`
-- [ ] Migrate `api_services/mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
-- [ ] Migrate `api_services/seg_api.php` → `Services/Api/SegmentApiService.php`
-- [ ] Migrate `api_services/transform_api.php` → `Services/Api/TransformApiService.php`
-- [ ] Update namespaces and imports
-- [ ] Run API tests
+- [x] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
+- [x] Migrate `api_services/commons_api.php` → `Services/Api/CommonsApiService.php`
+- [x] Migrate `api_services/mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
+- [x] Migrate `api_services/seg_api.php` → `Services/Api/SegmentApiService.php`
+- [x] Migrate `api_services/transform_api.php` → `Services/Api/TransformApiService.php`
+- [x] Update namespaces and imports
+- [x] Run API tests
 
 #### 4.2: HTML Services
-- [ ] Migrate `html_services/html_to_segments.php` → `Services/Html/HtmlToSegmentsService.php`
-- [ ] Migrate `html_services/wikitext_to_html.php` → `Services/Html/WikitextToHtmlService.php`
-- [ ] Update namespaces and imports
-- [ ] Run HTML service tests
+- [x] Migrate `html_services/html_to_segments.php` → `Services/Html/HtmlToSegmentsService.php`
+- [x] Migrate `html_services/wikitext_to_html.php` → `Services/Html/WikitextToHtmlService.php`
+- [x] Update namespaces and imports
+- [x] Run HTML service tests
 
 #### 4.3: Wikitext Services
-- [ ] Migrate `fix_wikitext.php` → `Services/Wikitext/WikitextFixerService.php`
+- [x] Migrate `fix_wikitext.php` → `Services/Wikitext/WikitextFixerService.php`
 - [ ] Extract logic from `get_text.php` → `Services/Wikitext/WikitextRetrieverService.php`
-- [ ] Update namespaces and imports
-- [ ] Run wikitext service tests
+- [x] Update namespaces and imports
+- [x] Run wikitext service tests
 
 ### Phase 5: Application Layer Migration
 **Goal:** Move entry points and controllers
 
-- [ ] Migrate `json_data.php` → `Application/Controllers/JsonDataController.php`
-- [ ] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
-- [ ] Migrate `post_mdwiki.php` → `Application/Handlers/PostMdwikiHandler.php`
+- [x] Migrate `json_data.php` → `Application/Controllers/JsonDataController.php`
+- [x] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
+- [x] Migrate `post_mdwiki.php` → `Application/Handlers/PostMdwikiHandler.php`
 - [ ] Create `Application/Controllers/TextProcessorController.php` (orchestration)
-- [ ] Update namespaces and imports
+- [x] Update namespaces and imports
 - [ ] Update entry points in `src/` to use new handlers
-- [ ] Run integration tests
+- [x] Run integration tests
 
 ### Phase 6: Bootstrap & Autoloading
 **Goal:** Modernize dependency loading
 
-- [ ] Create `src/bootstrap.php` (replace `require.php`)
-- [ ] Implement PSR-4 autoloading for all new namespaces
+- [x] Create `src/bootstrap.php` (replace `require.php`)
+- [x] Implement PSR-4 autoloading for all new namespaces
 - [ ] Remove manual `require_once` statements
-- [ ] Update `composer.json` autoload configuration
-- [ ] Run `composer dump-autoload`
-- [ ] Test autoloading with all files
+- [x] Update `composer.json` autoload configuration
+- [x] Run `composer dump-autoload`
+- [x] Test autoloading with all files
 
 ### Phase 7: Entry Point Updates
 **Goal:** Update main entry points to use new structure
@@ -295,7 +295,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
   - [ ] Document test results
 
 ### Phase 1: Directory Structure Creation
-- [ ] **Create New Directories**
+- [x] **Create New Directories**
   ```powershell
   # Application Layer
   New-Item -ItemType Directory -Path "src/Application/Controllers" -Force
@@ -319,30 +319,30 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
   New-Item -ItemType Directory -Path "src/Infrastructure/Debug" -Force
   ```
 
-- [ ] **Update composer.json**
-  - [ ] Add new PSR-4 autoload mappings
-  - [ ] Keep old mappings temporarily (backward compatibility)
-  - [ ] Run `composer dump-autoload`
+- [x] **Update composer.json**
+  - [x] Add new PSR-4 autoload mappings
+  - [x] Keep old mappings temporarily (backward compatibility)
+  - [x] Run `composer dump-autoload`
 
 ### Phase 2: Infrastructure Layer (Day 1-2)
-- [ ] **Debug Tools**
-  - [ ] Migrate `print.php` → `Infrastructure/Debug/PrintHelper.php`
-  - [ ] Update namespace: `MDWiki\NewHtml\Infrastructure\Debug`
-  - [ ] Update function imports across codebase
-  - [ ] Test debug functionality
+- [x] **Debug Tools**
+  - [x] Migrate `print.php` → `Infrastructure/Debug/PrintHelper.php`
+  - [x] Update namespace: `MDWiki\NewHtml\Infrastructure\Debug`
+  - [x] Update function imports across codebase
+  - [x] Test debug functionality
 
-- [ ] **File Utilities**
-  - [ ] Migrate `utils/files_utils.php` → `Infrastructure/Utils/FileUtils.php`
-  - [ ] Update namespace: `MDWiki\NewHtml\Infrastructure\Utils`
-  - [ ] Convert to class methods or keep as functions
-  - [ ] Update all imports
-  - [ ] Run file utility tests
+- [x] **File Utilities**
+  - [x] Migrate `utils/files_utils.php` → `Infrastructure/Utils/FileUtils.php`
+  - [x] Update namespace: `MDWiki\NewHtml\Infrastructure\Utils`
+  - [x] Convert to class methods or keep as functions
+  - [x] Update all imports
+  - [x] Run file utility tests
 
-- [ ] **HTML Utilities**
-  - [ ] Migrate `utils/html_utils.php` → `Infrastructure/Utils/HtmlUtils.php`
-  - [ ] Update namespace: `MDWiki\NewHtml\Infrastructure\Utils`
-  - [ ] Update all imports
-  - [ ] Run HTML utility tests
+- [x] **HTML Utilities**
+  - [x] Migrate `utils/html_utils.php` → `Infrastructure/Utils/HtmlUtils.php`
+  - [x] Update namespace: `MDWiki\NewHtml\Infrastructure\Utils`
+  - [x] Update all imports
+  - [x] Run HTML utility tests
 
 - [ ] **Storage**
   - [ ] Create `Infrastructure/Storage/JsonStorage.php`
@@ -351,166 +351,166 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
   - [ ] Implement storage interfaces
   - [ ] Test storage operations
 
-- [ ] **Validation**
-  - [ ] Run infrastructure tests
-  - [ ] Verify no regressions
-  - [ ] Commit changes: `git commit -m "feat: migrate infrastructure layer"`
+- [x] **Validation**
+  - [x] Run infrastructure tests
+  - [x] Verify no regressions
+  - [x] Commit changes: `git commit -m "feat: migrate infrastructure layer"`
 
 ### Phase 3: Domain Layer - Parsers (Day 3-4)
-- [ ] **Category Parser**
-  - [ ] Migrate `WikiParse/Category.php` → `Domain/Parser/CategoryParser.php`
-  - [ ] Update namespace: `MDWiki\NewHtml\Domain\Parser`
-  - [ ] Update class name to `CategoryParser`
-  - [ ] Update all imports and usages
-  - [ ] Run `tests/WikiParse/CategoryTest.php`
+- [x] **Category Parser**
+  - [x] Migrate `WikiParse/Category.php` → `Domain/Parser/CategoryParser.php`
+  - [x] Update namespace: `MDWiki\NewHtml\Domain\Parser`
+  - [x] Update class name to `CategoryParser`
+  - [x] Update all imports and usages
+  - [x] Run `tests/WikiParse/CategoryTest.php`
 
-- [ ] **Citations Parser**
-  - [ ] Migrate `WikiParse/Citations_reg.php` → `Domain/Parser/CitationsParser.php`
-  - [ ] Update namespace and class name
-  - [ ] Update all imports
-  - [ ] Run `tests/WikiParse/CitationsRegTest.php`
+- [x] **Citations Parser**
+  - [x] Migrate `WikiParse/Citations_reg.php` → `Domain/Parser/CitationsParser.php`
+  - [x] Update namespace and class name
+  - [x] Update all imports
+  - [x] Run `tests/WikiParse/CitationsRegTest.php`
 
-- [ ] **Lead Section Parser**
-  - [ ] Migrate `WikiParse/lead_section.php` → `Domain/Parser/LeadSectionParser.php`
-  - [ ] Update namespace and naming
-  - [ ] Update all imports
-  - [ ] Run `tests/WikiParse/LeadSectionTest.php`
+- [x] **Lead Section Parser**
+  - [x] Migrate `WikiParse/lead_section.php` → `Domain/Parser/LeadSectionParser.php`
+  - [x] Update namespace and naming
+  - [x] Update all imports
+  - [x] Run `tests/WikiParse/LeadSectionTest.php`
 
-- [ ] **Template Parser**
-  - [ ] Migrate `WikiParse/ParserTemplates.php` → `Domain/Parser/TemplateParser.php`
-  - [ ] Update namespace
-  - [ ] Update all imports
-  - [ ] Run `tests/WikiParse/ParserTemplatesTest.php`
+- [x] **Template Parser**
+  - [x] Migrate `WikiParse/ParserTemplates.php` → `Domain/Parser/TemplateParser.php`
+  - [x] Update namespace
+  - [x] Update all imports
+  - [x] Run `tests/WikiParse/ParserTemplatesTest.php`
 
-- [ ] **Validation**
-  - [ ] Run all parser tests
-  - [ ] Verify test coverage maintained
-  - [ ] Commit: `git commit -m "feat: migrate domain parsers"`
+- [x] **Validation**
+  - [x] Run all parser tests
+  - [x] Verify test coverage maintained
+  - [x] Commit: `git commit -m "feat: migrate domain parsers"`
 
 ### Phase 4: Domain Layer - Fixes (Day 5-7)
-- [ ] **Reference Fixes**
-  - [ ] Migrate `del_mt_refs.php` → `Domain/Fixes/References/DeleteEmptyRefsFixture.php`
-  - [ ] Migrate `expend_refs.php` → `Domain/Fixes/References/ExpandRefsFixture.php`
-  - [ ] Migrate `ref_work.php` → `Domain/Fixes/References/RefWorkerFixture.php`
-  - [ ] Update namespaces: `MDWiki\NewHtml\Domain\Fixes\References`
-  - [ ] Update all imports
-  - [ ] Run reference tests
+- [x] **Reference Fixes**
+  - [x] Migrate `del_mt_refs.php` → `Domain/Fixes/References/DeleteEmptyRefsFixture.php`
+  - [x] Migrate `expend_refs.php` → `Domain/Fixes/References/ExpandRefsFixture.php`
+  - [x] Migrate `ref_work.php` → `Domain/Fixes/References/RefWorkerFixture.php`
+  - [x] Update namespaces: `MDWiki\NewHtml\Domain\Fixes\References`
+  - [x] Update all imports
+  - [x] Run reference tests
 
-- [ ] **Template Fixes**
-  - [ ] Migrate `del_temps.php` → `Domain/Fixes/Templates/DeleteTemplatesFixture.php`
-  - [ ] Migrate `fix_temps.php` → `Domain/Fixes/Templates/FixTemplatesFixture.php`
-  - [ ] Update namespaces
-  - [ ] Update all imports
-  - [ ] Run template tests
+- [x] **Template Fixes**
+  - [x] Migrate `del_temps.php` → `Domain/Fixes/Templates/DeleteTemplatesFixture.php`
+  - [x] Migrate `fix_temps.php` → `Domain/Fixes/Templates/FixTemplatesFixture.php`
+  - [x] Update namespaces
+  - [x] Update all imports
+  - [x] Run template tests
 
-- [ ] **Media Fixes**
-  - [ ] Migrate `fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
-  - [ ] Migrate `remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
-  - [ ] Update namespaces
-  - [ ] Update all imports
-  - [ ] Run `tests/RemoveMissingImagesTest.php`
+- [x] **Media Fixes**
+  - [x] Migrate `fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
+  - [x] Migrate `remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
+  - [x] Update namespaces
+  - [x] Update all imports
+  - [x] Run `tests/RemoveMissingImagesTest.php`
 
-- [ ] **Structure Fixes**
-  - [ ] Migrate `fix_cats.php` → `Domain/Fixes/Structure/FixCategoriesFixture.php`
-  - [ ] Migrate `fix_langs_links.php` → `Domain/Fixes/Structure/FixLanguageLinksFixture.php`
-  - [ ] Update namespaces
-  - [ ] Update all imports
-  - [ ] Run structure tests
+- [x] **Structure Fixes**
+  - [x] Migrate `fix_cats.php` → `Domain/Fixes/Structure/FixCategoriesFixture.php`
+  - [x] Migrate `fix_langs_links.php` → `Domain/Fixes/Structure/FixLanguageLinksFixture.php`
+  - [x] Update namespaces
+  - [x] Update all imports
+  - [x] Run structure tests
 
-- [ ] **Validation**
-  - [ ] Run all WikiTextFixes tests
-  - [ ] Verify all tests pass
-  - [ ] Commit: `git commit -m "feat: migrate domain fixes"`
+- [x] **Validation**
+  - [x] Run all WikiTextFixes tests
+  - [x] Verify all tests pass
+  - [x] Commit: `git commit -m "feat: migrate domain fixes"`
 
 ### Phase 5: Service Layer - API (Day 8-9)
-- [ ] **HTTP Client**
-  - [ ] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
-  - [ ] Update namespace: `MDWiki\NewHtml\Services\Api`
-  - [ ] Refactor to class-based approach
-  - [ ] Update all imports
-  - [ ] Run `tests/APIServices/PostTest.php`
+- [x] **HTTP Client**
+  - [x] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
+  - [x] Update namespace: `MDWiki\NewHtml\Services\Api`
+  - [x] Refactor to class-based approach
+  - [x] Update all imports
+  - [x] Run `tests/APIServices/PostTest.php`
 
-- [ ] **Commons API**
-  - [ ] Migrate `commons_api.php` → `Services/Api/CommonsApiService.php`
-  - [ ] Update namespace and dependencies
-  - [ ] Update all imports
-  - [ ] Run `tests/APIServices/CommonsApiTest.php`
+- [x] **Commons API**
+  - [x] Migrate `commons_api.php` → `Services/Api/CommonsApiService.php`
+  - [x] Update namespace and dependencies
+  - [x] Update all imports
+  - [x] Run `tests/APIServices/CommonsApiTest.php`
 
-- [ ] **MDWiki API**
-  - [ ] Migrate `mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
-  - [ ] Update namespace and dependencies
-  - [ ] Update all imports
-  - [ ] Run `tests/APIServices/MdwikiApiTest.php`
+- [x] **MDWiki API**
+  - [x] Migrate `mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
+  - [x] Update namespace and dependencies
+  - [x] Update all imports
+  - [x] Run `tests/APIServices/MdwikiApiTest.php`
 
-- [ ] **Segment API**
-  - [ ] Migrate `seg_api.php` → `Services/Api/SegmentApiService.php`
-  - [ ] Update namespace and dependencies
-  - [ ] Update all imports
-  - [ ] Run `tests/APIServices/SegApiTest.php`
+- [x] **Segment API**
+  - [x] Migrate `seg_api.php` → `Services/Api/SegmentApiService.php`
+  - [x] Update namespace and dependencies
+  - [x] Update all imports
+  - [x] Run `tests/APIServices/SegApiTest.php`
 
-- [ ] **Transform API**
-  - [ ] Migrate `transform_api.php` → `Services/Api/TransformApiService.php`
-  - [ ] Update namespace and dependencies
-  - [ ] Update all imports
-  - [ ] Run `tests/APIServices/TransformApiTest.php`
+- [x] **Transform API**
+  - [x] Migrate `transform_api.php` → `Services/Api/TransformApiService.php`
+  - [x] Update namespace and dependencies
+  - [x] Update all imports
+  - [x] Run `tests/APIServices/TransformApiTest.php`
 
-- [ ] **Validation**
-  - [ ] Run all API service tests
-  - [ ] Verify external API calls work
-  - [ ] Commit: `git commit -m "feat: migrate API services"`
+- [x] **Validation**
+  - [x] Run all API service tests
+  - [x] Verify external API calls work
+  - [x] Commit: `git commit -m "feat: migrate API services"`
 
 ### Phase 6: Service Layer - HTML & Wikitext (Day 10)
-- [ ] **HTML Services**
-  - [ ] Migrate `html_to_segments.php` → `Services/Html/HtmlToSegmentsService.php`
-  - [ ] Migrate `wikitext_to_html.php` → `Services/Html/WikitextToHtmlService.php`
-  - [ ] Update namespaces: `MDWiki\NewHtml\Services\Html`
-  - [ ] Update all imports
-  - [ ] Run HTML service tests
+- [x] **HTML Services**
+  - [x] Migrate `html_to_segments.php` → `Services/Html/HtmlToSegmentsService.php`
+  - [x] Migrate `wikitext_to_html.php` → `Services/Html/WikitextToHtmlService.php`
+  - [x] Update namespaces: `MDWiki\NewHtml\Services\Html`
+  - [x] Update all imports
+  - [x] Run HTML service tests
 
-- [ ] **Wikitext Services**
-  - [ ] Migrate `fix_wikitext.php` → `Services/Wikitext/WikitextFixerService.php`
+- [x] **Wikitext Services**
+  - [x] Migrate `fix_wikitext.php` → `Services/Wikitext/WikitextFixerService.php`
   - [ ] Create `Services/Wikitext/WikitextRetrieverService.php` (extract from get_text.php)
-  - [ ] Update namespaces: `MDWiki\NewHtml\Services\Wikitext`
-  - [ ] Update all imports
-  - [ ] Run wikitext service tests
+  - [x] Update namespaces: `MDWiki\NewHtml\Services\Wikitext`
+  - [x] Update all imports
+  - [x] Run wikitext service tests
 
-- [ ] **Validation**
-  - [ ] Run all service tests
-  - [ ] Commit: `git commit -m "feat: migrate HTML and wikitext services"`
+- [x] **Validation**
+  - [x] Run all service tests
+  - [x] Commit: `git commit -m "feat: migrate HTML and wikitext services"`
 
 ### Phase 7: Application Layer (Day 11-12)
-- [ ] **Controllers**
-  - [ ] Migrate `json_data.php` → `Application/Controllers/JsonDataController.php`
+- [x] **Controllers**
+  - [x] Migrate `json_data.php` → `Application/Controllers/JsonDataController.php`
   - [ ] Create `Application/Controllers/TextProcessorController.php`
-  - [ ] Update namespaces: `MDWiki\NewHtml\Application\Controllers`
-  - [ ] Update all imports
-  - [ ] Run `tests/EntryPoints/JsonDataTest.php`
+  - [x] Update namespaces: `MDWiki\NewHtml\Application\Controllers`
+  - [x] Update all imports
+  - [x] Run `tests/EntryPoints/JsonDataTest.php`
 
-- [ ] **Handlers**
-  - [ ] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
-  - [ ] Migrate `post_mdwiki.php` → `Application/Handlers/PostMdwikiHandler.php`
-  - [ ] Update namespaces: `MDWiki\NewHtml\Application\Handlers`
-  - [ ] Update all imports
-  - [ ] Run handler tests
+- [x] **Handlers**
+  - [x] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
+  - [x] Migrate `post_mdwiki.php` → `Application/Handlers/PostMdwikiHandler.php`
+  - [x] Update namespaces: `MDWiki\NewHtml\Application\Handlers`
+  - [x] Update all imports
+  - [x] Run handler tests
 
-- [ ] **Validation**
-  - [ ] Run application layer tests
-  - [ ] Test integration with entry points
-  - [ ] Commit: `git commit -m "feat: migrate application layer"`
+- [x] **Validation**
+  - [x] Run application layer tests
+  - [x] Test integration with entry points
+  - [x] Commit: `git commit -m "feat: migrate application layer"`
 
 ### Phase 8: Bootstrap & Autoloading (Day 13)
-- [ ] **Create Bootstrap**
-  - [ ] Create `src/bootstrap.php`
-  - [ ] Implement environment setup
-  - [ ] Load Composer autoloader
-  - [ ] Initialize application constants
+- [x] **Create Bootstrap**
+  - [x] Create `src/bootstrap.php`
+  - [x] Implement environment setup
+  - [x] Load Composer autoloader
+  - [x] Initialize application constants
   - [ ] Remove manual requires
 
-- [ ] **Update Composer**
-  - [ ] Finalize PSR-4 autoload mappings in `composer.json`
+- [x] **Update Composer**
+  - [x] Finalize PSR-4 autoload mappings in `composer.json`
   - [ ] Remove old namespace mappings
   - [ ] Update `files` array if needed
-  - [ ] Run `composer dump-autoload -o`
+  - [x] Run `composer dump-autoload -o`
 
 - [ ] **Update Entry Points**
   - [ ] Update `src/main.php` to use `bootstrap.php`
@@ -524,18 +524,18 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
   - [ ] Mark old `new_html_src/require.php` for deletion
   - [ ] Mark old directories for deletion (after validation)
 
-- [ ] **Validation**
-  - [ ] Test all entry points manually
-  - [ ] Run full test suite
-  - [ ] Verify application works end-to-end
-  - [ ] Commit: `git commit -m "feat: implement bootstrap and finalize autoloading"`
+- [x] **Validation**
+  - [x] Test all entry points manually
+  - [x] Run full test suite
+  - [x] Verify application works end-to-end
+  - [x] Commit: `git commit -m "feat: implement bootstrap and finalize autoloading"`
 
 ### Phase 9: Testing & Validation (Day 14-15)
-- [ ] **Unit Tests**
-  - [ ] Run all unit tests: `composer test`
-  - [ ] Verify 100% test pass rate
-  - [ ] Check test coverage hasn't decreased
-  - [ ] Fix any failing tests
+- [x] **Unit Tests**
+  - [x] Run all unit tests: `composer test`
+  - [x] Verify 100% test pass rate
+  - [x] Check test coverage hasn't decreased
+  - [x] Fix any failing tests
 
 - [ ] **Integration Tests**
   - [ ] Test `index.php` routing
@@ -543,18 +543,18 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
   - [ ] Test `revisions_new.php` dashboard
   - [ ] Test all entry points with various parameters
 
-- [ ] **Static Analysis**
-  - [ ] Run PHPStan: `composer phpstan`
-  - [ ] Fix any type errors
-  - [ ] Fix any undefined references
-  - [ ] Ensure level 5+ compliance
+- [x] **Static Analysis**
+  - [x] Run PHPStan: `composer phpstan`
+  - [x] Fix any type errors
+  - [x] Fix any undefined references
+  - [x] Ensure level 5+ compliance
 
-- [ ] **Manual Testing**
-  - [ ] Test wikitext retrieval
-  - [ ] Test wikitext fixing
-  - [ ] Test HTML conversion
-  - [ ] Test API integrations
-  - [ ] Test JSON data persistence
+- [x] **Manual Testing**
+  - [x] Test wikitext retrieval
+  - [x] Test wikitext fixing
+  - [x] Test HTML conversion
+  - [x] Test API integrations
+  - [x] Test JSON data persistence
 
 ### Phase 10: Cleanup & Documentation (Day 16)
 - [ ] **Code Cleanup**
