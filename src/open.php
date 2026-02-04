@@ -24,7 +24,7 @@ header("Content-type: $content_type");
 $revisions_dir = get_revisions_new_dir();
 $file_path = $revisions_dir . "/$revid/$file";
 
-$text = file_get_contents($file_path) ?? '';
+$text = file_get_contents($file_path) ?: '';
 
 if (!empty($text)) {
     if ($file == "seg.html" || $file == "html.html") {

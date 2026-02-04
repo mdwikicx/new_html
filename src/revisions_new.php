@@ -1,7 +1,7 @@
 <html lang="en">
 
 <?php
-if (defined('DEBUGX') && DEBUGX) {
+if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -149,7 +149,7 @@ foreach ($dirs as $dir) {
     $title = str_replace('_', ' ', $title);
     // ---
     if (!empty($title) && $make_dump && !empty($oldid_number)) {
-        $id = (int)$oldid_number ?? 0;
+        $id = (int)$oldid_number;
         if ($id > 0) {
             if (strpos($dir_path, '_all') !== false) {
                 $main_data_all[$title] = $id;
