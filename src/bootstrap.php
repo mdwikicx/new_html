@@ -36,7 +36,11 @@ if (!defined('SRC_PATH')) {
 }
 
 if (!defined('REVISIONS_PATH')) {
-    define('REVISIONS_PATH', APP_ROOT . '/revisions_new');
+    $revisions_path = dirname(APP_ROOT) . '/revisions_new';
+    if (strpos(__DIR__, 'public_html') !== false) {
+        $revisions_path = getenv('HOME') . '/public_html/revisions_new';
+    }
+    define('REVISIONS_PATH', $revisions_path);
 }
 
 // Initialize revisions directory if needed
