@@ -18,8 +18,8 @@ use PHPUnit\Framework\TestCase;
 
 class bootstrap extends TestCase
 {
-    public function testExample()
+    public function markTestSkipped($message = ''): void
     {
-        $this->assertTrue(true);
+        parent::markTestSkipped($message);
     }
 }
