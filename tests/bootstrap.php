@@ -12,7 +12,7 @@ if (file_exists($vendor_path)) {
     require $vendor_path;
 };
 
-require __DIR__ . '/../src/new_html_src/require.php';
+require __DIR__ . '/../src/bootstrap.php';
 
 use PHPUnit\Framework\TestCase;
 
