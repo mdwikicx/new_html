@@ -215,7 +215,7 @@ if ($title == '') {
     echo json_encode([
         'error' => 'title is empty',
     ]);
-    exit(1);
+    exit;
 }
 
 start($_GET, $title);

@@ -114,7 +114,7 @@ vendor/bin/phpstan analyse
 
 ### Project Structure
 
-```
+```text
 new_html/
 ├── new_html_src/          # Source code
 │   ├── api_services/      # API integration modules

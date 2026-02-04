@@ -24,6 +24,11 @@ use function NewHtml\FileHelps\read_file;
 $json_file = __DIR__ . "/../../revisions_new/json_data.json";
 $json_file_all = __DIR__ . "/../../revisions_new/json_data_all.json";
 
+$json_dir = dirname($json_file);
+if (!is_dir($json_dir)) {
+    mkdir($json_dir, 0755, true);
+}
+
 if (!file_exists($json_file)) {
     file_write($json_file, '{}');
 }
