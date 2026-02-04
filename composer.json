@@ -30,6 +30,15 @@
             "src/Domain/Parser/CitationsParser.php",
             "src/Domain/Parser/LeadSectionParser.php",
             "src/Domain/Parser/TemplateParser.php",
+            "src/Domain/Fixes/References/DeleteEmptyRefsFixture.php",
+            "src/Domain/Fixes/References/ExpandRefsFixture.php",
+            "src/Domain/Fixes/References/RefWorkerFixture.php",
+            "src/Domain/Fixes/Templates/DeleteTemplatesFixture.php",
+            "src/Domain/Fixes/Templates/FixTemplatesFixture.php",
+            "src/Domain/Fixes/Media/FixImagesFixture.php",
+            "src/Domain/Fixes/Media/RemoveMissingImagesFixture.php",
+            "src/Domain/Fixes/Structure/FixCategoriesFixture.php",
+            "src/Domain/Fixes/Structure/FixLanguageLinksFixture.php",
             "src/new_html_src/require.php"
         ]
     },

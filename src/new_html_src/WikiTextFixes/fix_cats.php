@@ -2,12 +2,16 @@
 /**
  * Category removal utilities
  *
- * Provides functions for removing category links from wikitext.
+ * DEPRECATED: This file is kept for backward compatibility.
+ * Please use MDWiki\NewHtml\Domain\Fixes\Structure\FixCategoriesFixture instead.
  *
  * @package MDWiki\NewHtml\WikiTextFixes
+ * @deprecated Use MDWiki\NewHtml\Domain\Fixes\Structure namespace instead
  */
 
 namespace Fixes\FixCats;
+
+use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories as new_remove_categories;
 
 /*
 Usage:
@@ -16,24 +20,14 @@ use function Fixes\FixCats\remove_categories;
 
 */
 
-
-use function WikiParse\Category\get_categories;
-
 /**
  * Remove all category tags from wikitext
  *
+ * @deprecated Use MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories instead
  * @param string $text The wikitext to process
  * @return string The wikitext with categories removed
  */
 function remove_categories(string $text): string
 {
-
-    $categories = get_categories($text);
-
-    foreach ($categories as $name => $cat) {
-        // echo "delete category: " . $name . "<br>";
-        $text = str_replace($cat, '', $text);
-    }
-
-    return $text;
+    return new_remove_categories($text);
 }
