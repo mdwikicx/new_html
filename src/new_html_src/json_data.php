@@ -34,7 +34,8 @@ use function NewHtml\FileHelps\read_file;
 $dir_path = __DIR__ . "/../../../revisions_new";
 
 if (strpos(__DIR__, 'public_html') !== false) {
-    $dir_path = __DIR__ . "/../../revisions_new/";
+    // dir_path = $HOME / public_html/revisions_new
+    $dir_path = getenv('HOME') . "/public_html/revisions_new";
 }
 
 $json_file = "$dir_path/json_data.json";

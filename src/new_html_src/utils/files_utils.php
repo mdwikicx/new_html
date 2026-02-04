@@ -22,7 +22,7 @@ use function Printn\test_print;
 $revisions_new_dir = dirname(dirname(__DIR__)) . '/revisions_new';
 
 if (strpos(__DIR__, 'public_html') !== false) {
-    $revisions_new_dir = dirname(__DIR__) . '/revisions_new';
+    $revisions_new_dir = getenv('HOME') . "/public_html/revisions_new";
 }
 /**
  * Get the revisions directory path
