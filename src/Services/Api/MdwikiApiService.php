@@ -50,7 +50,8 @@ function get_wikitext_from_mdwiki_api(string $title): array
     }
 
     $source = $revisions["content"] ?? '';
-    $revid = $revisions["revid"] ?? '';    return [$source, $revid];
+    $revid = $revisions["revid"] ?? '';
+    return [$source, $revid];
 }
 
 /**

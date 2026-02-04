@@ -39,7 +39,8 @@ function do_wiki_text_to_html(string $wikitext, string $title): mixed
     if ($result == '') return "";
 
     $result = del_div_error($result);
-    $result = fix_link_red($result);    return $result;
+    $result = fix_link_red($result);
+    return $result;
 }
 
 /**
