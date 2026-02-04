@@ -60,6 +60,11 @@ function check_temp_to_delete($name)
         "use mdy dates",
         "void",
     ];
+    // if $name start with "defaultsort" delete it
+    if (strpos($name, "defaultsort") === 0) {
+        return true;
+    }
+    // ---
     return in_array($name, $tempsToDelete);
 }
 
@@ -79,8 +84,7 @@ function remove_templates($text)
             $new_text = str_replace($old_text_template, '', $new_text);
             continue;
         }
-        // ---
-        // if $name start with "#unlinkedwikibase" delete it
+        // ---        // if $name start with "#unlinkedwikibase" delete it
         if (strpos($name, "#unlinkedwikibase") === 0) {
             $new_text = str_replace($old_text_template, '', $new_text);
             continue;
