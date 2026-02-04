@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File viewer for generated content
  *
@@ -15,7 +16,6 @@
 require_once __DIR__ . "/bootstrap.php";
 
 use function HtmlFixes\remove_data_parsoid;
-use function NewHtml\FileHelps\get_revisions_new_dir; // $revisions_dir = get_revisions_new_dir();
 
 $revid = $_GET['revid'] ?? '';
 $file = $_GET['file'] ?? '';
@@ -33,8 +33,7 @@ if (!in_array($file, $allowed_files, true)) {
 }
 $content_type = ($file == 'wikitext.txt') ? "text/plain" : "text/html";
 header("Content-type: $content_type");
-$revisions_dir = get_revisions_new_dir();
-$file_path = $revisions_dir . "/$revid/$file";
+$file_path = REVISIONS_PATH . "/$revid/$file";
 
 $text = file_get_contents($file_path) ?: '';
 
