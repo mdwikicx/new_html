@@ -12,47 +12,59 @@ use function Fixes\DelTemps\remove_lead_templates;
 
 use function WikiParse\Template\getTemplates;
 
-$tempsToDelete = [
-    "rtt",
-    "#unlinkedwikibase",
-    "about",
-    "anchor",
-    "defaultsort",
-    "distinguish",
-    "esborrany",
-    "featured article",
-    "fr",
-    "good article",
-    "italic title",
-    "other uses",
-    "redirect",
-    "redirect-distinguish",
-    "see also",
-    "short description",
-    "sprotect",
-    "tedirect-distinguish",
-    "toc limit",
-    "use american english",
-    "use dmy dates",
-    "use mdy dates",
-    "void",
-];
-
-$temps_patterns = [
-    // any template startswith pp-
-    "/^pp(-.*)?$/",
-    "/^articles (for|with|needing|containing).*$/",
-    "/^engvar[ab]$/",
-    "/^use[\sa-z]+(english|spelling|referencing)$/",
-    "/^use [dmy]+ dates$/",
-    "/^wikipedia articles (for|with|needing|containing).*$/",
-    "/^(.*-)?stub$/"
-];
+function check_temps_patterns($name, $old_text_template, $new_text)
+{
+    $temps_patterns = [
+        // any template startswith pp-
+        "/^pp(-.*)?$/",
+        "/^articles (for|with|needing|containing).*$/",
+        "/^engvar[ab]$/",
+        "/^use[\sa-z]+(english|spelling|referencing)$/",
+        "/^use [dmy]+ dates$/",
+        "/^wikipedia articles (for|with|needing|containing).*$/",
+        "/^(.*-)?stub$/"
+    ];
+    // ---
+    foreach ($temps_patterns as $pattern) {
+        if (preg_match($pattern, $name)) {
+            $new_text = str_replace($old_text_template, '', $new_text);
+            break;
+        }
+    }
+    return $new_text;
+}
+function check_temp_to_delete($name)
+{
+    $tempsToDelete = [
+        "rtt",
+        "#unlinkedwikibase",
+        "about",
+        "anchor",
+        "defaultsort",
+        "distinguish",
+        "esborrany",
+        "featured article",
+        "fr",
+        "good article",
+        "italic title",
+        "other uses",
+        "redirect",
+        "redirect-distinguish",
+        "see also",
+        "short description",
+        "sprotect",
+        "tedirect-distinguish",
+        "toc limit",
+        "use american english",
+        "use dmy dates",
+        "use mdy dates",
+        "void",
+    ];
+    return in_array($name, $tempsToDelete);
+}
 
 function remove_templates($text)
 {
-    global $tempsToDelete, $temps_patterns;
-    // ---
     $temps_in = getTemplates($text);
     // ---
     $new_text = $text;
@@ -63,7 +75,7 @@ function remove_templates($text)
         // ---
         $old_text_template = $temp->getTemplateText();
         // ---
-        if (in_array($name, $tempsToDelete)) {
+        if (check_temp_to_delete($name)) {
             $new_text = str_replace($old_text_template, '', $new_text);
             continue;
         }
@@ -74,12 +86,7 @@ function remove_templates($text)
             continue;
         }
         // ---
-        foreach ($temps_patterns as $pattern) {
-            if (preg_match($pattern, $name)) {
-                $new_text = str_replace($old_text_template, '', $new_text);
-                continue;
-            }
-        }
+        $new_text = check_temps_patterns($name, $old_text_template, $new_text);
         // ---
     };
     // ---

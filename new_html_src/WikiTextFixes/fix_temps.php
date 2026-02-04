@@ -15,6 +15,7 @@ function add_missing_title($text, $title, $ljust = 17)
 {
     // ---
     $temps = [
+        "drug box" => "drug_name",
         "drugbox" => "drug_name",
         "infobox drug" => "drug_name",
         "infobox medical condition" => "name",
@@ -31,6 +32,7 @@ function add_missing_title($text, $title, $ljust = 17)
         $name = strtolower($temp->getStripName());
         // ---
         if (!isset($temps[$name])) {
+
             continue;
         }
         // ---
