@@ -5,6 +5,12 @@ namespace Lead;
 use function Lead\get_lead_section;
 */
 
+/**
+ * Get the lead section of wikitext (old implementation)
+ *
+ * @param string $wikitext The wikitext to process
+ * @return string The lead section with references tag appended
+ */
 function get_lead_section_old(string $wikitext): string
 {
     if (empty($wikitext) || strpos($wikitext, '==') === false) {
@@ -21,11 +27,15 @@ function get_lead_section_old(string $wikitext): string
 
     $lead .= "\n==References==\n<references />";
 
-    // $lead = refs_expend_work($lead, $wikitext);
-
-    return $lead;
+    // $lead = refs_expend_work($lead, $wikitext);    return $lead;
 }
 
+/**
+ * Get the lead section of wikitext
+ *
+ * @param string $wikitext The wikitext to process
+ * @return string The lead section with references tag appended, or empty string if no lead
+ */
 function get_lead_section(string $wikitext): string
 {
     if (empty($wikitext)) {

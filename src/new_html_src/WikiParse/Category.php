@@ -9,6 +9,12 @@ use function WikiParse\Category\get_categories;
 
 */
 
+/**
+ * Extract all categories from wikitext
+ *
+ * @param string $text The wikitext to parse
+ * @return array<string, string> Array mapping category names to their full [[Category:...]] tags
+ */
 function get_categories(string $text): array
 {
     // $parser = new ParserCategories($text);

@@ -12,6 +12,12 @@ use function WikiParse\Reg_Citations\get_short_citations;
 
 */
 
+/**
+ * Extract the name attribute from a ref tag's options
+ *
+ * @param string $options The options string from a ref tag
+ * @return string The name value, or empty string if not found
+ */
 function get_ref_name(string $options): string
 {
     if (empty(trim($options))) {
@@ -32,7 +38,7 @@ function get_ref_name(string $options): string
  * Get all the citations from the provided text and parse them into an array.
  *
  * @param string $text The text containing citations to extract
- * @return array Array of citation information including content, tag, and options
+ * @return array<int, array<string, string>> Array of citation information including content, tag, and options
  */
 
 function get_regex_citations(string $text): array
@@ -52,11 +58,15 @@ function get_regex_citations(string $text): array
             "options" => $options
         ];
         $citations[] = $citation;
-    }
-
-    return $citations;
+    }    return $citations;
 }
 
+/**
+ * Get all full ref tags with name attributes from text
+ *
+ * @param string $text The text to parse
+ * @return array<string, string> Array mapping ref names to their full <ref>...</ref> tags
+ */
 function get_full_refs(string $text): array
 {
     $full = [];
@@ -72,10 +82,15 @@ function get_full_refs(string $text): array
 
         $full[$name] = $ref;
     };
-
     return $full;
 }
 
+/**
+ * Get all short citation tags (self-closing ref tags) from text
+ *
+ * @param string $text The text to parse
+ * @return array<int, array<string, string>> Array of short citation information
+ */
 function get_short_citations(string $text): array
 {
     preg_match_all("/<ref ([^\/>]*?)\/\s*>/is", $text, $matches);
