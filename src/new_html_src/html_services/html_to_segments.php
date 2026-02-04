@@ -10,7 +10,7 @@ use function NewHtml\FileHelps\read_file;
 // use function APIServices\post_url_params_result;
 use function APIServices\change_html_to_seg;
 
-function do_html_to_seg($text): string
+function do_html_to_seg(string $text): string
 {
 
     $fixed = change_html_to_seg($text);
@@ -27,7 +27,7 @@ function do_html_to_seg($text): string
     return $result;
 }
 
-function html_to_seg($text, $file_seg): array
+function html_to_seg(string $text, string $file_seg): array
 {
 
     $from_cache = false;

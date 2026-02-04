@@ -11,7 +11,13 @@ use function PostMdwiki\handle_url_request_mdwiki;
 // use function APIServices\post_url_params_result;
 use function Printn\test_print;
 
-function get_wikitext_from_mdwiki_api($title): array
+/**
+ * Get wikitext content from MDWiki API
+ *
+ * @param string $title The title of the page to fetch
+ * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+ */
+function get_wikitext_from_mdwiki_api(string $title): array
 {
     $params = [
         "action" => "query",
@@ -42,12 +48,16 @@ function get_wikitext_from_mdwiki_api($title): array
     }
 
     $source = $revisions["content"] ?? '';
-    $revid = $revisions["revid"] ?? '';
-
-    return [$source, $revid];
+    $revid = $revisions["revid"] ?? '';    return [$source, $revid];
 }
 
-function get_wikitext_from_mdwiki_restapi($title): array
+/**
+ * Get wikitext content from MDWiki REST API
+ *
+ * @param string $title The title of the page to fetch
+ * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+ */
+function get_wikitext_from_mdwiki_restapi(string $title): array
 {
     $title2 = str_replace("/", "%2F", $title);
     $title2 = str_replace(" ", "_", $title2);

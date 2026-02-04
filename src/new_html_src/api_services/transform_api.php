@@ -6,7 +6,14 @@ use function APIServices\handle_url_request;
 // use function APIServices\post_url_params_result;
 use function Printn\test_print;
 
-function convert_wikitext_to_html($text, $title): array
+/**
+ * Convert wikitext to HTML using the Wikipedia REST API
+ *
+ * @param string $text The wikitext to convert
+ * @param string $title The title of the page (used for context in conversion)
+ * @return array<string, string> Array with 'result' key on success or 'error' key on failure
+ */
+function convert_wikitext_to_html(string $text, string $title): array
 {
     $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/Sandbox";
 

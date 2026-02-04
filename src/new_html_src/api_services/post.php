@@ -14,6 +14,13 @@ use function Printn\test_print;
 
 $usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
 
+/**
+ * Send a POST request to an API endpoint with parameters
+ *
+ * @param string $endPoint The API endpoint URL
+ * @param array<string, mixed> $params Optional parameters to send with the request
+ * @return string The response body, or empty string on failure
+ */
 function post_url_params_result(string $endPoint, array $params = []): string
 {
     global $usr_agent;
@@ -46,11 +53,18 @@ function post_url_params_result(string $endPoint, array $params = []): string
     if ($http_code !== 200) {
         test_print("API returned HTTP $http_code: $http_code");
         // return ['error' => "Error: API returned HTTP $http_code"];
-    }
-    curl_close($ch);
+    }    curl_close($ch);
     return $output;
 }
 
+/**
+ * Handle URL requests with support for GET and POST methods
+ *
+ * @param string $endPoint The API endpoint URL
+ * @param string $method The HTTP method to use ('GET' or 'POST')
+ * @param array<string, mixed> $params Optional parameters to send with the request
+ * @return string The response body, or empty string on failure
+ */
 function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
 {
     global $usr_agent;

@@ -6,7 +6,13 @@ use function Printn\test_print;
 use function APIServices\handle_url_request;
 // use function APIServices\post_url_params_result;
 
-function change_html_to_seg($text): array
+/**
+ * Convert HTML to segments using the HtmltoSegments API
+ *
+ * @param string $text The HTML text to convert to segments
+ * @return array<string, string> Array with 'result' key on success or 'error' key on failure
+ */
+function change_html_to_seg(string $text): array
 {
     $url = 'https://ncc2c.toolforge.org/HtmltoSegments';
 

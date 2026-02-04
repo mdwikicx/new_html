@@ -11,7 +11,7 @@ use function NewHtml\FileHelps\file_write; // file_write($file_html, $result);
 use function NewHtml\FileHelps\read_file;
 use function APIServices\convert_wikitext_to_html;
 
-function do_wiki_text_to_html($wikitext, $title): mixed
+function do_wiki_text_to_html(string $wikitext, string $title): mixed
 {
 
     $title = str_replace(" ", "_", $title);
@@ -31,7 +31,7 @@ function do_wiki_text_to_html($wikitext, $title): mixed
     return $result;
 }
 
-function wiki_text_to_html($wikitext, $file_html, $title, $new): array
+function wiki_text_to_html(string $wikitext, string $file_html, string $title, bool $new): array
 {
 
     $from_cache = false;
