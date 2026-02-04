@@ -56,7 +56,7 @@ function file_write($file, $text)
 function read_file($file)
 {
     // ---
-    if (!file_exists($file)) {
+    if (empty($file) || !file_exists($file)) {
         return "";
     }
     // ---

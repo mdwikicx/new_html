@@ -16,4 +16,14 @@ require __DIR__ . '/../new_html_src/require.php';
 
 use PHPUnit\Framework\TestCase;
 
-class bootstrap extends TestCase {}
+class bootstrap extends TestCase
+{
+    public function assertEqualCompare($expected, $input, $result)
+    {
+        $this->assertEquals(
+            $expected,
+            $result,
+            "Input:\n" . $input . "\n\nExpected:\n" . $expected . "\n\nGot:\n" . $result
+        );
+    }
+}

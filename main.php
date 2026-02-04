@@ -4,6 +4,7 @@ header("Access-Control-Allow-Origin: *");
 require_once __DIR__ . "/require.php";
 
 use function Printn\test_print;
+use function FixText\fix_wikitext;
 use function Wikitext\get_wikitext;
 use function Segments\html_to_seg;
 use function Html\wiki_text_to_html;
@@ -69,6 +70,7 @@ function get_wikitext_revision($title, $all)
     // ---
     if ($printetxt == "wikitext") {
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
+        $wikitext = fix_wikitext($wikitext, $title);
         echo $wikitext;
         exit();
     }
@@ -161,6 +163,8 @@ function start($request, $title)
     $file_html     = $file_dir . "/html.html";
     $file_seg      = $file_dir . "/seg.html";
     $file_title    = $file_dir . "/title.txt";
+    // ---
+    $wikitext = fix_wikitext($wikitext, $title);
     // ---
     file_write($file_wikitext, $wikitext);
     // ---

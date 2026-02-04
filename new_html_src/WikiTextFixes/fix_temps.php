@@ -32,7 +32,6 @@ function add_missing_title($text, $title, $ljust = 17)
         $name = strtolower($temp->getStripName());
         // ---
         if (!isset($temps[$name])) {
-
             continue;
         }
         // ---
@@ -44,13 +43,12 @@ function add_missing_title($text, $title, $ljust = 17)
         // ---
         if (!$name_p || empty(trim($name_p))) {
             $temp->setParameter($param, $title);
-            // ---
-            // $new_temp = str_replace('{{' . $temp_name, '{{' . $temp_name . "| $param = $title\n", $text_template);
-            // ---
-            $new_text_str = $temp->toString(true, $ljust);
-            // ---
-            $new_text = str_replace($old_text_template, $new_text_str, $new_text);
         }
+        // $new_temp = str_replace('{{' . $temp_name, '{{' . $temp_name . "| $param = $title\n", $text_template);
+        // ---
+        $new_text_str = $temp->toString(true, $ljust);
+        // ---
+        $new_text = str_replace($old_text_template, $new_text_str, $new_text);
     };
     // ---
     return $new_text;

@@ -17,6 +17,7 @@ use function Fixes\RefWork\remove_bad_refs;
 use function Fixes\DelTemps\remove_templates;
 use function Fixes\DelTemps\remove_lead_templates;
 use function Fixes\FixTemps\add_missing_title;
+use function RemoveMissingImages\remove_missing_images;
 // use function Fixes\FixImages\remove_images;
 // use function Fixes\fix_langs_links\remove_lang_links;
 
@@ -27,7 +28,6 @@ function fix_wikitext($text, $title)
     // ---
     $text = remove_templates($text);
     $text = remove_lead_templates($text);
-    $text = add_missing_title($text, $title);
     // ---
     $text = remove_bad_refs($text);
     $text = del_empty_refs($text);
@@ -39,6 +39,10 @@ function fix_wikitext($text, $title)
     // $text = remove_images($text);
     // ---
     $text = remove_categories($text);
+    // ---
+    $text = remove_missing_images($text);
+    // ---
+    $text = add_missing_title($text, $title);
     // ---
     return $text;
 }
