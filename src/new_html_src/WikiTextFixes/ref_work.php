@@ -59,7 +59,7 @@ function check_one_cite(string $cite): bool
  * @param string $text The text containing references to check and potentially remove
  * @return string The text with bad references removed
  */
-function remove_bad_refs($text): string
+function remove_bad_refs(string $text): string
 {
 
     $citations = get_regex_citations($text);

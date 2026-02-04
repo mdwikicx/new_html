@@ -68,7 +68,7 @@ function check_temp_to_delete(string $name): bool
     return in_array($name, $tempsToDelete);
 }
 
-function remove_templates($text): string
+function remove_templates(string $text): string
 {
     $temps_in = getTemplates($text);
 
@@ -97,7 +97,7 @@ function remove_templates($text): string
     return $new_text;
 }
 
-function remove_lead_templates($text): string
+function remove_lead_templates(string $text): string
 {
 
     // remove any thig before {{Infobox medical condition

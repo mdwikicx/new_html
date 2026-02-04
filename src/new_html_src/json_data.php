@@ -59,7 +59,7 @@ function get_Data(string $tyt): array
     return $data;
 }
 
-function get_title_revision($title, $all): string
+function get_title_revision(string $title, string $all): string
 {
     global $json_file_all, $json_file;
 
@@ -80,7 +80,7 @@ function get_title_revision($title, $all): string
     return "";
 }
 
-function add_title_revision($title, $revision, $all): array|string
+function add_title_revision(string $title, string $revision, string $all): array|string
 {
     global $json_file_all, $json_file;
 
@@ -103,7 +103,7 @@ function add_title_revision($title, $revision, $all): array|string
     return $data;
 }
 
-function get_from_json($title, $all): array
+function get_from_json(string $title, string $all): array
 {
     $revid = get_title_revision($title, $all);
 

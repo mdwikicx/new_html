@@ -24,7 +24,7 @@ if (!function_exists('str_ends_with')) {
 
 */
 
-function remove_images($text): string
+function remove_images(string $text): string
 {
     $pattern = '/\[\[(File:[^\]\[\|]+)\|([^\]\[]*(\[\[[^\]\[]+\]\][^\]\[]*)*)\]\]/x';
 
@@ -58,7 +58,7 @@ remove texts like:
 - [[File:En.Wikipedia-VideoWiki-Schizophrenia.webm|thumb|thumbtime=2:25|upright=1.36|Video summary ([[Video:Schizophrenia|script]])]]
 
 */
-function remove_videos($text): string
+function remove_videos(string $text): string
 {
     $pattern = '/\[\[(File:[^\]\[\|]+)\|([^\]\[]*(\[\[[^\]\[]+\]\][^\]\[]*)*)\]\]/x';
 
