@@ -7,7 +7,7 @@ if (defined('DEBUGX') && DEBUGX) {
 
 $revid = $_GET['revid'] ?? '';
 
-if (empty($revid)) {
+if (empty($revid) || !ctype_digit($revid)) {
     echo 'false';
     exit;
 }
