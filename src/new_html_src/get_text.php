@@ -14,6 +14,13 @@ use function Fixes\ExpendRefs\refs_expend_work;
 
 use function APIServices\get_wikitext_from_mdwiki_restapi;
 
+/**
+ * Get wikitext for a page, optionally processing only the lead section
+ *
+ * @param string $title The page title to fetch
+ * @param string $all Whether to get full page ('') or just lead section (empty string)
+ * @return array{0: string, 1: string|int} Array containing [wikitext, revision_id]
+ */
 function get_wikitext(string $title, string $all): array
 {
 

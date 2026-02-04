@@ -11,6 +11,13 @@ use function NewHtml\FileHelps\file_write; // file_write($file_html, $result);
 use function NewHtml\FileHelps\read_file;
 use function APIServices\convert_wikitext_to_html;
 
+/**
+ * Convert wikitext to HTML using the API and apply fixes
+ *
+ * @param string $wikitext The wikitext to convert
+ * @param string $title The page title for context
+ * @return mixed The HTML result or empty string on failure
+ */
 function do_wiki_text_to_html(string $wikitext, string $title): mixed
 {
 
@@ -26,11 +33,18 @@ function do_wiki_text_to_html(string $wikitext, string $title): mixed
     if ($result == '') return "";
 
     $result = del_div_error($result);
-    $result = fix_link_red($result);
-
-    return $result;
+    $result = fix_link_red($result);    return $result;
 }
 
+/**
+ * Convert wikitext to HTML with caching support
+ *
+ * @param string $wikitext The wikitext to convert
+ * @param string $file_html The path to the cached HTML file
+ * @param string $title The page title for context
+ * @param bool $new Whether to force regeneration (true) or use cache (false)
+ * @return array{0: string, 1: bool} Array containing [html_content, from_cache]
+ */
 function wiki_text_to_html(string $wikitext, string $file_html, string $title, bool $new): array
 {
 

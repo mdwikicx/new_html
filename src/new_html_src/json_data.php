@@ -68,7 +68,8 @@ function get_Data(string $tyt): array
 
     if ($file_text == '') return [];
 
-    $data = json_decode($file_text, true) ?? [];    return $data;
+    $data = json_decode($file_text, true) ?? [];
+    return $data;
 }
 
 /**
@@ -94,11 +95,17 @@ function get_title_revision(string $title, string $all): string
 
     if (array_key_exists($title, $data)) {
         return $data[$title];
-    }
-
-    return "";
+    }    return "";
 }
 
+/**
+ * Add or update a title-revision pair in the JSON data
+ *
+ * @param string $title The page title
+ * @param string $revision The revision ID
+ * @param string $all Whether to use the 'all' data file (non-empty string) or main file (empty string)
+ * @return array<string, mixed>|string The updated data array on success, empty string on failure
+ */
 function add_title_revision(string $title, string $revision, string $all): array|string
 {
     global $json_file_all, $json_file;

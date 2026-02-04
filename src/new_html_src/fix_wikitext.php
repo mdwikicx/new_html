@@ -21,6 +21,13 @@ use function RemoveMissingImages\remove_missing_images;
 // use function Fixes\FixImages\remove_images;
 // use function Fixes\fix_langs_links\remove_lang_links;
 
+/**
+ * Fix wikitext by removing unwanted templates, refs, and other elements
+ *
+ * @param string $text The wikitext to fix
+ * @param string $title The page title for context
+ * @return string The fixed wikitext
+ */
 function fix_wikitext(string $text, string $title): string
 {
     $text = str_replace("{{drugbox", "{{Infobox drug", $text);

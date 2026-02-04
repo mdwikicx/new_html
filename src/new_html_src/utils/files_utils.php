@@ -12,12 +12,24 @@ use function Printn\test_print;
 
 $revisions_new_dir = dirname(dirname(__DIR__)) . '/revisions_new';
 
+/**
+ * Get the revisions directory path
+ *
+ * @return string The absolute path to the revisions directory
+ */
 function get_revisions_new_dir(): string
 {
     global $revisions_new_dir;
     return $revisions_new_dir;
 }
 
+/**
+ * Get the file directory for a specific revision
+ *
+ * @param string $revision The revision ID
+ * @param string $all Whether to use the '_all' suffix (non-empty string) or not (empty string)
+ * @return string The directory path, or empty string on error
+ */
 function get_file_dir(string $revision, string $all): string
 {
     global $revisions_new_dir;
@@ -35,11 +47,16 @@ function get_file_dir(string $revision, string $all): string
         if (!mkdir($file_dir, 0755, true)) {
             test_print(sprintf('Failed to create directory "%s".', $file_dir));
         }
-    }
-
-    return $file_dir;
+    }    return $file_dir;
 }
 
+/**
+ * Write text to a file with locking
+ *
+ * @param string $file The file path to write to
+ * @param string $text The content to write
+ * @return void
+ */
 function file_write(string $file, string $text): void
 {
     if (empty($text) || empty($file)) {
@@ -49,10 +66,15 @@ function file_write(string $file, string $text): void
     try {
         file_put_contents($file, $text, LOCK_EX);
     } catch (\Exception $e) {
-        test_print("Error: Could not write to file: $file");
-    }
+        test_print("Error: Could not write to file: $file");    }
 }
 
+/**
+ * Read the contents of a file
+ *
+ * @param string $file The file path to read from
+ * @return bool|string The file contents, or empty string on error
+ */
 function read_file(string $file): bool|string
 {
 
