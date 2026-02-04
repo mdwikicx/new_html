@@ -18,7 +18,7 @@ https://en.wikipedia.org/wiki/Special:AbuseFilter/891
 
 */
 
-use function WikiParse\Reg_Citations\get_Reg_Citations;
+use function WikiParse\Reg_Citations\get_regex_citations;
 
 /**
  * Check if the citation contains self-published information and filter it out.
@@ -62,7 +62,7 @@ function check_one_cite($cite)
 function remove_bad_refs($text)
 {
     // ---
-    $citations = get_Reg_Citations($text);
+    $citations = get_regex_citations($text);
     // ---
     foreach ($citations as $citation) {
         $citation_tag = $citation["tag"];

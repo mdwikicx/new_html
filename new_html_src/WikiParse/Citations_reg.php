@@ -5,21 +5,14 @@ namespace WikiParse\Reg_Citations;
 /*
 Usage:
 
-use function WikiParse\Reg_Citations\get_name;
-use function WikiParse\Reg_Citations\get_Reg_Citations;
+use function WikiParse\Reg_Citations\get_ref_name;
+use function WikiParse\Reg_Citations\get_regex_citations;
 use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\getShortCitations;
+use function WikiParse\Reg_Citations\get_short_citations;
 
 */
 
-/**
- * Get all the citations from the provided text and parse them into an array.
- *
- * @param string $text The text containing citations to extract
- * @return array Array of citation information including content, tag, and options
- */
-
-function get_name($options)
+function get_ref_name($options)
 {
     if (trim($options) == "") {
         return "";
@@ -34,7 +27,15 @@ function get_name($options)
     $name = trim($matches[1]);
     return $name;
 }
-function get_Reg_Citations($text)
+
+/**
+ * Get all the citations from the provided text and parse them into an array.
+ *
+ * @param string $text The text containing citations to extract
+ * @return array Array of citation information including content, tag, and options
+ */
+
+function get_regex_citations($text)
 {
     preg_match_all("/<ref([^\/>]*?)>(.+?)<\/ref>/is", $text, $matches);
     // ---
@@ -47,7 +48,7 @@ function get_Reg_Citations($text)
         $citation = [
             "content" => $content,
             "tag" => $ref_tag,
-            "name" => get_name($options),
+            "name" => get_ref_name($options),
             "options" => $options
         ];
         $citations[] = $citation;
@@ -59,11 +60,15 @@ function get_Reg_Citations($text)
 function get_full_refs($text)
 {
     $full = [];
-    $citations = get_Reg_Citations($text);
+    $citations = get_regex_citations($text);
     // ---
     foreach ($citations as $cite) {
         $name = $cite["name"];
         $ref = $cite["tag"];
+        // ---
+        if (empty($name)) {
+            continue;
+        }
         // ---
         $full[$name] = $ref;
     };
@@ -71,7 +76,7 @@ function get_full_refs($text)
     return $full;
 }
 
-function getShortCitations($text)
+function get_short_citations($text)
 {
     preg_match_all("/<ref ([^\/>]*?)\/\s*>/is", $text, $matches);
     // ---
@@ -83,7 +88,7 @@ function getShortCitations($text)
         $citation = [
             "content" => "",
             "tag" => $ref_tag,
-            "name" => get_name($options),
+            "name" => get_ref_name($options),
             "options" => $options
         ];
         $citations[] = $citation;

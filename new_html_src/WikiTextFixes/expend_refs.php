@@ -10,7 +10,7 @@ use function Fixes\ExpendRefs\refs_expend_work;
 */
 
 use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\getShortCitations;
+use function WikiParse\Reg_Citations\get_short_citations;
 use function Printn\test_print;
 
 function refs_expend_work($first, $alltext)
@@ -24,7 +24,7 @@ function refs_expend_work($first, $alltext)
     $allpage_fullrefs = get_full_refs($alltext);
 
     $lead_fullrefs = get_full_refs($first);
-    $lead_short_refs = getShortCitations($first);
+    $lead_short_refs = get_short_citations($first);
     // ---
     test_print(var_export($lead_short_refs, true));
     // ---

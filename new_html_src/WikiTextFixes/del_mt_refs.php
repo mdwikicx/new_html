@@ -10,7 +10,7 @@ use function Fixes\DelMtRefs\del_empty_refs;
 
 
 use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\getShortCitations;
+use function WikiParse\Reg_Citations\get_short_citations;
 
 function del_empty_refs($first)
 {
@@ -18,7 +18,7 @@ function del_empty_refs($first)
     $refs = get_full_refs($first);
     // echo  "refs:" . count($refs) . "<br>";
 
-    $short_refs = getShortCitations($first);
+    $short_refs = get_short_citations($first);
     // echo  "short_refs:" . count($short_refs) . "<br>";
 
     foreach ($short_refs as $cite) {
