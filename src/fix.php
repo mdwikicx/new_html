@@ -28,7 +28,7 @@
  * @package MDWiki\NewHtml
  */
 
-define("DEBUGX", true);
+// define("DEBUGX", true);
 require_once __DIR__ . "/require.php";
 
 use function FixText\fix_wikitext;
