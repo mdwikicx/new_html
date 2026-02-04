@@ -95,7 +95,8 @@ function get_title_revision(string $title, string $all): string
 
     if (array_key_exists($title, $data)) {
         return $data[$title];
-    }    return "";
+    }
+    return "";
 }
 
 /**
@@ -125,10 +126,16 @@ function add_title_revision(string $title, string $revision, string $all): array
     $data[$title] = $revision;
 
     file_write($file, json_encode($data));
-
     return $data;
 }
 
+/**
+ * Get wikitext and revision ID from cached JSON data
+ *
+ * @param string $title The page title
+ * @param string $all Whether to use the 'all' data file (non-empty string) or main file (empty string)
+ * @return array{0: string, 1: string} Array containing [wikitext, revision_id]
+ */
 function get_from_json(string $title, string $all): array
 {
     $revid = get_title_revision($title, $all);
