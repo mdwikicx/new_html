@@ -10,9 +10,13 @@ if (defined('DEBUGX') && DEBUGX === true) {
     error_reporting(E_ALL);
 }
 
+$GLOBALS['MDWIKI_NEW_HTML_REVISIONS_DIR'] = dirname(__DIR__) . '/revisions_new';
+
 $autoloadPath = dirname(__DIR__) . '/vendor/autoload.php';
 if (!file_exists($autoloadPath)) {
     throw new RuntimeException('Composer autoloader not found. Run "composer install" first.');
 }
 
 require_once $autoloadPath;
+
+require_once __DIR__ . '/Infrastructure/Utils/FileUtils.php';

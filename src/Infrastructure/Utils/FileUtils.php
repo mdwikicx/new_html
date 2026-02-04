@@ -4,17 +4,16 @@ namespace MDWiki\NewHtml\Infrastructure\Utils;
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
-$revisions_new_dir = dirname(dirname(__DIR__)) . '/revisions_new';
+$GLOBALS['MDWIKI_NEW_HTML_REVISIONS_DIR'] = dirname(dirname(__DIR__)) . '/revisions_new';
 
 function get_revisions_new_dir(): string
 {
-    global $revisions_new_dir;
-    return $revisions_new_dir;
+    return $GLOBALS['MDWIKI_NEW_HTML_REVISIONS_DIR'];
 }
 
 function get_file_dir(string $revision, string $all): string
 {
-    global $revisions_new_dir;
+    $revisions_new_dir = $GLOBALS['MDWIKI_NEW_HTML_REVISIONS_DIR'];
 
     if (empty($revision) || !ctype_digit($revision)) {
         test_print('Error: revision is empty in get_file_dir().');
