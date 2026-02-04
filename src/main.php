@@ -53,7 +53,11 @@ function error_1(string $title, string $revision): bool|string
 }
 
 /**
- * @return array{0: string, 1: string, 2: bool}
+ * Get wikitext and revision ID for a page, either from API or cache
+ *
+ * @param string $title The page title to fetch
+ * @param string $all Whether to use 'all' data file (non-empty) or main file (empty)
+ * @return array{0: string, 1: string, 2: bool} Array containing [wikitext, revision_id, from_cache]
  */
 function get_wikitext_revision(string $title, string $all): array
 {
@@ -80,7 +84,13 @@ function get_wikitext_revision(string $title, string $all): array
 }
 
 /**
- * @return array{0: string, 1: bool}
+ * Convert wikitext to HTML with caching support
+ *
+ * @param string $wikitext The wikitext to convert
+ * @param string $file_html The path to the cached HTML file
+ * @param string $title The page title for context
+ * @param bool $new Whether to force regeneration (true) or use cache (false)
+ * @return array{0: string, 1: bool} Array containing [html_content, from_cache]
  */
 function get_HTML_text(string $wikitext, string $file_html, string $title, bool $new): array
 {
@@ -112,7 +122,11 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
 }
 
 /**
- * @return array{0: string, 1: bool}
+ * Convert HTML to segments with caching support
+ *
+ * @param string $HTML_text The HTML text to convert to segments
+ * @param string $file_seg The path to the cached segments file
+ * @return array{0: string, 1: bool} Array containing [segments, from_cache]
  */
 function get_SEG_text(string $HTML_text, string $file_seg): array
 {
