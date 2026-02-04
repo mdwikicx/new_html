@@ -27,7 +27,6 @@ class Template
         $this->parameters = $parameters;
         $this->templateText = $templateText;
     }
-
     /**
      * Get the original template text
      *
@@ -37,7 +36,6 @@ class Template
     {
         return $this->templateText;
     }
-
     /**
      * Get the template name
      *
@@ -47,7 +45,6 @@ class Template
     {
         return $this->name;
     }
-
     /**
      * Get the stripped template name (without underscores, trimmed)
      *
@@ -57,7 +54,6 @@ class Template
     {
         return $this->name_strip;
     }
-
     /**
      * Get all template parameters
      *
