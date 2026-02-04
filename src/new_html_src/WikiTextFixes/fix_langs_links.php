@@ -1,4 +1,5 @@
 <?php
+
 namespace Fixes\fix_langs_links;
 
 /*
@@ -9,6 +10,12 @@ use function Fixes\fix_langs_links\remove_lang_links;
 */
 
 
+/**
+ * Remove language links from wikitext
+ *
+ * @param string $text The wikitext to process
+ * @return string The wikitext with language links removed
+ */
 function remove_lang_links(string $text): string
 {
 

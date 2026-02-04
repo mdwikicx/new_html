@@ -13,6 +13,13 @@ use function WikiParse\Reg_Citations\get_full_refs;
 use function WikiParse\Reg_Citations\get_short_citations;
 use function Printn\test_print;
 
+/**
+ * Expand short references by finding their full definitions in the text
+ *
+ * @param string $first The lead section text with short refs
+ * @param string $alltext The full page text containing full ref definitions
+ * @return string The text with short refs expanded to full refs
+ */
 function refs_expend_work(string $first, string $alltext): string
 {
     if (empty($alltext)) {

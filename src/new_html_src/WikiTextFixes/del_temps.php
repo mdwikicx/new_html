@@ -12,6 +12,14 @@ use function Fixes\DelTemps\remove_lead_templates;
 
 use function WikiParse\Template\getTemplates;
 
+/**
+ * Check if a template matches deletion patterns and remove it
+ *
+ * @param string $name The template name (lowercase)
+ * @param string $old_text_template The original template text
+ * @param string $new_text The current text being processed
+ * @return string The text with template removed if it matches patterns
+ */
 function check_temps_patterns(string $name, string $old_text_template, string $new_text): string
 {
     $temps_patterns = [
@@ -33,6 +41,13 @@ function check_temps_patterns(string $name, string $old_text_template, string $n
     }
     return $new_text;
 }
+
+/**
+ * Check if a template should be deleted based on its name
+ *
+ * @param string $name The template name (lowercase)
+ * @return bool True if template should be deleted, false otherwise
+ */
 function check_temp_to_delete(string $name): bool
 {
     $tempsToDelete = [
@@ -64,10 +79,15 @@ function check_temp_to_delete(string $name): bool
     if (strpos($name, "defaultsort") === 0) {
         return true;
     }
-
     return in_array($name, $tempsToDelete);
 }
 
+/**
+ * Remove unwanted templates from wikitext
+ *
+ * @param string $text The wikitext to process
+ * @return string The wikitext with unwanted templates removed
+ */
 function remove_templates(string $text): string
 {
     $temps_in = getTemplates($text);
@@ -91,12 +111,16 @@ function remove_templates(string $text): string
         }
 
         $new_text = check_temps_patterns($name, $old_text_template, $new_text);
-
     };
-
     return $new_text;
 }
 
+/**
+ * Remove content before infobox templates in lead section
+ *
+ * @param string $text The wikitext to process
+ * @return string The wikitext with content before infobox removed
+ */
 function remove_lead_templates(string $text): string
 {
 

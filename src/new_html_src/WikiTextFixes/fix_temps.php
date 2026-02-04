@@ -11,6 +11,14 @@ use function Fixes\FixTemps\add_missing_title;
 
 use function WikiParse\Template\getTemplates;
 
+/**
+ * Add missing title parameter to infobox templates
+ *
+ * @param string $text The wikitext to process
+ * @param string $title The page title to add
+ * @param int $ljust Left justify parameter names to this width (default 17)
+ * @return string The wikitext with updated templates
+ */
 function add_missing_title(string $text, string $title, int $ljust = 17): string
 {
 

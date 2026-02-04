@@ -1,4 +1,5 @@
 <?php
+
 namespace Fixes\DelMtRefs;
 
 /*
@@ -12,6 +13,12 @@ use function Fixes\DelMtRefs\del_empty_refs;
 use function WikiParse\Reg_Citations\get_full_refs;
 use function WikiParse\Reg_Citations\get_short_citations;
 
+/**
+ * Delete empty short refs or expand them with full ref definitions
+ *
+ * @param string $first The text containing short refs
+ * @return string The text with empty refs removed and expandable refs replaced
+ */
 function del_empty_refs(string $first): string
 {
 

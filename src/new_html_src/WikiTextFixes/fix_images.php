@@ -24,6 +24,12 @@ if (!function_exists('str_ends_with')) {
 
 */
 
+/**
+ * Remove image tags from wikitext by wrapping them in conditional existence check
+ *
+ * @param string $text The wikitext to process
+ * @return string The wikitext with images wrapped in {{subst:#ifexist:...}}
+ */
 function remove_images(string $text): string
 {
     $pattern = '/\[\[(File:[^\]\[\|]+)\|([^\]\[]*(\[\[[^\]\[]+\]\][^\]\[]*)*)\]\]/x';
@@ -41,7 +47,6 @@ function remove_images(string $text): string
         $text = str_replace($link, $new_text, $text);
 
         $images[$file_name] = $link;
-
     }
 
     // echo "<pre>";
@@ -58,6 +63,12 @@ remove texts like:
 - [[File:En.Wikipedia-VideoWiki-Schizophrenia.webm|thumb|thumbtime=2:25|upright=1.36|Video summary ([[Video:Schizophrenia|script]])]]
 
 */
+/**
+ * Remove video file tags from wikitext
+ *
+ * @param string $text The wikitext to process
+ * @return string The wikitext with video files removed
+ */
 function remove_videos(string $text): string
 {
     $pattern = '/\[\[(File:[^\]\[\|]+)\|([^\]\[]*(\[\[[^\]\[]+\]\][^\]\[]*)*)\]\]/x';
