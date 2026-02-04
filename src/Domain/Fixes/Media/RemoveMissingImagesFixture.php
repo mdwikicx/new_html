@@ -22,7 +22,7 @@ use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
 */
 
 use function APIServices\check_commons_image_exists;
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
  * Remove infobox images that don't exist on Commons

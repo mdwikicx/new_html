@@ -17,7 +17,7 @@ use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
 */
 
 
-use function WikiParse\Category\get_categories;
+use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
 /**
  * Remove all category tags from wikitext

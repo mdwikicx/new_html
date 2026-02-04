@@ -19,8 +19,8 @@ use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
 */
 
 
-use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\get_short_citations;
+use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
+use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
 
 /**
  * Delete empty short refs or expand them with full ref definitions
