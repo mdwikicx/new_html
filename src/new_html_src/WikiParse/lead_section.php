@@ -24,10 +24,10 @@ function get_lead_section_old(string $wikitext): string
     if (empty($lead)) {
         return $wikitext;
     }
-
     $lead .= "\n==References==\n<references />";
 
-    // $lead = refs_expend_work($lead, $wikitext);    return $lead;
+    // $lead = refs_expend_work($lead, $wikitext);
+    return $lead;
 }
 
 /**

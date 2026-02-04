@@ -49,10 +49,12 @@ function error_1(string $title, string $revision): bool|string
         "error_type" => "title:($title) or revision:($revision) not found",
         "error" => "No content found!",
     ];
-
     return json_encode($data);
 }
 
+/**
+ * @return array{0: string, 1: string, 2: bool}
+ */
 function get_wikitext_revision(string $title, string $all): array
 {
     global $printetxt;
@@ -74,10 +76,12 @@ function get_wikitext_revision(string $title, string $all): array
         echo $wikitext;
         exit();
     }
-
     return [$wikitext, $revision, $from_cache];
 }
 
+/**
+ * @return array{0: string, 1: bool}
+ */
 function get_HTML_text(string $wikitext, string $file_html, string $title, bool $new): array
 {
     global $printetxt;
@@ -104,10 +108,12 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
         echo $HTML_text;
         exit();
     }
-
     return [$HTML_text, $from_cache];
 }
 
+/**
+ * @return array{0: string, 1: bool}
+ */
 function get_SEG_text(string $HTML_text, string $file_seg): array
 {
     global $printetxt;
@@ -126,10 +132,12 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
         echo $SEG_text;
         exit();
     }
-
     return [$SEG_text, $from_cache];
 }
 
+/**
+ * @param array<string, mixed> $request
+ */
 function start(array $request, string $title): void
 {
 

@@ -28,7 +28,8 @@ function del_div_error(string $html): string
         if (preg_match("/class=[\"']error[\"']/is", $options)) {
             $html = str_replace($cite_text, '', $html);
         }
-    }    return $html;
+    }
+    return $html;
 }
 
 /**
@@ -51,7 +52,8 @@ function get_attrs(string $text): array
         }
     }
 
-    // var_export($attrs);    return $attrs;
+    // var_export($attrs);
+    return $attrs;
 }
 
 /**
@@ -100,7 +102,6 @@ function fix_link_red(string $html): string
                         unset($attrs[$attr]);
                     }
                 }
-
             }
 
             $new_attrs = implode(' ', array_map(
@@ -115,7 +116,8 @@ function fix_link_red(string $html): string
 
             $html = str_replace($cite_text, $new_cite_text, $html);
         }
-    }    return $html;
+    }
+    return $html;
 }
 
 /**

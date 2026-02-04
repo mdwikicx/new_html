@@ -10,6 +10,7 @@ class Template
     private string $name;
     private string $name_strip;
     private string $templateText;
+    /** @var array<string|int, string> */
     private array $parameters;
 
     /**
@@ -235,6 +236,7 @@ class ParserTemplate
 {
     private string $templateText;
     private string $name;
+    /** @var array<string|int, string> */
     private array $parameters;
     private string $pipe = "|";
     private string $pipeR = "-_-";
@@ -314,6 +316,7 @@ class ParserTemplate
 class ParserTemplates
 {
     private string $text;
+    /** @var array<int, Template> */
     private array $templates;
 
     /**
@@ -327,14 +330,13 @@ class ParserTemplates
         $this->templates = [];
         $this->parse();
     }
-
     /**
      * Find all sub-templates in a string using regex recursion
      *
      * @param string $string The string to search
-     * @return array<int, array<int, string>>|null Array of matches or null
+     * @return array<int, array<int, string>> Array of matches
      */
-    private function find_sub_templates(string $string): array|null
+    private function find_sub_templates(string $string): array
     {
         preg_match_all("/\{{2}((?>[^\{\}]+)|(?R))*\}{2}/xm", $string, $matches);
         return $matches;
