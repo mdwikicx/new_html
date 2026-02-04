@@ -10,8 +10,10 @@ use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
-use function MDWiki\NewHtml\Infrastructure\Parser\get_lead_section;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
+use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi;
+use function MDWiki\NewHtml\Infrastructure\Storage\add_title_revision;
 
 function fix_wikitext(string $text, string $title): string
 {
@@ -37,7 +39,7 @@ function fix_wikitext(string $text, string $title): string
 
 function process_wikitext(string $text, string $title, string $all): array
 {
-    $text = str_replace(" ", "_", $title);
+    $title = str_replace(" ", "_", $title);
 
     $json1 = get_wikitext_from_mdwiki_restapi($title);
 
