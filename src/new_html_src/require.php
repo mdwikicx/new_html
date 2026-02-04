@@ -1,4 +1,14 @@
 <?php
+/**
+ * Source file loader for new_html_src module
+ *
+ * This file loads all necessary source files for the new_html_src module,
+ * including parsing utilities, API services, text fixes, HTML services,
+ * and helper utilities. It uses a mix of require_once for core files
+ * and glob patterns for extensibility.
+ *
+ * @package MDWiki\NewHtml
+ */
 
 include_once __DIR__ . '/print.php';
 
