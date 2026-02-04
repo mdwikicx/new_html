@@ -1,10 +1,10 @@
 <?php
 
-namespace Post;
+namespace APIServices;
 /*
 
-use function Post\handle_url_request;
-use function Post\post_url_params_result;
+use function APIServices\handle_url_request;
+use function APIServices\post_url_params_result;
 
 */
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html

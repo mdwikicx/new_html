@@ -5,49 +5,11 @@ namespace Html;
 use function Html\wiki_text_to_html;
 */
 
-use function Post\handle_url_request;
-// use function Post\post_url_params_result;
 use function HtmlFixes\fix_link_red;
 use function HtmlFixes\del_div_error;
 use function NewHtml\FileHelps\file_write; // file_write($file_html, $result);
 use function NewHtml\FileHelps\read_file;
-use function Printn\test_print;
-
-function change_it($text, $title)
-{
-    $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/Sandbox";
-
-    $title2 = str_replace("/", "%2F", $title);
-    // $title2 = str_replace(" ", "_", $title2);
-    $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/$title2";
-
-    $data = ['wikitext' => $text];
-    // $response = post_url_params_result($url, $data);
-    $response = handle_url_request($url, 'POST', $data);
-
-    // Handle the response from your API
-    if ($response === false) {
-        test_print("API request failed: " . json_encode($data));
-        return ['error' => 'Error: Could not reach API.'];
-    }
-    // Check if response contains an error
-    if (strpos($response, ">Wikimedia Error<") !== false) {
-        test_print("API returned error: $response");
-        return ['error' => 'Error: Wikipedia API returned an error.'];
-    }
-    // Check if response is empty
-    if (empty($response)) {
-        test_print("API returned empty response: " . json_encode($data));
-        return ['error' => 'Error: Wikipedia API returned an empty response.'];
-    }
-    // Check if response is valid HTML
-    if (strpos($response, "<html") === false) {
-        test_print("API returned invalid HTML: " . json_encode($data));
-        return ['error' => 'Error: Wikipedia API returned invalid HTML.'];
-    }
-
-    return ['result' => $response];
-}
+use function APIServices\convert_wikitext_to_html;
 
 function do_wiki_text_to_html($wikitext, $title)
 {
@@ -56,7 +18,7 @@ function do_wiki_text_to_html($wikitext, $title)
     // ---
     if ($wikitext == '') return "";
     // ---
-    $fixed = change_it($wikitext, $title);
+    $fixed = convert_wikitext_to_html($wikitext, $title);
     // ---
     $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? '';
