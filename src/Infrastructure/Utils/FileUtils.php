@@ -19,19 +19,6 @@ if (defined('DEBUGX') && DEBUGX === true) {
     error_reporting(E_ALL);
 }
 
-$revisions_new_dir = dirname(dirname(dirname(__DIR__))) . '/revisions_new';
-
-/**
- * Get the revisions directory path
- *
- * @return string The absolute path to the revisions directory
- */
-function get_revisions_new_dir(): string
-{
-    global $revisions_new_dir;
-    return $revisions_new_dir;
-}
-
 /**
  * Get the file directory for a specific revision
  *
@@ -41,14 +28,12 @@ function get_revisions_new_dir(): string
  */
 function get_file_dir(string $revision, string $all): string
 {
-    global $revisions_new_dir;
-
     if (empty($revision) || !ctype_digit($revision)) {
         test_print('Error: revision is empty in get_file_dir().');
         return '';
     }
 
-    $file_dir = $revisions_new_dir . "/$revision";
+    $file_dir = REVISIONS_PATH . "/$revision";
 
     if ($all != '') $file_dir .= "_all";
 

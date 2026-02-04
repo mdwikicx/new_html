@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reisions dashboard page
  *
@@ -102,7 +103,6 @@ HTML;
 // Use modern PSR-4 autoloading
 require_once __DIR__ . "/bootstrap.php";
 
-use function MDWiki\NewHtml\Infrastructure\Utils\get_revisions_new_dir;
 use function MDWiki\NewHtml\Application\Controllers\get_Data;
 use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
 
@@ -124,9 +124,7 @@ function make_badge(array $files, string $file): string
     return "";
 }
 
-$revisions_new_dir = get_revisions_new_dir();
-
-$dirs = array_filter(glob($revisions_new_dir . '/*/'), 'is_dir');
+$dirs = array_filter(glob(REVISIONS_PATH . '/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
     $timeA = is_file($a . '/wikitext.txt') ? filemtime($a . '/wikitext.txt') : filemtime($a);
