@@ -55,4 +55,9 @@ if (!file_exists($json_file_all)) {
     file_put_contents($json_file_all, '{}', LOCK_EX);
 }
 
+$user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
+
+if (!defined('USER_AGENT')) {
+    define('USER_AGENT', $user_agent);
+}
 include_once __DIR__ . '/new_html_src/require.php';
