@@ -43,9 +43,9 @@ function get_Data($tyt)
 {
     global $json_file_all, $json_file;
     // ---
-    $json_file = ($tyt == 'all') ? $json_file_all : $json_file;
+    $file = ($tyt == 'all') ? $json_file_all : $json_file;
     // ---
-    $file_text = read_file($json_file);
+    $file_text = read_file($file);
     // ---
     if ($file_text == '') return [];
     // ---
@@ -64,12 +64,12 @@ function get_title_revision($title, $all)
     // ---
     if ($file_text == '') return '';
     // ---
-    $title_revision = json_decode($file_text, true);
+    $data = json_decode($file_text, true);
     // ---
-    if (!is_array($title_revision)) return '';
+    if (!is_array($data)) return '';
     // ---
-    if (array_key_exists($title, $title_revision)) {
-        return $title_revision[$title];
+    if (array_key_exists($title, $data)) {
+        return $data[$title];
     }
     // ---
     return "";
@@ -102,9 +102,13 @@ function get_from_json($title, $all)
 {
     $revid = get_title_revision($title, $all);
     // ---
-    if (empty($revid)) return ['', ''];
+    if (empty($revid) || !ctype_digit($revid)) {
+        return ['', ''];
+    }
     // ---
     $file_dir = get_file_dir($revid, $all);
+    // ---
+    if (!is_dir($file_dir)) return ['', ''];
     // ---
     $wikitext = read_file($file_dir . "/wikitext.txt");
     // ---

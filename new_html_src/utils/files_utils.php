@@ -22,6 +22,11 @@ function get_file_dir($revision, $all)
 {
     global $revisions_new_dir;
     // ---
+    if (empty($revision) || !ctype_digit($revision)) {
+        test_print('Error: revision is empty in get_file_dir().');
+        return '';
+    }
+    // ---
     $file_dir = $revisions_new_dir . "/$revision";
     // ---
     if ($all != '') $file_dir .= "_all";
