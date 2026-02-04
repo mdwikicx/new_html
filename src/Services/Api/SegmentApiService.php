@@ -11,7 +11,7 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use function Printn\test_print;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Services\Api\handle_url_request;
 
 /**

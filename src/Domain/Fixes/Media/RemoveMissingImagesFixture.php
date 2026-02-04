@@ -21,7 +21,7 @@ use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
 
 */
 
-use function APIServices\check_commons_image_exists;
+use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**

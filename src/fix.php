@@ -31,7 +31,7 @@
 define("DEBUGX", true);
 require_once __DIR__ . "/require.php";
 
-use function FixText\fix_wikitext;
+use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 
 $text = $_POST['text'] ?? '';
 $title = $_POST['title'] ?? '';

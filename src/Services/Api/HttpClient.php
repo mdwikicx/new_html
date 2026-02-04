@@ -11,7 +11,7 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use function Printn\test_print;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 $usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
 

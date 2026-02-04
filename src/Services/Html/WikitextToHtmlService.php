@@ -11,8 +11,8 @@
 
 namespace MDWiki\NewHtml\Services\Html;
 
-use function HtmlFixes\fix_link_red;
-use function HtmlFixes\del_div_error;
+use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
+use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use function MDWiki\NewHtml\Services\Api\convert_wikitext_to_html;

@@ -11,8 +11,8 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use function PostMdwiki\handle_url_request_mdwiki;
-use function Printn\test_print;
+use function MDWiki\NewHtml\Application\Handlers\handle_url_request_mdwiki;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Get wikitext content from MDWiki API

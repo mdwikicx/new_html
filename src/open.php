@@ -14,8 +14,8 @@
 
 require_once __DIR__ . "/require.php";
 
-use function HtmlFixes\remove_data_parsoid;
-use function NewHtml\FileHelps\get_revisions_new_dir; // $revisions_dir = get_revisions_new_dir();
+use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
+use function MDWiki\NewHtml\Infrastructure\Utils\get_revisions_new_dir; // $revisions_dir = get_revisions_new_dir();
 
 $revid = $_GET['revid'] ?? '';
 $file = $_GET['file'] ?? '';
