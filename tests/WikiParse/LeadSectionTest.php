@@ -34,16 +34,6 @@ class LeadSectionTest extends bootstrap
 
         $this->assertEquals('', $result);
     }
-
-    public function testGetLeadSectionWithOnlyHeading()
-    {
-        $wikitext = "==Heading==";
-        $result = get_lead_section($wikitext);
-
-        $this->assertStringNotContainsString('Heading', $result);
-        $this->assertStringContainsString('==References==', $result);
-    }
-
     public function testGetLeadSectionWithMultipleLevelHeadings()
     {
         $wikitext = "Lead text.\n\n==Level 2==\nContent.\n\n===Level 3===\nMore content.";
@@ -83,15 +73,6 @@ class LeadSectionTest extends bootstrap
         $this->assertStringContainsString('{{Infobox|param=value}}', $result);
         $this->assertStringContainsString('Lead text.', $result);
         $this->assertStringNotContainsString('Content.', $result);
-    }
-
-    public function testGetLeadSectionWithHeadingAtStart()
-    {
-        $wikitext = "==Introduction==\nIntro content.\n\n==Body==\nBody content.";
-        $result = get_lead_section($wikitext);
-
-        $this->assertStringNotContainsString('Introduction', $result);
-        $this->assertStringNotContainsString('Intro content', $result);
     }
 
     public function testGetLeadSectionPreservesFormatting()
@@ -150,14 +131,6 @@ class LeadSectionTest extends bootstrap
         $this->assertStringNotContainsString('Content.', $result);
     }
 
-    public function testGetLeadSectionWithFalsePositiveHeadings()
-    {
-        // Test with == inside code or template
-        $wikitext = "Lead text with == in code.\n\n==Real Section==\nContent.";
-        $result = get_lead_section($wikitext);
-
-        $this->assertStringContainsString('Lead text with == in code.', $result);
-    }
 
     public function testGetLeadSectionWithHeadingWithEquals()
     {
@@ -176,5 +149,31 @@ class LeadSectionTest extends bootstrap
         // When lead is empty, should add references section
         $this->assertStringContainsString('==References==', $result);
         $this->assertStringNotContainsString('First Section', $result);
+    }
+
+    public function testGetLeadSectionWithHeadingAtStart()
+    {
+        $wikitext = "==Introduction==\nIntro content.\n\n==Body==\nBody content.";
+        $result = get_lead_section($wikitext);
+
+        $this->assertStringNotContainsString('Introduction', $result);
+        $this->assertStringNotContainsString('Intro content', $result);
+    }
+    public function testGetLeadSectionWithFalsePositiveHeadings()
+    {
+        // Test with == inside code or template
+        $wikitext = "Lead text with == in code.\n\n==Real Section==\nContent.";
+        $result = get_lead_section($wikitext);
+
+        $this->assertStringContainsString('Lead text with == in code.', $result);
+    }
+
+    public function testGetLeadSectionWithOnlyHeading()
+    {
+        $wikitext = "==Heading==";
+        $result = get_lead_section($wikitext);
+
+        $this->assertStringNotContainsString('Heading', $result);
+        $this->assertStringContainsString('==References==', $result);
     }
 }
