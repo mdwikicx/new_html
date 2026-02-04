@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reisions dashboard page
  *

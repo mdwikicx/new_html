@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+define("DEBUGX", true);
+
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
