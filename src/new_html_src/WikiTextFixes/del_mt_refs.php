@@ -11,14 +11,6 @@
 
 namespace Fixes\DelMtRefs;
 
-/*
-Usage:
-
-use function Fixes\DelMtRefs\del_empty_refs;
-
-*/
-
-
 use function WikiParse\Reg_Citations\get_full_refs;
 use function WikiParse\Reg_Citations\get_short_citations;
 

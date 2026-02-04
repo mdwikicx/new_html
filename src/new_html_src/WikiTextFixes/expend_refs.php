@@ -11,13 +11,6 @@
 
 namespace Fixes\ExpendRefs;
 
-/*
-Usage:
-
-use function Fixes\ExpendRefs\refs_expend_work;
-
-*/
-
 use function WikiParse\Reg_Citations\get_full_refs;
 use function WikiParse\Reg_Citations\get_short_citations;
 use function Printn\test_print;

@@ -10,14 +10,21 @@
 
 namespace Fixes\fix_langs_links;
 
-/*
-Usage:
-
-use function Fixes\fix_langs_links\remove_lang_links;
-
-*/
-
-
+$code_to_lang = [
+    "ar" => "Arabic",
+    "de" => "German",
+    "en" => "English",
+    "es" => "Spanish",
+    "fr" => "French",
+    "it" => "Italian",
+    "ja" => "Japanese",
+    "nl" => "Dutch",
+    "pl" => "Polish",
+    "pt" => "Portuguese",
+    "ru" => "Russian",
+    "sv" => "Swedish",
+    "zh" => "Chinese",
+];
 /**
  * Remove language links from wikitext
  *

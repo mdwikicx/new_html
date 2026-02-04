@@ -11,13 +11,6 @@
 
 namespace WikiParse\Category;
 
-/*
-Usage:
-
-use function WikiParse\Category\get_categories;
-
-*/
-
 /**
  * Extract all categories from wikitext
  *

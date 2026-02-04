@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Missing image removal utilities
  *
@@ -10,16 +11,6 @@
  */
 
 namespace RemoveMissingImages;
-
-/*
-usage:
-
-use function RemoveMissingImages\check_commons_image_exists;
-use function RemoveMissingImages\remove_missing_infobox_images;
-use function RemoveMissingImages\remove_missing_inline_images;
-use function RemoveMissingImages\remove_missing_images;
-
-*/
 
 use function APIServices\check_commons_image_exists;
 use function WikiParse\Template\getTemplates;

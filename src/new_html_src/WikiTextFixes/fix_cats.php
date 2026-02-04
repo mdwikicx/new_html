@@ -9,14 +9,6 @@
 
 namespace Fixes\FixCats;
 
-/*
-Usage:
-
-use function Fixes\FixCats\remove_categories;
-
-*/
-
-
 use function WikiParse\Category\get_categories;
 
 /**

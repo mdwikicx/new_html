@@ -12,14 +12,6 @@
 
 namespace Fixes\DelTemps;
 
-/*
-Usage:
-
-use function Fixes\DelTemps\remove_templates;
-use function Fixes\DelTemps\remove_lead_templates;
-
-*/
-
 use function WikiParse\Template\getTemplates;
 
 /**

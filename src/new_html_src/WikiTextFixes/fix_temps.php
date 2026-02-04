@@ -10,13 +10,6 @@
 
 namespace Fixes\FixTemps;
 
-/*
-Usage:
-
-use function Fixes\FixTemps\add_missing_title;
-
-*/
-
 use function WikiParse\Template\getTemplates;
 
 /**

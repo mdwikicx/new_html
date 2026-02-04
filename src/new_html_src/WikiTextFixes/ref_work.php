@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reference quality checking utilities
  *
@@ -9,13 +10,6 @@
  */
 
 namespace Fixes\RefWork;
-/*
-Usage:
-
-use function Fixes\RefWork\check_one_cite;
-use function Fixes\RefWork\remove_bad_refs;
-
-*/
 /*
 
 https://en.wikipedia.org/wiki/Special:AbuseFilter/894

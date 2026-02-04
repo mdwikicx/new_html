@@ -11,14 +11,6 @@
 
 namespace FixText;
 
-/*
-Usage:
-
-use function FixText\fix_wikitext;
-
-*/
-
-
 use function Fixes\DelMtRefs\del_empty_refs;
 use function Fixes\FixCats\remove_categories;
 use function Fixes\FixImages\remove_videos;
