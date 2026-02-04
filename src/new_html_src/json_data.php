@@ -30,9 +30,6 @@ use function NewHtml\JsonData\dump_both_data;
 use function NewHtml\FileHelps\get_file_dir;
 use function NewHtml\FileHelps\file_write;
 use function NewHtml\FileHelps\read_file;
-use function NewHtml\FileHelps\get_revisions_new_dir;
-
-$dir_path = get_revisions_new_dir();
 
 /**
  * Dump both main data and all data to JSON files
