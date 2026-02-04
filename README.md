@@ -97,7 +97,7 @@ composer test
 
 Or run PHPUnit directly:
 ```bash
-vendor/bin/phpunit
+vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml
 ```
 
 Run specific test files:
@@ -109,7 +109,7 @@ vendor/bin/phpunit tests/commons_api_test.php
 
 Run PHPStan for static code analysis:
 ```bash
-composer phpstan
+vendor/bin/phpstan analyse
 ```
 
 ### Project Structure
