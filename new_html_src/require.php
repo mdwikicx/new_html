@@ -26,3 +26,4 @@ require_once __DIR__ . "/html_services/html_to_segments.php";
 require_once __DIR__ . "/html_services/wikitext_to_html.php";
 
 require_once __DIR__ . "/get_text.php";
+require_once __DIR__ . "/json_data.php";

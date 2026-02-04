@@ -21,8 +21,8 @@ use function NewHtml\FileHelps\get_file_dir;
 use function NewHtml\FileHelps\file_write;
 use function NewHtml\FileHelps\read_file;
 
-$json_file = __DIR__ . "/../revisions_new/json_data.json";
-$json_file_all = __DIR__ . "/../revisions_new/json_data_all.json";
+$json_file = __DIR__ . "/../../revisions_new/json_data.json";
+$json_file_all = __DIR__ . "/../../revisions_new/json_data_all.json";
 
 if (!file_exists($json_file)) {
     file_write($json_file, '{}');
