@@ -37,14 +37,14 @@ if (!file_exists($json_file_all)) {
     file_write($json_file_all, '{}');
 }
 
-function dump_both_data($main_data, $main_data_all): void
+function dump_both_data(array $main_data, array $main_data_all): void
 {
     global $json_file_all, $json_file;
 
     file_write($json_file, json_encode($main_data, JSON_PRETTY_PRINT));
     file_write($json_file_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
-function get_Data($tyt): array
+function get_Data(string $tyt): array
 {
     global $json_file_all, $json_file;
 
