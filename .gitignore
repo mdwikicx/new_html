@@ -5,3 +5,5 @@ x.php
 cacert.pem
 cookie.txt
 /.vscode
+/vendor
+composer.lock
