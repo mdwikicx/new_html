@@ -31,8 +31,14 @@ use function NewHtml\FileHelps\get_file_dir;
 use function NewHtml\FileHelps\file_write;
 use function NewHtml\FileHelps\read_file;
 
-$json_file = __DIR__ . "/../../../revisions_new/json_data.json";
-$json_file_all = __DIR__ . "/../../../revisions_new/json_data_all.json";
+$dir_path = __DIR__ . "/../../../revisions_new";
+
+if (strpos(__DIR__, 'public_html') !== false) {
+    $dir_path = __DIR__ . "/../../revisions_new/";
+}
+
+$json_file = "$dir_path/json_data.json";
+$json_file_all = "$dir_path/json_data_all.json";
 
 $json_dir = dirname($json_file);
 if (!is_dir($json_dir)) {
