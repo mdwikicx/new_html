@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Wikipedia transform API services
+ *
+ * Provides functions for converting wikitext to HTML using the
+ * Wikipedia REST API transform endpoint.
+ *
+ * @package MDWiki\NewHtml\APIServices
+ */
+
 namespace APIServices;
 
 use function APIServices\handle_url_request;

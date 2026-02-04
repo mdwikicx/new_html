@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * HTTP request handling services
+ *
+ * Provides functions for making HTTP requests to external APIs,
+ * supporting both GET and POST methods with cURL.
+ *
+ * @package MDWiki\NewHtml\APIServices
+ */
+
 namespace APIServices;
 /*
 
