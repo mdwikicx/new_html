@@ -1,0 +1,33 @@
+{
+    "name": "mdwikicx/new_html",
+    "description": "MediaWiki content transformation and API services",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "phpstan/phpstan": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "FixRefs\\Tests\\": "tests/",
+            "APIServices\\": "new_html_src/api_services/",
+            "HtmlServices\\": "new_html_src/html_services/",
+            "Utils\\": "new_html_src/utils/",
+            "WikiParse\\": "new_html_src/WikiParse/",
+            "WikiTextFixes\\": "new_html_src/WikiTextFixes/"
+        },
+        "files": [
+            "new_html_src/require.php"
+        ]
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml",
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit=256M"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

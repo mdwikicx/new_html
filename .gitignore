@@ -1,0 +1,10 @@
+jsons_data/*.json
+tests/text.php
+x.py
+x.php
+cacert.pem
+cookie.txt
+/.vscode
+/vendor
+composer.lock
+.phpunit.result.cache
