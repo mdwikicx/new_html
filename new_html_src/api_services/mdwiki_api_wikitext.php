@@ -6,13 +6,13 @@ use function Wikitext\get_wikitext;
 
 */
 
-use function Post\handle_url_request;
 use function PostMdwiki\handle_url_request_mdwiki;
 // use function Post\post_url_params_result;
 use function FixText\fix_wikitext;
 use function Lead\get_lead_section;
 use function NewHtml\JsonData\add_title_revision;
 use function Printn\test_print;
+use function Fixes\ExpendRefs\refs_expend_work;
 
 function get_wikitext_from_mdwiki_api($title)
 {
@@ -91,7 +91,11 @@ function get_wikitext($title, $all)
         // ---
         if ($all == '') {
             test_print("get_lead_section: \n");
-            $source = get_lead_section($source);
+            $full_text = $source;
+            $lead = get_lead_section($source);
+            if ($lead != '') {
+                $source = refs_expend_work($lead, $full_text);
+            }
         }
         // ---
         $source = fix_wikitext($source, $title);

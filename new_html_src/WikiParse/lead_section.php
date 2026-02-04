@@ -5,8 +5,6 @@ namespace Lead;
 use function Lead\get_lead_section;
 */
 
-use function Fixes\ExpendRefs\refs_expend_work;
-
 function get_lead_section($wikitext)
 {
     if (empty($wikitext) || strpos($wikitext, '==') === false) {
@@ -22,8 +20,6 @@ function get_lead_section($wikitext)
     }
 
     $lead .= "\n==References==\n<references />";
-
-    $lead = refs_expend_work($lead, $wikitext);
 
     return $lead;
 }
