@@ -12,7 +12,7 @@ use function WikiParse\Reg_Citations\get_short_citations;
 
 */
 
-function get_ref_name($options): string
+function get_ref_name(string $options): string
 {
     if (empty(trim($options))) {
         return "";
@@ -35,7 +35,7 @@ function get_ref_name($options): string
  * @return array Array of citation information including content, tag, and options
  */
 
-function get_regex_citations($text): array
+function get_regex_citations(string $text): array
 {
     preg_match_all("/<ref([^\/>]*?)>(.+?)<\/ref>/is", $text, $matches);
 
@@ -57,7 +57,7 @@ function get_regex_citations($text): array
     return $citations;
 }
 
-function get_full_refs($text): array
+function get_full_refs(string $text): array
 {
     $full = [];
     $citations = get_regex_citations($text);
@@ -76,7 +76,7 @@ function get_full_refs($text): array
     return $full;
 }
 
-function get_short_citations($text): array
+function get_short_citations(string $text): array
 {
     preg_match_all("/<ref ([^\/>]*?)\/\s*>/is", $text, $matches);
 
