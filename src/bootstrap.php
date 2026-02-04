@@ -21,5 +21,7 @@ require_once $autoloadPath;
 
 require_once __DIR__ . '/Infrastructure/Utils/FileUtils.php';
 require_once __DIR__ . '/Infrastructure/Storage/JsonStorage.php';
+require_once __DIR__ . '/Domain/Fixes/References/RefWorkerFixture.php';
+require_once __DIR__ . '/Infrastructure/Compatibility/RefWorkShim.php';
 require_once __DIR__ . '/Services/Api/HttpClient.php';
 require_once __DIR__ . '/Domain/Fixes/Structure/FixLanguageLinksFixture.php';
