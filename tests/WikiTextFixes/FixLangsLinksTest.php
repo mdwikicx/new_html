@@ -36,10 +36,10 @@ class FixLangsLinksTest extends bootstrap
         // Only en: should be removed
         $this->assertStringNotContainsString('[[en:Real]]', $result);
         // xy: and zz: should remain if not in lang_codes
-        if (!isset($lang_codes['xy'])) {
+        if (!in_array('xy', $lang_codes, true)) {
             $this->assertStringContainsString('[[xy:Article]]', $result);
         }
-        if (!isset($lang_codes['zz'])) {
+        if (!in_array('zz', $lang_codes, true)) {
             $this->assertStringContainsString('[[zz:Fake]]', $result);
         }
     }
