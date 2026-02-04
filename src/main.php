@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main API endpoint for processing MDWiki page content
  *
@@ -18,7 +19,7 @@
 
 header("Access-Control-Allow-Origin: *");
 
-require_once __DIR__ . "/require.php";
+require_once __DIR__ . "/bootstrap.php";
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;

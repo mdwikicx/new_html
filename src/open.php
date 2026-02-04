@@ -13,7 +13,7 @@
  * @package MDWiki\NewHtml
  */
 
-require_once __DIR__ . "/require.php";
+require_once __DIR__ . "/bootstrap.php";
 
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 
