@@ -13,7 +13,7 @@ use function WikiParse\Reg_Citations\get_full_refs;
 use function WikiParse\Reg_Citations\get_short_citations;
 use function Printn\test_print;
 
-function refs_expend_work($first, $alltext): string
+function refs_expend_work(string $first, string $alltext): string
 {
     if (empty($alltext)) {
         $alltext = $first;

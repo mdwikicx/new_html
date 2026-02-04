@@ -12,7 +12,7 @@ use function Fixes\DelTemps\remove_lead_templates;
 
 use function WikiParse\Template\getTemplates;
 
-function check_temps_patterns($name, $old_text_template, $new_text): string
+function check_temps_patterns(string $name, string $old_text_template, string $new_text): string
 {
     $temps_patterns = [
         // any template startswith pp-
@@ -33,7 +33,7 @@ function check_temps_patterns($name, $old_text_template, $new_text): string
     }
     return $new_text;
 }
-function check_temp_to_delete($name): bool
+function check_temp_to_delete(string $name): bool
 {
     $tempsToDelete = [
         "rtt",

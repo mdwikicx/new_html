@@ -9,13 +9,13 @@ use function Fixes\FixImages\remove_images;
 use function Fixes\FixImages\remove_videos;
 
 if (!function_exists('str_starts_with')) {
-    function str_starts_with($text, $start)
+    function str_starts_with(string $text, string $start)
     {
         return strpos($text, $start) === 0;
     }
 }
 if (!function_exists('str_ends_with')) {
-    function str_ends_with($string, $endString)
+    function str_ends_with(string $string, string $endString)
     {
         $len = strlen($endString);
         return substr($string, -$len) === $endString;

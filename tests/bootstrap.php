@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class bootstrap extends TestCase
 {
-    public function assertEqualCompare($expected, $input, $result)
+    public function assertEqualCompare(string $expected, string $input, string $result)
     {
         $this->assertEquals(
             $expected,

@@ -88,7 +88,7 @@ use function NewHtml\FileHelps\get_revisions_new_dir;
 use function NewHtml\JsonData\get_Data;
 use function NewHtml\JsonData\dump_both_data;
 
-function make_badge($files, $file): string
+function make_badge(array $files, string $file): string
 {
     // ---
     if (!in_array($file, $files)) {

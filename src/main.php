@@ -35,7 +35,7 @@ function get_title(): string
     return $title;
 }
 
-function error_1($title, $revision): bool|string
+function error_1(string $title, string $revision): bool|string
 {
     // send request error code using http_response_code
     http_response_code(404);
@@ -53,7 +53,7 @@ function error_1($title, $revision): bool|string
     return json_encode($data);
 }
 
-function get_wikitext_revision($title, $all): array
+function get_wikitext_revision(string $title, string $all): array
 {
     global $printetxt;
     // ---
@@ -78,7 +78,7 @@ function get_wikitext_revision($title, $all): array
     return [$wikitext, $revision, $from_cache];
 }
 
-function get_HTML_text($wikitext, $file_html, $title, $new): array
+function get_HTML_text(string $wikitext, string $file_html, string $title, bool $new): array
 {
     global $printetxt;
     // ---
@@ -108,7 +108,7 @@ function get_HTML_text($wikitext, $file_html, $title, $new): array
     return [$HTML_text, $from_cache];
 }
 
-function get_SEG_text($HTML_text, $file_seg): array
+function get_SEG_text(string $HTML_text, string $file_seg): array
 {
     global $printetxt;
     // ---
@@ -130,7 +130,7 @@ function get_SEG_text($HTML_text, $file_seg): array
     return [$SEG_text, $from_cache];
 }
 
-function start($request, $title): void
+function start(array $request, string $title): void
 {
     // ---
     $new = isset($request['new']);

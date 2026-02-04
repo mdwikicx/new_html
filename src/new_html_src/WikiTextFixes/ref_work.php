@@ -35,7 +35,7 @@ const SELFPUB_PATTERN = "/(publisher|work)\s*[=,:]\s*(Author\s*House|CreateSpace
 
 const SELFPUB_URL_PATTERN = "/(authorhouse\.com|createspace\.\w{2,3}|grosvenorhousepublishing\.com|iuniverse\.com|lulu\.com|mellenpress\.com|trafford\.com|xlibris\.com)/i";
 
-function check_one_cite($cite): bool
+function check_one_cite(string $cite): bool
 {
     // ---
     // echo $cite . "<br";
