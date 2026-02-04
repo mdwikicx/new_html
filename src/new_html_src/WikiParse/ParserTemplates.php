@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * MediaWiki template parsing utilities
+ *
+ * Provides classes and functions for parsing MediaWiki templates
+ * from wikitext, including support for nested templates and
+ * parameter extraction.
+ *
+ * @package MDWiki\NewHtml\WikiParse
+ */
+
 namespace WikiParse\Template;
 
 /**
