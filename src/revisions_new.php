@@ -99,13 +99,12 @@ echo <<<HTML
     </head>
 HTML;
 
-require_once __DIR__ . "/new_html_src/print.php";
-require_once __DIR__ . "/new_html_src/utils/files_utils.php";
-require_once __DIR__ . "/new_html_src/json_data.php";
+// Use modern PSR-4 autoloading
+require_once __DIR__ . "/bootstrap.php";
 
-use function NewHtml\FileHelps\get_revisions_new_dir;
-use function NewHtml\JsonData\get_Data;
-use function NewHtml\JsonData\dump_both_data;
+use function MDWiki\NewHtml\Infrastructure\Utils\get_revisions_new_dir;
+use function MDWiki\NewHtml\Application\Controllers\get_Data;
+use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
 
 /**
  * Generate a badge indicating if a file exists in the list

@@ -15,12 +15,7 @@
             "MDWiki\\NewHtml\\Application\\": "src/Application/",
             "MDWiki\\NewHtml\\Services\\": "src/Services/",
             "MDWiki\\NewHtml\\Domain\\": "src/Domain/",
-            "MDWiki\\NewHtml\\Infrastructure\\": "src/Infrastructure/",
-            "APIServices\\": "src/new_html_src/api_services/",
-            "HtmlServices\\": "src/new_html_src/html_services/",
-            "Utils\\": "src/new_html_src/utils/",
-            "WikiParse\\": "src/new_html_src/WikiParse/",
-            "WikiTextFixes\\": "src/new_html_src/WikiTextFixes/"
+            "MDWiki\\NewHtml\\Infrastructure\\": "src/Infrastructure/"
         },
         "files": [
             "src/Infrastructure/Debug/PrintHelper.php",
@@ -49,11 +44,7 @@
             "src/Services/Wikitext/WikitextFixerService.php",
             "src/Application/Controllers/JsonDataController.php",
             "src/Application/Handlers/WikitextHandler.php",
-            "src/Application/Handlers/PostMdwikiHandler.php",
-            "src/new_html_src/json_data.php",
-            "src/new_html_src/get_text.php",
-            "src/new_html_src/post_mdwiki.php",
-            "src/new_html_src/require.php"
+            "src/Application/Handlers/PostMdwikiHandler.php"
         ]
     },
     "scripts": {

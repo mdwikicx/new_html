@@ -12,7 +12,8 @@ if (file_exists($vendor_path)) {
     require $vendor_path;
 };
 
-require __DIR__ . '/../src/new_html_src/require.php';
+// Use modern PSR-4 autoloading via bootstrap
+require __DIR__ . '/../src/bootstrap.php';
 
 use PHPUnit\Framework\TestCase;
 
