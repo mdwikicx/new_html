@@ -12,13 +12,13 @@ if (file_exists($vendor_path)) {
     require $vendor_path;
 };
 
-require __DIR__ . '/../new_html_src/require.php';
+require __DIR__ . '/../src/new_html_src/require.php';
 
 use PHPUnit\Framework\TestCase;
 
 class bootstrap extends TestCase
 {
-    public function assertEqualCompare($expected, $input, $result)
+    public function assertEqualCompare(string $expected, string $input, string $result)
     {
         $this->assertEquals(
             $expected,
