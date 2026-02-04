@@ -11,7 +11,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithDrugbox()
     {
         $text = '{{Drugbox|other_param=value}}';
-        $result = add_missing_title($text, 'Aspirin');
+        $result = add_missing_title($text, 'Aspirin', 0);
 
         $this->assertStringContainsString('drug_name=Aspirin', $result);
         $this->assertStringContainsString('other_param=value', $result);
@@ -20,7 +20,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithInfoboxDrug()
     {
         $text = '{{Infobox drug|param=value}}';
-        $result = add_missing_title($text, 'Paracetamol');
+        $result = add_missing_title($text, 'Paracetamol', 0);
 
         $this->assertStringContainsString('drug_name=Paracetamol', $result);
     }
@@ -28,7 +28,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithInfoboxMedicalCondition()
     {
         $text = '{{Infobox medical condition|symptoms=test}}';
-        $result = add_missing_title($text, 'Diabetes');
+        $result = add_missing_title($text, 'Diabetes', 0);
 
         $this->assertStringContainsString('name=Diabetes', $result);
         $this->assertStringContainsString('symptoms=test', $result);
@@ -37,7 +37,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithInfoboxMedicalIntervention()
     {
         $text = '{{Infobox medical intervention|param=value}}';
-        $result = add_missing_title($text, 'Surgery');
+        $result = add_missing_title($text, 'Surgery', 0);
 
         $this->assertStringContainsString('name=Surgery', $result);
     }
@@ -45,7 +45,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleDoesNotOverwriteExisting()
     {
         $text = '{{Drugbox|drug_name=Existing Name|param=value}}';
-        $result = add_missing_title($text, 'New Name');
+        $result = add_missing_title($text, 'New Name', 0);
 
         $this->assertStringContainsString('drug_name=Existing Name', $result);
         $this->assertStringNotContainsString('drug_name=New Name', $result);
@@ -54,7 +54,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithEmptyName()
     {
         $text = '{{Drugbox|drug_name=}}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         $this->assertStringContainsString('drug_name=Medicine', $result);
     }
@@ -62,7 +62,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithWhitespaceName()
     {
         $text = '{{Drugbox|drug_name=   }}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         $this->assertStringContainsString('drug_name=Medicine', $result);
     }
@@ -70,7 +70,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithNoMatchingTemplate()
     {
         $text = '{{Other template|param=value}}';
-        $result = add_missing_title($text, 'Title');
+        $result = add_missing_title($text, 'Title', 0);
 
         // Should remain unchanged
         $this->assertEquals($text, $result);
@@ -79,7 +79,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithMultipleTemplates()
     {
         $text = '{{Drugbox}} {{Infobox medical condition}}';
-        $result = add_missing_title($text, 'Test Title');
+        $result = add_missing_title($text, 'Test Title', 0);
 
         $this->assertStringContainsString('drug_name=Test Title', $result);
         $this->assertStringContainsString('name=Test Title', $result);
@@ -88,15 +88,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithCaseInsensitive()
     {
         $text = '{{DRUGBOX|param=value}}';
-        $result = add_missing_title($text, 'Medicine');
-
-        $this->assertStringContainsString('drug_name=Medicine', $result);
-    }
-
-    public function testAddMissingTitleWithUnderscores()
-    {
-        $text = '{{Drug_box|param=value}}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         $this->assertStringContainsString('drug_name=Medicine', $result);
     }
@@ -104,7 +96,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitlePreservesOtherParameters()
     {
         $text = '{{Drugbox|param1=value1|param2=value2|param3=value3}}';
-        $result = add_missing_title($text, 'Drug Name');
+        $result = add_missing_title($text, 'Drug Name', 0);
 
         $this->assertStringContainsString('param1=value1', $result);
         $this->assertStringContainsString('param2=value2', $result);
@@ -115,7 +107,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleFormatsWithNewLine()
     {
         $text = '{{Drugbox|param=value}}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         // Should format with new lines
         $this->assertStringContainsString("\n", $result);
@@ -123,7 +115,7 @@ class FixTempsTest extends bootstrap
 
     public function testAddMissingTitleWithEmptyText()
     {
-        $result = add_missing_title('', 'Title');
+        $result = add_missing_title('', 'Title', 0);
 
         $this->assertEquals('', $result);
     }
@@ -131,7 +123,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithNoTemplates()
     {
         $text = 'Plain text without templates';
-        $result = add_missing_title($text, 'Title');
+        $result = add_missing_title($text, 'Title', 0);
 
         $this->assertEquals($text, $result);
     }
@@ -139,7 +131,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithMultilineTemplate()
     {
         $text = "{{Drugbox\n|param1=value1\n|param2=value2\n}}";
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         $this->assertStringContainsString('drug_name=Medicine', $result);
     }
@@ -147,7 +139,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithNestedTemplates()
     {
         $text = '{{Drugbox|param={{nested|value}}}}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         $this->assertStringContainsString('drug_name=Medicine', $result);
         $this->assertStringContainsString('{{nested|value}}', $result);
@@ -156,7 +148,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithSpecialCharacters()
     {
         $text = '{{Drugbox|param=value}}';
-        $result = add_missing_title($text, 'Medicine-123 (Test)');
+        $result = add_missing_title($text, 'Medicine-123 (Test)', 0);
 
         $this->assertStringContainsString('drug_name=Medicine-123 (Test)', $result);
     }
@@ -164,7 +156,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleReplacesTemplate()
     {
         $text = 'Before {{Drugbox|old=param}} After';
-        $result = add_missing_title($text, 'New Drug');
+        $result = add_missing_title($text, 'New Drug', 0);
 
         $this->assertStringContainsString('Before', $result);
         $this->assertStringContainsString('After', $result);
@@ -174,7 +166,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithLjustFormatting()
     {
         $text = '{{Drugbox|a=value1|longer_param=value2}}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         // The function uses ljust=17 for formatting
         $this->assertStringContainsString('drug_name=Medicine', $result);
@@ -183,7 +175,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleDoesNotAffectOtherTemplates()
     {
         $text = '{{Cite|title=Test}} {{Drugbox}} {{Another}}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         $this->assertStringContainsString('{{Cite|title=Test}}', $result);
         $this->assertStringContainsString('{{Another}}', $result);
@@ -193,7 +185,7 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitleWithMixedCase()
     {
         $text = '{{Infobox Medical Condition|param=value}}';
-        $result = add_missing_title($text, 'Disease');
+        $result = add_missing_title($text, 'Disease', 0);
 
         $this->assertStringContainsString('name=Disease', $result);
     }
@@ -201,11 +193,18 @@ class FixTempsTest extends bootstrap
     public function testAddMissingTitlePreservesOrder()
     {
         $text = '{{Drugbox|first=1|second=2}}';
-        $result = add_missing_title($text, 'Medicine');
+        $result = add_missing_title($text, 'Medicine', 0);
 
         // New parameter should be added, existing order preserved
         $this->assertStringContainsString('drug_name=Medicine', $result);
         $this->assertStringContainsString('first=1', $result);
         $this->assertStringContainsString('second=2', $result);
+    }
+    public function testAddMissingTitleWithUnderscores()
+    {
+        $text = '{{Drug_box|param=value}}';
+        $result = add_missing_title($text, 'Medicine', 0);
+
+        $this->assertStringContainsString('drug_name=Medicine', $result);
     }
 }
