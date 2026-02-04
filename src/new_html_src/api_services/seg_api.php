@@ -3,47 +3,20 @@
 /**
  * HtmltoSegments API services
  *
- * Provides functions for converting HTML to segmented content using
- * the HtmltoSegments API tool.
+ * Backward compatibility wrapper for Services\Api\SegmentApiService
  *
+ * @deprecated Use MDWiki\NewHtml\Services\Api\SegmentApiService instead
  * @package MDWiki\NewHtml\APIServices
  */
 
 namespace APIServices;
 
-use function Printn\test_print;
-use function APIServices\handle_url_request;
-// use function APIServices\post_url_params_result;
+use function MDWiki\NewHtml\Services\Api\change_html_to_seg as NewChangeHtmlToSeg;
 
 /**
- * Convert HTML to segments using the HtmltoSegments API
- *
- * @param string $text The HTML text to convert to segments
- * @return array<string, string> Array with 'result' key on success or 'error' key on failure
+ * @deprecated Use MDWiki\NewHtml\Services\Api\change_html_to_seg instead
  */
 function change_html_to_seg(string $text): array
 {
-    $url = 'https://ncc2c.toolforge.org/HtmltoSegments';
-
-    $data = ['html' => $text];
-    // $response = post_url_params_result($url, $data);
-    $response = handle_url_request($url, 'POST', $data);
-
-    // Handle the response from your API
-    if ($response === "") {
-        test_print("API request failed: " . json_encode($data));
-        return ['error' => 'Error: Could not reach API.'];
-    }
-
-    $data = json_decode($response, true);
-    if (isset($data['error'])) {
-        return ['error' => 'Error: ' . $data['error']];
-    }
-
-    // Extract the result from the API response
-    if (isset($data['result'])) {
-        return ['result' => $data['result']];
-    } else {
-        return ['error' => 'Error: Unexpected response format.'];
-    }
+    return NewChangeHtmlToSeg($text);
 }

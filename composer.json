@@ -39,6 +39,14 @@
             "src/Domain/Fixes/Media/RemoveMissingImagesFixture.php",
             "src/Domain/Fixes/Structure/FixCategoriesFixture.php",
             "src/Domain/Fixes/Structure/FixLanguageLinksFixture.php",
+            "src/Services/Api/HttpClient.php",
+            "src/Services/Api/CommonsApiService.php",
+            "src/Services/Api/MdwikiApiService.php",
+            "src/Services/Api/SegmentApiService.php",
+            "src/Services/Api/TransformApiService.php",
+            "src/Services/Html/HtmlToSegmentsService.php",
+            "src/Services/Html/WikitextToHtmlService.php",
+            "src/Services/Wikitext/WikitextFixerService.php",
             "src/new_html_src/require.php"
         ]
     },
