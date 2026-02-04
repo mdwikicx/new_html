@@ -11,6 +11,12 @@ use function HtmlFixes\remove_data_parsoid;
 // <div([^\/>]*?)>(.+?)<\/div>
 // class="error"
 
+/**
+ * Remove div elements with class="error" from HTML
+ *
+ * @param string $html The HTML to process
+ * @return string The HTML with error divs removed
+ */
 function del_div_error(string $html): string
 {
 
@@ -22,11 +28,15 @@ function del_div_error(string $html): string
         if (preg_match("/class=[\"']error[\"']/is", $options)) {
             $html = str_replace($cite_text, '', $html);
         }
-    }
-
-    return $html;
+    }    return $html;
 }
 
+/**
+ * Parse HTML attributes from a text string
+ *
+ * @param string $text The text containing attributes
+ * @return array<string, string> Array of attribute name-value pairs
+ */
 function get_attrs(string $text): array
 {
     $text = "<ref $text>";
@@ -41,11 +51,15 @@ function get_attrs(string $text): array
         }
     }
 
-    // var_export($attrs);
-
-    return $attrs;
+    // var_export($attrs);    return $attrs;
 }
 
+/**
+ * Fix red links in HTML by removing edit-related attributes
+ *
+ * @param string $html The HTML to process
+ * @return string The HTML with fixed links
+ */
 function fix_link_red(string $html): string
 {
 
@@ -101,11 +115,15 @@ function fix_link_red(string $html): string
 
             $html = str_replace($cite_text, $new_cite_text, $html);
         }
-    }
-
-    return $html;
+    }    return $html;
 }
 
+/**
+ * Remove data-parsoid attributes from HTML
+ *
+ * @param string $html The HTML to process
+ * @return string The HTML with data-parsoid attributes removed
+ */
 function remove_data_parsoid(string $html): string
 {
 
