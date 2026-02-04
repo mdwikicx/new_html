@@ -1,14 +1,14 @@
 <?php
 
-namespace FixImages;
+namespace RemoveMissingImages;
 
 /*
 usage:
 
-use function FixImages\check_commons_image_exists;
-use function FixImages\remove_missing_infobox_images;
-use function FixImages\remove_missing_inline_images;
-use function FixImages\remove_missing_images;
+use function RemoveMissingImages\check_commons_image_exists;
+use function RemoveMissingImages\remove_missing_infobox_images;
+use function RemoveMissingImages\remove_missing_inline_images;
+use function RemoveMissingImages\remove_missing_images;
 
 */
 
@@ -31,7 +31,7 @@ function remove_missing_infobox_images(string $text): string
 
     // Process templates using the template parser
     foreach ($templates as $template) {
-        $originalText = $template->getOriginalText();
+        $originalText = $template->getTemplateText();
         $params = $template->getParameters();
         $modified = false;
 
