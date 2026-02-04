@@ -4,26 +4,44 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
+use function Fixes\fix_langs_links\remove_lang_links;
 
 class FixLangsLinksTest extends bootstrap
 {
     public function setUp(): void
     {
-        // Define the global $code_to_lang array for testing
-        global $code_to_lang;
-        $code_to_lang = [
-            'en' => 'English',
-            'ar' => 'Arabic',
-            'de' => 'German',
-            'fr' => 'French',
-            'es' => 'Spanish',
-            'it' => 'Italian',
-            'ja' => 'Japanese',
-            'zh' => 'Chinese',
-            'ru' => 'Russian',
-            'pt' => 'Portuguese'
+        // Define the global $lang_codes array for testing
+        global $lang_codes;
+        $lang_codes = [
+            'en',
+            'ar',
+            'de',
+            'fr',
+            'es',
+            'it',
+            'ja',
+            'zh',
+            'ru',
+            'pt',
         ];
+    }
+
+    public function testRemoveLangLinksDoesNotMatchPartialCodes()
+    {
+        // Test that it doesn't match non-existent language codes
+        global $lang_codes;
+        $text = '[[xy:Article]] [[en:Real]] [[zz:Fake]]';
+        $result = remove_lang_links($text);
+
+        // Only en: should be removed
+        $this->assertStringNotContainsString('[[en:Real]]', $result);
+        // xy: and zz: should remain if not in lang_codes
+        if (!in_array('xy', $lang_codes, true)) {
+            $this->assertStringContainsString('[[xy:Article]]', $result);
+        }
+        if (!in_array('zz', $lang_codes, true)) {
+            $this->assertStringContainsString('[[zz:Fake]]', $result);
+        }
     }
 
     public function testRemoveLangLinksWithSingleLink()
@@ -162,24 +180,6 @@ class FixLangsLinksTest extends bootstrap
         $this->assertStringContainsString("Content\n", $result);
         $this->assertStringContainsString("More content", $result);
         $this->assertStringNotContainsString('[[en:Article]]', $result);
-    }
-
-    public function testRemoveLangLinksDoesNotMatchPartialCodes()
-    {
-        // Test that it doesn't match non-existent language codes
-        global $code_to_lang;
-        $text = '[[xy:Article]] [[en:Real]] [[zz:Fake]]';
-        $result = remove_lang_links($text);
-
-        // Only en: should be removed
-        $this->assertStringNotContainsString('[[en:Real]]', $result);
-        // xy: and zz: should remain if not in code_to_lang
-        if (!isset($code_to_lang['xy'])) {
-            $this->assertStringContainsString('[[xy:Article]]', $result);
-        }
-        if (!isset($code_to_lang['zz'])) {
-            $this->assertStringContainsString('[[zz:Fake]]', $result);
-        }
     }
 
     public function testRemoveLangLinksWithMixedContent()
