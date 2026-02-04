@@ -14,7 +14,7 @@ use function WikiParse\Reg_Citations\get_short_citations;
 
 function get_ref_name($options)
 {
-    if (trim($options) == "") {
+    if (empty(trim($options))) {
         return "";
     }
     // $pa = "/name\s*=\s*\"(.*?)\"/i";

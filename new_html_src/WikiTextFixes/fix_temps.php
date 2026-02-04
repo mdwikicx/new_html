@@ -11,10 +11,11 @@ use function Fixes\FixTemps\add_missing_title;
 
 use function WikiParse\Template\getTemplates;
 
-function add_missing_title($text, $title)
+function add_missing_title($text, $title, $ljust = 17)
 {
     // ---
     $temps = [
+        "drug box" => "drug_name",
         "drugbox" => "drug_name",
         "infobox drug" => "drug_name",
         "infobox medical condition" => "name",
@@ -31,6 +32,7 @@ function add_missing_title($text, $title)
         $name = strtolower($temp->getStripName());
         // ---
         if (!isset($temps[$name])) {
+
             continue;
         }
         // ---
@@ -45,7 +47,7 @@ function add_missing_title($text, $title)
             // ---
             // $new_temp = str_replace('{{' . $temp_name, '{{' . $temp_name . "| $param = $title\n", $text_template);
             // ---
-            $new_text_str = $temp->toString(true, 17);
+            $new_text_str = $temp->toString(true, $ljust);
             // ---
             $new_text = str_replace($old_text_template, $new_text_str, $new_text);
         }

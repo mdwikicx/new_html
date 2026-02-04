@@ -19,7 +19,7 @@ function convert_wikitext_to_html($text, $title)
     $response = handle_url_request($url, 'POST', $data);
 
     // Handle the response from your API
-    if ($response === false || $response === "") {
+    if ($response === "") {
         test_print("API request failed: " . json_encode($data));
         return ['error' => 'Error: Could not reach API.'];
     }
