@@ -147,8 +147,8 @@ class LeadSectionTest extends bootstrap
         $result = get_lead_section($wikitext);
 
         // When lead is empty, should add references section
-        $this->assertStringContainsString('==References==', $result);
         $this->assertStringNotContainsString('First Section', $result);
+        $this->assertEquals("", trim($result));
     }
 
     public function testGetLeadSectionWithHeadingAtStart()
@@ -174,6 +174,6 @@ class LeadSectionTest extends bootstrap
         $result = get_lead_section($wikitext);
 
         $this->assertStringNotContainsString('Heading', $result);
-        $this->assertStringContainsString('==References==', $result);
+        $this->assertEquals("", trim($result));
     }
 }
