@@ -145,12 +145,15 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
         echo $SEG_text;
         exit();
-    }
-    return [$SEG_text, $from_cache];
+    }    return [$SEG_text, $from_cache];
 }
 
 /**
- * @param array<string, mixed> $request
+ * Main processing function to handle page generation request
+ *
+ * @param array<string, mixed> $request The request parameters
+ * @param string $title The page title to process
+ * @return void
  */
 function start(array $request, string $title): void
 {

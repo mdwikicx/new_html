@@ -89,7 +89,11 @@ use function NewHtml\JsonData\get_Data;
 use function NewHtml\JsonData\dump_both_data;
 
 /**
- * @param string[] $files
+ * Generate a badge indicating if a file exists in the list
+ *
+ * @param string[] $files Array of existing filenames
+ * @param string $file The filename to check
+ * @return string HTML badge markup, or empty string if file exists
  */
 function make_badge(array $files, string $file): string
 {

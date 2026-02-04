@@ -53,7 +53,8 @@ function post_url_params_result(string $endPoint, array $params = []): string
     if ($http_code !== 200) {
         test_print("API returned HTTP $http_code: $http_code");
         // return ['error' => "Error: API returned HTTP $http_code"];
-    }    curl_close($ch);
+    }
+    curl_close($ch);
     return $output;
 }
 
