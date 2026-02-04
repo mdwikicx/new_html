@@ -23,6 +23,8 @@ use function MDWiki\NewHtml\Domain\Parser\getTemplates as new_getTemplates;
  */
 class Template extends NewTemplate
 {
+    // Empty class body - all functionality inherited from parent
+    // This class exists solely for backward compatibility
 }
 
 /**
@@ -31,6 +33,8 @@ class Template extends NewTemplate
  */
 class ParserTemplate extends NewParserTemplate
 {
+    // Empty class body - all functionality inherited from parent
+    // This class exists solely for backward compatibility
 }
 
 /**
@@ -39,6 +43,8 @@ class ParserTemplate extends NewParserTemplate
  */
 class ParserTemplates extends NewParserTemplates
 {
+    // Empty class body - all functionality inherited from parent
+    // This class exists solely for backward compatibility
 }
 
 /**
