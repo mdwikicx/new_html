@@ -48,8 +48,8 @@ function dump_both_data(array $main_data, array $main_data_all): void
 {
     global $json_file_all, $json_file;
 
-    file_write($json_file, json_encode($main_data, JSON_PRETTY_PRINT));
-    file_write($json_file_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
+    file_write($json_file ?? '', json_encode($main_data, JSON_PRETTY_PRINT));
+    file_write($json_file_all ?? '', json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
 
 /**
@@ -62,7 +62,7 @@ function get_Data(string $tyt): array
 {
     global $json_file_all, $json_file;
 
-    $file = ($tyt == 'all') ? $json_file_all : $json_file;
+    $file = ($tyt == 'all') ? ($json_file_all ?? '') : ($json_file ?? '');
 
     $file_text = read_file($file);
 
@@ -83,7 +83,7 @@ function get_title_revision(string $title, string $all): string
 {
     global $json_file_all, $json_file;
 
-    $file = (!empty($all)) ? $json_file_all : $json_file;
+    $file = (!empty($all)) ? ($json_file_all ?? '') : ($json_file ?? '');
 
     $file_text = read_file($file);
 
@@ -113,7 +113,7 @@ function add_title_revision(string $title, string $revision, string $all): array
 
     if (empty($title) || empty($revision)) return '';
 
-    $file = (!empty($all)) ? $json_file_all : $json_file;
+    $file = (!empty($all)) ? ($json_file_all ?? '') : ($json_file ?? '');
 
     $file_text = read_file($file);
 
