@@ -1,3 +1,14 @@
+<?php
+/**
+ * Reisions dashboard page
+ *
+ * Displays all processed revisions in an HTML table with links to view
+ * generated files (wikitext, HTML, segments). Also handles JSON cache
+ * regeneration.
+ *
+ * @package MDWiki\NewHtml
+ */
+?>
 <html lang="en">
 
 <?php
@@ -6,6 +17,14 @@ if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+/**
+ * Get the appropriate CDN host for static assets
+ *
+ * Tries to use the WMFLabs CDN, but falls back to cloudflare CDN
+ * if the WMFLabs CDN is unavailable. Results are cached statically.
+ *
+ * @return string The base URL for the CDN to use
+ */
 function get_host(): string
 {
     // $hoste = get_host();

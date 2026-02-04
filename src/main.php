@@ -1,4 +1,21 @@
 <?php
+/**
+ * Main API endpoint for processing MDWiki page content
+ *
+ * This file handles HTTP requests to generate page content from MDWiki.
+ * It orchestrates the full pipeline: fetching wikitext, applying fixes,
+ * converting to HTML, and segmenting the content.
+ *
+ * Request parameters:
+ * - title: Page title to process
+ * - new: Force regeneration of cached content
+ * - all: Use 'all' data file for Video pages
+ * - printetxt: Output format (wikitext|html|seg)
+ * - print: Alias for printetxt
+ *
+ * @package MDWiki\NewHtml
+ */
+
 header("Access-Control-Allow-Origin: *");
 
 require_once __DIR__ . "/require.php";
@@ -25,6 +42,13 @@ $content_type = $content_types[$printetxt] ?? "application/json";
 
 header("Content-type: $content_type");
 
+/**
+ * Get and normalize the page title from request parameters
+ *
+ * Ensures the first letter of the title is capitalized.
+ *
+ * @return string The normalized page title, or empty string if not provided
+ */
 function get_title(): string
 {
     $title = $_GET['title'] ?? '';
@@ -35,7 +59,16 @@ function get_title(): string
     return $title;
 }
 
-function error_1(string $title, string $revision): bool|string
+/**
+ * Generate error response for missing content
+ *
+ * Sends HTTP 404 status code and returns JSON error response.
+ *
+ * @param string $title The page title that was not found
+ * @param string $revision The revision ID that was not found
+ * @return string JSON encoded error response
+ */
+function error_1(string $title, string $revision): string
 {
     // send request error code using http_response_code
     http_response_code(404);
@@ -145,7 +178,8 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
         echo $SEG_text;
         exit();
-    }    return [$SEG_text, $from_cache];
+    }
+    return [$SEG_text, $from_cache];
 }
 
 /**
