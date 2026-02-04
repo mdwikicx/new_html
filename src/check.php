@@ -12,7 +12,7 @@ if (empty($revid) || !ctype_digit($revid)) {
     exit;
 }
 
-$dir_path = __DIR__ . "/../revisions_new/$revid";
+$dir_path = __DIR__ . "/../../revisions_new/$revid";
 
 if (!is_dir($dir_path)) {
     echo 'false';

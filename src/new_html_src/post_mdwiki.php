@@ -40,17 +40,6 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
-    if (!isset($_GET['cacert'])) {
-        $caFile = __DIR__ . '/../cacert.pem';
-        // ---
-        if (file_exists($caFile)) {
-            curl_setopt($ch, CURLOPT_CAINFO, $caFile);
-            test_print("<br>CURLOPT_CAINFO: cacert.pem");
-        } else {
-            test_print("<br>Warning: CA certificate file not found");
-        }
-    }
-
     test_print($url);
 
     $output = curl_exec($ch);
