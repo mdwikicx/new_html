@@ -18,7 +18,7 @@ function get_revisions_new_dir(): string
     return $revisions_new_dir;
 }
 
-function get_file_dir($revision, $all): string
+function get_file_dir(string $revision, string $all): string
 {
     global $revisions_new_dir;
     // ---
@@ -40,7 +40,7 @@ function get_file_dir($revision, $all): string
     return $file_dir;
 }
 
-function file_write($file, $text): void
+function file_write(string $file, string $text): void
 {
     if (empty($text) || empty($file)) {
         return;
@@ -53,7 +53,7 @@ function file_write($file, $text): void
     }
 }
 
-function read_file($file): bool|string
+function read_file(string $file): bool|string
 {
     // ---
     if (empty($file) || !file_exists($file)) {
