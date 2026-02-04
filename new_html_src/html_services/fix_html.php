@@ -106,7 +106,6 @@ function fix_link_red($html)
     return $html;
 }
 
-
 function remove_data_parsoid($html)
 {
     // ---

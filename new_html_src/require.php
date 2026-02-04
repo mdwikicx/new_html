@@ -16,10 +16,10 @@ require_once __DIR__ . "/fix_wikitext.php";
 require_once __DIR__ . "/file_helps.php";
 require_once __DIR__ . "/post.php";
 require_once __DIR__ . "/post_mdwiki.php";
-require_once __DIR__ . "/fix_html.php";
 
-require_once __DIR__ . "/services/html_to_Segments.php";
-require_once __DIR__ . "/services/wikitext_to_html.php";
+require_once __DIR__ . "/html_services/fix_html.php";
+require_once __DIR__ . "/html_services/html_to_Segments.php";
+require_once __DIR__ . "/html_services/wikitext_to_html.php";
 
 require_once __DIR__ . "/WikiText/lead_section.php";
 require_once __DIR__ . "/WikiText/index.php";
