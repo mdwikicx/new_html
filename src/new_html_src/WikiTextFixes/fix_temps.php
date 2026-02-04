@@ -1,4 +1,12 @@
 <?php
+/**
+ * Template fixing utilities
+ *
+ * Provides functions for fixing and enhancing MediaWiki templates,
+ * such as adding missing title parameters to infobox templates.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
 
 namespace Fixes\FixTemps;
 
