@@ -68,7 +68,8 @@ function get_regex_citations(string $text): array
             "options" => $options
         ];
         $citations[] = $citation;
-    }    return $citations;
+    }
+    return $citations;
 }
 
 /**
