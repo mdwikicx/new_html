@@ -16,10 +16,4 @@ require __DIR__ . '/../new_html_src/require.php';
 
 use PHPUnit\Framework\TestCase;
 
-class bootstrap extends TestCase
-{
-    public function testExample()
-    {
-        $this->assertTrue(true);
-    }
-}
+class bootstrap extends TestCase {}
