@@ -139,11 +139,14 @@ class ParserTemplate
     public function __construct(string $templateText)
     {
         $this->templateText = trim($templateText);
-        $this->parameters = array();
+        $this->name = "";
+        $this->parameters = [];
         $this->parse();
     }
     public function parse(): void
     {
+        $this->name = "";
+        $this->parameters = [];
         if (preg_match("/^\{\{(.*?)(\}\})$/s", $this->templateText, $matchesR)) {
             $DTemplate = $matchesR[1];
             $matches = [];

@@ -14,7 +14,7 @@ function get_categories($text)
     // $parser = new ParserCategories($text);
     // $categories = $parser->getCategories();
     // ---
-    $categories = array();
+    $categories = [];
     // ---
     preg_match_all("/\[\[\s*Category\s*\:([^\]\]]+?)\]\]/is", $text, $matches);
     if (!empty($matches[1])) {

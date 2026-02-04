@@ -30,7 +30,7 @@ function remove_images($text)
     // ---
     preg_match_all($pattern, $text, $matches);
     // ---
-    $images = array();
+    $images = [];
     // array ( 'File:AwareLogo.png' => '[[File:AwareLogo.png|thumb|upright=1.3|Logo of the WHO Aware Classification]]', )
     // ---
     foreach ($matches[0] as $link) {
