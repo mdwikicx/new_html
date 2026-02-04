@@ -5,7 +5,12 @@ x.php
 cacert.pem
 cookie.txt
 /.vscode
-/vendor
+
+/vendor/*
+!/vendor/composer/
+/vendor/composer/*
+!/vendor/composer/autoload_static.php
+
 composer.lock
 .phpunit.result.cache
 /.claude
