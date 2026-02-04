@@ -4,7 +4,7 @@ namespace WikiParse\Template;
 
 /**
  * Represents a parsed MediaWiki template with its name and parameters
- */s
+ */
 class Template
 {
     private string $name;
@@ -129,7 +129,8 @@ class Template
             if ($k === $old) {
                 $k = $new;
             };
-            $newParameters[$k] = $v;        }
+            $newParameters[$k] = $v;
+        }
         $this->parameters = $newParameters;
     }
 
@@ -149,7 +150,14 @@ class Template
         $this->parameters = $newParameters;
     }
 
-    public function toString(bool $newLine = false, $ljust = 0): string
+    /**
+     * Convert template to string representation
+     *
+     * @param bool $newLine Whether to add newlines between parameters
+     * @param int $ljust Left justify parameter names to this width
+     * @return string The template as a string
+     */
+    public function toString(bool $newLine = false, int $ljust = 0): string
     {
         $separator = $newLine ? "\n" : "";
         $templateName = $newLine ? trim($this->name) : $this->name;
@@ -171,6 +179,15 @@ class Template
         $result .= $separator . "}}";
         return $result;
     }
+
+    /**
+     * Format template parameters as string
+     *
+     * @param string $separator Separator between parameters
+     * @param int $ljust Left justify parameter names to this width
+     * @param bool $newLine Whether to trim parameter values
+     * @return string The formatted parameters
+     */
     private function formatParameters(string $separator, int $ljust, bool $newLine): string
     {
         $result = "";
@@ -187,11 +204,17 @@ class Template
             }
             $index++;
         }
-
         return $result;
     }
 
-    public function toString_new(bool $newLine = false, $ljust = 0): string
+    /**
+     * Convert template to string representation (alternative implementation)
+     *
+     * @param bool $newLine Whether to add newlines between parameters
+     * @param int $ljust Left justify parameter names to this width
+     * @return string The template as a string
+     */
+    public function toString_new(bool $newLine = false, int $ljust = 0): string
     {
         $separator = $newLine ? "\n" : "";
         $templateName = $newLine ? trim($this->name) : $this->name;
@@ -205,6 +228,9 @@ class Template
     }
 }
 
+/**
+ * Parser for a single MediaWiki template
+ */
 class ParserTemplate
 {
     private string $templateText;
@@ -212,6 +238,12 @@ class ParserTemplate
     private array $parameters;
     private string $pipe = "|";
     private string $pipeR = "-_-";
+
+    /**
+     * Constructor for ParserTemplate
+     *
+     * @param string $templateText The template text to parse
+     */
     public function __construct(string $templateText)
     {
         $this->templateText = trim($templateText);
@@ -219,6 +251,12 @@ class ParserTemplate
         $this->parameters = [];
         $this->parse();
     }
+
+    /**
+     * Parse the template text into name and parameters
+     *
+     * @return void
+     */
     public function parse(): void
     {
         $this->name = "";
@@ -258,28 +296,56 @@ class ParserTemplate
             $this->parameters = $data;
         }
     }
+
+    /**
+     * Get the parsed Template object
+     *
+     * @return Template The parsed template
+     */
     public function getTemplate(): Template
     {
         return new Template($this->name, $this->parameters, $this->templateText);
     }
 }
 
+/**
+ * Parser for multiple MediaWiki templates in text
+ */
 class ParserTemplates
 {
     private string $text;
     private array $templates;
+
+    /**
+     * Constructor for ParserTemplates
+     *
+     * @param string $text The text containing templates to parse
+     */
     public function __construct(string $text)
     {
         $this->text = $text;
         $this->templates = [];
         $this->parse();
     }
+
+    /**
+     * Find all sub-templates in a string using regex recursion
+     *
+     * @param string $string The string to search
+     * @return array<int, array<int, string>>|null Array of matches or null
+     */
     private function find_sub_templates(string $string): array|null
     {
         preg_match_all("/\{{2}((?>[^\{\}]+)|(?R))*\}{2}/xm", $string, $matches);
-
         return $matches;
     }
+
+    /**
+     * Parse sub-templates from text
+     *
+     * @param string $text The text to parse
+     * @return void
+     */
     private function parse_sub(string $text): void
     {
         $text_templates = $this->find_sub_templates($text);
@@ -289,6 +355,12 @@ class ParserTemplates
         }
         // echo "lenth this->templates:" . count($this->templates) . "\n";
     }
+
+    /**
+     * Parse all templates from the text
+     *
+     * @return void
+     */
     public function parse(): void
     {
         $text_templates = $this->find_sub_templates($this->text);
@@ -302,12 +374,24 @@ class ParserTemplates
         }
         // echo "lenth this->templates:" . count($this->templates) . "\n";
     }
+
+    /**
+     * Get all parsed templates
+     *
+     * @return array<int, Template> Array of Template objects
+     */
     public function getTemplates(): array
     {
         return $this->templates;
     }
 }
 
+/**
+ * Helper function to get all templates from text
+ *
+ * @param string $text The text to parse
+ * @return array<int, Template> Array of Template objects
+ */
 function getTemplates(string $text): array
 {
     if (empty($text)) {
