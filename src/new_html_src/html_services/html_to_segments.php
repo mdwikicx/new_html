@@ -24,6 +24,7 @@ function do_html_to_seg(string $text): string
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Html\html_to_seg instead
+ * @return array{0: string, 1: int}
  */
 function html_to_seg(string $text, string $file_seg): array
 {

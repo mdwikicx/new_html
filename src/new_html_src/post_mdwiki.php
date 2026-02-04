@@ -13,6 +13,7 @@ use function MDWiki\NewHtml\Application\Handlers\handle_url_request_mdwiki as ne
 
 /**
  * @deprecated Use MDWiki\NewHtml\Application\Handlers\handle_url_request_mdwiki
+ * @param array<string, mixed> $params
  */
 function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', array $params = []): string
 {

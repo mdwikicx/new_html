@@ -15,6 +15,7 @@ use function MDWiki\NewHtml\Services\Api\change_html_to_seg as NewChangeHtmlToSe
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Api\change_html_to_seg instead
+ * @return array{0: string, 1: int}
  */
 function change_html_to_seg(string $text): array
 {

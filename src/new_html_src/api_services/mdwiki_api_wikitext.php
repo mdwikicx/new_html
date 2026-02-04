@@ -16,6 +16,7 @@ use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi as New
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_api instead
+ * @return array{0: string, 1: string|int}
  */
 function get_wikitext_from_mdwiki_api(string $title): array
 {
@@ -24,6 +25,7 @@ function get_wikitext_from_mdwiki_api(string $title): array
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi instead
+ * @return array{0: string, 1: string|int}
  */
 function get_wikitext_from_mdwiki_restapi(string $title): array
 {

@@ -26,6 +26,7 @@ function del_div_error(string $html): string
 
 /**
  * @deprecated Use MDWiki\NewHtml\Infrastructure\Utils\get_attrs instead
+ * @return array<string, string>
  */
 function get_attrs(string $text): array
 {

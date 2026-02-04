@@ -16,6 +16,7 @@ use function MDWiki\NewHtml\Services\Api\handle_url_request as NewHandleUrlReque
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Api\post_url_params_result instead
+ * @param array<string, mixed> $params
  */
 function post_url_params_result(string $endPoint, array $params = []): string
 {
@@ -24,6 +25,7 @@ function post_url_params_result(string $endPoint, array $params = []): string
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Api\handle_url_request instead
+ * @param array<string, mixed> $params
  */
 function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
 {

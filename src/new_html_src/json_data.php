@@ -17,6 +17,8 @@ use function MDWiki\NewHtml\Application\Controllers\get_from_json as new_get_fro
 
 /**
  * @deprecated Use MDWiki\NewHtml\Application\Controllers\dump_both_data
+ * @param array<string, mixed> $main_data
+ * @param array<string, mixed> $main_data_all
  */
 function dump_both_data(array $main_data, array $main_data_all): void
 {
@@ -25,6 +27,7 @@ function dump_both_data(array $main_data, array $main_data_all): void
 
 /**
  * @deprecated Use MDWiki\NewHtml\Application\Controllers\get_Data
+ * @return array<string, mixed>
  */
 function get_Data(string $tyt): array
 {
@@ -41,6 +44,7 @@ function get_title_revision(string $title, string $all): string
 
 /**
  * @deprecated Use MDWiki\NewHtml\Application\Controllers\add_title_revision
+ * @return array<string, mixed>|string
  */
 function add_title_revision(string $title, string $revision, string $all): array|string
 {
@@ -49,6 +53,7 @@ function add_title_revision(string $title, string $revision, string $all): array
 
 /**
  * @deprecated Use MDWiki\NewHtml\Application\Controllers\get_from_json
+ * @return array<string, mixed>
  */
 function get_from_json(string $title, string $all): array
 {

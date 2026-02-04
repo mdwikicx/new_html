@@ -24,6 +24,7 @@ function do_wiki_text_to_html(string $wikitext, string $title): mixed
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Html\wiki_text_to_html instead
+ * @return array{0: string, 1: int}
  */
 function wiki_text_to_html(string $wikitext, string $file_html, string $title, bool $new): array
 {
