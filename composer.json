@@ -12,14 +12,14 @@
     "autoload": {
         "psr-4": {
             "FixRefs\\Tests\\": "tests/",
-            "APIServices\\": "new_html_src/api_services/",
-            "HtmlServices\\": "new_html_src/html_services/",
-            "Utils\\": "new_html_src/utils/",
-            "WikiParse\\": "new_html_src/WikiParse/",
-            "WikiTextFixes\\": "new_html_src/WikiTextFixes/"
+            "APIServices\\": "src/new_html_src/api_services/",
+            "HtmlServices\\": "src/new_html_src/html_services/",
+            "Utils\\": "src/new_html_src/utils/",
+            "WikiParse\\": "src/new_html_src/WikiParse/",
+            "WikiTextFixes\\": "src/new_html_src/WikiTextFixes/"
         },
         "files": [
-            "new_html_src/require.php"
+            "src/new_html_src/require.php"
         ]
     },
     "scripts": {
