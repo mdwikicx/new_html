@@ -4,8 +4,8 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\FixImages\remove_images;
-use function Fixes\FixImages\remove_videos;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
 
 class FixImagesTest extends bootstrap
 {

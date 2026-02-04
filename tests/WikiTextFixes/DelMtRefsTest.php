@@ -4,7 +4,7 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\DelMtRefs\del_empty_refs;
+use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
 
 class DelMtRefsTest extends bootstrap
 {

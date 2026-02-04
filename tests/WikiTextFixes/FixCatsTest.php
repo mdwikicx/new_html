@@ -4,7 +4,7 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\FixCats\remove_categories;
+use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
 
 class FixCatsTest extends bootstrap
 {
