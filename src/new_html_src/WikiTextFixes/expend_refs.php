@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Reference expansion utilities
+ *
+ * Provides functions for expanding short references (named ref tags)
+ * by finding their full definitions elsewhere in the text.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
+
 namespace Fixes\ExpendRefs;
 
 /*

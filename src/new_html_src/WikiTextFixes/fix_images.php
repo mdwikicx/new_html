@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Image and video removal utilities
+ *
+ * Provides functions for removing or wrapping images and videos in wikitext,
+ * including handling of video file extensions and conditional existence checks.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
+
 namespace Fixes\FixImages;
 
 /*

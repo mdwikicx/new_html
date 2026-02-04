@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * HTML segmentation services
+ *
+ * Provides functions for converting HTML to segmented content using
+ * the HtmltoSegments API, with caching support.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace Segments;
 /*
 use function Segments\html_to_seg;
@@ -28,7 +37,8 @@ function do_html_to_seg(string $text): string
     // $result = str_replace("https://medwiki.toolforge.org/w/", "https://en.wikipedia.org/w/", $result);
     // $result = str_replace("https://medwiki.toolforge.org/wiki/", "https://en.wikipedia.org/wiki/", $result);
 
-    if ($result == 'Content for translate is not given or is empty') return "";    return $result;
+    if ($result == 'Content for translate is not given or is empty') return "";
+    return $result;
 }
 
 /**

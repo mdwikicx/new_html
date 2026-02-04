@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * MDWiki HTTP request services
+ *
+ * Provides functions for making HTTP requests to MDWiki API endpoints,
+ * supporting both GET and POST methods with cURL.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace PostMdwiki;
 /*
 

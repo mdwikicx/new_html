@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Wikitext fixing orchestration
+ *
+ * Provides the main entry point for applying various wikitext fixes,
+ * coordinating multiple fix functions in a pipeline.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace FixText;
 
 /*

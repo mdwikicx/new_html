@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * File I/O helper utilities
+ *
+ * Provides functions for file and directory operations, including
+ * reading, writing, and managing the revisions storage directory.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace NewHtml\FileHelps;
 
 if (defined('DEBUGX') && DEBUGX === true) {

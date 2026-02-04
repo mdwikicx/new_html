@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Wiki category parsing utilities
+ *
+ * Provides functions for extracting and managing category links
+ * from MediaWiki wikitext.
+ *
+ * @package MDWiki\NewHtml\WikiParse
+ */
+
 namespace WikiParse\Category;
 
 /*

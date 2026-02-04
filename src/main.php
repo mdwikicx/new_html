@@ -1,4 +1,21 @@
 <?php
+/**
+ * Main API endpoint for processing MDWiki page content
+ *
+ * This file handles HTTP requests to generate page content from MDWiki.
+ * It orchestrates the full pipeline: fetching wikitext, applying fixes,
+ * converting to HTML, and segmenting the content.
+ *
+ * Request parameters:
+ * - title: Page title to process
+ * - new: Force regeneration of cached content
+ * - all: Use 'all' data file for Video pages
+ * - printetxt: Output format (wikitext|html|seg)
+ * - print: Alias for printetxt
+ *
+ * @package MDWiki\NewHtml
+ */
+
 header("Access-Control-Allow-Origin: *");
 
 require_once __DIR__ . "/require.php";
@@ -25,6 +42,13 @@ $content_type = $content_types[$printetxt] ?? "application/json";
 
 header("Content-type: $content_type");
 
+/**
+ * Get and normalize the page title from request parameters
+ *
+ * Ensures the first letter of the title is capitalized.
+ *
+ * @return string The normalized page title, or empty string if not provided
+ */
 function get_title(): string
 {
     $title = $_GET['title'] ?? '';
@@ -35,7 +59,16 @@ function get_title(): string
     return $title;
 }
 
-function error_1(string $title, string $revision): bool|string
+/**
+ * Generate error response for missing content
+ *
+ * Sends HTTP 404 status code and returns JSON error response.
+ *
+ * @param string $title The page title that was not found
+ * @param string $revision The revision ID that was not found
+ * @return string JSON encoded error response
+ */
+function error_1(string $title, string $revision): string
 {
     // send request error code using http_response_code
     http_response_code(404);
@@ -53,7 +86,11 @@ function error_1(string $title, string $revision): bool|string
 }
 
 /**
- * @return array{0: string, 1: string, 2: bool}
+ * Get wikitext and revision ID for a page, either from API or cache
+ *
+ * @param string $title The page title to fetch
+ * @param string $all Whether to use 'all' data file (non-empty) or main file (empty)
+ * @return array{0: string, 1: string, 2: bool} Array containing [wikitext, revision_id, from_cache]
  */
 function get_wikitext_revision(string $title, string $all): array
 {
@@ -80,7 +117,13 @@ function get_wikitext_revision(string $title, string $all): array
 }
 
 /**
- * @return array{0: string, 1: bool}
+ * Convert wikitext to HTML with caching support
+ *
+ * @param string $wikitext The wikitext to convert
+ * @param string $file_html The path to the cached HTML file
+ * @param string $title The page title for context
+ * @param bool $new Whether to force regeneration (true) or use cache (false)
+ * @return array{0: string, 1: bool} Array containing [html_content, from_cache]
  */
 function get_HTML_text(string $wikitext, string $file_html, string $title, bool $new): array
 {
@@ -112,7 +155,11 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
 }
 
 /**
- * @return array{0: string, 1: bool}
+ * Convert HTML to segments with caching support
+ *
+ * @param string $HTML_text The HTML text to convert to segments
+ * @param string $file_seg The path to the cached segments file
+ * @return array{0: string, 1: bool} Array containing [segments, from_cache]
  */
 function get_SEG_text(string $HTML_text, string $file_seg): array
 {
@@ -136,7 +183,11 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
 }
 
 /**
- * @param array<string, mixed> $request
+ * Main processing function to handle page generation request
+ *
+ * @param array<string, mixed> $request The request parameters
+ * @param string $title The page title to process
+ * @return void
  */
 function start(array $request, string $title): void
 {

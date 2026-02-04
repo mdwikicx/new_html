@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * HtmltoSegments API services
+ *
+ * Provides functions for converting HTML to segmented content using
+ * the HtmltoSegments API tool.
+ *
+ * @package MDWiki\NewHtml\APIServices
+ */
+
 namespace APIServices;
 
 use function Printn\test_print;

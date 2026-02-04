@@ -1,4 +1,16 @@
 <?php
+/**
+ * Cache existence checker for generated content
+ *
+ * Checks if both seg.html and html.html files exist for a given revision.
+ * Returns 'true' if both files exist, 'false' otherwise.
+ *
+ * Request parameters:
+ * - revid: Revision ID (must be numeric)
+ *
+ * @package MDWiki\NewHtml
+ */
+
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);

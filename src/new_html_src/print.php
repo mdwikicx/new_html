@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Debug printing utilities
+ *
+ * Provides functions for conditional debug output based on
+ * request parameters or DEBUGX constant.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace Printn;
 /*
 use function Printn\test_print;

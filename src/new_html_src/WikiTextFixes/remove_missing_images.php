@@ -1,4 +1,13 @@
 <?php
+/**
+ * Missing image removal utilities
+ *
+ * Provides functions for checking image existence on Wikimedia Commons
+ * and removing missing images from wikitext, including both infobox
+ * images and inline file links.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
 
 namespace RemoveMissingImages;
 

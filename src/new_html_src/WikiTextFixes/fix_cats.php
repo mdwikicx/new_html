@@ -1,4 +1,12 @@
 <?php
+/**
+ * Category removal utilities
+ *
+ * Provides functions for removing category links from wikitext.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
+
 namespace Fixes\FixCats;
 
 /*

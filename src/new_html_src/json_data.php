@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * JSON data storage for title-revision mappings
+ *
+ * Provides functions for managing JSON files that store mappings
+ * between page titles and revision IDs, supporting both main and
+ * 'all' data sets.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace NewHtml\JsonData;
 
 if (defined('DEBUGX') && DEBUGX === true) {

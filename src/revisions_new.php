@@ -1,3 +1,14 @@
+<?php
+/**
+ * Reisions dashboard page
+ *
+ * Displays all processed revisions in an HTML table with links to view
+ * generated files (wikitext, HTML, segments). Also handles JSON cache
+ * regeneration.
+ *
+ * @package MDWiki\NewHtml
+ */
+?>
 <html lang="en">
 
 <?php
@@ -6,6 +17,14 @@ if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+/**
+ * Get the appropriate CDN host for static assets
+ *
+ * Tries to use the WMFLabs CDN, but falls back to cloudflare CDN
+ * if the WMFLabs CDN is unavailable. Results are cached statically.
+ *
+ * @return string The base URL for the CDN to use
+ */
 function get_host(): string
 {
     // $hoste = get_host();
@@ -89,7 +108,11 @@ use function NewHtml\JsonData\get_Data;
 use function NewHtml\JsonData\dump_both_data;
 
 /**
- * @param string[] $files
+ * Generate a badge indicating if a file exists in the list
+ *
+ * @param string[] $files Array of existing filenames
+ * @param string $file The filename to check
+ * @return string HTML badge markup, or empty string if file exists
  */
 function make_badge(array $files, string $file): string
 {

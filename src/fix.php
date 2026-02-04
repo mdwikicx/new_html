@@ -18,6 +18,16 @@
 </head>
 
 <?php
+/**
+ * Wikitext fixing test page
+ *
+ * Provides a web interface for testing the wikitext fixing functionality.
+ * Users can input wikitext and a title, and see the results of applying
+ * various fixes.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 define("DEBUGX", true);
 require_once __DIR__ . "/require.php";
 

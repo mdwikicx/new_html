@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Wikimedia Commons API services
+ *
+ * Provides functions for checking image existence on Wikimedia Commons.
+ *
+ * @package MDWiki\NewHtml\APIServices
+ */
+
 namespace APIServices;
 
 use function APIServices\handle_url_request;
