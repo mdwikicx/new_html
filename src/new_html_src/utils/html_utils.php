@@ -11,7 +11,7 @@ use function HtmlFixes\remove_data_parsoid;
 // <div([^\/>]*?)>(.+?)<\/div>
 // class="error"
 
-function del_div_error($html): string
+function del_div_error(string $html): string
 {
 
     preg_match_all("/<div([^\/>]*?)>(.+?)<\/div>/is", $html, $matches);
@@ -27,7 +27,7 @@ function del_div_error($html): string
     return $html;
 }
 
-function get_attrs($text): array
+function get_attrs(string $text): array
 {
     $text = "<ref $text>";
     $attrfind_tolerant = '/((?<=[\'"\s\/])[^\s\/>][^\s\/=>]*)(\s*=+\s*(\'[^\']*\'|"[^"]*"|(?![\'"])[^>\s]*))?(?:\s|\/(?!>))*/';
@@ -46,7 +46,7 @@ function get_attrs($text): array
     return $attrs;
 }
 
-function fix_link_red($html): string
+function fix_link_red(string $html): string
 {
 
     preg_match_all("/<a([^>]*?)>(.+?)<\/a>/is", $html, $matches);
@@ -106,7 +106,7 @@ function fix_link_red($html): string
     return $html;
 }
 
-function remove_data_parsoid($html): string
+function remove_data_parsoid(string $html): string
 {
 
     if (empty($html)) return "";
