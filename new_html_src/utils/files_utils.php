@@ -42,7 +42,7 @@ function file_write($file, $text)
     }
     // ---
     try {
-        file_put_contents($file, $text);
+        file_put_contents($file, $text, LOCK_EX);
     } catch (\Exception $e) {
         test_print("Error: Could not write to file: $file");
     }
