@@ -3,7 +3,7 @@
     "description": "MediaWiki content transformation and API services",
     "type": "project",
     "require": {
-        "php": ">=7.4"
+        "php": ">=8.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",

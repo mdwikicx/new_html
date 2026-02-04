@@ -319,7 +319,7 @@ View the report by opening `coverage/index.html` in a browser.
 ### Tests Failing
 
 1. Check PHPUnit version: `vendor/bin/phpunit --version`
-2. Verify PHP version: `php --version` (requires PHP >= 7.4)
+2. Verify PHP version: `php --version` (requires PHP >= 8.2)
 3. Ensure dependencies are installed: `composer install`
 4. Check API availability for API tests
 

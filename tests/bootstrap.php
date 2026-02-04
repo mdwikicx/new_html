@@ -16,10 +16,4 @@ require __DIR__ . '/../new_html_src/require.php';
 
 use PHPUnit\Framework\TestCase;
 
-class bootstrap extends TestCase
-{
-    public function markTestSkipped($message = ''): void
-    {
-        parent::markTestSkipped($message);
-    }
-}
+class bootstrap extends TestCase {}
