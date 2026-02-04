@@ -52,12 +52,24 @@ if (!is_dir(REVISIONS_PATH)) {
 $json_file = REVISIONS_PATH . '/json_data.json';
 $json_file_all = REVISIONS_PATH . '/json_data_all.json';
 
+if (!defined('JSON_FILE')) {
+    define('JSON_FILE', $json_file);
+}
+if (!defined('JSON_FILE_ALL')) {
+    define('JSON_FILE_ALL', $json_file_all);
+}
 if (!file_exists($json_file)) {
     file_put_contents($json_file, '{}', LOCK_EX);
 }
 
 if (!file_exists($json_file_all)) {
     file_put_contents($json_file_all, '{}', LOCK_EX);
+}
+
+$user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
+
+if (!defined('USER_AGENT')) {
+    define('USER_AGENT', $user_agent);
 }
 
 // Application is now bootstrapped and ready
