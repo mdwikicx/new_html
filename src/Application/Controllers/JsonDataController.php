@@ -31,21 +31,6 @@ use function MDWiki\NewHtml\Infrastructure\Utils\get_file_dir;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
-$json_file = __DIR__ . "/../../../revisions_new/json_data.json";
-$json_file_all = __DIR__ . "/../../../revisions_new/json_data_all.json";
-
-$json_dir = dirname($json_file);
-if (!is_dir($json_dir)) {
-    mkdir($json_dir, 0755, true);
-}
-
-if (!file_exists($json_file)) {
-    file_write($json_file, '{}');
-}
-
-if (!file_exists($json_file_all)) {
-    file_write($json_file_all, '{}');
-}
 
 /**
  * Dump both main data and all data to JSON files
@@ -56,10 +41,9 @@ if (!file_exists($json_file_all)) {
  */
 function dump_both_data(array $main_data, array $main_data_all): void
 {
-    global $json_file_all, $json_file;
 
-    file_write($json_file ?? '', json_encode($main_data, JSON_PRETTY_PRINT));
-    file_write($json_file_all ?? '', json_encode($main_data_all, JSON_PRETTY_PRINT));
+    file_write(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
+    file_write(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
 
 /**
@@ -70,9 +54,7 @@ function dump_both_data(array $main_data, array $main_data_all): void
  */
 function get_Data(string $tyt): array
 {
-    global $json_file_all, $json_file;
-
-    $file = ($tyt == 'all') ? ($json_file_all ?? '') : ($json_file ?? '');
+    $file = ($tyt == 'all') ? JSON_FILE_ALL : JSON_FILE;
 
     $file_text = read_file($file);
 
@@ -91,9 +73,8 @@ function get_Data(string $tyt): array
  */
 function get_title_revision(string $title, string $all): string
 {
-    global $json_file_all, $json_file;
 
-    $file = (!empty($all)) ? ($json_file_all ?? '') : ($json_file ?? '');
+    $file = (!empty($all)) ? JSON_FILE_ALL : JSON_FILE;
 
     $file_text = read_file($file);
 
@@ -119,11 +100,9 @@ function get_title_revision(string $title, string $all): string
  */
 function add_title_revision(string $title, string $revision, string $all): array|string
 {
-    global $json_file_all, $json_file;
-
     if (empty($title) || empty($revision)) return '';
 
-    $file = (!empty($all)) ? ($json_file_all ?? '') : ($json_file ?? '');
+    $file = (!empty($all)) ? JSON_FILE_ALL : JSON_FILE;
 
     $file_text = read_file($file);
 
