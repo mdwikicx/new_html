@@ -27,7 +27,7 @@ function get_wikitext_from_mdwiki_api($title)
     // $req = post_url_params_result($url, $params);
     $req = handle_url_request_mdwiki($url, 'GET', $params);
 
-    if ($req === false) {
+    if (empty($req)) {
         test_print("Failed to fetch data from MDWiki API for title: $title");
         return ['', ''];
     }

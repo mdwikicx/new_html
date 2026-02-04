@@ -49,7 +49,7 @@ function get_wikitext($title, $all)
         $source = fix_wikitext($source, $title);
     }
     // ---
-    if ($source == "") {
+    if (empty($source)) {
         test_print("wikitext empty!.");
     };
     // ---

@@ -4,7 +4,6 @@ namespace WikiParse\Template;
 
 class Template
 {
-    private string $template;
     private string $name;
     private string $name_strip;
     private string $templateText;
