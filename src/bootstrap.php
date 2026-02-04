@@ -36,7 +36,7 @@ if (!defined('SRC_PATH')) {
 }
 
 if (!defined('REVISIONS_PATH')) {
-    define('REVISIONS_PATH', APP_ROOT . '/../revisions_new');
+    define('REVISIONS_PATH', APP_ROOT . '/revisions_new');
 }
 
 // Initialize revisions directory if needed
