@@ -12,6 +12,10 @@
     "autoload": {
         "psr-4": {
             "FixRefs\\Tests\\": "tests/",
+            "MDWiki\\NewHtml\\Application\\": "src/Application/",
+            "MDWiki\\NewHtml\\Services\\": "src/Services/",
+            "MDWiki\\NewHtml\\Domain\\": "src/Domain/",
+            "MDWiki\\NewHtml\\Infrastructure\\": "src/Infrastructure/",
             "APIServices\\": "src/new_html_src/api_services/",
             "HtmlServices\\": "src/new_html_src/html_services/",
             "Utils\\": "src/new_html_src/utils/",
@@ -19,7 +23,10 @@
             "WikiTextFixes\\": "src/new_html_src/WikiTextFixes/"
         },
         "files": [
-            "src/new_html_src/require.php"
+            "src/new_html_src/require.php",
+            "src/Infrastructure/Debug/PrintHelper.php",
+            "src/Infrastructure/Utils/FileUtils.php",
+            "src/Infrastructure/Utils/HtmlUtils.php"
         ]
     },
     "scripts": {
