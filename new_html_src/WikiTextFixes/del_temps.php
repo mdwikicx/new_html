@@ -1,0 +1,111 @@
+<?php
+
+namespace Fixes\DelTemps;
+
+/*
+Usage:
+
+use function Fixes\DelTemps\remove_templates;
+use function Fixes\DelTemps\remove_lead_templates;
+
+*/
+
+use function WikiParse\Template\getTemplates;
+
+$tempsToDelete = [
+    "rtt",
+    "#unlinkedwikibase",
+    "about",
+    "anchor",
+    "defaultsort",
+    "distinguish",
+    "esborrany",
+    "featured article",
+    "fr",
+    "good article",
+    "italic title",
+    "other uses",
+    "redirect",
+    "redirect-distinguish",
+    "see also",
+    "short description",
+    "sprotect",
+    "tedirect-distinguish",
+    "toc limit",
+    "use american english",
+    "use dmy dates",
+    "use mdy dates",
+    "void",
+];
+
+$temps_patterns = [
+    // any template startswith pp-
+    "/^pp(-.*)?$/",
+    "/^articles (for|with|needing|containing).*$/",
+    "/^engvar[ab]$/",
+    "/^use[\sa-z]+(english|spelling|referencing)$/",
+    "/^use [dmy]+ dates$/",
+    "/^wikipedia articles (for|with|needing|containing).*$/",
+    "/^(.*-)?stub$/"
+];
+
+function remove_templates($text)
+{
+    global $tempsToDelete, $temps_patterns;
+    // ---
+    $temps_in = getTemplates($text);
+    // ---
+    $new_text = $text;
+    // ---
+    foreach ($temps_in as $temp) {
+        // ---
+        $name = strtolower($temp->getStripName());
+        // ---
+        $old_text_template = $temp->getTemplateText();
+        // ---
+        if (in_array($name, $tempsToDelete)) {
+            $new_text = str_replace($old_text_template, '', $new_text);
+            continue;
+        }
+        // ---
+        // if $name start with "#unlinkedwikibase" delete it
+        if (strpos($name, "#unlinkedwikibase") === 0) {
+            $new_text = str_replace($old_text_template, '', $new_text);
+            continue;
+        }
+        // ---
+        foreach ($temps_patterns as $pattern) {
+            if (preg_match($pattern, $name)) {
+                $new_text = str_replace($old_text_template, '', $new_text);
+                continue;
+            }
+        }
+        // ---
+    };
+    // ---
+    return $new_text;
+}
+
+function remove_lead_templates($text)
+{
+    // ---
+    // remove any thig before {{Infobox medical condition
+    $temps = [
+        "{{infobox",
+        "{{drugbox",
+        "{{speciesbox",
+    ];
+    // ---
+    $text2 = strtolower($text);
+    // ---
+    foreach ($temps as $temp) {
+        $temp_index = strpos($text2, strtolower($temp));
+        // ---
+        if ($temp_index !== false) {
+            $text = substr($text, $temp_index);
+            break;
+        }
+    }
+
+    return trim($text);
+}
