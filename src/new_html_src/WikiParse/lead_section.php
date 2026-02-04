@@ -5,7 +5,7 @@ namespace Lead;
 use function Lead\get_lead_section;
 */
 
-function get_lead_section_old($wikitext)
+function get_lead_section_old($wikitext): string
 {
     if (empty($wikitext) || strpos($wikitext, '==') === false) {
         return $wikitext;
@@ -26,7 +26,7 @@ function get_lead_section_old($wikitext)
     return $lead;
 }
 
-function get_lead_section($wikitext)
+function get_lead_section($wikitext): string
 {
     if (empty($wikitext)) {
         return $wikitext;

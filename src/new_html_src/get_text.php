@@ -14,7 +14,7 @@ use function Fixes\ExpendRefs\refs_expend_work;
 
 use function APIServices\get_wikitext_from_mdwiki_restapi;
 
-function get_wikitext($title, $all)
+function get_wikitext($title, $all): array
 {
     // ---
     $title = str_replace(" ", "_", $title);

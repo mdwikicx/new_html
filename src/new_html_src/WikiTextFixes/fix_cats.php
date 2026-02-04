@@ -11,7 +11,7 @@ use function Fixes\FixCats\remove_categories;
 
 use function WikiParse\Category\get_categories;
 
-function remove_categories($text)
+function remove_categories($text): string
 {
     // ---
     $categories = get_categories($text);

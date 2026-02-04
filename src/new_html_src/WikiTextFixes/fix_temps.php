@@ -11,7 +11,7 @@ use function Fixes\FixTemps\add_missing_title;
 
 use function WikiParse\Template\getTemplates;
 
-function add_missing_title($text, $title, $ljust = 17)
+function add_missing_title($text, $title, $ljust = 17): string
 {
     // ---
     $temps = [

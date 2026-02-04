@@ -6,7 +6,7 @@ use function Printn\test_print;
 use function APIServices\handle_url_request;
 // use function APIServices\post_url_params_result;
 
-function change_html_to_seg($text)
+function change_html_to_seg($text): array
 {
     $url = 'https://ncc2c.toolforge.org/HtmltoSegments';
 

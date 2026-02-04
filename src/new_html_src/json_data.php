@@ -37,14 +37,14 @@ if (!file_exists($json_file_all)) {
     file_write($json_file_all, '{}');
 }
 
-function dump_both_data($main_data, $main_data_all)
+function dump_both_data($main_data, $main_data_all): void
 {
     global $json_file_all, $json_file;
     // ---
     file_write($json_file, json_encode($main_data, JSON_PRETTY_PRINT));
     file_write($json_file_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
-function get_Data($tyt)
+function get_Data($tyt): string
 {
     global $json_file_all, $json_file;
     // ---
@@ -59,7 +59,7 @@ function get_Data($tyt)
     return $data;
 }
 
-function get_title_revision($title, $all)
+function get_title_revision($title, $all): string
 {
     global $json_file_all, $json_file;
     // ---
@@ -80,7 +80,7 @@ function get_title_revision($title, $all)
     return "";
 }
 
-function add_title_revision($title, $revision, $all)
+function add_title_revision($title, $revision, $all): array|string
 {
     global $json_file_all, $json_file;
     // ---
@@ -103,7 +103,7 @@ function add_title_revision($title, $revision, $all)
     return $data;
 }
 
-function get_from_json($title, $all)
+function get_from_json($title, $all): array
 {
     $revid = get_title_revision($title, $all);
     // ---

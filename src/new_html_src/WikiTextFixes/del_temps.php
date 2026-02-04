@@ -12,7 +12,7 @@ use function Fixes\DelTemps\remove_lead_templates;
 
 use function WikiParse\Template\getTemplates;
 
-function check_temps_patterns($name, $old_text_template, $new_text)
+function check_temps_patterns($name, $old_text_template, $new_text): string
 {
     $temps_patterns = [
         // any template startswith pp-
@@ -33,7 +33,7 @@ function check_temps_patterns($name, $old_text_template, $new_text)
     }
     return $new_text;
 }
-function check_temp_to_delete($name)
+function check_temp_to_delete($name): bool
 {
     $tempsToDelete = [
         "rtt",
@@ -68,7 +68,7 @@ function check_temp_to_delete($name)
     return in_array($name, $tempsToDelete);
 }
 
-function remove_templates($text)
+function remove_templates($text): string
 {
     $temps_in = getTemplates($text);
     // ---
@@ -97,7 +97,7 @@ function remove_templates($text)
     return $new_text;
 }
 
-function remove_lead_templates($text)
+function remove_lead_templates($text): string
 {
     // ---
     // remove any thig before {{Infobox medical condition

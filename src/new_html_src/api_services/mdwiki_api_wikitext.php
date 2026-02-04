@@ -11,7 +11,7 @@ use function PostMdwiki\handle_url_request_mdwiki;
 // use function APIServices\post_url_params_result;
 use function Printn\test_print;
 
-function get_wikitext_from_mdwiki_api($title)
+function get_wikitext_from_mdwiki_api($title): array
 {
     $params = [
         "action" => "query",
@@ -47,7 +47,7 @@ function get_wikitext_from_mdwiki_api($title)
     return [$source, $revid];
 }
 
-function get_wikitext_from_mdwiki_restapi($title)
+function get_wikitext_from_mdwiki_restapi($title): array
 {
     $title2 = str_replace("/", "%2F", $title);
     $title2 = str_replace(" ", "_", $title2);

@@ -25,7 +25,7 @@ $content_type = $content_types[$printetxt] ?? "application/json";
 
 header("Content-type: $content_type");
 
-function get_title()
+function get_title(): string
 {
     $title = $_GET['title'] ?? '';
     // ---
@@ -35,7 +35,7 @@ function get_title()
     return $title;
 }
 
-function error_1($title, $revision)
+function error_1($title, $revision): bool|string
 {
     // send request error code using http_response_code
     http_response_code(404);
@@ -53,7 +53,7 @@ function error_1($title, $revision)
     return json_encode($data);
 }
 
-function get_wikitext_revision($title, $all)
+function get_wikitext_revision($title, $all): array
 {
     global $printetxt;
     // ---
@@ -78,7 +78,7 @@ function get_wikitext_revision($title, $all)
     return [$wikitext, $revision, $from_cache];
 }
 
-function get_HTML_text($wikitext, $file_html, $title, $new)
+function get_HTML_text($wikitext, $file_html, $title, $new): array
 {
     global $printetxt;
     // ---
@@ -108,7 +108,7 @@ function get_HTML_text($wikitext, $file_html, $title, $new)
     return [$HTML_text, $from_cache];
 }
 
-function get_SEG_text($HTML_text, $file_seg)
+function get_SEG_text($HTML_text, $file_seg): array
 {
     global $printetxt;
     // ---
@@ -130,7 +130,7 @@ function get_SEG_text($HTML_text, $file_seg)
     return [$SEG_text, $from_cache];
 }
 
-function start($request, $title)
+function start($request, $title): void
 {
     // ---
     $new = isset($request['new']);

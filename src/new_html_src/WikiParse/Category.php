@@ -9,7 +9,7 @@ use function WikiParse\Category\get_categories;
 
 */
 
-function get_categories($text)
+function get_categories($text): array
 {
     // $parser = new ParserCategories($text);
     // $categories = $parser->getCategories();

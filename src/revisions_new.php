@@ -6,7 +6,7 @@ if (defined('DEBUGX') && DEBUGX) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
-function get_host()
+function get_host(): string
 {
     // $hoste = get_host();
     //---
@@ -88,7 +88,7 @@ use function NewHtml\FileHelps\get_revisions_new_dir;
 use function NewHtml\JsonData\get_Data;
 use function NewHtml\JsonData\dump_both_data;
 
-function make_badge($files, $file)
+function make_badge($files, $file): string
 {
     // ---
     if (!in_array($file, $files)) {

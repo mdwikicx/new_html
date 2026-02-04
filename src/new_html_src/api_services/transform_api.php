@@ -6,7 +6,7 @@ use function APIServices\handle_url_request;
 // use function APIServices\post_url_params_result;
 use function Printn\test_print;
 
-function convert_wikitext_to_html($text, $title)
+function convert_wikitext_to_html($text, $title): array
 {
     $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/Sandbox";
 

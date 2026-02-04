@@ -12,13 +12,13 @@ use function Printn\test_print;
 
 $revisions_new_dir = dirname(dirname(__DIR__)) . '/revisions_new';
 
-function get_revisions_new_dir()
+function get_revisions_new_dir(): string
 {
     global $revisions_new_dir;
     return $revisions_new_dir;
 }
 
-function get_file_dir($revision, $all)
+function get_file_dir($revision, $all): string
 {
     global $revisions_new_dir;
     // ---
@@ -40,7 +40,7 @@ function get_file_dir($revision, $all)
     return $file_dir;
 }
 
-function file_write($file, $text)
+function file_write($file, $text): void
 {
     if (empty($text) || empty($file)) {
         return;
@@ -53,7 +53,7 @@ function file_write($file, $text)
     }
 }
 
-function read_file($file)
+function read_file($file): bool|string
 {
     // ---
     if (empty($file) || !file_exists($file)) {

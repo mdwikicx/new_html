@@ -21,7 +21,7 @@ use function RemoveMissingImages\remove_missing_images;
 // use function Fixes\FixImages\remove_images;
 // use function Fixes\fix_langs_links\remove_lang_links;
 
-function fix_wikitext($text, $title)
+function fix_wikitext($text, $title): string
 {
     $text = str_replace("{{drugbox", "{{Infobox drug", $text);
     $text = str_replace("{{Drugbox", "{{Infobox drug", $text);

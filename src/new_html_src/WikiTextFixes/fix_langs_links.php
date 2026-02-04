@@ -9,7 +9,7 @@ use function Fixes\fix_langs_links\remove_lang_links;
 */
 
 
-function remove_lang_links($text)
+function remove_lang_links($text): string
 {
     // ---
     global $code_to_lang;
