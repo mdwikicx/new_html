@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Language link removal utilities
+ *
+ * Provides functions for removing interwiki language links from wikitext.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
+
 namespace Fixes\fix_langs_links;
 
 /*

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Empty reference handling utilities
+ *
+ * Provides functions for deleting or expanding empty short reference tags
+ * in wikitext.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
+
 namespace Fixes\DelMtRefs;
 
 /*

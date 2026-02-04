@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * HTML segmentation services
+ *
+ * Provides functions for converting HTML to segmented content using
+ * the HtmltoSegments API, with caching support.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace Segments;
 /*
 use function Segments\html_to_seg;

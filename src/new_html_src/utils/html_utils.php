@@ -1,4 +1,12 @@
 <?PHP
+/**
+ * HTML fixing utilities
+ *
+ * Provides functions for fixing and cleaning HTML content, including
+ * removing error divs, fixing red links, and removing data-parsoid attributes.
+ *
+ * @package MDWiki\NewHtml
+ */
 
 namespace HtmlFixes;
 /*

@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Template removal utilities
+ *
+ * Provides functions for removing unwanted templates from wikitext,
+ * including maintenance templates, stub templates, and other
+ * non-essential templates.
+ *
+ * @package MDWiki\NewHtml\WikiTextFixes
+ */
+
 namespace Fixes\DelTemps;
 
 /*

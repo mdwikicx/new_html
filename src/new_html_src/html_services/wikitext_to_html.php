@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * HTML conversion services
+ *
+ * Provides functions for converting wikitext to HTML using the
+ * Wikipedia REST API, with caching support.
+ *
+ * @package MDWiki\NewHtml
+ */
+
 namespace Html;
 /*
 use function Html\wiki_text_to_html;
