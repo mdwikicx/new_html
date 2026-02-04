@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+if (defined('DEBUGX') && DEBUGX === true) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+
+$autoloadPath = dirname(__DIR__) . '/vendor/autoload.php';
+if (!file_exists($autoloadPath)) {
+    throw new RuntimeException('Composer autoloader not found. Run "composer install" first.');
+}
+
+require_once $autoloadPath;
