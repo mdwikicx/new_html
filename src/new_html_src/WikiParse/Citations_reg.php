@@ -1,24 +1,35 @@
 <?php
 
 /**
- * Wiki citation parsing utilities
+ * Wiki citation parsing utilities - DEPRECATED
  *
- * Provides functions for parsing and extracting citation tags
- * (ref tags) from MediaWiki wikitext, including both full references
- * and short citations.
+ * This file provides backward compatibility wrappers.
+ * New code should use MDWiki\NewHtml\Domain\Parser namespace instead.
  *
  * @package MDWiki\NewHtml\WikiParse
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\CitationsParser instead
  */
 
 namespace WikiParse\Reg_Citations;
 
+use function MDWiki\NewHtml\Domain\Parser\get_ref_name as new_get_ref_name;
+use function MDWiki\NewHtml\Domain\Parser\get_regex_citations as new_get_regex_citations;
+use function MDWiki\NewHtml\Domain\Parser\get_full_refs as new_get_full_refs;
+use function MDWiki\NewHtml\Domain\Parser\get_short_citations as new_get_short_citations;
+
 /*
-Usage:
+Usage (DEPRECATED):
 
 use function WikiParse\Reg_Citations\get_ref_name;
 use function WikiParse\Reg_Citations\get_regex_citations;
 use function WikiParse\Reg_Citations\get_full_refs;
 use function WikiParse\Reg_Citations\get_short_citations;
+
+New usage:
+use function MDWiki\NewHtml\Domain\Parser\get_ref_name;
+use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
+use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
+use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
 
 */
 
@@ -27,21 +38,11 @@ use function WikiParse\Reg_Citations\get_short_citations;
  *
  * @param string $options The options string from a ref tag
  * @return string The name value, or empty string if not found
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\get_ref_name instead
  */
 function get_ref_name(string $options): string
 {
-    if (empty(trim($options))) {
-        return "";
-    }
-    // $pa = "/name\s*=\s*\"(.*?)\"/i";
-    $pa = "/name\s*\=\s*[\"\']*([^>\"\']*)[\"\']*\s*/i";
-    preg_match($pa, $options, $matches);
-
-    if (!isset($matches[1])) {
-        return "";
-    }
-    $name = trim($matches[1]);
-    return $name;
+    return new_get_ref_name($options);
 }
 
 /**
@@ -49,26 +50,12 @@ function get_ref_name(string $options): string
  *
  * @param string $text The text containing citations to extract
  * @return array<int, array<string, string>> Array of citation information including content, tag, and options
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\get_regex_citations instead
  */
 
 function get_regex_citations(string $text): array
 {
-    preg_match_all("/<ref([^\/>]*?)>(.+?)<\/ref>/is", $text, $matches);
-
-    $citations = [];
-
-    foreach ($matches[1] as $key => $citation_options) {
-        $content = $matches[2][$key];
-        $ref_tag = $matches[0][$key];
-        $options = $citation_options;
-        $citation = [
-            "content" => $content,
-            "tag" => $ref_tag,
-            "name" => get_ref_name($options),
-            "options" => $options
-        ];
-        $citations[] = $citation;
-    }    return $citations;
+    return new_get_regex_citations($text);
 }
 
 /**
@@ -76,23 +63,11 @@ function get_regex_citations(string $text): array
  *
  * @param string $text The text to parse
  * @return array<string, string> Array mapping ref names to their full <ref>...</ref> tags
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\get_full_refs instead
  */
 function get_full_refs(string $text): array
 {
-    $full = [];
-    $citations = get_regex_citations($text);
-
-    foreach ($citations as $cite) {
-        $name = $cite["name"];
-        $ref = $cite["tag"];
-
-        if (empty($name)) {
-            continue;
-        }
-
-        $full[$name] = $ref;
-    };
-    return $full;
+    return new_get_full_refs($text);
 }
 
 /**
@@ -100,24 +75,9 @@ function get_full_refs(string $text): array
  *
  * @param string $text The text to parse
  * @return array<int, array<string, string>> Array of short citation information
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\get_short_citations instead
  */
 function get_short_citations(string $text): array
 {
-    preg_match_all("/<ref ([^\/>]*?)\/\s*>/is", $text, $matches);
-
-    $citations = [];
-
-    foreach ($matches[1] as $key => $citation_options) {
-        $ref_tag = $matches[0][$key];
-        $options = $citation_options;
-        $citation = [
-            "content" => "",
-            "tag" => $ref_tag,
-            "name" => get_ref_name($options),
-            "options" => $options
-        ];
-        $citations[] = $citation;
-    }
-
-    return $citations;
+    return new_get_short_citations($text);
 }

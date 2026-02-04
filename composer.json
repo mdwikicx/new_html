@@ -23,10 +23,14 @@
             "WikiTextFixes\\": "src/new_html_src/WikiTextFixes/"
         },
         "files": [
-            "src/new_html_src/require.php",
             "src/Infrastructure/Debug/PrintHelper.php",
             "src/Infrastructure/Utils/FileUtils.php",
-            "src/Infrastructure/Utils/HtmlUtils.php"
+            "src/Infrastructure/Utils/HtmlUtils.php",
+            "src/Domain/Parser/CategoryParser.php",
+            "src/Domain/Parser/CitationsParser.php",
+            "src/Domain/Parser/LeadSectionParser.php",
+            "src/Domain/Parser/TemplateParser.php",
+            "src/new_html_src/require.php"
         ]
     },
     "scripts": {

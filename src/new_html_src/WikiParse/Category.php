@@ -1,20 +1,26 @@
 <?php
 
 /**
- * Wiki category parsing utilities
+ * Wiki category parsing utilities - DEPRECATED
  *
- * Provides functions for extracting and managing category links
- * from MediaWiki wikitext.
+ * This file provides backward compatibility wrappers.
+ * New code should use MDWiki\NewHtml\Domain\Parser namespace instead.
  *
  * @package MDWiki\NewHtml\WikiParse
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\CategoryParser instead
  */
 
 namespace WikiParse\Category;
 
+use function MDWiki\NewHtml\Domain\Parser\get_categories as new_get_categories;
+
 /*
-Usage:
+Usage (DEPRECATED):
 
 use function WikiParse\Category\get_categories;
+
+New usage:
+use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
 */
 
@@ -23,24 +29,9 @@ use function WikiParse\Category\get_categories;
  *
  * @param string $text The wikitext to parse
  * @return array<string, string> Array mapping category names to their full [[Category:...]] tags
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\get_categories instead
  */
 function get_categories(string $text): array
 {
-    // $parser = new ParserCategories($text);
-    // $categories = $parser->getCategories();
-
-    $categories = [];
-
-    preg_match_all("/\[\[\s*Category\s*\:([^\]\]]+?)\]\]/is", $text, $matches);
-    if (!empty($matches[1])) {
-        foreach ($matches[0] as $u => $ca) {
-            $mvalue = $matches[1][$u];
-            $bleh = explode("|", $mvalue);
-            $category = trim(array_shift($bleh));
-            $bleh = null;
-            $categories[$category] = $ca;
-            // echo $ca . "<br>";
-        }
-    };
-    return $categories;
+    return new_get_categories($text);
 }

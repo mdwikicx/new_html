@@ -1,18 +1,26 @@
 <?php
 
 /**
- * Lead section extraction utilities
+ * Lead section extraction utilities - DEPRECATED
  *
- * Provides functions for extracting the lead section from
- * MediaWiki wikitext, which is the content before the first
- * section heading.
+ * This file provides backward compatibility wrappers.
+ * New code should use MDWiki\NewHtml\Domain\Parser namespace instead.
  *
  * @package MDWiki\NewHtml\Lead
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\LeadSectionParser instead
  */
 
 namespace Lead;
+
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section_old as new_get_lead_section_old;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section as new_get_lead_section;
+
 /*
+Usage (DEPRECATED):
 use function Lead\get_lead_section;
+
+New usage:
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 */
 
 /**
@@ -20,24 +28,11 @@ use function Lead\get_lead_section;
  *
  * @param string $wikitext The wikitext to process
  * @return string The lead section with references tag appended
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\get_lead_section_old instead
  */
 function get_lead_section_old(string $wikitext): string
 {
-    if (empty($wikitext) || strpos($wikitext, '==') === false) {
-        return $wikitext;
-    }
-
-    // Split the wikitext into sections by lines starting with ==+ and get only the first section
-    $sections = preg_split('/==+/', $wikitext, 2, PREG_SPLIT_NO_EMPTY);
-    $lead = $sections[0] ?? '';
-
-    if (empty($lead)) {
-        return $wikitext;
-    }
-    $lead .= "\n==References==\n<references />";
-
-    // $lead = refs_expend_work($lead, $wikitext);
-    return $lead;
+    return new_get_lead_section_old($wikitext);
 }
 
 /**
@@ -45,32 +40,9 @@ function get_lead_section_old(string $wikitext): string
  *
  * @param string $wikitext The wikitext to process
  * @return string The lead section with references tag appended, or empty string if no lead
+ * @deprecated Use MDWiki\NewHtml\Domain\Parser\get_lead_section instead
  */
 function get_lead_section(string $wikitext): string
 {
-    if (empty($wikitext)) {
-        return $wikitext;
-    }
-
-    // Check if there's no heading (strpos returns false)
-    if (strpos($wikitext, '==') === false) {
-        return $wikitext;
-    }
-
-    // Split by lines that start with optional whitespace then == (heading markers)
-    // Use multiline mode with ^ to match start of line
-    $sections = preg_split('/^\s*==+/m', $wikitext, 2);
-    $lead = $sections[0] ?? '';
-
-    // Trim the lead section
-    $lead = trim($lead);
-
-    // If lead is empty or only whitespace, return empty string
-    if (empty($lead)) {
-        return "";
-    }
-
-    $lead .= "\n==References==\n<references />";
-
-    return $lead;
+    return new_get_lead_section($wikitext);
 }
