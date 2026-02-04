@@ -4,11 +4,11 @@ namespace MDWiki\NewHtml\Services\Api;
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
-$usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
+$GLOBALS['MDWIKI_USR_AGENT'] = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
 
 function post_url_params_result(string $endPoint, array $params = []): string
 {
-    global $usr_agent;
+    $usr_agent = $GLOBALS['MDWIKI_USR_AGENT'];
     $ch = curl_init();
 
     $url = "{$endPoint}";
@@ -43,7 +43,7 @@ function post_url_params_result(string $endPoint, array $params = []): string
 
 function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
 {
-    global $usr_agent;
+    $usr_agent = $GLOBALS['MDWIKI_USR_AGENT'];
 
     $ch = curl_init();
 

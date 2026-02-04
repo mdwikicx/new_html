@@ -2,7 +2,7 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
-$code_to_lang = [
+$GLOBALS['MDWIKI_CODE_TO_LANG'] = [
     'ab' => 'Abkhaz',
     'ace' => 'Acehnese',
     'af' => 'Afrikaans',
@@ -278,7 +278,7 @@ $code_to_lang = [
 function remove_lang_links(string $text): string
 {
 
-    global $code_to_lang;
+    $code_to_lang = $GLOBALS['MDWIKI_CODE_TO_LANG'];
 
     $langs = implode('|', array_keys($code_to_lang));
 
