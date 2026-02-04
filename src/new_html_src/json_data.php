@@ -53,7 +53,7 @@ function add_title_revision(string $title, string $revision, string $all): array
 
 /**
  * @deprecated Use MDWiki\NewHtml\Application\Controllers\get_from_json
- * @return array<string, mixed>
+ * @return array{0: string, 1: string}
  */
 function get_from_json(string $title, string $all): array
 {

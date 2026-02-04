@@ -15,7 +15,7 @@ use function MDWiki\NewHtml\Services\Api\convert_wikitext_to_html as NewConvertW
 
 /**
  * @deprecated Use MDWiki\NewHtml\Services\Api\convert_wikitext_to_html instead
- * @return array{0: string, 1: string}
+ * @return array<string, string>
  */
 function convert_wikitext_to_html(string $text, string $title): array
 {

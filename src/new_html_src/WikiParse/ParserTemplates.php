@@ -51,7 +51,7 @@ class ParserTemplates extends NewParserTemplates
  * Helper function to get all templates from text
  *
  * @param string $text The text to parse
- * @return array<int, Template|MDWiki\NewHtml\Domain\Parser\Template> Array of Template objects
+ * @return array<int, Template> Array of Template objects
  * @deprecated Use MDWiki\NewHtml\Domain\Parser\getTemplates instead
  */
 function getTemplates(string $text): array
