@@ -41,8 +41,8 @@ use function NewHtml\FileHelps\read_file;
 function dump_both_data(array $main_data, array $main_data_all): void
 {
 
-    file_write(JSON_FILE ?? '', json_encode($main_data, JSON_PRETTY_PRINT));
-    file_write(JSON_FILE_ALL ?? '', json_encode($main_data_all, JSON_PRETTY_PRINT));
+    file_write(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
+    file_write(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
 
 /**

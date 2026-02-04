@@ -29,7 +29,7 @@
  */
 
 // define("DEBUGX", true);
-require_once __DIR__ . "/require.php";
+require_once __DIR__ . "/bootstrap.php";
 
 use function FixText\fix_wikitext;
 

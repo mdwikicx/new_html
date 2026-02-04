@@ -102,7 +102,7 @@ echo <<<HTML
     </head>
 HTML;
 
-require_once __DIR__ . "/require.php";
+require_once __DIR__ . "/bootstrap.php";
 
 use function NewHtml\JsonData\get_Data;
 use function NewHtml\JsonData\dump_both_data;

@@ -18,7 +18,7 @@
 
 header("Access-Control-Allow-Origin: *");
 
-require_once __DIR__ . "/require.php";
+require_once __DIR__ . "/bootstrap.php";
 
 use function Printn\test_print;
 use function FixText\fix_wikitext;
