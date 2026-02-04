@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Wiki citation parsing utilities
+ *
+ * Provides functions for parsing and extracting citation tags
+ * (ref tags) from MediaWiki wikitext, including both full references
+ * and short citations.
+ *
+ * @package MDWiki\NewHtml\WikiParse
+ */
+
 namespace WikiParse\Reg_Citations;
 
 /*

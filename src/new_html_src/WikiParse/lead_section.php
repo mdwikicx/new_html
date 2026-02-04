@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Lead section extraction utilities
+ *
+ * Provides functions for extracting the lead section from
+ * MediaWiki wikitext, which is the content before the first
+ * section heading.
+ *
+ * @package MDWiki\NewHtml\Lead
+ */
+
 namespace Lead;
 /*
 use function Lead\get_lead_section;

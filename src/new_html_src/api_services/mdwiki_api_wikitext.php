@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * MDWiki API services
+ *
+ * Provides functions for fetching wikitext content from MDWiki
+ * using both the API and REST API endpoints.
+ *
+ * @package MDWiki\NewHtml\APIServices
+ */
+
 namespace APIServices;
 /*
 use function APIServices\get_wikitext_from_mdwiki_api;
