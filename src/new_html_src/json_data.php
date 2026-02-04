@@ -44,7 +44,7 @@ function dump_both_data($main_data, $main_data_all): void
     file_write($json_file, json_encode($main_data, JSON_PRETTY_PRINT));
     file_write($json_file_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
-function get_Data($tyt): string
+function get_Data($tyt): array
 {
     global $json_file_all, $json_file;
     // ---
