@@ -76,7 +76,7 @@ function get_wikitext_revision($title, $all)
     return [$wikitext, $revision, $from_cache];
 }
 
-function get_HTML_text($wikitext, $file_html, $title)
+function get_HTML_text($wikitext, $file_html, $title, $new)
 {
     global $printetxt;
     // ---
@@ -84,7 +84,7 @@ function get_HTML_text($wikitext, $file_html, $title)
     // ---
     try {
         // ---
-        [$HTML_text, $from_cache] = wiki_text_to_html($wikitext, $file_html, $title);
+        [$HTML_text, $from_cache] = wiki_text_to_html($wikitext, $file_html, $title, $new);
         // ---
         $HTML_text = remove_data_parsoid($HTML_text);
     } catch (Exception $e) {
@@ -131,6 +131,8 @@ function get_SEG_text($HTML_text, $file_seg)
 function start($request, $title)
 {
     // ---
+    $new = isset($request['new']);
+    // ---
     $all = $request['all'] ?? '';
     // if $title startwith Video then $all = 1
     if (strpos($title, 'Video') === 0) {
@@ -164,7 +166,7 @@ function start($request, $title)
     // ---
     file_write($file_title, $title);
     // ---
-    [$HTML_text, $html_cache] = get_HTML_text($wikitext, $file_html, $title);
+    [$HTML_text, $html_cache] = get_HTML_text($wikitext, $file_html, $title, $new);
     // ---
     $cache_data['html'] = $html_cache;
     // ---

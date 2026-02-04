@@ -31,12 +31,12 @@ function do_wiki_text_to_html($wikitext, $title)
     return $result;
 }
 
-function wiki_text_to_html($wikitext, $file_html, $title)
+function wiki_text_to_html($wikitext, $file_html, $title, $new)
 {
     // ---
     $from_cache = false;
     // ---
-    if (!isset($_GET['new'])) {
+    if (!$new) {
         // ---
         $text = read_file($file_html);
         // ---
