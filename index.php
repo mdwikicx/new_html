@@ -1,4 +1,5 @@
 <?php
+// http://localhost:14/new_html/
 
 if ((empty($_GET) && empty($_POST)) || (count($_GET) == 1 && isset($_GET["test"]))) {
     // require_once __DIR__ . "/revisions_new.php";

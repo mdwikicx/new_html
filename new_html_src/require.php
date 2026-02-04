@@ -15,6 +15,7 @@ require_once __DIR__ . "/api_services/post.php";
 require_once __DIR__ . "/api_services/mdwiki_api_wikitext.php";
 require_once __DIR__ . "/api_services/seg_api.php";
 require_once __DIR__ . "/api_services/transform_api.php";
+require_once __DIR__ . "/api_services/commons_api.php";
 
 require_once __DIR__ . "/fix_wikitext.php";
 
