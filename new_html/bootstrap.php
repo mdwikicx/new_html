@@ -22,6 +22,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 }
 
 include_once __DIR__ . '/load_env.php';
+include_once __DIR__ . '/require.php';
 
 // Set up error reporting for development
 if (defined('DEBUGX') && DEBUGX === true) {
