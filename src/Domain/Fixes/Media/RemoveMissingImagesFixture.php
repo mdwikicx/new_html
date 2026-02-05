@@ -11,6 +11,7 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
+// TODO: Domain layer should not depend on Services\Api.
 use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
