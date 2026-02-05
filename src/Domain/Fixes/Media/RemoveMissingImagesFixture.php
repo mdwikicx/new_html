@@ -6,7 +6,7 @@
  * and removing missing images from wikitext, including both infobox
  * images and inline file links.
  *
- * @package MDWiki\NewHtml\Domain\Fixes\Media
+ * @package MDWiki\NewHtml\Domain\Fixes
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\Media;
@@ -17,7 +17,7 @@ use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 /**
  * Remove infobox images that don't exist on Commons
  * Handles patterns like: |image = filename.png and |caption = text
- * Uses WikiParse\Template\getTemplates for proper template parsing
+ * Uses MDWiki\NewHtml\Domain\Parser\getTemplates for proper template parsing
  * Falls back to regex for non-template infobox parameters
  *
  * @param string $text The wikitext to process

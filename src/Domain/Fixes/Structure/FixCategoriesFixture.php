@@ -4,7 +4,7 @@
  *
  * Provides functions for removing category links from wikitext.
  *
- * @package MDWiki\NewHtml\Domain\Fixes\Structure
+ * @package MDWiki\NewHtml\Domain\Fixes
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\Structure;

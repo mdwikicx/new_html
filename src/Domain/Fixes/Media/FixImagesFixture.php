@@ -6,7 +6,7 @@
  * Provides functions for removing or wrapping images and videos in wikitext,
  * including handling of video file extensions and conditional existence checks.
  *
- * @package MDWiki\NewHtml\Domain\Fixes\Media
+ * @package MDWiki\NewHtml\Domain\Fixes
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\Media;

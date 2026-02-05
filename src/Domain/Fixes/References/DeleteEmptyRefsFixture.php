@@ -6,11 +6,10 @@
  * Provides functions for deleting or expanding empty short reference tags
  * in wikitext.
  *
- * @package MDWiki\NewHtml\Domain\Fixes\References
+ * @package MDWiki\NewHtml\Domain\Fixes
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;
-
 
 use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
