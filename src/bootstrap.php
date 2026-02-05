@@ -26,6 +26,11 @@ if (defined('DEBUGX') && DEBUGX === true) {
     error_reporting(0);
 }
 
+if (!defined('USER_AGENT')) {
+    $user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
+    define('USER_AGENT', $user_agent);
+}
+
 // Define application paths
 if (!defined('APP_ROOT')) {
     define('APP_ROOT', dirname(__DIR__));
@@ -36,11 +41,22 @@ if (!defined('SRC_PATH')) {
 }
 
 if (!defined('REVISIONS_PATH')) {
-    $revisions_path = dirname(APP_ROOT) . '/revisions_new';
+    $rev_path = dirname(APP_ROOT) . '/revisions_new';
     if (strpos(__DIR__, 'public_html') !== false) {
-        $revisions_path = getenv('HOME') . '/public_html/revisions_new';
+        $rev_path = getenv('HOME') . '/public_html/revisions_new';
     }
-    define('REVISIONS_PATH', $revisions_path);
+    define('REVISIONS_PATH', $rev_path);
+}
+
+// Ensure JSON data files exist
+
+if (!defined('JSON_FILE')) {
+    $json_file = REVISIONS_PATH . '/json_data.json';
+    define('JSON_FILE', $json_file);
+}
+if (!defined('JSON_FILE_ALL')) {
+    $json_file_all = REVISIONS_PATH . '/json_data_all.json';
+    define('JSON_FILE_ALL', $json_file_all);
 }
 
 // Initialize revisions directory if needed
@@ -48,28 +64,13 @@ if (!is_dir(REVISIONS_PATH)) {
     mkdir(REVISIONS_PATH, 0755, true);
 }
 
-// Ensure JSON data files exist
-$json_file = REVISIONS_PATH . '/json_data.json';
-$json_file_all = REVISIONS_PATH . '/json_data_all.json';
-
-if (!defined('JSON_FILE')) {
-    define('JSON_FILE', $json_file);
-}
-if (!defined('JSON_FILE_ALL')) {
-    define('JSON_FILE_ALL', $json_file_all);
-}
-if (!file_exists($json_file)) {
-    file_put_contents($json_file, '{}', LOCK_EX);
+if (!file_exists(JSON_FILE)) {
+    file_put_contents(JSON_FILE, '{}', LOCK_EX);
 }
 
-if (!file_exists($json_file_all)) {
-    file_put_contents($json_file_all, '{}', LOCK_EX);
+if (!file_exists(JSON_FILE_ALL)) {
+    file_put_contents(JSON_FILE_ALL, '{}', LOCK_EX);
 }
 
-$user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
-
-if (!defined('USER_AGENT')) {
-    define('USER_AGENT', $user_agent);
-}
 
 // Application is now bootstrapped and ready
