@@ -14,10 +14,6 @@ namespace MDWiki\NewHtml\Domain\Fixes\Media;
 use MDWiki\NewHtml\Domain\Contracts\ImageValidatorInterface;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
-// Global validator instance for backward compatibility
-// This will be initialized in bootstrap.php
-$GLOBALS['imageValidator'] = null;
-
 /**
  * Remove infobox images that don't exist on Commons
  * Handles patterns like: |image = filename.png and |caption = text
