@@ -13,10 +13,10 @@
 <html lang="en">
 
 <?php
+define('DEBUGX', true); // Set APP_DEBUG=1 in development
+
 // Use modern PSR-4 autoloading
 require_once __DIR__ . "/bootstrap.php";
-
-define('DEBUGX', true); // Set APP_DEBUG=1 in development
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
