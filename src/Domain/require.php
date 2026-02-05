@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Source file loader for new_html_src module
+ * Source file loader for Domain module
  *
- * This file loads all necessary source files for the new_html_src module,
+ * This file loads all necessary source files for the Domain module,
  * including parsing utilities, API services, text fixes, HTML services,
  * and helper utilities. It uses a mix of require_once for core files
  * and glob patterns for extensibility.
@@ -22,7 +22,7 @@ require_once __DIR__ . "/../Domain/Parser/Template.php";
 
 require_once __DIR__ . "/WikiParse/lead_section.php";
 
-foreach (glob(__DIR__ . "/WikiTextFixes/*.php") as $filename) {
+foreach (glob(__DIR__ . "/Fixes/*.php") as $filename) {
     include_once $filename;
 }
 
@@ -33,8 +33,8 @@ require_once __DIR__ . "/../Services/Api/SegmentApiService.php";
 require_once __DIR__ . "/../Services/Api/CommonsApiService.php";
 require_once __DIR__ . "/../Services/Wikitext/WikitextFixerService.php";
 
-require_once __DIR__ . "/utils/html_utils.php";
-require_once __DIR__ . "/utils/files_utils.php";
+require_once __DIR__ . "/../Infrastructure/Utils/html_utils.php";
+require_once __DIR__ . "/../Infrastructure/Utils/files_utils.php";
 
 require_once __DIR__ . "/../Services/Html/HtmlToSegmentsService.php";
 require_once __DIR__ . "/../Services/Html/WikitextToHtmlService.php";
