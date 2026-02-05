@@ -9,10 +9,10 @@
  * @package MDWiki\NewHtml
  */
 
-namespace PostMdwiki;
+namespace MDWiki\NewHtml\Application\Handlers;
 /*
 
-use function PostMdwiki\handle_url_request_mdwiki;
+use function MDWiki\NewHtml\Application\Handlers\handle_url_request_mdwiki;
 
 */
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html

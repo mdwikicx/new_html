@@ -27,7 +27,7 @@ foreach (glob(__DIR__ . "/WikiTextFixes/*.php") as $filename) {
 }
 
 require_once __DIR__ . "/../Services/Api/HttpClient.php";
-require_once __DIR__ . "/api_services/mdwiki_api_wikitext.php";
+require_once __DIR__ . "/../Services/Api/MdwikiApiService.php";
 require_once __DIR__ . "/api_services/seg_api.php";
 require_once __DIR__ . "/api_services/transform_api.php";
 require_once __DIR__ . "/api_services/commons_api.php";
