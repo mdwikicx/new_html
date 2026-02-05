@@ -5,7 +5,10 @@ x.php
 cacert.pem
 cookie.txt
 /.vscode
-/vendor
+/vendor/
 composer.lock
 .phpunit.result.cache
 /.claude
+phpstan.phar
+*.env
+.env

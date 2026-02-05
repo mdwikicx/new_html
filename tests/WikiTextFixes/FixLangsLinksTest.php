@@ -4,7 +4,7 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\fix_langs_links\remove_lang_links;
+use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 
 class FixLangsLinksTest extends bootstrap
 {

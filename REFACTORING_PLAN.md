@@ -77,8 +77,7 @@ src/
 │   │   ├── JsonDataController.php        [json_data.php]
 │   │   └── TextProcessorController.php   [new - orchestrates processing]
 │   └── Handlers/
-│       ├── WikitextHandler.php           [get_text.php]
-│       └── PostMdwikiHandler.php         [post_mdwiki.php]
+│       └── WikitextHandler.php           [get_text.php]
 │
 ├── Services/                     # Service layer (business operations)
 │   ├── Api/                      [api_services/]
@@ -223,6 +222,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 - [ ] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
 - [ ] Migrate `api_services/commons_api.php` → `Services/Api/CommonsApiService.php`
 - [ ] Migrate `api_services/mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
+- [ ] Migrate `post_mdwiki.php` → `Services/Api/MdwikiApiService.php`
 - [ ] Migrate `api_services/seg_api.php` → `Services/Api/SegmentApiService.php`
 - [ ] Migrate `api_services/transform_api.php` → `Services/Api/TransformApiService.php`
 - [ ] Update namespaces and imports
@@ -245,7 +245,6 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 - [ ] Migrate `json_data.php` → `Application/Controllers/JsonDataController.php`
 - [ ] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
-- [ ] Migrate `post_mdwiki.php` → `Application/Handlers/PostMdwikiHandler.php`
 - [ ] Create `Application/Controllers/TextProcessorController.php` (orchestration)
 - [ ] Update namespaces and imports
 - [ ] Update entry points in `src/` to use new handlers
@@ -266,7 +265,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 - [ ] Update `src/main.php` to use new Application layer
 - [ ] Update `src/index.php` if needed
-- [ ] Update `src/revisions_new.php` references
+- [ ] Update `src/revisions.php` references
 - [ ] Update `src/fix.php` references
 - [ ] Update `src/check.php` references
 - [ ] Update `src/open.php` references
@@ -438,6 +437,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 - [ ] **MDWiki API**
   - [ ] Migrate `mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
+  - [ ] Migrate `post_mdwiki.php` → `Services/Api/MdwikiApiService.php`
   - [ ] Update namespace and dependencies
   - [ ] Update all imports
   - [ ] Run `tests/APIServices/MdwikiApiTest.php`
@@ -488,7 +488,6 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 - [ ] **Handlers**
   - [ ] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
-  - [ ] Migrate `post_mdwiki.php` → `Application/Handlers/PostMdwikiHandler.php`
   - [ ] Update namespaces: `MDWiki\NewHtml\Application\Handlers`
   - [ ] Update all imports
   - [ ] Run handler tests
@@ -515,7 +514,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 - [ ] **Update Entry Points**
   - [ ] Update `src/main.php` to use `bootstrap.php`
   - [ ] Update `src/index.php` to use new structure
-  - [ ] Update `src/revisions_new.php`
+  - [ ] Update `src/revisions.php`
   - [ ] Update `src/fix.php`
   - [ ] Update `src/check.php`
   - [ ] Update `src/open.php`
@@ -540,7 +539,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 - [ ] **Integration Tests**
   - [ ] Test `index.php` routing
   - [ ] Test `main.php` API endpoint
-  - [ ] Test `revisions_new.php` dashboard
+  - [ ] Test `revisions.php` dashboard
   - [ ] Test all entry points with various parameters
 
 - [ ] **Static Analysis**

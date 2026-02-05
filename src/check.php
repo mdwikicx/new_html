@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Cache existence checker for generated content
  *
@@ -17,6 +18,8 @@ if (defined('DEBUGX') && DEBUGX === true) {
     error_reporting(E_ALL);
 }
 
+require_once __DIR__ . "/bootstrap.php";
+
 $revid = $_GET['revid'] ?? '';
 
 if (empty($revid) || !ctype_digit($revid)) {
@@ -24,12 +27,8 @@ if (empty($revid) || !ctype_digit($revid)) {
     exit;
 }
 
-$dir_path = __DIR__ . "/../../revisions_new/$revid";
+$dir_path = REVISIONS_PATH . "/$revid";
 
-if (strpos(__DIR__, 'public_html') !== false) {
-    // dir_path = $HOME / public_html/revisions_new
-    $dir_path = getenv('HOME') . "/public_html/revisions_new/$revid";
-}
 if (!is_dir($dir_path)) {
     echo 'false';
     exit;

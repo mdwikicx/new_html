@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Autoloader and initialization file for the new_html application
+ * Bootstrap file for MDWiki NewHtml application
  *
- * This file configures error reporting based on DEBUGX constant
- * and includes all necessary source files for the application.
+ * This file initializes the application environment, loads the Composer
+ * autoloader, and sets up necessary configuration constants.
  *
  * @package MDWiki\NewHtml
  */
+
+// Load Composer autoloader
+include_once __DIR__ . '/require.php';
 
 // Set up error reporting for development
 if (defined('DEBUGX') && DEBUGX === true) {
@@ -32,11 +35,12 @@ if (!defined('APP_ROOT')) {
 if (!defined('SRC_PATH')) {
     define('SRC_PATH', __DIR__);
 }
-
 if (!defined('REVISIONS_PATH')) {
-    $rev_path = dirname(APP_ROOT) . '/revisions_new';
-    if (strpos(__DIR__, 'public_html') !== false) {
-        $rev_path = getenv('HOME') . '/public_html/revisions_new';
+    if (getenv('REVISIONS_DIR')) {
+        $rev_path = getenv('REVISIONS_DIR');
+    } else {
+        $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
+        $rev_path = $home . '/public_html/revisions_new';
     }
     define('REVISIONS_PATH', $rev_path);
 }
@@ -66,4 +70,4 @@ if (!file_exists(JSON_FILE_ALL)) {
 }
 
 
-include_once __DIR__ . '/new_html_src/require.php';
+// Application is now bootstrapped and ready

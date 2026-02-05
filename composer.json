@@ -11,15 +11,10 @@
     },
     "autoload": {
         "psr-4": {
-            "MDWiki\\NewHtml\\": "src/",
-            "APIServices\\": "src/new_html_src/api_services/",
-            "HtmlServices\\": "src/new_html_src/html_services/",
-            "Utils\\": "src/new_html_src/utils/",
-            "WikiParse\\": "src/new_html_src/WikiParse/",
-            "WikiTextFixes\\": "src/new_html_src/WikiTextFixes/"
+            "MDWiki\\NewHtml\\": "src/"
         },
         "files": [
-            "src/new_html_src/require.php"
+            "src/bootstrap.php"
         ]
     },
     "autoload-dev": {
