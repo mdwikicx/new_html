@@ -31,7 +31,6 @@ use function MDWiki\NewHtml\Infrastructure\Utils\get_file_dir;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
-
 /**
  * Dump both main data and all data to JSON files
  *

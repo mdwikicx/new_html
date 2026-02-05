@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main API endpoint for processing MDWiki page content
  *
