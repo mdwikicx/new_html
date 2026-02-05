@@ -11,9 +11,12 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
-// TODO: Domain layer should not depend on Services\Api.
-use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
+use MDWiki\NewHtml\Domain\Contracts\ImageValidatorInterface;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
+
+// Global validator instance for backward compatibility
+// This will be initialized in bootstrap.php
+$GLOBALS['imageValidator'] = null;
 
 /**
  * Remove infobox images that don't exist on Commons
@@ -22,10 +25,16 @@ use function MDWiki\NewHtml\Domain\Parser\getTemplates;
  * Falls back to regex for non-template infobox parameters
  *
  * @param string $text The wikitext to process
+ * @param ImageValidatorInterface|null $validator The image validator (optional for backward compatibility)
  * @return string The processed wikitext
  */
-function remove_missing_infobox_images(string $text): string
+function remove_missing_infobox_images(string $text, ?ImageValidatorInterface $validator = null): string
 {
+    // Use injected validator or fall back to global instance
+    $validator = $validator ?? $GLOBALS['imageValidator'];
+    if ($validator === null) {
+        throw new \RuntimeException('ImageValidator not configured. Please set $GLOBALS[\'imageValidator\'] or pass validator parameter.');
+    }
     // First, try to parse templates using getTemplates
     $templates = getTemplates($text);
 
@@ -43,7 +52,7 @@ function remove_missing_infobox_images(string $text): string
                 $filename = trim($paramValue);
 
                 // If empty or doesn't exist, remove it and corresponding caption
-                if (empty($filename) || !check_commons_image_exists($filename)) {
+                if (empty($filename) || !$validator->imageExists($filename)) {
                     $template->deleteParameter($paramName);
 
                     // Also remove corresponding caption parameter
@@ -77,7 +86,7 @@ function remove_missing_infobox_images(string $text): string
         $filename = trim($matches[2]);
 
         // If empty or doesn't exist, mark for removal
-        if (empty($filename) || !check_commons_image_exists($filename)) {
+        if (empty($filename) || !$validator->imageExists($filename)) {
             // Add both image and caption fields to removal list
             $fieldsToRemove[] = $fieldName;
 
@@ -104,10 +113,16 @@ function remove_missing_infobox_images(string $text): string
  * Handles nested links in captions
  *
  * @param string $text The wikitext to process
+ * @param ImageValidatorInterface|null $validator The image validator (optional for backward compatibility)
  * @return string The processed wikitext
  */
-function remove_missing_inline_images(string $text): string
+function remove_missing_inline_images(string $text, ?ImageValidatorInterface $validator = null): string
 {
+    // Use injected validator or fall back to global instance
+    $validator = $validator ?? $GLOBALS['imageValidator'];
+    if ($validator === null) {
+        throw new \RuntimeException('ImageValidator not configured. Please set $GLOBALS[\'imageValidator\'] or pass validator parameter.');
+    }
     // Pattern to match [[File:...]] or [[Image:...]] with proper bracket counting
     // This needs to handle nested [[links]] inside the caption
 
@@ -142,7 +157,7 @@ function remove_missing_inline_images(string $text): string
             $fullImageBlock = substr($text, $startPos, $endPos - $startPos + 1);
 
             // Check if the image exists
-            if (!check_commons_image_exists($filename)) {
+            if (!$validator->imageExists($filename)) {
                 // Remove the entire image block
                 $text = substr($text, 0, $startPos) . substr($text, $endPos + 1);
                 $offset = $startPos;
@@ -163,11 +178,12 @@ function remove_missing_inline_images(string $text): string
  * Main function: Remove all missing images (both infobox and inline)
  *
  * @param string $text The wikitext to process
+ * @param ImageValidatorInterface|null $validator The image validator (optional for backward compatibility)
  * @return string The processed wikitext with missing images removed
  */
-function remove_missing_images(string $text): string
+function remove_missing_images(string $text, ?ImageValidatorInterface $validator = null): string
 {
-    $text = remove_missing_infobox_images($text);
-    $text = remove_missing_inline_images($text);
+    $text = remove_missing_infobox_images($text, $validator);
+    $text = remove_missing_inline_images($text, $validator);
     return $text;
 }
