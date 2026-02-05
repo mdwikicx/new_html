@@ -13,13 +13,19 @@
 <html lang="en">
 
 <?php
+define('DEBUGX', true); // Set to true for development, false for production
 
-define("DEBUGX", true);
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+// Use modern PSR-4 autoloading
+require_once __DIR__ . "/bootstrap.php";
+
+use function MDWiki\NewHtml\Application\Controllers\get_Data;
+use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
+
 /**
  * Get the appropriate CDN host for static assets
  *
@@ -101,12 +107,6 @@ echo <<<HTML
         </style>
     </head>
 HTML;
-
-// Use modern PSR-4 autoloading
-require_once __DIR__ . "/bootstrap.php";
-
-use function MDWiki\NewHtml\Application\Controllers\get_Data;
-use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
 
 /**
  * Generate a badge indicating if a file exists in the list

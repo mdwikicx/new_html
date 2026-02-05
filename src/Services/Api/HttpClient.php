@@ -10,6 +10,14 @@
  */
 
 namespace MDWiki\NewHtml\Services\Api;
+/*
+
+use function MDWiki\NewHtml\Services\Api\handle_url_request;
+use function MDWiki\NewHtml\Services\Api\post_url_params_result;
+
+*/
+// https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html
+// https://mdwiki.org/w/rest.php/v1/revision/1420795/html
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 

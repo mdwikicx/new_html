@@ -19,20 +19,27 @@ use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 
 $revid = $_GET['revid'] ?? '';
 $file = $_GET['file'] ?? '';
+
 // Validate inputs to prevent path traversal
-if (!preg_match('/^\d+$/', $revid) || empty($revid)) {
+// revid can be like 1234_all or 1234
+if (!preg_match('/^\d+(_all)?$/', $revid)) {
     http_response_code(400);
     echo "Invalid revision ID";
     exit();
 }
+
 $allowed_files = ['wikitext.txt', 'seg.html', 'html.html'];
+
 if (!in_array($file, $allowed_files, true)) {
     http_response_code(400);
     echo "Invalid file parameter";
     exit();
 }
+
 $content_type = ($file == 'wikitext.txt') ? "text/plain" : "text/html";
+
 header("Content-type: $content_type");
+
 $file_path = REVISIONS_PATH . "/$revid/$file";
 
 $text = file_get_contents($file_path) ?: '';
