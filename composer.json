@@ -19,7 +19,7 @@
             "WikiTextFixes\\": "src/new_html_src/WikiTextFixes/"
         },
         "files": [
-            "src/new_html_src/require.php"
+            "src/require.php"
         ]
     },
     "autoload-dev": {

@@ -13,18 +13,22 @@
 
 include_once __DIR__ . '/../Infrastructure/Debug/PrintHelper.php';
 
-require_once __DIR__ . "/WikiParse/Category.php";
-require_once __DIR__ . "/WikiParse/Citations_reg.php";
-
+require_once __DIR__ . "/../Domain/Parser/CategoryParser.php";
+require_once __DIR__ . "/../Domain/Parser/CitationsParser.php";
 require_once __DIR__ . "/../Domain/Parser/ParserTemplate.php";
 require_once __DIR__ . "/../Domain/Parser/ParserTemplates.php";
 require_once __DIR__ . "/../Domain/Parser/Template.php";
+require_once __DIR__ . "/../Domain/Parser/LeadSectionParser.php";
 
-require_once __DIR__ . "/WikiParse/lead_section.php";
-
-foreach (glob(__DIR__ . "/Fixes/*.php") as $filename) {
-    include_once $filename;
-}
+require_once __DIR__ . "/../Domain/Fixes/Media/FixImagesFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/Media/RemoveMissingImagesFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/References/DeleteEmptyRefsFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/References/ExpandRefsFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/References/RefWorkerFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/Structure/FixCategoriesFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/Structure/FixLanguageLinksFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/Templates/DeleteTemplatesFixture.php";
+require_once __DIR__ . "/../Domain/Fixes/Templates/FixTemplatesFixture.php";
 
 require_once __DIR__ . "/../Services/Api/HttpClient.php";
 require_once __DIR__ . "/../Services/Api/MdwikiApiService.php";

@@ -67,4 +67,4 @@ if (!file_exists(JSON_FILE_ALL)) {
 }
 
 
-include_once __DIR__ . '/Domain/require.php';
+include_once __DIR__ . '/require.php';
