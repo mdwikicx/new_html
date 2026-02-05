@@ -12,7 +12,6 @@
 namespace MDWiki\NewHtml\Services\Api;
 
 use function MDWiki\NewHtml\Services\Api\handle_url_request;
-// use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
@@ -31,7 +30,6 @@ function convert_wikitext_to_html(string $text, string $title): array
     $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/$title2";
 
     $data = ['wikitext' => $text];
-    // $response = post_url_params_result($url, $data);
     $response = handle_url_request($url, 'POST', $data);
 
     // Handle the response from your API
