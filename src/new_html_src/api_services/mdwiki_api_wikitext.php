@@ -6,18 +6,18 @@
  * Provides functions for fetching wikitext content from MDWiki
  * using both the API and REST API endpoints.
  *
- * @package MDWiki\NewHtml\APIServices
+ * @package MDWiki\NewHtml\Services\Api
  */
 
-namespace MDWiki\NewHtml\APIServices;
+namespace MDWiki\NewHtml\Services\Api;
 /*
-use function MDWiki\NewHtml\APIServices\get_wikitext_from_mdwiki_api;
-use function MDWiki\NewHtml\APIServices\get_wikitext_from_mdwiki_restapi;
+use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_api;
+use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi;
 
 */
 
 use function PostMdwiki\handle_url_request_mdwiki;
-// use function MDWiki\NewHtml\APIServices\post_url_params_result;
+// use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 use function Printn\test_print;
 
 /**

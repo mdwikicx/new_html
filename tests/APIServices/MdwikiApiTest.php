@@ -1,11 +1,11 @@
 <?php
 
-namespace FixRefs\Tests\APIServices;
+namespace FixRefs\Tests\Services\Api;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\APIServices\get_wikitext_from_mdwiki_api;
-use function MDWiki\NewHtml\APIServices\get_wikitext_from_mdwiki_restapi;
+use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_api;
+use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi;
 
 
 class MdwikiApiTest extends bootstrap

@@ -6,14 +6,14 @@
  * Provides functions for converting HTML to segmented content using
  * the HtmltoSegments API tool.
  *
- * @package MDWiki\NewHtml\APIServices
+ * @package MDWiki\NewHtml\Services\Api
  */
 
-namespace MDWiki\NewHtml\APIServices;
+namespace MDWiki\NewHtml\Services\Api;
 
 use function Printn\test_print;
-use function MDWiki\NewHtml\APIServices\handle_url_request;
-// use function MDWiki\NewHtml\APIServices\post_url_params_result;
+use function MDWiki\NewHtml\Services\Api\handle_url_request;
+// use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 
 /**
  * Convert HTML to segments using the HtmltoSegments API

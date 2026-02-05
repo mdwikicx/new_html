@@ -1,11 +1,11 @@
 <?php
 
-namespace FixRefs\Tests\APIServices;
+namespace FixRefs\Tests\Services\Api;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\APIServices\post_url_params_result;
-use function MDWiki\NewHtml\APIServices\handle_url_request;
+use function MDWiki\NewHtml\Services\Api\post_url_params_result;
+use function MDWiki\NewHtml\Services\Api\handle_url_request;
 
 
 class PostTest extends bootstrap

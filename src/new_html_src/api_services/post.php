@@ -6,14 +6,14 @@
  * Provides functions for making HTTP requests to external APIs,
  * supporting both GET and POST methods with cURL.
  *
- * @package MDWiki\NewHtml\APIServices
+ * @package MDWiki\NewHtml\Services\Api
  */
 
-namespace MDWiki\NewHtml\APIServices;
+namespace MDWiki\NewHtml\Services\Api;
 /*
 
-use function MDWiki\NewHtml\APIServices\handle_url_request;
-use function MDWiki\NewHtml\APIServices\post_url_params_result;
+use function MDWiki\NewHtml\Services\Api\handle_url_request;
+use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 
 */
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html

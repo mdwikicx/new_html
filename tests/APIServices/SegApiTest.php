@@ -1,10 +1,10 @@
 <?php
 
-namespace FixRefs\Tests\APIServices;
+namespace FixRefs\Tests\Services\Api;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\APIServices\change_html_to_seg;
+use function MDWiki\NewHtml\Services\Api\change_html_to_seg;
 
 
 class SegApiTest extends bootstrap

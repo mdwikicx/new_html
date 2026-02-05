@@ -1,10 +1,10 @@
 <?php
 
-namespace FixRefs\Tests\APIServices;
+namespace FixRefs\Tests\Services\Api;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\APIServices\check_commons_image_exists;
+use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
 
 class CommonsApiTest extends bootstrap
 {

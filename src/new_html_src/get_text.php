@@ -21,7 +21,7 @@ use function MDWiki\NewHtml\JsonData\add_title_revision;
 use function Printn\test_print;
 use function Fixes\ExpendRefs\refs_expend_work;
 
-use function MDWiki\NewHtml\APIServices\get_wikitext_from_mdwiki_restapi;
+use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi;
 
 /**
  * Get wikitext for a page, optionally processing only the lead section

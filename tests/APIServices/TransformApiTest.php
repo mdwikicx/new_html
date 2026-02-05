@@ -1,10 +1,10 @@
 <?php
 
-namespace FixRefs\Tests\APIServices;
+namespace FixRefs\Tests\Services\Api;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\APIServices\convert_wikitext_to_html;
+use function MDWiki\NewHtml\Services\Api\convert_wikitext_to_html;
 
 
 class TransformApiTest extends bootstrap

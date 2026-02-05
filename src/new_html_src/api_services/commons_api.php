@@ -5,12 +5,12 @@
  *
  * Provides functions for checking image existence on Wikimedia Commons.
  *
- * @package MDWiki\NewHtml\APIServices
+ * @package MDWiki\NewHtml\Services\Api
  */
 
-namespace MDWiki\NewHtml\APIServices;
+namespace MDWiki\NewHtml\Services\Api;
 
-use function MDWiki\NewHtml\APIServices\handle_url_request;
+use function MDWiki\NewHtml\Services\Api\handle_url_request;
 
 /**
  * Check if an image exists on Wikimedia Commons
