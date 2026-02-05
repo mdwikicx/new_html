@@ -10,7 +10,7 @@
 
 namespace APIServices;
 
-use function APIServices\handle_url_request;
+use function MDWiki\NewHtml\APIServices\handle_url_request;
 
 /**
  * Check if an image exists on Wikimedia Commons

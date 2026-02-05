@@ -9,11 +9,11 @@
  * @package MDWiki\NewHtml\APIServices
  */
 
-namespace APIServices;
+namespace MDWiki\NewHtml\APIServices;
 /*
 
-use function APIServices\handle_url_request;
-use function APIServices\post_url_params_result;
+use function MDWiki\NewHtml\APIServices\handle_url_request;
+use function MDWiki\NewHtml\APIServices\post_url_params_result;
 
 */
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html

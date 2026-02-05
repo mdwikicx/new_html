@@ -12,8 +12,8 @@
 namespace APIServices;
 
 use function Printn\test_print;
-use function APIServices\handle_url_request;
-// use function APIServices\post_url_params_result;
+use function MDWiki\NewHtml\APIServices\handle_url_request;
+// use function MDWiki\NewHtml\APIServices\post_url_params_result;
 
 /**
  * Convert HTML to segments using the HtmltoSegments API

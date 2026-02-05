@@ -4,7 +4,7 @@ namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
 
-use function APIServices\change_html_to_seg;
+use function MDWiki\NewHtml\APIServices\change_html_to_seg;
 
 
 class SegApiTest extends bootstrap

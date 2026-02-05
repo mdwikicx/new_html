@@ -12,7 +12,7 @@
 
 namespace RemoveMissingImages;
 
-use function APIServices\check_commons_image_exists;
+use function MDWiki\NewHtml\APIServices\check_commons_image_exists;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**

@@ -4,7 +4,7 @@ namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
 
-use function APIServices\convert_wikitext_to_html;
+use function MDWiki\NewHtml\APIServices\convert_wikitext_to_html;
 
 
 class TransformApiTest extends bootstrap

@@ -10,7 +10,7 @@
  * @package MDWiki\NewHtml
  */
 
-namespace NewHtml\JsonData;
+namespace MDWiki\NewHtml\JsonData;
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);

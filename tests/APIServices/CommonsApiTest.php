@@ -4,7 +4,7 @@ namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
 
-use function APIServices\check_commons_image_exists;
+use function MDWiki\NewHtml\APIServices\check_commons_image_exists;
 
 class CommonsApiTest extends bootstrap
 {
