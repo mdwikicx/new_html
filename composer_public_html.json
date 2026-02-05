@@ -12,12 +12,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MDWiki\\NewHtml\\": "new_html_1/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "FixRefs\\Tests\\": "tests/"
+            "MDWiki\\NewHtml\\": "new_html_1/src/"
         }
     },
     "scripts": {

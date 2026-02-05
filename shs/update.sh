@@ -40,7 +40,9 @@ main() {
 
     # Clean unnecessary files
     log_info "Removing vendor and composer.lock..."
-    rm -rf "$CLONE_DIR/src/vendor" "$CLONE_DIR/src/composer.lock"
+    rm -rf "$CLONE_DIR/vendor" "$CLONE_DIR/composer.lock"
+
+    mv "$CLONE_DIR/src" "$CLONE_DIR/new_html"
 
     # Handle clean install
     if [ "$CLEAN_INSTALL" -eq 1 ]; then
@@ -49,11 +51,11 @@ main() {
             log_warn "Backing up to: $backup_dir"
             mv "$TARGET_DIR" "$backup_dir"
         fi
-        mv "$CLONE_DIR/src" "$TARGET_DIR"
+        mv "$CLONE_DIR/new_html" "$TARGET_DIR"
     else
         log_info "Updating existing installation..."
         mkdir -p "$TARGET_DIR"
-        cp -rf "$CLONE_DIR"/src/* "$TARGET_DIR/"
+        cp -rf "$CLONE_DIR"/new_html/* "$TARGET_DIR/"
     fi
     # copy composer_public_html.json to $HOME/public_html
     cp "$CLONE_DIR/composer_public_html.json" "$HOME/public_html/composer.json" -v
@@ -66,7 +68,7 @@ main() {
         log_error "Composer not found. Install it first."
         exit 1
     fi
-
+    rm -rf vendor composer.lock
     composer install --no-dev --optimize-autoloader --no-interaction
 
     log_info "Deployment completed successfully!"
