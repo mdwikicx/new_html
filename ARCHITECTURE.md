@@ -12,8 +12,7 @@ src/
 │   ├── Controllers/         # Business logic controllers
 │   │   └── JsonDataController.php
 │   └── Handlers/            # Request handlers
-│       ├── WikitextHandler.php
-│       └── PostMdwikiHandler.php
+│       └── WikitextHandler.php
 │
 ├── Services/                # Service layer (business operations)
 │   ├── Api/                # External API integrations

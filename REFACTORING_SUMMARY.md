@@ -20,7 +20,7 @@ This document summarizes the successful completion of the comprehensive refactor
 - **Infrastructure Layer:** 3 files (Debug, Utils)
 - **Domain Layer:** 13 files (4 Parsers + 9 Fixes)
 - **Service Layer:** 8 files (5 API + 2 HTML + 1 Wikitext)
-- **Application Layer:** 3 files (1 Controller + 2 Handlers)
+- **Application Layer:** 2 files (1 Controller + 1 Handler)
 - **Configuration:** 2 files (bootstrap.php, ARCHITECTURE.md)
 
 ### Code Changes
@@ -36,7 +36,7 @@ This document summarizes the successful completion of the comprehensive refactor
 src/
 ├── Application/          # Application layer
 │   ├── Controllers/     # 1 file
-│   └── Handlers/        # 2 files
+│   └── Handlers/        # 1 file
 ├── Services/            # Service layer
 │   ├── Api/            # 5 files
 │   ├── Html/           # 2 files
@@ -55,10 +55,9 @@ src/
 
 ### Application Layer
 **Purpose:** Entry points and request handlers
-**Files:** 3 files
+**Files:** 2 files
 - JsonDataController - JSON data management
 - WikitextHandler - Wikitext retrieval and processing
-- PostMdwikiHandler - HTTP request handling
 
 ### Service Layer
 **Purpose:** Business operations and API integrations
