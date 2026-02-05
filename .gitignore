@@ -15,3 +15,4 @@ phpstan.phar
 /revisions
 /vendor1
 composer.lock.1
+/revisions_new
