@@ -16,7 +16,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 } else {
     // Handle the case where the autoload file does not exist
     error_log('Autoload file not found');
-    echo('Composer is not installed. Please install composer to manage dependencies.');
+    echo('vendor/autoload.php not found. Please run composer install to set up dependencies.');
     throw new RuntimeException('Autoload file not found');
 }
 /*
