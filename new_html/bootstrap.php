@@ -68,5 +68,3 @@ if (!file_exists(JSON_FILE)) {
 if (!file_exists(JSON_FILE_ALL)) {
     file_put_contents(JSON_FILE_ALL, '{}', LOCK_EX);
 }
-
-// Application is now bootstrapped and ready

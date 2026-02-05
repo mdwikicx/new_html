@@ -13,10 +13,7 @@
     "autoload": {
         "psr-4": {
             "MDWiki\\NewHtml\\": "new_html_1/"
-        },
-        "files": [
-            "new_html_1/bootstrap.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

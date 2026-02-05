@@ -12,11 +12,15 @@
     },
     "autoload": {
         "psr-4": {
-            "MDWiki\\NewHtml\\": "src/"
-        },
-        "files": [
-            "src/bootstrap.php"
-        ]
+            "MDWiki\\NewHtml\\": "src/",
+            "MDWiki\\NewHtml\\Application\\Controllers\\": "src/Application/Controllers/",
+            "MDWiki\\NewHtml\\Application\\": "src/Application/",
+            "MDWiki\\NewHtml\\Domain\\": "src/Domain/",
+            "MDWiki\\NewHtml\\Infrastructure\\": "src/Infrastructure/",
+            "MDWiki\\NewHtml\\Infrastructure\\Utils\\": "src/Infrastructure/Utils/",
+            "MDWiki\\NewHtml\\Infrastructure\\Debug\\": "src/Infrastructure/Debug/",
+            "MDWiki\\NewHtml\\Services\\": "src/Services/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
