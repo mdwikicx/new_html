@@ -9,15 +9,15 @@
  * @package MDWiki\NewHtml
  */
 
-namespace Html;
+namespace MDWiki\NewHtml\Services\Html;
 /*
-use function Html\wiki_text_to_html;
+use function MDWiki\NewHtml\Services\Html\wiki_text_to_html;
 */
 
 use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
 use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
-use function MDWiki\NewHtml\FileHelps\file_write; // file_write($file_html, $result);
-use function MDWiki\NewHtml\FileHelps\read_file;
+use function MDWiki\NewHtml\Infrastructure\Utils\file_write; // file_write($file_html, $result);
+use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use function MDWiki\NewHtml\Services\Api\convert_wikitext_to_html;
 
 /**
@@ -42,7 +42,8 @@ function do_wiki_text_to_html(string $wikitext, string $title): mixed
     if ($result == '') return "";
 
     $result = del_div_error($result);
-    $result = fix_link_red($result);    return $result;
+    $result = fix_link_red($result);
+    return $result;
 }
 
 /**

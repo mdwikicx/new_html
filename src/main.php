@@ -22,12 +22,12 @@ require_once __DIR__ . "/bootstrap.php";
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
-use function Wikitext\get_wikitext;
-use function Segments\html_to_seg;
-use function Html\wiki_text_to_html;
+use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
+use function MDWiki\NewHtml\Services\Html\html_to_seg;
+use function MDWiki\NewHtml\Services\Html\wiki_text_to_html;
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
-use function MDWiki\NewHtml\FileHelps\get_file_dir;
-use function MDWiki\NewHtml\FileHelps\file_write;
+use function MDWiki\NewHtml\Infrastructure\Utils\get_file_dir;
+use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Application\Controllers\get_from_json;
 
 $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';

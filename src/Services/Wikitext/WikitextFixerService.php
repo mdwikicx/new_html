@@ -6,7 +6,7 @@
  * Provides the main entry point for applying various wikitext fixes,
  * coordinating multiple fix functions in a pipeline.
  *
- * @package MDWiki\NewHtml
+ * @package MDWiki\NewHtml\Services\Wikitext
  */
 
 namespace MDWiki\NewHtml\Services\Wikitext;

@@ -9,13 +9,13 @@
  * @package MDWiki\NewHtml
  */
 
-namespace Segments;
+namespace MDWiki\NewHtml\Services\Html;
 /*
-use function Segments\html_to_seg;
+use function MDWiki\NewHtml\Services\Html\html_to_seg;
 */
 
-use function MDWiki\NewHtml\FileHelps\file_write;
-use function MDWiki\NewHtml\FileHelps\read_file;
+use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
+use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 // use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 use function MDWiki\NewHtml\Services\Api\change_html_to_seg;
 

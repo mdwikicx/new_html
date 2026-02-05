@@ -9,9 +9,9 @@
  * @package MDWiki\NewHtml
  */
 
-namespace Wikitext;
+namespace MDWiki\NewHtml\Application\Handlers;
 /*
-use function Wikitext\get_wikitext;
+use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
 
 */
 

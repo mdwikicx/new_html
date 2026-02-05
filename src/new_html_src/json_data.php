@@ -27,9 +27,9 @@ use function MDWiki\NewHtml\Application\Controllers\get_Data;
 use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
 */
 
-use function MDWiki\NewHtml\FileHelps\get_file_dir;
-use function MDWiki\NewHtml\FileHelps\file_write;
-use function MDWiki\NewHtml\FileHelps\read_file;
+use function MDWiki\NewHtml\Infrastructure\Utils\get_file_dir;
+use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
+use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
 /**
  * Dump both main data and all data to JSON files

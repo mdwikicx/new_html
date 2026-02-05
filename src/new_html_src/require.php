@@ -31,8 +31,7 @@ require_once __DIR__ . "/../Services/Api/MdwikiApiService.php";
 require_once __DIR__ . "/../Services/Api/TransformApiService.php";
 require_once __DIR__ . "/../Services/Api/SegmentApiService.php";
 require_once __DIR__ . "/../Services/Api/CommonsApiService.php";
-
-require_once __DIR__ . "/fix_wikitext.php";
+require_once __DIR__ . "/../Services/Wikitext/WikitextFixerService.php";
 
 require_once __DIR__ . "/utils/html_utils.php";
 require_once __DIR__ . "/utils/files_utils.php";

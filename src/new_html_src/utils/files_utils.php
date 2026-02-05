@@ -9,7 +9,7 @@
  * @package MDWiki\NewHtml
  */
 
-namespace MDWiki\NewHtml\FileHelps;
+namespace MDWiki\NewHtml\Infrastructure\Utils;
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
