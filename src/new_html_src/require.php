@@ -35,10 +35,10 @@ require_once __DIR__ . "/../Services/Wikitext/WikitextFixerService.php";
 
 require_once __DIR__ . "/utils/html_utils.php";
 require_once __DIR__ . "/utils/files_utils.php";
-require_once __DIR__ . "/post_mdwiki.php";
 
 require_once __DIR__ . "/../Services/Html/HtmlToSegmentsService.php";
 require_once __DIR__ . "/../Services/Html/WikitextToHtmlService.php";
 
-require_once __DIR__ . "/get_text.php";
-require_once __DIR__ . "/json_data.php";
+require_once __DIR__ . "/../Application/Handlers/PostMdwikiHandler.php";
+require_once __DIR__ . "/../Application/Handlers/WikitextHandler.php";
+require_once __DIR__ . "/../Application/Controllers/JsonDataController.php";
