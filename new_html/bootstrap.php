@@ -10,7 +10,15 @@
  */
 
 // Load Composer autoloader
-include_once __DIR__ . '/require.php';
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} else {
+    // Handle the case where the autoload file does not exist
+    error_log('Autoload file not found');
+    echo ('vendor/autoload.php not found. Please run composer install to set up dependencies.');
+    throw new RuntimeException('Autoload file not found');
+}
+
 include_once __DIR__ . '/load_env.php';
 
 // Set up error reporting for development
