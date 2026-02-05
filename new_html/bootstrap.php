@@ -12,6 +12,8 @@
 // Load Composer autoloader
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
+    require_once __DIR__ . '/../../vendor/autoload.php';
 } else {
     // Handle the case where the autoload file does not exist
     error_log('Autoload file not found');
