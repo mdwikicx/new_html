@@ -13,15 +13,14 @@
 <html lang="en">
 
 <?php
-define('DEBUGX', getenv('APP_DEBUG') === '1'); // Set APP_DEBUG=1 in development
+// Use modern PSR-4 autoloading
+require_once __DIR__ . "/bootstrap.php";
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
-// Use modern PSR-4 autoloading
-require_once __DIR__ . "/bootstrap.php";
 
 use function MDWiki\NewHtml\Application\Controllers\get_Data;
 use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
