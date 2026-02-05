@@ -8,7 +8,7 @@
  * @package MDWiki\NewHtml\APIServices
  */
 
-namespace APIServices;
+namespace MDWiki\NewHtml\APIServices;
 
 use function MDWiki\NewHtml\APIServices\handle_url_request;
 

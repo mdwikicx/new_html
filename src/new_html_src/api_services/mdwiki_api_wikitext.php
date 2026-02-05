@@ -9,7 +9,7 @@
  * @package MDWiki\NewHtml\APIServices
  */
 
-namespace APIServices;
+namespace MDWiki\NewHtml\APIServices;
 /*
 use function MDWiki\NewHtml\APIServices\get_wikitext_from_mdwiki_api;
 use function MDWiki\NewHtml\APIServices\get_wikitext_from_mdwiki_restapi;
