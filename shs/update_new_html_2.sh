@@ -48,7 +48,7 @@ if [ "$CLEAN_INSTALL" -eq 1 ]; then
     echo "Installing composer dependencies..."
     cd "$TARGET_DIR" || { echo "Failed to change directory to $TARGET_DIR"; exit 1; }
     if command -v composer >/dev/null 2>&1; then
-        composer install --no-dev --optimize-autoloader
+        composer install --no-progress --prefer-dist --optimize-autoloader
     else
         echo "Composer is not installed. Please install composer to manage dependencies." >&2
         exit 1
