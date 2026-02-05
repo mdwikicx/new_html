@@ -38,7 +38,7 @@ $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
 
 if (!defined('REVISIONS_PATH')) {
     $rev_path = getenv('REVISIONS_DIR') ? getenv('REVISIONS_DIR') : (
-        $home ? $home . '/public_html/revisions_new' : dirname(__DIR__) . '/revisions'
+        $home ? $home . '/public_html/revisions_new' : dirname(__DIR__) . '/revisions_new'
     );
     define('REVISIONS_PATH', $rev_path);
 }
