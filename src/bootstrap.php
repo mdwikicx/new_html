@@ -36,7 +36,8 @@ if (!defined('SRC_PATH')) {
 if (!defined('REVISIONS_PATH')) {
     $rev_path = dirname(APP_ROOT) . '/revisions_new';
     if (strpos(__DIR__, 'public_html') !== false) {
-        $rev_path = getenv('HOME') . '/public_html/revisions_new';
+        $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
+        $rev_path = $home . '/public_html/revisions_new';
     }
     define('REVISIONS_PATH', $rev_path);
 }
