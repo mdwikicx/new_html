@@ -14,7 +14,11 @@ include_once __DIR__ . '/print.php';
 
 require_once __DIR__ . "/WikiParse/Category.php";
 require_once __DIR__ . "/WikiParse/Citations_reg.php";
-require_once __DIR__ . "/WikiParse/ParserTemplates.php";
+
+require_once __DIR__ . "/../Domain/Parser/ParserTemplate.php";
+require_once __DIR__ . "/../Domain/Parser/ParserTemplates.php";
+require_once __DIR__ . "/../Domain/Parser/Template.php";
+
 require_once __DIR__ . "/WikiParse/lead_section.php";
 
 foreach (glob(__DIR__ . "/WikiTextFixes/*.php") as $filename) {

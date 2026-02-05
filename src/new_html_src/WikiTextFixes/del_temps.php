@@ -12,7 +12,7 @@
 
 namespace Fixes\DelTemps;
 
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
  * Check if a template matches deletion patterns and remove it

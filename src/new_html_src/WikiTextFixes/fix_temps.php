@@ -10,7 +10,7 @@
 
 namespace Fixes\FixTemps;
 
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
  * Add missing title parameter to infobox templates

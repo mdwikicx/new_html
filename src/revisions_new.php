@@ -20,6 +20,12 @@ if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+
+require_once __DIR__ . "/bootstrap.php";
+
+use function NewHtml\JsonData\get_Data;
+use function NewHtml\JsonData\dump_both_data;
+
 /**
  * Get the appropriate CDN host for static assets
  *
@@ -101,11 +107,6 @@ echo <<<HTML
         </style>
     </head>
 HTML;
-
-require_once __DIR__ . "/bootstrap.php";
-
-use function NewHtml\JsonData\get_Data;
-use function NewHtml\JsonData\dump_both_data;
 
 /**
  * Generate a badge indicating if a file exists in the list

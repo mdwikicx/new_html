@@ -1,11 +1,13 @@
 <?php
 
+namespace FixRefs\Tests;
+
 use FixRefs\Tests\bootstrap;
 use function RemoveMissingImages\remove_missing_infobox_images;
 use function RemoveMissingImages\remove_missing_inline_images;
 use function RemoveMissingImages\remove_missing_images;
 
-class fix_images_test extends bootstrap
+class RemoveMissingImagesTest extends bootstrap
 {
     /**
      * Check if we can reach the Wikimedia Commons API

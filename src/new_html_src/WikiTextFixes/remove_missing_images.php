@@ -13,12 +13,12 @@
 namespace RemoveMissingImages;
 
 use function APIServices\check_commons_image_exists;
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
  * Remove infobox images that don't exist on Commons
  * Handles patterns like: |image = filename.png and |caption = text
- * Uses WikiParse\Template\getTemplates for proper template parsing
+ * Uses MDWiki\NewHtml\Domain\Parser\getTemplates for proper template parsing
  * Falls back to regex for non-template infobox parameters
  *
  * @param string $text The wikitext to process
