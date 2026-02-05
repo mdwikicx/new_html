@@ -135,12 +135,7 @@ usort($dirs, function ($a, $b) {
 });
 
 $tbody = '';
-
 $number = 0;
-
-$main_url = $_SERVER['REQUEST_URI'];
-$main_url = str_replace('/revisions_new.php', '', $main_url);
-
 $main_data = get_Data('');
 $main_data_all = get_Data('all');
 

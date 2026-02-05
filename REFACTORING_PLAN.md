@@ -265,7 +265,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 - [ ] Update `src/main.php` to use new Application layer
 - [ ] Update `src/index.php` if needed
-- [ ] Update `src/revisions_new.php` references
+- [ ] Update `src/revisions.php` references
 - [ ] Update `src/fix.php` references
 - [ ] Update `src/check.php` references
 - [ ] Update `src/open.php` references
@@ -514,7 +514,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 - [ ] **Update Entry Points**
   - [ ] Update `src/main.php` to use `bootstrap.php`
   - [ ] Update `src/index.php` to use new structure
-  - [ ] Update `src/revisions_new.php`
+  - [ ] Update `src/revisions.php`
   - [ ] Update `src/fix.php`
   - [ ] Update `src/check.php`
   - [ ] Update `src/open.php`
@@ -539,7 +539,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 - [ ] **Integration Tests**
   - [ ] Test `index.php` routing
   - [ ] Test `main.php` API endpoint
-  - [ ] Test `revisions_new.php` dashboard
+  - [ ] Test `revisions.php` dashboard
   - [ ] Test all entry points with various parameters
 
 - [ ] **Static Analysis**
