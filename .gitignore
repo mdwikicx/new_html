@@ -10,3 +10,5 @@ composer.lock
 .phpunit.result.cache
 /.claude
 phpstan.phar
+*.env
+.env

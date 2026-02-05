@@ -13,7 +13,7 @@
 <html lang="en">
 
 <?php
-define('DEBUGX', true); // Set to true for development, false for production
+define('DEBUGX', getenv('APP_DEBUG') === '1'); // Set APP_DEBUG=1 in development
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);

@@ -35,12 +35,16 @@ if (!in_array($file, $allowed_files, true)) {
     echo "Invalid file parameter";
     exit();
 }
+$file_path = REVISIONS_PATH . "/$revid/$file";
+
+if (!is_file($file_path)) {
+    http_response_code(404);
+    echo "File not found";
+    exit();
+}
 
 $content_type = ($file == 'wikitext.txt') ? "text/plain" : "text/html";
-
 header("Content-type: $content_type");
-
-$file_path = REVISIONS_PATH . "/$revid/$file";
 
 $text = file_get_contents($file_path) ?: '';
 
