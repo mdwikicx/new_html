@@ -8,12 +8,12 @@
  * @package MDWiki\NewHtml
  */
 
-namespace HtmlFixes;
+namespace MDWiki\NewHtml\Infrastructure\Utils;
 /*
 
-use function HtmlFixes\del_div_error;
-use function HtmlFixes\fix_link_red;
-use function HtmlFixes\remove_data_parsoid;
+use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
+use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
+use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 
 */
 // <div([^\/>]*?)>(.+?)<\/div>
