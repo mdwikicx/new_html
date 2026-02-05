@@ -115,19 +115,62 @@ vendor/bin/phpstan analyse
 ### Project Structure
 
 ```text
-new_html/
-├── new_html_src/          # Source code
-│   ├── api_services/      # API integration modules
-│   ├── html_services/     # HTML processing services
-│   ├── utils/             # Utility functions
-│   ├── WikiParse/         # MediaWiki parsing tools
-│   └── WikiTextFixes/     # Wikitext transformation modules
-├── tests/                 # Test suite
-│   ├── unit/              # Unit tests
-│   └── bootstrap.php      # Test bootstrap
-├── composer.json          # Dependency management
-├── phpunit.xml            # PHPUnit configuration
-└── README.md              # This file
+src/
+├── Application/              # Application layer (entry points & controllers)
+│   ├── Controllers/         # Business logic controllers
+│   │   └── JsonDataController.php
+│   └── Handlers/            # Request handlers
+│       └── WikitextHandler.php
+│
+├── Services/                # Service layer (business operations)
+│   ├── Api/                # External API integrations
+│   │   ├── CommonsApiService.php
+│   │   ├── HttpClient.php
+│   │   ├── MdwikiApiService.php
+│   │   ├── SegmentApiService.php
+│   │   └── TransformApiService.php
+│   │
+│   ├── Html/               # HTML processing services
+│   │   ├── HtmlToSegmentsService.php
+│   │   └── WikitextToHtmlService.php
+│   │
+│   └── Wikitext/           # Wikitext processing services
+│       └── WikitextFixerService.php
+│
+├── Domain/                  # Domain layer (core business logic)
+│   ├── Parser/             # Wikitext parsing
+│   │   ├── CategoryParser.php
+│   │   ├── CitationsParser.php
+│   │   ├── LeadSectionParser.php
+│   │   └── TemplateParser.php
+│   │
+│   └── Fixes/              # Wikitext fixing operations
+│       ├── References/     # Reference-related fixes
+│       │   ├── DeleteEmptyRefsFixture.php
+│       │   ├── ExpandRefsFixture.php
+│       │   └── RefWorkerFixture.php
+│       │
+│       ├── Templates/      # Template-related fixes
+│       │   ├── DeleteTemplatesFixture.php
+│       │   └── FixTemplatesFixture.php
+│       │
+│       ├── Media/          # Media-related fixes
+│       │   ├── FixImagesFixture.php
+│       │   └── RemoveMissingImagesFixture.php
+│       │
+│       └── Structure/      # Structural fixes
+│           ├── FixCategoriesFixture.php
+│           └── FixLanguageLinksFixture.php
+│
+├── Infrastructure/          # Infrastructure layer (utilities & support)
+│   ├── Utils/              # Utility functions
+│   │   ├── FileUtils.php
+│   │   └── HtmlUtils.php
+│   │
+│   └── Debug/              # Debug utilities
+│       └── PrintHelper.php
+│
+├── bootstrap.php           # Application bootstrap
 ```
 
 ## Testing

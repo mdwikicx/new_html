@@ -6,7 +6,7 @@ This project has been refactored to follow modern PHP architecture patterns with
 
 ## New Directory Structure
 
-```
+```text
 src/
 ├── Application/              # Application layer (entry points & controllers)
 │   ├── Controllers/         # Business logic controllers
@@ -63,7 +63,6 @@ src/
 │       └── PrintHelper.php
 │
 ├── bootstrap.php           # Application bootstrap
-└── new_html_src/           # Legacy code (backward compatibility)
 ```
 
 ## Namespace Structure

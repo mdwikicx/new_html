@@ -48,7 +48,6 @@ src/
 │   ├── Utils/          # 2 files
 │   └── Debug/          # 1 file
 ├── bootstrap.php        # Application bootstrap
-└── new_html_src/        # Legacy (backward compatibility)
 ```
 
 ## Architecture Layers
