@@ -11,6 +11,7 @@
 
 // Load Composer autoloader
 include_once __DIR__ . '/require.php';
+include_once __DIR__ . '/load_env.php';
 
 // Set up error reporting for development
 if (defined('DEBUGX') && DEBUGX === true) {
@@ -32,16 +33,15 @@ if (!defined('APP_ROOT')) {
     define('APP_ROOT', dirname(__DIR__));
 }
 
+$home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
+
 if (!defined('SRC_PATH')) {
     define('SRC_PATH', __DIR__);
 }
 if (!defined('REVISIONS_PATH')) {
-    if (getenv('REVISIONS_DIR')) {
-        $rev_path = getenv('REVISIONS_DIR');
-    } else {
-        $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
-        $rev_path = $home . '/public_html/revisions_new';
-    }
+    $rev_path = getenv('REVISIONS_DIR') ? getenv('REVISIONS_DIR') : (
+        $home ? $home . '/public_html/revisions_new' : APP_ROOT . '/revisions'
+    );
     define('REVISIONS_PATH', $rev_path);
 }
 
@@ -69,5 +69,6 @@ if (!file_exists(JSON_FILE_ALL)) {
     file_put_contents(JSON_FILE_ALL, '{}', LOCK_EX);
 }
 
+define('DEBUGX', getenv('APP_DEBUG') === '1'); // Set APP_DEBUG=1 in development
 
 // Application is now bootstrapped and ready
