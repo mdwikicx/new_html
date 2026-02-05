@@ -4,8 +4,8 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\DelTemps\remove_templates;
-use function Fixes\DelTemps\remove_lead_templates;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 
 class DelTempsTest extends bootstrap
 {

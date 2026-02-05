@@ -16,9 +16,9 @@ use function Html\wiki_text_to_html;
 
 use function HtmlFixes\fix_link_red;
 use function HtmlFixes\del_div_error;
-use function NewHtml\FileHelps\file_write; // file_write($file_html, $result);
-use function NewHtml\FileHelps\read_file;
-use function APIServices\convert_wikitext_to_html;
+use function MDWiki\NewHtml\FileHelps\file_write; // file_write($file_html, $result);
+use function MDWiki\NewHtml\FileHelps\read_file;
+use function MDWiki\NewHtml\Services\Api\convert_wikitext_to_html;
 
 /**
  * Convert wikitext to HTML using the API and apply fixes

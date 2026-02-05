@@ -10,17 +10,9 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\DelTemps;
+namespace MDWiki\NewHtml\Domain\Fixes\Templates;
 
-/*
-Usage:
-
-use function Fixes\DelTemps\remove_templates;
-use function Fixes\DelTemps\remove_lead_templates;
-
-*/
-
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
  * Check if a template matches deletion patterns and remove it

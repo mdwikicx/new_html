@@ -15,13 +15,13 @@ use function Wikitext\get_wikitext;
 
 */
 
-use function FixText\fix_wikitext;
-use function Lead\get_lead_section;
-use function NewHtml\JsonData\add_title_revision;
-use function Printn\test_print;
-use function Fixes\ExpendRefs\refs_expend_work;
+use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
+use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
 
-use function APIServices\get_wikitext_from_mdwiki_restapi;
+use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi;
 
 /**
  * Get wikitext for a page, optionally processing only the lead section

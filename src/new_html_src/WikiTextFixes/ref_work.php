@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reference quality checking utilities
  *
@@ -8,14 +9,7 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\RefWork;
-/*
-Usage:
-
-use function Fixes\RefWork\check_one_cite;
-use function Fixes\RefWork\remove_bad_refs;
-
-*/
+namespace MDWiki\NewHtml\Domain\Fixes\References;
 /*
 
 https://en.wikipedia.org/wiki/Special:AbuseFilter/894
@@ -27,7 +21,7 @@ https://en.wikipedia.org/wiki/Special:AbuseFilter/891
 
 */
 
-use function WikiParse\Reg_Citations\get_regex_citations;
+use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
 
 /**
  * Check if the citation contains self-published information and filter it out.

@@ -11,7 +11,7 @@
     },
     "autoload": {
         "psr-4": {
-            "FixRefs\\Tests\\": "tests/",
+            "MDWiki\\NewHtml\\": "src/",
             "APIServices\\": "src/new_html_src/api_services/",
             "HtmlServices\\": "src/new_html_src/html_services/",
             "Utils\\": "src/new_html_src/utils/",
@@ -21,6 +21,11 @@
         "files": [
             "src/new_html_src/require.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FixRefs\\Tests\\": "tests/"
+        }
     },
     "scripts": {
         "test": "vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml",

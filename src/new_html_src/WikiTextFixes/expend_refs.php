@@ -9,18 +9,11 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\ExpendRefs;
+namespace MDWiki\NewHtml\Domain\Fixes\References;
 
-/*
-Usage:
-
-use function Fixes\ExpendRefs\refs_expend_work;
-
-*/
-
-use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\get_short_citations;
-use function Printn\test_print;
+use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
+use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Expand short references by finding their full definitions in the text

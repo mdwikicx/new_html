@@ -7,17 +7,9 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\FixCats;
+namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
-/*
-Usage:
-
-use function Fixes\FixCats\remove_categories;
-
-*/
-
-
-use function WikiParse\Category\get_categories;
+use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
 /**
  * Remove all category tags from wikitext

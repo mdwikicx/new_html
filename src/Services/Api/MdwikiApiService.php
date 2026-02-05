@@ -6,19 +6,13 @@
  * Provides functions for fetching wikitext content from MDWiki
  * using both the API and REST API endpoints.
  *
- * @package MDWiki\NewHtml\APIServices
+ * @package MDWiki\NewHtml\Services\Api
  */
 
-namespace APIServices;
-/*
-use function APIServices\get_wikitext_from_mdwiki_api;
-use function APIServices\get_wikitext_from_mdwiki_restapi;
+namespace MDWiki\NewHtml\Services\Api;
 
-*/
-
-use function PostMdwiki\handle_url_request_mdwiki;
-// use function APIServices\post_url_params_result;
-use function Printn\test_print;
+use function MDWiki\NewHtml\Application\Handlers\handle_url_request_mdwiki;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Get wikitext content from MDWiki API
@@ -39,7 +33,6 @@ function get_wikitext_from_mdwiki_api(string $title): array
     ];
     $url = "https://mdwiki.org/w/api.php";
 
-    // $req = post_url_params_result($url, $params);
     $req = handle_url_request_mdwiki($url, 'GET', $params);
 
     if (empty($req)) {
@@ -57,7 +50,8 @@ function get_wikitext_from_mdwiki_api(string $title): array
     }
 
     $source = $revisions["content"] ?? '';
-    $revid = $revisions["revid"] ?? '';    return [$source, $revid];
+    $revid = $revisions["revid"] ?? '';
+    return [$source, $revid];
 }
 
 /**
@@ -72,7 +66,6 @@ function get_wikitext_from_mdwiki_restapi(string $title): array
     $title2 = str_replace(" ", "_", $title2);
     $url = "https://mdwiki.org/w/rest.php/v1/page/" . $title2;
 
-    // $req = post_url_params_result($url);
     $req = handle_url_request_mdwiki($url, 'GET');
     $json1 = json_decode($req, true);
 

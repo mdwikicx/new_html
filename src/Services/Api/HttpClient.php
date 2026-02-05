@@ -6,22 +6,20 @@
  * Provides functions for making HTTP requests to external APIs,
  * supporting both GET and POST methods with cURL.
  *
- * @package MDWiki\NewHtml\APIServices
+ * @package MDWiki\NewHtml\Services\Api
  */
 
-namespace APIServices;
+namespace MDWiki\NewHtml\Services\Api;
 /*
 
-use function APIServices\handle_url_request;
-use function APIServices\post_url_params_result;
+use function MDWiki\NewHtml\Services\Api\handle_url_request;
+use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 
 */
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html
 // https://mdwiki.org/w/rest.php/v1/revision/1420795/html
 
-use function Printn\test_print;
-
-$usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Send a POST request to an API endpoint with parameters
@@ -32,7 +30,6 @@ $usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforg
  */
 function post_url_params_result(string $endPoint, array $params = []): string
 {
-    global $usr_agent;
     $ch = curl_init();
 
     $url = "{$endPoint}";
@@ -45,7 +42,7 @@ function post_url_params_result(string $endPoint, array $params = []): string
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
     }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, $usr_agent);
+    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
@@ -77,8 +74,6 @@ function post_url_params_result(string $endPoint, array $params = []): string
  */
 function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
 {
-    global $usr_agent;
-
     $ch = curl_init();
 
     $url = $endPoint;
@@ -97,7 +92,7 @@ function handle_url_request(string $endPoint, string $method = 'GET', array $par
     }
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, $usr_agent);
+    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 

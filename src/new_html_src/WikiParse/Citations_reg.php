@@ -10,17 +10,7 @@
  * @package MDWiki\NewHtml\WikiParse
  */
 
-namespace WikiParse\Reg_Citations;
-
-/*
-Usage:
-
-use function WikiParse\Reg_Citations\get_ref_name;
-use function WikiParse\Reg_Citations\get_regex_citations;
-use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\get_short_citations;
-
-*/
+namespace MDWiki\NewHtml\Domain\Parser;
 
 /**
  * Extract the name attribute from a ref tag's options

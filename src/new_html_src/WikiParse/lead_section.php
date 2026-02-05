@@ -10,9 +10,9 @@
  * @package MDWiki\NewHtml\Lead
  */
 
-namespace Lead;
+namespace MDWiki\NewHtml\Domain\Parser;
 /*
-use function Lead\get_lead_section;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 */
 
 /**

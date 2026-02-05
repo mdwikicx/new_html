@@ -4,7 +4,7 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\FixTemps\add_missing_title;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
 
 class FixTempsTest extends bootstrap
 {

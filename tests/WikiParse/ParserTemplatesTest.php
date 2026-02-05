@@ -3,11 +3,11 @@
 namespace FixRefs\Tests\WikiParse;
 
 use FixRefs\Tests\bootstrap;
-use WikiParse\Template\Template;
-use WikiParse\Template\ParserTemplate;
-use WikiParse\Template\ParserTemplates;
+use MDWiki\NewHtml\Domain\Parser\Template;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplate;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 class ParserTemplatesTest extends bootstrap
 {

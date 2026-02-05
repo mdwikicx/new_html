@@ -27,7 +27,7 @@ src/new_html_src/
 ├── json_data.php                 # JSON data management
 ├── post_mdwiki.php               # Post to MDWiki handler
 ├── print.php                     # Debug/print utilities
-├── require.php                   # Manual dependency loader
+├── bootstrap.php                 # Manual dependency loader
 ├── api_services/                 # External API integrations
 │   ├── commons_api.php
 │   ├── mdwiki_api_wikitext.php

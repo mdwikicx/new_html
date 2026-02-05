@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Missing image removal utilities
  *
@@ -9,25 +10,15 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace RemoveMissingImages;
+namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
-/*
-usage:
-
-use function RemoveMissingImages\check_commons_image_exists;
-use function RemoveMissingImages\remove_missing_infobox_images;
-use function RemoveMissingImages\remove_missing_inline_images;
-use function RemoveMissingImages\remove_missing_images;
-
-*/
-
-use function APIServices\check_commons_image_exists;
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
  * Remove infobox images that don't exist on Commons
  * Handles patterns like: |image = filename.png and |caption = text
- * Uses WikiParse\Template\getTemplates for proper template parsing
+ * Uses MDWiki\NewHtml\Domain\Parser\getTemplates for proper template parsing
  * Falls back to regex for non-template infobox parameters
  *
  * @param string $text The wikitext to process

@@ -26,6 +26,10 @@ if (empty($revid) || !ctype_digit($revid)) {
 
 $dir_path = __DIR__ . "/../../revisions_new/$revid";
 
+if (strpos(__DIR__, 'public_html') !== false) {
+    // dir_path = $HOME / public_html/revisions_new
+    $dir_path = getenv('HOME') . "/public_html/revisions_new/$revid";
+}
 if (!is_dir($dir_path)) {
     echo 'false';
     exit;

@@ -9,25 +9,17 @@
  * @package MDWiki\NewHtml
  */
 
-namespace FixText;
+namespace MDWiki\NewHtml\Services\Wikitext;
 
-/*
-Usage:
-
-use function FixText\fix_wikitext;
-
-*/
-
-
-use function Fixes\DelMtRefs\del_empty_refs;
-use function Fixes\FixCats\remove_categories;
-use function Fixes\FixImages\remove_videos;
-use function Fixes\RefWork\remove_bad_refs;
-use function Fixes\DelTemps\remove_templates;
-use function Fixes\DelTemps\remove_lead_templates;
-use function Fixes\FixTemps\add_missing_title;
-use function RemoveMissingImages\remove_missing_images;
-// use function Fixes\FixImages\remove_images;
+use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
+use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
+use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
+// use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;
 // use function Fixes\fix_langs_links\remove_lang_links;
 
 /**

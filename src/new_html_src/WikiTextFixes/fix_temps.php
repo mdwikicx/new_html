@@ -8,16 +8,9 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\FixTemps;
+namespace MDWiki\NewHtml\Domain\Fixes\Templates;
 
-/*
-Usage:
-
-use function Fixes\FixTemps\add_missing_title;
-
-*/
-
-use function WikiParse\Template\getTemplates;
+use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
  * Add missing title parameter to infobox templates

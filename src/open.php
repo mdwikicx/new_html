@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File viewer for generated content
  *
@@ -12,29 +13,34 @@
  * @package MDWiki\NewHtml
  */
 
-require_once __DIR__ . "/require.php";
+require_once __DIR__ . "/bootstrap.php";
 
 use function HtmlFixes\remove_data_parsoid;
-use function NewHtml\FileHelps\get_revisions_new_dir; // $revisions_dir = get_revisions_new_dir();
 
 $revid = $_GET['revid'] ?? '';
 $file = $_GET['file'] ?? '';
+
 // Validate inputs to prevent path traversal
-if (!preg_match('/^\d+$/', $revid) || empty($revid)) {
+// revid can be like 1234_all or 1234
+if (!preg_match('/^\d+(_all)?$/', $revid)) {
     http_response_code(400);
     echo "Invalid revision ID";
     exit();
 }
+
 $allowed_files = ['wikitext.txt', 'seg.html', 'html.html'];
+
 if (!in_array($file, $allowed_files, true)) {
     http_response_code(400);
     echo "Invalid file parameter";
     exit();
 }
+
 $content_type = ($file == 'wikitext.txt') ? "text/plain" : "text/html";
+
 header("Content-type: $content_type");
-$revisions_dir = get_revisions_new_dir();
-$file_path = $revisions_dir . "/$revid/$file";
+
+$file_path = REVISIONS_PATH . "/$revid/$file";
 
 $text = file_get_contents($file_path) ?: '';
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reisions dashboard page
  *
@@ -12,11 +13,19 @@
 <html lang="en">
 
 <?php
+define('DEBUGX', true); // Set to true for development, false for production
+
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+
+require_once __DIR__ . "/bootstrap.php";
+
+use function MDWiki\NewHtml\Application\Controllers\get_Data;
+use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
+
 /**
  * Get the appropriate CDN host for static assets
  *
@@ -99,14 +108,6 @@ echo <<<HTML
     </head>
 HTML;
 
-require_once __DIR__ . "/new_html_src/print.php";
-require_once __DIR__ . "/new_html_src/utils/files_utils.php";
-require_once __DIR__ . "/new_html_src/json_data.php";
-
-use function NewHtml\FileHelps\get_revisions_new_dir;
-use function NewHtml\JsonData\get_Data;
-use function NewHtml\JsonData\dump_both_data;
-
 /**
  * Generate a badge indicating if a file exists in the list
  *
@@ -125,9 +126,7 @@ function make_badge(array $files, string $file): string
     return "";
 }
 
-$revisions_new_dir = get_revisions_new_dir();
-
-$dirs = array_filter(glob($revisions_new_dir . '/*/'), 'is_dir');
+$dirs = array_filter(glob(REVISIONS_PATH . '/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
     $timeA = is_file($a . '/wikitext.txt') ? filemtime($a . '/wikitext.txt') : filemtime($a);

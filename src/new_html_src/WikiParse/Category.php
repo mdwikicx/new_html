@@ -9,14 +9,7 @@
  * @package MDWiki\NewHtml\WikiParse
  */
 
-namespace WikiParse\Category;
-
-/*
-Usage:
-
-use function WikiParse\Category\get_categories;
-
-*/
+namespace MDWiki\NewHtml\Domain\Parser;
 
 /**
  * Extract all categories from wikitext

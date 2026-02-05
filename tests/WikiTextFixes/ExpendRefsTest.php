@@ -4,7 +4,7 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\ExpendRefs\refs_expend_work;
+use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
 
 class ExpendRefsTest extends bootstrap
 {
