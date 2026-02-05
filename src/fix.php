@@ -28,6 +28,7 @@
  * @package MDWiki\NewHtml
  */
 
+// define("DEBUGX", true);
 require_once __DIR__ . "/bootstrap.php";
 
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
