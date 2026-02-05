@@ -15,7 +15,7 @@ use function Wikitext\get_wikitext;
 
 */
 
-use function FixText\fix_wikitext;
+use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use function Lead\get_lead_section;
 use function MDWiki\NewHtml\JsonData\add_title_revision;
 use function Printn\test_print;

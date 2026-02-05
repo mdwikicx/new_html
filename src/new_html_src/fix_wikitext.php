@@ -9,7 +9,7 @@
  * @package MDWiki\NewHtml
  */
 
-namespace FixText;
+namespace MDWiki\NewHtml\Services\Wikitext;
 
 use function Fixes\DelMtRefs\del_empty_refs;
 use function Fixes\FixCats\remove_categories;

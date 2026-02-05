@@ -21,7 +21,7 @@ header("Access-Control-Allow-Origin: *");
 require_once __DIR__ . "/bootstrap.php";
 
 use function Printn\test_print;
-use function FixText\fix_wikitext;
+use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use function Wikitext\get_wikitext;
 use function Segments\html_to_seg;
 use function Html\wiki_text_to_html;
