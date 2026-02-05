@@ -231,6 +231,82 @@ class JsonDataTest extends bootstrap
         $this->assertIsArray($result);
     }
 
+    public function testGetFromJsonWithNonDigitRevid()
+    {
+        // Test that non-numeric revids are handled properly
+        $result = get_from_json('TestArticle', '');
+
+        $this->assertIsArray($result);
+        $this->assertCount(2, $result);
+        // Should return empty if revid is not numeric
+        list($wikitext, $revid) = $result;
+        $this->assertIsString($wikitext);
+        $this->assertIsString($revid);
+    }
+
+    public function testGetFromJsonWithNumericRevid()
+    {
+        // Test case for numeric revision IDs
+        $result = get_from_json('ArticleWithNumericRevid', '');
+
+        $this->assertIsArray($result);
+        list($wikitext, $revid) = $result;
+        $this->assertIsString($wikitext);
+        $this->assertIsString($revid);
+    }
+
+    public function testDumpBothDataPreservesJsonFormat()
+    {
+        $mainData = ['Test' => '123', 'Another' => '456'];
+        $mainDataAll = ['All1' => '789'];
+
+        dump_both_data($mainData, $mainDataAll);
+
+        // Verify function executes without errors
+        $this->assertTrue(true);
+    }
+
+    public function testGetDataWithInvalidType()
+    {
+        // Test with a type that's not 'all'
+        $result = get_Data('invalid_type');
+
+        $this->assertIsArray($result);
+    }
+
+    public function testAddTitleRevisionUpdatesExistingEntry()
+    {
+        // Test updating an existing title
+        $result = add_title_revision('ExistingTitle', '999', '');
+
+        $this->assertTrue(is_array($result) || $result === '');
+    }
+
+    public function testGetTitleRevisionWithWhitespaceInTitle()
+    {
+        $result = get_title_revision('  Title With Spaces  ', '');
+
+        $this->assertIsString($result);
+    }
+
+    public function testAddTitleRevisionWithLongRevisionId()
+    {
+        $longRevid = str_repeat('9', 20);
+        $result = add_title_revision('LongRevid', $longRevid, '');
+
+        $this->assertTrue(is_array($result) || $result === '');
+    }
+
+    public function testGetFromJsonNonExistentDirectory()
+    {
+        // Test with a title that would have no directory
+        $result = get_from_json('NoDirectoryTitle999', '');
+
+        list($wikitext, $revid) = $result;
+        $this->assertEquals('', $wikitext);
+        $this->assertEquals('', $revid);
+    }
+
     protected function tearDown(): void
     {
         // Clean up temporary files

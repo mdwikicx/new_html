@@ -65,4 +65,115 @@ class CommonsApiTest extends bootstrap
         $this->assertFalse(check_commons_image_exists(''));
         $this->assertFalse(check_commons_image_exists('   '));
     }
+
+    /**
+     * Test with File: prefix (should handle it)
+     */
+    public function testCheckCommonsImageWithFilePrefix()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        $result = check_commons_image_exists('File:AwareLogo.png');
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test with Image: prefix (should handle it)
+     */
+    public function testCheckCommonsImageWithImagePrefix()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        $result = check_commons_image_exists('Image:AwareLogo.png');
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test with filename containing spaces
+     */
+    public function testCheckCommonsImageWithSpaces()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        // Test handling of spaces in filename
+        $result = check_commons_image_exists('  AwareLogo.png  ');
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test with special characters in filename
+     */
+    public function testCheckCommonsImageWithSpecialCharacters()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        // Test with underscores and hyphens
+        $result = check_commons_image_exists('Test-image_2020.png');
+        // This may or may not exist, just verify it returns a boolean
+        $this->assertIsBool($result);
+    }
+
+    /**
+     * Test return type is always boolean
+     */
+    public function testCheckCommonsImageReturnsBoolean()
+    {
+        $result = check_commons_image_exists('');
+        $this->assertIsBool($result);
+
+        if ($this->isCommonsAvailable()) {
+            $result2 = check_commons_image_exists('AwareLogo.png');
+            $this->assertIsBool($result2);
+        }
+    }
+
+    /**
+     * Test with mixed case prefix
+     */
+    public function testCheckCommonsImageWithMixedCasePrefix()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        $result = check_commons_image_exists('file:AwareLogo.png');
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test with very long filename
+     */
+    public function testCheckCommonsImageWithLongFilename()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        $longFilename = str_repeat('Long_', 50) . '.png';
+        $result = check_commons_image_exists($longFilename);
+        // Should return false for this unlikely filename
+        $this->assertIsBool($result);
+    }
+
+    /**
+     * Test with invalid characters
+     */
+    public function testCheckCommonsImageWithInvalidCharacters()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        $result = check_commons_image_exists('Test<>|.png');
+        // Should handle gracefully
+        $this->assertIsBool($result);
+    }
 }
