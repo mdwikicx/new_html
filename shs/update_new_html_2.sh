@@ -5,7 +5,7 @@ echo "Cd to home directory..."
 cd "$HOME" || { echo "Failed to change directory to home directory"; exit 1; }
 
 REPO_URL="https://github.com/mdwikicx/new_html.git"
-TARGET_DIR="public_html/new_html"
+TARGET_DIR="public_html/new_html_1"
 CLONE_DIR="new_html_temp"
 
 # Remove any existing clone directory
