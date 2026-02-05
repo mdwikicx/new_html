@@ -11,13 +11,6 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;
 
-/*
-Usage:
-
-use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
-
-*/
-
 use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;

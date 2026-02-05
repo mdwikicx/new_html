@@ -11,13 +11,6 @@
 
 namespace MDWiki\NewHtml\Domain\Parser;
 
-/*
-Usage:
-
-use function MDWiki\NewHtml\Domain\Parser\get_categories;
-
-*/
-
 /**
  * Extract all categories from wikitext
  *

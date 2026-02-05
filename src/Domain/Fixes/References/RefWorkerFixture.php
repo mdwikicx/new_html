@@ -9,13 +9,7 @@
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;
-/*
-Usage:
 
-use function MDWiki\NewHtml\Domain\Fixes\References\check_one_cite;
-use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
-
-*/
 /*
 
 https://en.wikipedia.org/wiki/Special:AbuseFilter/894

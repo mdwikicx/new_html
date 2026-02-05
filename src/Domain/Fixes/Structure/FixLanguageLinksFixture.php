@@ -10,13 +10,6 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
-/*
-Usage:
-
-use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
-
-*/
-
 $lang_codes = [
     "aa",
     "ab",

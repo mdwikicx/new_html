@@ -9,14 +9,6 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
-/*
-Usage:
-
-use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
-
-*/
-
-
 use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
 /**

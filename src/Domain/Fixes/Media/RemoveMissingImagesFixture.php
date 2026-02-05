@@ -11,16 +11,6 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
-/*
-usage:
-
-use function MDWiki\NewHtml\Domain\Fixes\Media\check_commons_image_exists;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_infobox_images;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_inline_images;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
-
-*/
-
 use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 

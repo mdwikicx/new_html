@@ -12,16 +12,6 @@
 
 namespace MDWiki\NewHtml\Domain\Parser;
 
-/*
-Usage:
-
-use function MDWiki\NewHtml\Domain\Parser\get_ref_name;
-use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
-use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
-use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
-
-*/
-
 /**
  * Extract the name attribute from a ref tag's options
  *

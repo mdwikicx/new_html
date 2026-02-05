@@ -10,13 +10,6 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Templates;
 
-/*
-Usage:
-
-use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
-
-*/
-
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
