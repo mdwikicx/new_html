@@ -43,7 +43,26 @@ if (!defined('REVISIONS_PATH')) {
     define('REVISIONS_PATH', $rev_path);
 }
 
+if (!defined('JSON_FILE')) {
+    $json_file = REVISIONS_PATH . '/json_data.json';
+    define('JSON_FILE', $json_file);
+}
+if (!defined('JSON_FILE_ALL')) {
+    $json_file_all = REVISIONS_PATH . '/json_data_all.json';
+    define('JSON_FILE_ALL', $json_file_all);
+}
+
 // Initialize revisions directory if needed
 if (!is_dir(REVISIONS_PATH)) {
     mkdir(REVISIONS_PATH, 0755, true);
+}
+
+// Ensure JSON data files exist
+
+if (!file_exists(JSON_FILE)) {
+    file_put_contents(JSON_FILE, '{}', LOCK_EX);
+}
+
+if (!file_exists(JSON_FILE_ALL)) {
+    file_put_contents(JSON_FILE_ALL, '{}', LOCK_EX);
 }
