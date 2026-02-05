@@ -14,7 +14,7 @@
             "MDWiki\\NewHtml\\": "src/"
         },
         "files": [
-            "src/require.php"
+            "src/bootstrap.php"
         ]
     },
     "autoload-dev": {

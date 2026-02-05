@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Autoloader and initialization file for the new_html application
+ * Bootstrap file for MDWiki NewHtml application
  *
- * This file configures error reporting based on DEBUGX constant
- * and includes all necessary source files for the application.
+ * This file initializes the application environment, loads the Composer
+ * autoloader, and sets up necessary configuration constants.
  *
  * @package MDWiki\NewHtml
  */
+
+// Load Composer autoloader
+include_once __DIR__ . '/require.php';
 
 // Set up error reporting for development
 if (defined('DEBUGX') && DEBUGX === true) {
@@ -67,4 +70,4 @@ if (!file_exists(JSON_FILE_ALL)) {
 }
 
 
-include_once __DIR__ . '/require.php';
+// Application is now bootstrapped and ready
