@@ -7,7 +7,7 @@
  * including maintenance templates, stub templates, and other
  * non-essential templates.
  *
- * @package MDWiki\NewHtml\WikiTextFixes
+ * @package MDWiki\NewHtml\Domain\Fixes\Templates
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\Templates;

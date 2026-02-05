@@ -1,12 +1,11 @@
 <?php
-
 /**
  * Reference quality checking utilities
  *
  * Provides functions for checking and removing low-quality or unreliable
  * references from wikitext, including predatory journals and self-published sources.
  *
- * @package MDWiki\NewHtml\WikiTextFixes
+ * @package MDWiki\NewHtml\Domain\Fixes\References
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;

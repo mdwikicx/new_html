@@ -5,7 +5,7 @@
  * Provides functions for fixing and enhancing MediaWiki templates,
  * such as adding missing title parameters to infobox templates.
  *
- * @package MDWiki\NewHtml\WikiTextFixes
+ * @package MDWiki\NewHtml\Domain\Fixes\Templates
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\Templates;

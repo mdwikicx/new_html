@@ -5,10 +5,10 @@
  *
  * Provides functions for removing interwiki language links from wikitext.
  *
- * @package MDWiki\NewHtml\WikiTextFixes
+ * @package MDWiki\NewHtml\Domain\Fixes\Structure
  */
 
-namespace Fixes\fix_langs_links;
+namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
 $lang_codes = [
     "aa",

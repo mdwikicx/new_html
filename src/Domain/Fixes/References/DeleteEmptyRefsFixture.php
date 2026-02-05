@@ -6,7 +6,7 @@
  * Provides functions for deleting or expanding empty short reference tags
  * in wikitext.
  *
- * @package MDWiki\NewHtml\WikiTextFixes
+ * @package MDWiki\NewHtml\Domain\Fixes
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;

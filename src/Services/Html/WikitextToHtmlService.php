@@ -6,7 +6,7 @@
  * Provides functions for converting wikitext to HTML using the
  * Wikipedia REST API, with caching support.
  *
- * @package MDWiki\NewHtml
+ * @package MDWiki\NewHtml\Services\Html
  */
 
 namespace MDWiki\NewHtml\Services\Html;

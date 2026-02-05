@@ -6,18 +6,18 @@
  * Provides functions for file and directory operations, including
  * reading, writing, and managing the revisions storage directory.
  *
- * @package MDWiki\NewHtml
+ * @package MDWiki\NewHtml\Infrastructure\Utils
  */
 
 namespace MDWiki\NewHtml\Infrastructure\Utils;
+
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
-
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Get the file directory for a specific revision

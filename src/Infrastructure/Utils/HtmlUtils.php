@@ -5,19 +5,10 @@
  * Provides functions for fixing and cleaning HTML content, including
  * removing error divs, fixing red links, and removing data-parsoid attributes.
  *
- * @package MDWiki\NewHtml
+ * @package MDWiki\NewHtml\Infrastructure\Utils
  */
 
 namespace MDWiki\NewHtml\Infrastructure\Utils;
-/*
-
-use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
-use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
-use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
-
-*/
-// <div([^\/>]*?)>(.+?)<\/div>
-// class="error"
 
 /**
  * Remove div elements with class="error" from HTML

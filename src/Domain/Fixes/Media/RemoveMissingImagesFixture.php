@@ -6,7 +6,7 @@
  * and removing missing images from wikitext, including both infobox
  * images and inline file links.
  *
- * @package MDWiki\NewHtml\WikiTextFixes
+ * @package MDWiki\NewHtml\Domain\Fixes
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\Media;

@@ -19,8 +19,6 @@ use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
-// use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;
-// use function Fixes\fix_langs_links\remove_lang_links;
 
 /**
  * Fix wikitext by removing unwanted templates, refs, and other elements
