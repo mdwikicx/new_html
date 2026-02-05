@@ -18,7 +18,7 @@ use function PostMdwiki\handle_url_request_mdwiki;
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html
 // https://mdwiki.org/w/rest.php/v1/revision/1420795/html
 
-use function Printn\test_print;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Handle URL requests to MDWiki with support for GET and POST methods

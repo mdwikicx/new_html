@@ -17,7 +17,7 @@ if (defined('DEBUGX') && DEBUGX === true) {
     error_reporting(E_ALL);
 }
 
-use function Printn\test_print;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Get the file directory for a specific revision

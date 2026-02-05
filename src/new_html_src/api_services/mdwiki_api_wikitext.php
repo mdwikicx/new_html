@@ -18,7 +18,7 @@ use function MDWiki\NewHtml\Services\Api\get_wikitext_from_mdwiki_restapi;
 
 use function PostMdwiki\handle_url_request_mdwiki;
 // use function MDWiki\NewHtml\Services\Api\post_url_params_result;
-use function Printn\test_print;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Get wikitext content from MDWiki API

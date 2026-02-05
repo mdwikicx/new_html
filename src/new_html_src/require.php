@@ -10,7 +10,7 @@
  * @package MDWiki\NewHtml
  */
 
-include_once __DIR__ . '/print.php';
+include_once __DIR__ . '/../Infrastructure/Debug/PrintHelper.php';
 
 require_once __DIR__ . "/WikiParse/Category.php";
 require_once __DIR__ . "/WikiParse/Citations_reg.php";

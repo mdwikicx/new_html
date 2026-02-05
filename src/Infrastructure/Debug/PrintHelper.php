@@ -6,13 +6,10 @@
  * Provides functions for conditional debug output based on
  * request parameters or DEBUGX constant.
  *
- * @package MDWiki\NewHtml
+ * @package MDWiki\NewHtml\Infrastructure\Debug
  */
 
-namespace Printn;
-/*
-use function Printn\test_print;
-*/
+namespace MDWiki\NewHtml\Infrastructure\Debug;
 
 /**
  * Print debug messages when test mode is enabled

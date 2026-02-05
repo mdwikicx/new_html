@@ -13,7 +13,7 @@ namespace MDWiki\NewHtml\Services\Api;
 
 use function MDWiki\NewHtml\Services\Api\handle_url_request;
 // use function MDWiki\NewHtml\Services\Api\post_url_params_result;
-use function Printn\test_print;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Convert wikitext to HTML using the Wikipedia REST API

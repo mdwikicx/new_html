@@ -13,7 +13,7 @@ namespace MDWiki\NewHtml\Domain\Fixes\References;
 
 use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
-use function Printn\test_print;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Expand short references by finding their full definitions in the text
