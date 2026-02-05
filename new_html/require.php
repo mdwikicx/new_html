@@ -17,6 +17,7 @@ if (!is_dir($src_path)) {
 }
 
 require_once $src_path . "/bootstrap.php";
+require_once $src_path . "/Domain/Contracts/ImageValidatorInterface.php";
 require_once $src_path . "/Application/Controllers/JsonDataController.php";
 require_once $src_path . "/Application/Handlers/WikitextHandler.php";
 require_once $src_path . "/Domain/Fixes/Media/FixImagesFixture.php";
@@ -37,6 +38,7 @@ require_once $src_path . "/Domain/Parser/Template.php";
 require_once $src_path . "/Infrastructure/Debug/PrintHelper.php";
 require_once $src_path . "/Infrastructure/Utils/FileUtils.php";
 require_once $src_path . "/Infrastructure/Utils/HtmlUtils.php";
+require_once $src_path . "/Services/Api/CommonsImageValidator.php";
 require_once $src_path . "/Services/Api/CommonsApiService.php";
 require_once $src_path . "/Services/Api/HttpClient.php";
 require_once $src_path . "/Services/Api/MdwikiApiService.php";
