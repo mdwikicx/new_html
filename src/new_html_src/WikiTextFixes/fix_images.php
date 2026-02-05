@@ -9,7 +9,7 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\FixImages;
+namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
 /**
  * Remove image tags from wikitext by wrapping them in conditional existence check

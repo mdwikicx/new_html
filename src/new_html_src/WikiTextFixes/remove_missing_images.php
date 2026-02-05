@@ -10,7 +10,7 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace RemoveMissingImages;
+namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
 use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;

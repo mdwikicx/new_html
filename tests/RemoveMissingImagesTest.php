@@ -3,9 +3,9 @@
 namespace FixRefs\Tests;
 
 use FixRefs\Tests\bootstrap;
-use function RemoveMissingImages\remove_missing_infobox_images;
-use function RemoveMissingImages\remove_missing_inline_images;
-use function RemoveMissingImages\remove_missing_images;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_infobox_images;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_inline_images;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
 
 class RemoveMissingImagesTest extends bootstrap
 {

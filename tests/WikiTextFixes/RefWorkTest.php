@@ -4,8 +4,8 @@ namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;
 
-use function Fixes\RefWork\check_one_cite;
-use function Fixes\RefWork\remove_bad_refs;
+use function MDWiki\NewHtml\Domain\Fixes\References\check_one_cite;
+use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
 
 class RefWorkTest extends bootstrap
 {

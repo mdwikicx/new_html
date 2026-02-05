@@ -8,7 +8,7 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\FixTemps;
+namespace MDWiki\NewHtml\Domain\Fixes\Templates;
 
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 

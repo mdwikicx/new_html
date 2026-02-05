@@ -9,7 +9,7 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\RefWork;
+namespace MDWiki\NewHtml\Domain\Fixes\References;
 /*
 
 https://en.wikipedia.org/wiki/Special:AbuseFilter/894
