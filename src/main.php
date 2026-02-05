@@ -26,9 +26,9 @@ use function Wikitext\get_wikitext;
 use function Segments\html_to_seg;
 use function Html\wiki_text_to_html;
 use function HtmlFixes\remove_data_parsoid;
-use function NewHtml\FileHelps\get_file_dir;
-use function NewHtml\FileHelps\file_write;
-use function NewHtml\JsonData\get_from_json;
+use function MDWiki\NewHtml\FileHelps\get_file_dir;
+use function MDWiki\NewHtml\FileHelps\file_write;
+use function MDWiki\NewHtml\JsonData\get_from_json;
 
 $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
 

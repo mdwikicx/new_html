@@ -14,8 +14,8 @@ namespace Segments;
 use function Segments\html_to_seg;
 */
 
-use function NewHtml\FileHelps\file_write;
-use function NewHtml\FileHelps\read_file;
+use function MDWiki\NewHtml\FileHelps\file_write;
+use function MDWiki\NewHtml\FileHelps\read_file;
 // use function MDWiki\NewHtml\APIServices\post_url_params_result;
 use function MDWiki\NewHtml\APIServices\change_html_to_seg;
 

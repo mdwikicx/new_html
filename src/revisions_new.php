@@ -23,8 +23,8 @@ if (defined('DEBUGX') && DEBUGX === true) {
 
 require_once __DIR__ . "/bootstrap.php";
 
-use function NewHtml\JsonData\get_Data;
-use function NewHtml\JsonData\dump_both_data;
+use function MDWiki\NewHtml\JsonData\get_Data;
+use function MDWiki\NewHtml\JsonData\dump_both_data;
 
 /**
  * Get the appropriate CDN host for static assets

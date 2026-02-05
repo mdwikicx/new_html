@@ -4,11 +4,11 @@ namespace FixRefs\Tests\EntryPoints;
 
 use FixRefs\Tests\bootstrap;
 
-use function NewHtml\JsonData\get_title_revision;
-use function NewHtml\JsonData\add_title_revision;
-use function NewHtml\JsonData\get_from_json;
-use function NewHtml\JsonData\get_Data;
-use function NewHtml\JsonData\dump_both_data;
+use function MDWiki\NewHtml\JsonData\get_title_revision;
+use function MDWiki\NewHtml\JsonData\add_title_revision;
+use function MDWiki\NewHtml\JsonData\get_from_json;
+use function MDWiki\NewHtml\JsonData\get_Data;
+use function MDWiki\NewHtml\JsonData\dump_both_data;
 
 class JsonDataTest extends bootstrap
 {
