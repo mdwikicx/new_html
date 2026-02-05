@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Cache existence checker for generated content
  *
