@@ -48,7 +48,6 @@ if ($load_vendor && file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require_once __DIR__ . "/Services/Html/HtmlToSegmentsService.php";
     require_once __DIR__ . "/Services/Html/WikitextToHtmlService.php";
 
-    require_once __DIR__ . "/Application/Handlers/PostMdwikiHandler.php";
     require_once __DIR__ . "/Application/Handlers/WikitextHandler.php";
     require_once __DIR__ . "/Application/Controllers/JsonDataController.php";
 }
