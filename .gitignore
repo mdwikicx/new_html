@@ -12,3 +12,6 @@ composer.lock
 phpstan.phar
 *.env
 .env
+/revisions
+/vendor1
+composer.lock.1

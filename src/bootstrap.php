@@ -69,6 +69,4 @@ if (!file_exists(JSON_FILE_ALL)) {
     file_put_contents(JSON_FILE_ALL, '{}', LOCK_EX);
 }
 
-define('DEBUGX', getenv('APP_DEBUG') === '1'); // Set APP_DEBUG=1 in development
-
 // Application is now bootstrapped and ready

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+CLEAN_INSTALL=1
 echo "Cd to home directory..."
 cd "$HOME" || { echo "Failed to change directory to home directory"; exit 1; }
 
@@ -22,7 +23,39 @@ else
     exit 1
 fi
 
-# Copy the required files to the target directory
-cp -rf "$CLONE_DIR"/src/* "$TARGET_DIR" -v
+# remove vendor directory if exists
+if [ -d "$CLONE_DIR/src/vendor" ]; then
+    echo "Removing vendor directory..."
+    rm -rf "$CLONE_DIR/src/vendor"
+fi
+
+# remove composer.lock file if exists
+if [ -f "$CLONE_DIR/src/composer.lock" ]; then
+    echo "Removing composer.lock file..."
+    rm -f "$CLONE_DIR/src/composer.lock"
+fi
+
+# if CLEAN_INSTALL mv the existing target directory to a backup location
+if [ "$CLEAN_INSTALL" -eq 1 ]; then
+    if [ -d "$TARGET_DIR" ]; then
+        BACKUP_DIR="${TARGET_DIR}_backup_$(date +%Y%m%d%H%M%S)"
+        echo "Backing up existing target directory to $BACKUP_DIR"
+        mv "$TARGET_DIR" "$BACKUP_DIR"
+    fi
+    # Move the cloned directory to the target location
+    mv "$CLONE_DIR/src" "$TARGET_DIR" -v
+    # install composer dependencies
+    echo "Installing composer dependencies..."
+    cd "$TARGET_DIR" || { echo "Failed to change directory to $TARGET_DIR"; exit 1; }
+    if command -v composer >/dev/null 2>&1; then
+        composer install --no-dev --optimize-autoloader
+    else
+        echo "Composer is not installed. Please install composer to manage dependencies." >&2
+        exit 1
+    fi
+else
+    # Copy the required files to the target directory
+    cp -rf "$CLONE_DIR"/src/* "$TARGET_DIR" -v
+fi
 
 rm -rf "$CLONE_DIR"

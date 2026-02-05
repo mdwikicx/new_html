@@ -11,11 +11,14 @@
  * @package MDWiki\NewHtml
  */
 
-$load_vendor = getenv('LOAD_VENDOR') === '1' ? true : false;
-
-if ($load_vendor && file_exists(__DIR__ . '/../vendor/autoload.php')) {
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require_once __DIR__ . '/../vendor/autoload.php';
 } else {
+    // Handle the case where the autoload file does not exist
+    error_log('Autoload file not found');
+    throw new RuntimeException('Autoload file not found');
+}
+/*
     include_once __DIR__ . '/Infrastructure/Debug/PrintHelper.php';
 
     require_once __DIR__ . "/Domain/Parser/CategoryParser.php";
@@ -50,4 +53,4 @@ if ($load_vendor && file_exists(__DIR__ . '/../vendor/autoload.php')) {
 
     require_once __DIR__ . "/Application/Handlers/WikitextHandler.php";
     require_once __DIR__ . "/Application/Controllers/JsonDataController.php";
-}
+*/
