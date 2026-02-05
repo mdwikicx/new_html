@@ -48,6 +48,7 @@ class ParserTemplate
         $this->parameters = [];
         if (preg_match("/^\{\{(.*?)(\}\})$/s", $this->templateText, $matchesR)) {
             $DTemplate = $matchesR[1];
+
             $matches = [];
             preg_match_all("/\{\{(.*?)\}\}/", $DTemplate, $matches);
             foreach ($matches[1] as $matche) {
@@ -58,6 +59,15 @@ class ParserTemplate
             foreach ($matches[1] as $matche) {
                 $DTemplate = str_replace($matche, str_replace($this->pipe, $this->pipeR, $matche), $DTemplate);
             }
+
+            // $pipe = $this->pipe;
+            // $pipeR = $this->pipeR;
+            // $DTemplate = preg_replace_callback("/\{\{(.*?)\}\}/s", function ($m) use ($pipe, $pipeR) {
+            //     return str_replace($pipe, $pipeR, $m[0]);
+            // }, $DTemplate);
+            // $DTemplate = preg_replace_callback("/\[\[(.*?)\]\]/s", function ($m) use ($pipe, $pipeR) {
+            //     return str_replace($pipe, $pipeR, $m[0]);
+            // }, $DTemplate);
 
             $params = explode("|", $DTemplate);
             $pipeR = $this->pipeR;
