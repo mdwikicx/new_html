@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main API endpoint for processing MDWiki page content
  *
@@ -23,12 +24,13 @@ require_once __DIR__ . "/bootstrap.php";
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
+use function MDWiki\NewHtml\Application\Handlers\get_wikitext_all;
 use function MDWiki\NewHtml\Services\Html\html_to_seg;
 use function MDWiki\NewHtml\Services\Html\wiki_text_to_html;
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
-use function MDWiki\NewHtml\Infrastructure\Utils\get_file_dir;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
-use function MDWiki\NewHtml\Application\Controllers\get_from_json;
+use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
+use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 
 $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
 
@@ -86,6 +88,55 @@ function error_1(string $title, string $revision): string
 }
 
 /**
+ * Get the file directory for a specific revision
+ *
+ * @param string $revision The revision ID
+ * @param string $all Whether to use the '_all' suffix (non-empty string) or not (empty string)
+ * @return string The directory path, or empty string on error
+ */
+function get_file_dir(string $revision, string $all): string
+{
+    if (empty($revision) || !ctype_digit($revision)) {
+        test_print('Error: revision is empty in get_file_dir().');
+        return '';
+    }
+
+    $file_dir = REVISIONS_PATH . "/$revision";
+
+    if ($all != '') $file_dir .= "_all";
+
+    if (!is_dir($file_dir)) {
+        if (!mkdir($file_dir, 0755, true)) {
+            test_print(sprintf('Failed to create directory "%s".', $file_dir));
+        }
+    }
+    return $file_dir;
+}
+/**
+ * Get wikitext and revision ID from cached JSON data
+ *
+ * @param string $title The page title
+ * @param string $file
+ * @return array{0: string, 1: string} Array containing [wikitext, revision_id]
+ */
+function get_from_json(string $title, string $all, string $file): array
+{
+    $revid = get_title_revision($title, $file);
+
+    if (empty($revid) || !ctype_digit($revid)) {
+        return ['', ''];
+    }
+
+    $file_dir = get_file_dir($revid, $all);
+
+    if (!is_dir($file_dir)) return ['', ''];
+
+    $wikitext = read_file($file_dir . "/wikitext.txt");
+
+    return [$wikitext, $revid];
+}
+
+/**
  * Get wikitext and revision ID for a page, either from API or cache
  *
  * @param string $title The page title to fetch
@@ -100,10 +151,16 @@ function get_wikitext_revision(string $title, string $all): array
 
     // test_print("title: $title, all: $all, printetxt: $printetxt");
 
-    [$wikitext, $revision] = get_wikitext($title, $all);
+    if (!empty($all)) {
+        [$wikitext, $revision] = get_wikitext_all($title, JSON_FILE);
+    } else {
+        [$wikitext, $revision] = get_wikitext($title, JSON_FILE_ALL);
+    }
+
+    $file = (!empty($all)) ? JSON_FILE_ALL : JSON_FILE;
 
     if ($wikitext == '' || $revision == '') {
-        [$wikitext, $revision] = get_from_json($title, $all);
+        [$wikitext, $revision] = get_from_json($title, $all, $file);
         $from_cache = $wikitext != '';
     }
 

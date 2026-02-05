@@ -13,8 +13,7 @@
 <html lang="en">
 
 <?php
-// Use modern PSR-4 autoloading
-require_once __DIR__ . "/bootstrap.php";
+define('DEBUGX', true); // Set APP_DEBUG=1 in development
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
@@ -22,8 +21,10 @@ if (defined('DEBUGX') && DEBUGX === true) {
     error_reporting(E_ALL);
 }
 
-use function MDWiki\NewHtml\Application\Controllers\get_Data;
-use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
+// Use modern PSR-4 autoloading
+require_once __DIR__ . "/bootstrap.php";
+
+use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
 /**
  * Get the appropriate CDN host for static assets
@@ -125,6 +126,23 @@ function make_badge(array $files, string $file): string
     return "";
 }
 
+/**
+ * Get data from JSON file based on type
+ *
+ * @param string $tyt The type of data to retrieve ('all' for complete data, otherwise main data)
+ * @return array<string, mixed> The decoded JSON data as an array
+ */
+function get_Data(string $tyt): array
+{
+    $file = ($tyt == 'all') ? JSON_FILE_ALL : JSON_FILE;
+
+    $file_text = read_file($file);
+
+    if ($file_text == '') return [];
+
+    $data = json_decode($file_text, true) ?? [];
+    return $data;
+}
 $dirs = array_filter(glob(REVISIONS_PATH . '/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
@@ -212,6 +230,25 @@ foreach ($dirs as $dir) {
     HTML;
 }
 
+function file_write(?string $file, string $text): void
+{
+    if (empty($text) || empty($file)) {
+        return;
+    }
+
+    try {
+        file_put_contents($file, $text, LOCK_EX);
+    } catch (\Exception $e) {
+        error_log("Error: Could not write to file: $file");
+    }
+}
+
+function dump_both_data(array $main_data, array $main_data_all): void
+{
+
+    file_write(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
+    file_write(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
+}
 if ($make_dump) {
     dump_both_data($main_data, $main_data_all);
 }
