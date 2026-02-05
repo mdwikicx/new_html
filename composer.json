@@ -20,7 +20,10 @@
             "MDWiki\\NewHtml\\Infrastructure\\Utils\\": "src/Infrastructure/Utils/",
             "MDWiki\\NewHtml\\Infrastructure\\Debug\\": "src/Infrastructure/Debug/",
             "MDWiki\\NewHtml\\Services\\": "src/Services/"
-        }
+        },
+        "files": [
+            "src/bootstrap.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

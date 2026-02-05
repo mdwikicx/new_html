@@ -13,7 +13,10 @@
     "autoload": {
         "psr-4": {
             "MDWiki\\NewHtml\\": "new_html_1/src/"
-        }
+        },
+        "files": [
+            "src/bootstrap.php"
+        ]
     },
     "scripts": {
         "test": "vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml",
