@@ -27,14 +27,7 @@ if (empty($revid) || !ctype_digit($revid)) {
     exit;
 }
 
-$revisions_dir = __DIR__ . "/../../revisions_new";
-
-if (strpos(__DIR__, 'public_html') !== false) {
-    $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
-    $revisions_dir = $home . "/public_html/revisions_new";
-}
-
-$dir_path = "$revisions_dir/$revid";
+$dir_path = REVISIONS_PATH . "/$revid";
 
 if (!is_dir($dir_path)) {
     echo 'false';
