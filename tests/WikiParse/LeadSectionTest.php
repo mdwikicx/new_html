@@ -4,7 +4,7 @@ namespace FixRefs\Tests\WikiParse;
 
 use FixRefs\Tests\bootstrap;
 
-use function Lead\get_lead_section;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 
 class LeadSectionTest extends bootstrap
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\Services\Api;
+namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
 

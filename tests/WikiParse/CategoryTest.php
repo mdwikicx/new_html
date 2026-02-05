@@ -4,7 +4,7 @@ namespace FixRefs\Tests\WikiParse;
 
 use FixRefs\Tests\bootstrap;
 
-use function WikiParse\Category\get_categories;
+use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
 class CategoryTest extends bootstrap
 {

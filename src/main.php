@@ -28,7 +28,7 @@ use function Html\wiki_text_to_html;
 use function HtmlFixes\remove_data_parsoid;
 use function MDWiki\NewHtml\FileHelps\get_file_dir;
 use function MDWiki\NewHtml\FileHelps\file_write;
-use function MDWiki\NewHtml\JsonData\get_from_json;
+use function MDWiki\NewHtml\Application\Controllers\get_from_json;
 
 $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
 

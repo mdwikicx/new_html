@@ -21,7 +21,7 @@ https://en.wikipedia.org/wiki/Special:AbuseFilter/891
 
 */
 
-use function WikiParse\Reg_Citations\get_regex_citations;
+use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
 
 /**
  * Check if the citation contains self-published information and filter it out.

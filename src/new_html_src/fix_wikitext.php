@@ -11,12 +11,12 @@
 
 namespace MDWiki\NewHtml\Services\Wikitext;
 
-use function Fixes\DelMtRefs\del_empty_refs;
-use function Fixes\FixCats\remove_categories;
+use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
+use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
 use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
-use function Fixes\DelTemps\remove_templates;
-use function Fixes\DelTemps\remove_lead_templates;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
 // use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;

@@ -9,10 +9,10 @@
  * @package MDWiki\NewHtml\WikiTextFixes
  */
 
-namespace Fixes\ExpendRefs;
+namespace MDWiki\NewHtml\Domain\Fixes\References;
 
-use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\get_short_citations;
+use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
+use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
 use function Printn\test_print;
 
 /**

@@ -10,7 +10,7 @@
  * @package MDWiki\NewHtml
  */
 
-namespace MDWiki\NewHtml\JsonData;
+namespace MDWiki\NewHtml\Application\Controllers;
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
@@ -20,11 +20,11 @@ if (defined('DEBUGX') && DEBUGX === true) {
 
 /*
 use:
-use function MDWiki\NewHtml\JsonData\get_title_revision;
-use function MDWiki\NewHtml\JsonData\add_title_revision;
-use function MDWiki\NewHtml\JsonData\get_from_json;
-use function MDWiki\NewHtml\JsonData\get_Data;
-use function MDWiki\NewHtml\JsonData\dump_both_data;
+use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
+use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
+use function MDWiki\NewHtml\Application\Controllers\get_from_json;
+use function MDWiki\NewHtml\Application\Controllers\get_Data;
+use function MDWiki\NewHtml\Application\Controllers\dump_both_data;
 */
 
 use function MDWiki\NewHtml\FileHelps\get_file_dir;
