@@ -76,7 +76,7 @@ function remove_missing_infobox_images(string $text, ?ImageValidatorInterface $v
     // Collect fields to remove
     $fieldsToRemove = [];
 
-    preg_replace_callback($pattern, function ($matches) use (&$fieldsToRemove) {
+    preg_replace_callback($pattern, function ($matches) use (&$fieldsToRemove, $validator) {
         $fullMatch = $matches[0];
         $fieldName = trim($matches[1]);
         $filename = trim($matches[2]);
