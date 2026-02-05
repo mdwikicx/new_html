@@ -1,5 +1,7 @@
 <?php
 
+namespace FixRefs\Tests\APIServices;
+
 use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
