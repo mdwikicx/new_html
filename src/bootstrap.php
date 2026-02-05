@@ -14,8 +14,9 @@ if (!defined('USER_AGENT')) {
     define('USER_AGENT', $user_agent);
 }
 
-// Initialize dependency injection for Clean Architecture
-// Bind ImageValidatorInterface to CommonsImageValidator implementation
+// Initialize global validator instance for Clean Architecture
+// This serves as a simple service locator for backward compatibility
+// allowing Domain functions to work without explicit dependency injection
 use MDWiki\NewHtml\Services\Api\CommonsImageValidator;
 
 $GLOBALS['imageValidator'] = new CommonsImageValidator();
