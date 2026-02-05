@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Missing image removal utilities
  *
