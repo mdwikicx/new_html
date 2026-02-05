@@ -11,14 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "FixRefs\\Tests\\": "tests/",
-            "MDWiki\\NewHtml\\Application\\": "src/Application/",
-            "MDWiki\\NewHtml\\Services\\": "src/Services/",
-            "MDWiki\\NewHtml\\Domain\\": "src/Domain/",
-            "MDWiki\\NewHtml\\Infrastructure\\": "src/Infrastructure/"
-        },
-        "files": [
-        ]
+            "MDWiki\\NewHtml\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FixRefs\\Tests\\": "tests/"
+        }
     },
     "scripts": {
         "test": "vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml",
