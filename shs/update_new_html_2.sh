@@ -44,9 +44,13 @@ if [ "$CLEAN_INSTALL" -eq 1 ]; then
     fi
     # Move the cloned directory to the target location
     mv "$CLONE_DIR/src" "$TARGET_DIR" -v
+
+    # copy composer_public_html.json to $HOME/public_html
+    cp "$CLONE_DIR/composer_public_html.json" "$HOME/public_html/composer.json" -v
+
     # install composer dependencies
     echo "Installing composer dependencies..."
-    cd "$TARGET_DIR" || { echo "Failed to change directory to $TARGET_DIR"; exit 1; }
+    cd "$HOME/public_html" || { echo "Failed to change directory to $TARGET_DIR"; exit 1; }
     if command -v composer >/dev/null 2>&1; then
         composer install --no-progress --prefer-dist --optimize-autoloader
     else

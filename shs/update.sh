@@ -55,10 +55,12 @@ main() {
         mkdir -p "$TARGET_DIR"
         cp -rf "$CLONE_DIR"/src/* "$TARGET_DIR/"
     fi
+    # copy composer_public_html.json to $HOME/public_html
+    cp "$CLONE_DIR/composer_public_html.json" "$HOME/public_html/composer.json" -v
 
     # Install dependencies
     log_info "Installing composer dependencies..."
-    cd "$TARGET_DIR"
+    cd "$HOME/public_html"
 
     if ! command -v composer >/dev/null 2>&1; then
         log_error "Composer not found. Install it first."
