@@ -33,8 +33,8 @@ require_once __DIR__ . "/../Services/Api/SegmentApiService.php";
 require_once __DIR__ . "/../Services/Api/CommonsApiService.php";
 require_once __DIR__ . "/../Services/Wikitext/WikitextFixerService.php";
 
-require_once __DIR__ . "/../Infrastructure/Utils/html_utils.php";
-require_once __DIR__ . "/../Infrastructure/Utils/files_utils.php";
+require_once __DIR__ . "/../Infrastructure/Utils/HtmlUtils.php";
+require_once __DIR__ . "/../Infrastructure/Utils/FileUtils.php";
 
 require_once __DIR__ . "/../Services/Html/HtmlToSegmentsService.php";
 require_once __DIR__ . "/../Services/Html/WikitextToHtmlService.php";
