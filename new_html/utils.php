@@ -27,3 +27,47 @@ function get_file_dir(string $revision, string $all): string
     }
     return $file_dir;
 }
+
+/**
+ * Get the content type based on printetxt parameter
+ *
+ * @return string The content type (text/plain, text/html, or application/json)
+ */
+function get_content_type(): string
+{
+    $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
+
+    $content_types = [
+        "wikitext" => "text/plain",
+        "html" => "text/html",
+        "seg" => "text/html",
+    ];
+
+    return $content_types[$printetxt] ?? "application/json";
+}
+
+/**
+ * Generate error response for missing content
+ *
+ * Sends HTTP 404 status code and returns JSON error response.
+ *
+ * @param string $title The page title that was not found
+ * @param string $revision The revision ID that was not found
+ * @return string JSON encoded error response
+ */
+function error_1(string $title, string $revision): string
+{
+    // send request error code using http_response_code
+    http_response_code(404);
+
+    $data = [
+        "sourceLanguage" => "en",
+        "title" => $title,
+        "revision" => $revision,
+        "segmentedContent" => "",
+        "categories" => [],
+        "error_type" => "title:($title) or revision:($revision) not found",
+        "error" => "No content found!",
+    ];
+    return json_encode($data);
+}

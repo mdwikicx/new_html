@@ -22,6 +22,9 @@ header("Access-Control-Allow-Origin: *");
 require_once __DIR__ . "/bootstrap.php";
 
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
+use function MDWiki\NewHtmlMain\Utils\error_1;
+use function MDWiki\NewHtmlMain\Utils\get_content_type;
+
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
@@ -62,31 +65,6 @@ function get_title(): string
     return $title;
 }
 
-/**
- * Generate error response for missing content
- *
- * Sends HTTP 404 status code and returns JSON error response.
- *
- * @param string $title The page title that was not found
- * @param string $revision The revision ID that was not found
- * @return string JSON encoded error response
- */
-function error_1(string $title, string $revision): string
-{
-    // send request error code using http_response_code
-    http_response_code(404);
-
-    $data = [
-        "sourceLanguage" => "en",
-        "title" => $title,
-        "revision" => $revision,
-        "segmentedContent" => "",
-        "categories" => [],
-        "error_type" => "title:($title) or revision:($revision) not found",
-        "error" => "No content found!",
-    ];
-    return json_encode($data);
-}
 
 /**
  * Get wikitext and revision ID from cached JSON data
