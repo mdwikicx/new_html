@@ -29,6 +29,40 @@ function get_file_dir(string $revision, string $all): string
 }
 
 /**
+ * Set CORS headers for allowed domains
+ *
+ * Checks the Origin header against allowed domains and sets appropriate CORS headers.
+ *
+ * @return void
+ */
+function set_cors_headers(): void
+{
+    $allowed_domains = [
+        'mdwikicx.toolforge.org',
+        'mdwiki.toolforge.org',
+        'medwiki.toolforge.org',
+    ];
+
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+    if ($origin) {
+        $origin_host = parse_url($origin, PHP_URL_HOST);
+
+        if (in_array($origin_host, $allowed_domains, true)) {
+            header("Access-Control-Allow-Origin: $origin");
+            header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            header('Access-Control-Allow-Credentials: true'); // إذا كنت تحتاج cookies
+            header('Access-Control-Max-Age: 86400'); // cache لمدة 24 ساعة
+        }
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        http_response_code(204);
+        exit;
+    }
+}
+/**
  * Get the content type based on printetxt parameter
  *
  * @param string $printetxt The output format (wikitext|html|seg)

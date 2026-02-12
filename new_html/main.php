@@ -17,14 +17,15 @@
  * @package MDWiki\NewHtml
  */
 
-header("Access-Control-Allow-Origin: *");
-
 require_once __DIR__ . "/bootstrap.php";
+
+use function MDWiki\NewHtmlMain\Utils\set_cors_headers;
+
+set_cors_headers();
 
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 use function MDWiki\NewHtmlMain\Utils\error_1;
 use function MDWiki\NewHtmlMain\Utils\get_content_type;
-
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
