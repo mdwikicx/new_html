@@ -31,12 +31,11 @@ function get_file_dir(string $revision, string $all): string
 /**
  * Get the content type based on printetxt parameter
  *
+ * @param string $printetxt The output format (wikitext|html|seg)
  * @return string The content type (text/plain, text/html, or application/json)
  */
-function get_content_type(): string
+function get_content_type(string $printetxt): string
 {
-    $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
-
     $content_types = [
         "wikitext" => "text/plain",
         "html" => "text/html",

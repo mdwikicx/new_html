@@ -38,13 +38,7 @@ use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 
 $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
 
-$content_types = [
-    "wikitext" => "text/plain",
-    "html" => "text/html",
-    "seg" => "text/html",
-];
-
-$content_type = $content_types[$printetxt] ?? "application/json";
+$content_type = get_content_type($printetxt);
 
 header("Content-type: $content_type");
 
