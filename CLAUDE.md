@@ -44,7 +44,7 @@ composer dump-autoload -o
 The codebase follows a layered architecture with namespaces under `MDWiki\NewHtml\`:
 
 ### Directory Structure
-- `new_html/` - Entry points (main.php, check.php, fix.php, etc.)
+- `new_html/` - Entry points (index.php, check.php, fix.php, etc.)
 - `src/Application/` - Controllers and request handlers
 - `src/Services/` - External API integrations and business operations
 - `src/Domain/` - Core parsers and wikitext fixes
