@@ -16,6 +16,7 @@ if (!is_dir($src_path)) {
     $src_path = __DIR__ . '/../src/';
 }
 
+require_once __DIR__ . "/utils.php";
 require_once $src_path . "/bootstrap.php";
 require_once $src_path . "/Application/Controllers/JsonDataController.php";
 require_once $src_path . "/Application/Handlers/WikitextHandler.php";
