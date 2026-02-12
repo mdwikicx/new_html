@@ -5,42 +5,71 @@ namespace FixRefs\Tests\WikiTextFixes;
 use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
+use function MDWiki\NewHtml\Domain\Fixes\Structure\is_valid_lang_code;
 
 class FixLangsLinksTest extends bootstrap
 {
-    public function setUp(): void
+    /**
+     * Complete list of Wikipedia language codes (from the original array)
+     * Used to verify that the regex pattern matches all valid codes
+     */
+    private const ALL_WIKI_LANG_CODES = [
+        'aa', 'ab', 'ace', 'ady', 'af', 'ak', 'als', 'alt', 'am', 'an', 'ang', 'ar', 'as', 'ast', 'atj', 'av', 'avk',
+        'awa', 'ay', 'az', 'azb', 'ba', 'ban', 'bar', 'bat-smg', 'bcl', 'be', 'be-tarask', 'bg', 'bh', 'bi', 'bjn',
+        'bm', 'bn', 'bo', 'bpy', 'br', 'bs', 'bug', 'bxr', 'ca', 'cbk-zam', 'cdo', 'ce', 'ceb', 'ch', 'cho', 'chr',
+        'chy', 'ckb', 'co', 'cr', 'crh', 'cs', 'csb', 'cu', 'cv', 'cy', 'da', 'de', 'din', 'diq', 'dsb', 'dty', 'dv',
+        'dz', 'ee', 'el', 'eml', 'en', 'eo', 'es', 'et', 'eu', 'ext', 'fa', 'ff', 'fi', 'fiu-vro', 'fj', 'fo', 'fr',
+        'frp', 'frr', 'fur', 'fy', 'ga', 'gag', 'gan', 'gcr', 'gd', 'gl', 'glk', 'gn', 'gom', 'gor', 'got', 'gu',
+        'gv', 'ha', 'hak', 'haw', 'he', 'hi', 'hif', 'ho', 'hr', 'hsb', 'ht', 'hu', 'hy', 'hyw', 'hz', 'ia', 'id',
+        'ie', 'ig', 'ii', 'ik', 'ilo', 'inh', 'io', 'is', 'it', 'iu', 'ja', 'jam', 'jbo', 'jv', 'ka', 'kaa', 'kab',
+        'kbd', 'kbp', 'kg', 'ki', 'kj', 'kk', 'kl', 'km', 'kn', 'ko', 'koi', 'kr', 'krc', 'ks', 'ksh', 'ku', 'kv',
+        'kw', 'ky', 'la', 'lad', 'lb', 'lbe', 'lez', 'lfn', 'lg', 'li', 'lij', 'lld', 'lmo', 'ln', 'lo', 'lrc', 'lt',
+        'ltg', 'lv', 'mad', 'mai', 'map-bms', 'mdf', 'mg', 'mh', 'mhr', 'mi', 'min', 'mk', 'ml', 'mn', 'mni', 'mnw',
+        'mr', 'mrj', 'ms', 'mt', 'mus', 'mwl', 'my', 'myv', 'mzn', 'na', 'nah', 'nap', 'nds', 'nds-nl', 'ne', 'new',
+        'ng', 'nia', 'nl', 'nn', 'no', 'nov', 'nqo', 'nrm', 'nso', 'nv', 'ny', 'oc', 'olo', 'om', 'or', 'os', 'pa',
+        'pag', 'pam', 'pap', 'pcd', 'pdc', 'pfl', 'pi', 'pih', 'pl', 'pms', 'pnb', 'pnt', 'ps', 'pt', 'qu', 'rm',
+        'rmy', 'rn', 'ro', 'roa-rup', 'roa-tara', 'ru', 'rue', 'rw', 'sa', 'sah', 'sat', 'sc', 'scn', 'sco', 'sd',
+        'se', 'sg', 'sh', 'shn', 'si', 'simple', 'sk', 'skr', 'sl', 'sm', 'smn', 'sn', 'so', 'sq', 'sr', 'srn', 'ss',
+        'st', 'stq', 'su', 'sv', 'sw', 'szl', 'szy', 'ta', 'tay', 'tcy', 'te', 'tet', 'tg', 'th', 'ti', 'tk', 'tl',
+        'tn', 'to', 'tpi', 'tr', 'trv', 'ts', 'tt', 'tum', 'tw', 'ty', 'tyv', 'udm', 'ug', 'uk', 'ur', 'uz', 've',
+        'vec', 'vep', 'vi', 'vls', 'vo', 'wa', 'war', 'wo', 'wuu', 'xal', 'xh', 'xmf', 'yi', 'yo', 'za', 'zea',
+        'zh', 'zh-classical', 'zh-min-nan', 'zh-yue', 'zu',
+    ];
+
+    public function testAllWikiLangCodesAreValid()
     {
-        // Define the global $lang_codes array for testing
-        global $lang_codes;
-        $lang_codes = [
-            'en',
-            'ar',
-            'de',
-            'fr',
-            'es',
-            'it',
-            'ja',
-            'zh',
-            'ru',
-            'pt',
-        ];
+        // Test that all Wikipedia language codes match the regex pattern
+        foreach (self::ALL_WIKI_LANG_CODES as $code) {
+            $this->assertTrue(
+                is_valid_lang_code($code),
+                "Language code '{$code}' should be valid"
+            );
+        }
     }
 
-    public function testRemoveLangLinksDoesNotMatchPartialCodes()
+    public function testInvalidLangCodes()
     {
-        // Test that it doesn't match non-existent language codes
-        global $lang_codes;
-        $text = '[[xy:Article]] [[en:Real]] [[zz:Fake]]';
-        $result = remove_lang_links($text);
+        // Test codes that should NOT match
+        $invalidCodes = [
+            'X',         // Too short (single uppercase)
+            'E',         // Single letter
+            '1',         // Number
+            'en1',       // Contains number
+            'EN',        // Uppercase
+            'En',        // Mixed case
+            '-en',       // Starts with hyphen
+            'en-',       // Ends with hyphen
+            '',          // Empty string
+            'test_',     // Contains underscore
+            'en.test',   // Contains dot
+            'en space',  // Contains space
+        ];
 
-        // Only en: should be removed
-        $this->assertStringNotContainsString('[[en:Real]]', $result);
-        // xy: and zz: should remain if not in lang_codes
-        if (!in_array('xy', $lang_codes, true)) {
-            $this->assertStringContainsString('[[xy:Article]]', $result);
-        }
-        if (!in_array('zz', $lang_codes, true)) {
-            $this->assertStringContainsString('[[zz:Fake]]', $result);
+        foreach ($invalidCodes as $code) {
+            $this->assertFalse(
+                is_valid_lang_code($code),
+                "Code '{$code}' should be invalid"
+            );
         }
     }
 
@@ -220,5 +249,41 @@ class FixLangsLinksTest extends bootstrap
         $this->assertStringContainsString('[[File:Image.jpg]]', $result);
         $this->assertStringContainsString('[[Category:Test]]', $result);
         $this->assertStringNotContainsString('[[en:Article]]', $result);
+    }
+
+    public function testRemoveLangLinksWithHyphenatedCodes()
+    {
+        // Test that hyphenated language codes work correctly
+        $text = '[[be-tarask:Артыкул]] [[zh-min-nan:Bûn-chiuⁿ]] [[roa-rup:Articlu]]';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[be-tarask:', $result);
+        $this->assertStringNotContainsString('[[zh-min-nan:', $result);
+        $this->assertStringNotContainsString('[[roa-rup:', $result);
+    }
+
+    public function testRemoveLangLinksPreservesShortInvalidCodes()
+    {
+        // Short codes (1-2 chars) that look like language codes but shouldn't match
+        // Actually, 'xy' and 'zz' match the pattern (2+ lowercase letters)
+        // so they WILL be removed as they're valid lang codes
+        $text = '[[X:Article]] [[12:Number]] [[EN:Uppercase]] [[e:Single]]';
+        $result = remove_lang_links($text);
+
+        // These should remain (don't match the pattern)
+        $this->assertStringContainsString('[[X:Article]]', $result);      // Uppercase
+        $this->assertStringContainsString('[[12:Number]]', $result);      // Starts with number
+        $this->assertStringContainsString('[[EN:Uppercase]]', $result);   // Uppercase
+        $this->assertStringContainsString('[[e:Single]]', $result);       // Single char
+    }
+
+    public function testRemoveLangLinksWithSimpleCode()
+    {
+        // Test the 'simple' language code specifically
+        $text = '[[simple:Basic English article]] content';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[simple:', $result);
+        $this->assertStringContainsString('content', $result);
     }
 }
