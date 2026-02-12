@@ -45,18 +45,34 @@ function set_cors_headers(): void
 
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-    if ($origin) {
-        $origin_host = parse_url($origin, PHP_URL_HOST);
-
-        if (in_array($origin_host, $allowed_domains, true)) {
-            header("Access-Control-Allow-Origin: $origin");
-            header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization');
-            header('Access-Control-Allow-Credentials: true'); // إذا كنت تحتاج cookies
-            header('Access-Control-Max-Age: 86400'); // cache لمدة 24 ساعة
+    // Reject OPTIONS requests without origin
+    if (!$origin) {
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            http_response_code(400);
+            exit;
         }
+        return;
     }
 
+    $origin_host = parse_url($origin, PHP_URL_HOST);
+
+    // Reject unauthorized origins
+    if (!in_array($origin_host, $allowed_domains, true)) {
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            http_response_code(403);
+            exit;
+        }
+        return;
+    }
+
+    // Set CORS headers for allowed origins only
+    header("Access-Control-Allow-Origin: $origin");
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');
+
+    // Handle preflight requests
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
         http_response_code(204);
         exit;
