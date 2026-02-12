@@ -357,3 +357,15 @@ function remove_lang_links(string $text): string
 
     return $text;
 }
+
+/**
+ * Check if a given code matches Wikipedia language code pattern
+ *
+ * @param string $code The code to validate
+ * @return bool True if the code matches the language code pattern
+ */
+function is_valid_lang_code(string $code): bool
+{
+    // Pattern: 2+ lowercase letters, optionally followed by hyphen-letter groups
+    return (bool) preg_match('/^[a-z]{2,}(?:-[a-z]+)*$/', $code);
+}
