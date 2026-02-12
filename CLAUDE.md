@@ -73,7 +73,7 @@ Legacy namespaces are supported via backward compatibility wrappers.
 ## Configuration
 
 - `.env` - Environment configuration (copy from `.env.example`)
-- Key settings: `APP_DEBUG`, `LOAD_VENDOR`, `REVISIONS_DIR`
+- Key settings: `APP_DEBUG`, `REVISIONS_DIR`
 - Output format controlled by `printetxt` parameter: `wikitext`, `html`, `seg`, or JSON (default)
 
 ## Requirements
