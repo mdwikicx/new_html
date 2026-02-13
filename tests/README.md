@@ -22,7 +22,7 @@ tests/
 │   ├── FixTempsTest.php            # Template title fixing tests
 │   └── RefWorkTest.php             # Bad reference removal tests
 ├── APIServices/                     # Tests for API integrations
-│   ├── PostTest.php                # HTTP request handling tests
+│   ├── HttpClientServiceTest.php                # HTTP request handling tests
 │   ├── MdwikiApiTest.php           # MDWiki API integration tests
 │   ├── SegApiTest.php              # Segmentation API tests
 │   └── TransformApiTest.php        # WikiText to HTML transform tests
@@ -63,7 +63,7 @@ vendor/bin/phpunit tests/EntryPoints/
 ```bash
 vendor/bin/phpunit tests/WikiParse/CategoryTest.php
 vendor/bin/phpunit tests/WikiTextFixes/RefWorkTest.php
-vendor/bin/phpunit tests/APIServices/PostTest.php
+vendor/bin/phpunit tests/APIServices/HttpClientServiceTest.php
 ```
 
 ### Run Specific Test Methods
@@ -169,7 +169,7 @@ vendor/bin/phpunit --filter testGetCategoriesWithMultipleCategories tests/WikiPa
 
 ### APIServices Module Tests (4 files, ~80 tests)
 
-**PostTest.php** - Tests HTTP request functionality:
+**HttpClientServiceTest.php** - Tests HTTP request functionality:
 - GET and POST requests
 - Parameter handling
 - Error handling (invalid URLs, timeouts)

@@ -8,7 +8,7 @@ use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 use function MDWiki\NewHtml\Services\Api\handle_url_request;
 
 
-class PostTest extends bootstrap
+class HttpClientServiceTest extends bootstrap
 {
     protected function setUp(): void
     {

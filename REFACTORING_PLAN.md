@@ -427,7 +427,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
   - [ ] Update namespace: `MDWiki\NewHtml\Services\Api`
   - [ ] Refactor to class-based approach
   - [ ] Update all imports
-  - [ ] Run `tests/APIServices/PostTest.php`
+  - [ ] Run `tests/APIServices/HttpClientServiceTest.php`
 
 - [ ] **Commons API**
   - [ ] Migrate `commons_api.php` → `Services/Api/CommonsApiService.php`
