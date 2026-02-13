@@ -10,7 +10,7 @@
             <directory suffix=".php">tests</directory>
             <exclude>tests/NetworkRealTests</exclude>
         </testsuite>
-        <testsuite name="Network Tests">
+        <testsuite name="network">
             <directory suffix=".php">tests/NetworkRealTests</directory>
         </testsuite>
     </testsuites>
