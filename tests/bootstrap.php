@@ -6,19 +6,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Check for --network flag in command line arguments
-$runNetworkTests = false;
-foreach ($argv ?? [] as $arg) {
-    if ($arg === '--network') {
-        $runNetworkTests = true;
-        break;
-    }
-}
-
-// Also check environment variable
-if (getenv('RUN_NETWORK_TESTS') === 'true') {
-    $runNetworkTests = true;
-}
+// Check environment variable to enable network tests
+// Usage: RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests
+$runNetworkTests = getenv('RUN_NETWORK_TESTS') === 'true';
 
 // Define constant for use in test classes
 define('RUN_NETWORK_TESTS', $runNetworkTests);

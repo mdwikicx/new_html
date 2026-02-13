@@ -107,17 +107,26 @@ vendor/bin/phpunit tests/commons_api_test.php
 
 #### Network Tests
 
-Network tests are located in `tests/NetworkRealTests/` and test real API connections. They are **disabled by default** and require the `--network` flag to run:
+Network tests are located in `tests/NetworkRealTests/` and test real API connections. They are **disabled by default** and require the `RUN_NETWORK_TESTS=true` environment variable:
 
 ```bash
 # Run only network tests
-vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml --network
+RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
 
 # Run all tests including network tests
-vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml --network
+RUN_NETWORK_TESTS=true vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml
+```
 
-# Alternative: use environment variable
-RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
+**Windows (Command Prompt):**
+```cmd
+set RUN_NETWORK_TESTS=true
+vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:RUN_NETWORK_TESTS="true"
+vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
 ```
 
 **Available Network Tests:**

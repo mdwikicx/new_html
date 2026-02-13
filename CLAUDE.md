@@ -26,19 +26,16 @@ vendor/bin/phpunit --filter testGetCategoriesWithMultipleCategories tests/WikiPa
 vendor/bin/phpunit --exclude-group api
 
 # Run network tests (requires internet connection)
-vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml --network
+RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
 
 # Run all tests including network tests
-vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml --network
-
-# Run network tests using environment variable
-RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
+RUN_NETWORK_TESTS=true vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml
 ```
 
 **Network Tests (`tests/NetworkRealTests/`)**
 - Located in `tests/NetworkRealTests/` directory
 - Test real API connections to mdwiki.org, Wikimedia Commons, Wikipedia, and segmentation services
-- Skipped by default (require `--network` flag)
+- Skipped by default (require `RUN_NETWORK_TESTS=true` environment variable)
 - Useful for validating actual API integrations in production-like scenarios
 - Tests automatically skip if external APIs are unreachable
 
