@@ -221,13 +221,17 @@ class RemoveMissingImagesRealTest extends bootstrap
             $this->markTestSkipped('Cannot reach Wikimedia Commons API');
         }
 
-        $input = "{{Infobox disease\n|name ={{PAGENAME}}\n|image =Non_existent_infobox_xyz222.png\n|caption =Remove this caption\n|specialty =[[Orthopedics]]\n}}\n\nThis article discusses the condition.\n\n[[File:AwareLogo.png|thumb|right|A valid inline image]]\n\nMore information here.\n\n[[File:Another_missing_xyz333.jpg|left|Remove this too]]\n\nEnd of article.";
+        $input = "{{Infobox disease|name={{PAGENAME}}|image=Non_existent_infobox_xyz222.png|caption=Remove this caption|specialty=[[Orthopedics]]}}This article discusses the condition.[[File:Gallstones.png|thumb|right|A valid inline image]]More information here.[[File:Another_missing_xyz333.jpg|left|Remove this too]]End of article.";
 
-        $expected = "{{Infobox disease\n|name ={{PAGENAME}}\n|specialty =[[Orthopedics]]\n}}\n\nThis article discusses the condition.\n\n[[File:AwareLogo.png|thumb|right|A valid inline image]]\n\nMore information here.\n\n\n\nEnd of article.";
+        $expected = "{{Infobox disease|name={{PAGENAME}}|specialty=[[Orthopedics]]}}This article discusses the condition.[[File:Gallstones.png|thumb|right|A valid inline image]]More information here.End of article.";
 
         $result = remove_missing_images($input);
 
         $this->assertEqualCompare($expected, $input, $result);
+
+        // assert dosnt contain [[File:Gallstones.png|thumb|right|A valid inline image]]
+        $this->assertStringNotContainsString('[[File:Gallstones.png|thumb|right|A valid inline image]]', $result);
+        $this->assertStringNotContainsString('Non_existent_infobox_xyz222.png', $result);
     }
 
     /**
