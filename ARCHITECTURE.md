@@ -48,7 +48,7 @@ src/
 │       │
 │       ├── Media/          # Media-related fixes
 │       │   ├── FixImagesFixture.php
-│       │   └── RemoveMissingImagesFixture.php
+│       │   └── RemoveMissingImagesService.php
 │       │
 │       └── Structure/      # Structural fixes
 │           ├── FixCategoriesFixture.php

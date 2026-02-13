@@ -114,7 +114,7 @@ src/
 │       │
 │       ├── Media/
 │       │   ├── FixImagesFixture.php          [fix_images.php]
-│       │   └── RemoveMissingImagesFixture.php [remove_missing_images.php]
+│       │   └── RemoveMissingImagesService.php [remove_missing_images.php]
 │       │
 │       └── Structure/
 │           ├── FixCategoriesFixture.php      [fix_cats.php]
@@ -205,7 +205,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 #### 3.4: Fixes Migration (Media)
 - [ ] Migrate `WikiTextFixes/fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
-- [ ] Migrate `WikiTextFixes/remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
+- [ ] Migrate `WikiTextFixes/remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesService.php`
 - [ ] Update namespaces and imports
 - [ ] Run media tests
 
@@ -404,7 +404,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 - [ ] **Media Fixes**
   - [ ] Migrate `fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
-  - [ ] Migrate `remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
+  - [ ] Migrate `remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesService.php`
   - [ ] Update namespaces
   - [ ] Update all imports
   - [ ] Run `tests/RemoveMissingImagesTest.php`
