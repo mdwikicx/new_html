@@ -25,7 +25,7 @@ use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
  * @param array<string, mixed> $params Optional parameters to send with the request
  * @return string The response body, or empty string on failure
  */
-function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', array $params = []): string
+function handleUrlRequestMdwiki(string $endPoint, string $method = 'GET', array $params = []): string
 {
     $ch = curl_init();
 
@@ -78,7 +78,7 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
  * @param string $title The title of the page to fetch
  * @return array{0: string, 1: string|int} Array containing [content, revision_id]
  */
-function get_wikitext_from_mdwiki_api(string $title): array
+function getWikitextFromMdwikiApi(string $title): array
 {
     $params = [
         "action" => "query",
@@ -91,7 +91,7 @@ function get_wikitext_from_mdwiki_api(string $title): array
     ];
     $url = "https://mdwiki.org/w/api.php";
 
-    $req = handle_url_request_mdwiki($url, 'GET', $params);
+    $req = handleUrlRequestMdwiki($url, 'GET', $params);
 
     if (empty($req)) {
         test_print("Failed to fetch data from MDWiki API for title: $title");
@@ -118,13 +118,13 @@ function get_wikitext_from_mdwiki_api(string $title): array
  * @param string $title The title of the page to fetch
  * @return array{0: string, 1: string|int} Array containing [content, revision_id]
  */
-function get_wikitext_from_mdwiki_restapi(string $title): array
+function getWikitextFromMdwikiRestapi(string $title): array
 {
     $titleEncoded = str_replace("/", "%2F", $title);
     $titleEncoded = str_replace(" ", "_", $titleEncoded);
     $url = "https://mdwiki.org/w/rest.php/v1/page/" . $titleEncoded;
 
-    $req = handle_url_request_mdwiki($url, 'GET');
+    $req = handleUrlRequestMdwiki($url, 'GET');
     $json1 = json_decode($req, true);
 
     $source = $json1["source"] ?? '';
