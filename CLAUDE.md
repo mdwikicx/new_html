@@ -13,8 +13,8 @@ MediaWiki Content Transformation & API Services - a PHP library for processing M
 # Run all tests (excludes network tests by default)
 composer test
 
-# Run PHPUnit directly
-vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml
+# Run PHPUnit directly (excludes network tests)
+vendor/bin/phpunit --testdox --colors=always -c phpunit.xml
 
 # Run specific test file
 vendor/bin/phpunit tests/WikiParse/CategoryTest.php
@@ -25,16 +25,14 @@ vendor/bin/phpunit --filter testGetCategoriesWithMultipleCategories tests/WikiPa
 # Run tests excluding API tests (faster, no network)
 vendor/bin/phpunit --exclude-group api
 
-# Run network tests (requires internet connection)
-RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
-
-# Run all tests including network tests
-RUN_NETWORK_TESTS=true vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml
+# Run network tests only (requires internet connection)
+RUN_NETWORK_TESTS=true vendor/bin/phpunit --testsuite "network" --testdox --colors=always -c phpunit.xml
 ```
 
 **Network Tests (`tests/NetworkRealTests/`)**
 - Located in `tests/NetworkRealTests/` directory
 - Test real API connections to mdwiki.org, Wikimedia Commons, Wikipedia, and segmentation services
+- Excluded from default test suite (use `--testsuite "network"` to run)
 - Skipped by default (require `RUN_NETWORK_TESTS=true` environment variable)
 - Useful for validating actual API integrations in production-like scenarios
 - Tests automatically skip if external APIs are unreachable

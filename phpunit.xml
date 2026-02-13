@@ -7,6 +7,10 @@
     <testsuites>
         <testsuite name="ParseWiki Test Suite">
             <directory suffix=".php">tests</directory>
+            <exclude>tests/NetworkRealTests</exclude>
+        </testsuite>
+        <testsuite name="network">
+            <directory suffix=".php">tests/NetworkRealTests</directory>
         </testsuite>
     </testsuites>
 
