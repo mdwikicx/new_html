@@ -136,7 +136,7 @@ class RemoveMissingImagesService
         $offset = 0;
         while (preg_match('/\[\[(File|Image):([^\]|]+)/i', $text, $matches, PREG_OFFSET_CAPTURE, $offset)) {
             $startPos = $matches[0][1];
-            $prefix = $matches[1][0];
+            // $prefix = $matches[1][0];
             $filename = $matches[2][0];
 
             // Find the matching closing brackets by counting bracket depth
@@ -161,7 +161,7 @@ class RemoveMissingImagesService
             }
 
             if ($endPos !== false) {
-                $fullImageBlock = substr($text, $startPos, $endPos - $startPos + 1);
+                // $fullImageBlock = substr($text, $startPos, $endPos - $startPos + 1);
 
                 // Check if the image exists
                 if (!$this->imageService->imageExists($filename)) {
