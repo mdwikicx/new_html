@@ -97,7 +97,7 @@ composer test
 
 Or run PHPUnit directly:
 ```bash
-vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml
+vendor/bin/phpunit -c phpunit.xml
 ```
 
 Run specific test files:
@@ -111,19 +111,19 @@ Network tests are located in `tests/NetworkRealTests/` and test real API connect
 
 ```bash
 # Run only network tests
-RUN_NETWORK_TESTS=true vendor/bin/phpunit --testsuite "network" --testdox --colors=always -c phpunit.xml
+RUN_NETWORK_TESTS=true vendor/bin/phpunit --testsuite "network"  -c phpunit.xml
 ```
 
 **Windows (Command Prompt):**
 ```cmd
 set RUN_NETWORK_TESTS=true
-vendor/bin/phpunit --testsuite "network" --testdox --colors=always -c phpunit.xml
+vendor/bin/phpunit --testsuite "network"  -c phpunit.xml
 ```
 
 **Windows (PowerShell):**
 ```powershell
 $env:RUN_NETWORK_TESTS="true"
-vendor/bin/phpunit --testsuite "network" --testdox --colors=always -c phpunit.xml
+vendor/bin/phpunit --testsuite "network"  -c phpunit.xml
 ```
 
 The `phpunit.xml` configuration excludes `tests/NetworkRealTests/` from the default test suite, so regular tests never run network tests accidentally.

@@ -14,7 +14,7 @@ MediaWiki Content Transformation & API Services - a PHP library for processing M
 composer test
 
 # Run PHPUnit directly (excludes network tests)
-vendor/bin/phpunit --testdox --colors=always -c phpunit.xml
+vendor/bin/phpunit  -c phpunit.xml
 
 # Run specific test file
 vendor/bin/phpunit tests/WikiParse/CategoryTest.php
@@ -26,7 +26,7 @@ vendor/bin/phpunit --filter testGetCategoriesWithMultipleCategories tests/WikiPa
 vendor/bin/phpunit --exclude-group api
 
 # Run network tests only (requires internet connection)
-RUN_NETWORK_TESTS=true vendor/bin/phpunit --testsuite "network" --testdox --colors=always -c phpunit.xml
+RUN_NETWORK_TESTS=true vendor/bin/phpunit --testsuite "network"  -c phpunit.xml
 ```
 
 **Network Tests (`tests/NetworkRealTests/`)**
