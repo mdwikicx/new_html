@@ -26,13 +26,13 @@ vendor/bin/phpunit --filter testGetCategoriesWithMultipleCategories tests/WikiPa
 vendor/bin/phpunit --exclude-group api
 
 # Run network tests only (requires internet connection)
-RUN_NETWORK_TESTS=true vendor/bin/phpunit --testsuite "network"  -c phpunit.xml
+RUN_NETWORK_TESTS=true vendor/bin/phpunit --testsuite network -c phpunit.xml
 ```
 
 **Network Tests (`tests/NetworkRealTests/`)**
 - Located in `tests/NetworkRealTests/` directory
 - Test real API connections to mdwiki.org, Wikimedia Commons, Wikipedia, and segmentation services
-- Excluded from default test suite (use `--testsuite "network"` to run)
+- Excluded from default test suite (use `--testsuite network` to run)
 - Skipped by default (require `RUN_NETWORK_TESTS=true` environment variable)
 - Useful for validating actual API integrations in production-like scenarios
 - Tests automatically skip if external APIs are unreachable
