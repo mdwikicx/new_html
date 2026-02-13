@@ -60,7 +60,7 @@ class MdwikiApiTest extends bootstrap
         ]);
     }
 
-    public function testGetWikitextFromApiWithValidTitle()
+    public function testGetWikitextFromMdwikiApiWithValidTitle()
     {
         $title = 'Aspirin';
         $wikitext = '==Aspirin==\nAspirin is a medication.';
@@ -76,7 +76,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertEquals($revid, $resultRevid);
     }
 
-    public function testGetWikitextFromApiWithInvalidTitle()
+    public function testGetWikitextFromMdwikiApiWithInvalidTitle()
     {
         $title = 'This_Is_A_Nonexistent_Article_Title_12345';
 
@@ -91,7 +91,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertEquals('', $revid);
     }
 
-    public function testGetWikitextFromApiReturnsArray()
+    public function testGetWikitextFromMdwikiApiReturnsArray()
     {
         $title = 'Aspirin';
 
@@ -150,7 +150,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertCount(2, $result);
     }
 
-    public function testGetWikitextFromApiWithSpecialCharacters()
+    public function testGetWikitextFromMdwikiApiWithSpecialCharacters()
     {
         $title = 'Crohn\'s disease';
         $wikitext = '==Crohn\'s disease==\nContent';
@@ -211,7 +211,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertIsString($resultRevid);
     }
 
-    public function testGetWikitextFromApiReturnsValidWikitext()
+    public function testGetWikitextFromMdwikiApiReturnsValidWikitext()
     {
         $title = 'Paracetamol';
         $wikitext = str_repeat('Wiki content here. ', 50); // Long wikitext
@@ -242,7 +242,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertGreaterThan(100, strlen($resultWikitext));
     }
 
-    public function testGetWikitextFromApiWithEmptyTitle()
+    public function testGetWikitextFromMdwikiApiWithEmptyTitle()
     {
         $title = '';
 
@@ -271,7 +271,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertIsString($revid);
     }
 
-    public function testGetWikitextFromApiRevisionIdFormat()
+    public function testGetWikitextFromMdwikiApiRevisionIdFormat()
     {
         $title = 'Hypertension';
         $revid = '54321';
@@ -301,7 +301,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertMatchesRegularExpression('/^\d+$/', (string)$resultRevid);
     }
 
-    public function testGetWikitextFromApiConsistency()
+    public function testGetWikitextFromMdwikiApiConsistency()
     {
         $title = 'Diabetes';
         $wikitext = 'Consistent content';
@@ -364,7 +364,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertEquals($revid1, $revid2);
     }
 
-    public function testGetWikitextFromApiHandlesEmptyResponse()
+    public function testGetWikitextFromMdwikiApiHandlesEmptyResponse()
     {
         $title = 'Aspirin';
 
