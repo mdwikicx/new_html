@@ -40,7 +40,7 @@ class RemoveMissingImagesTest extends bootstrap
             $this->markTestSkipped('Cannot reach Wikimedia Commons API');
         }
 
-        $input = "|name             ={{PAGENAME}}\n|image            =AwareLogo.png\n|caption          =This is a valid image\n|specialty        =[[Orthopedics]]";
+        $input = "|name ={{PAGENAME}}\n|image =AwareLogo.png\n|caption =This is a valid image\n|specialty =[[Orthopedics]]";
 
         $result = remove_missing_infobox_images($input);
 
@@ -58,9 +58,9 @@ class RemoveMissingImagesTest extends bootstrap
             $this->markTestSkipped('Cannot reach Wikimedia Commons API');
         }
 
-        $input = "|name             ={{PAGENAME}}\n|image            =Non_existent_image_xyz789.png\n|caption          =This caption should be removed\n|specialty        =[[Orthopedics]]";
+        $input = "|name ={{PAGENAME}}\n|image =Non_existent_image_xyz789.png\n|caption =This caption should be removed\n|specialty =[[Orthopedics]]";
 
-        $expected = "|name             ={{PAGENAME}}\n|specialty        =[[Orthopedics]]";
+        $expected = "|name ={{PAGENAME}}\n|specialty =[[Orthopedics]]";
 
         $result = remove_missing_infobox_images($input);
 
@@ -72,9 +72,9 @@ class RemoveMissingImagesTest extends bootstrap
      */
     public function testInfoboxEmptyImage()
     {
-        $input = "|name             ={{PAGENAME}}\n|image            =\n|caption          =Caption for empty image\n|specialty        =[[Orthopedics]]";
+        $input = "|name ={{PAGENAME}}\n|image =\n|caption =Caption for empty image\n|specialty =[[Orthopedics]]";
 
-        $expected = "|name             ={{PAGENAME}}\n|specialty        =[[Orthopedics]]";
+        $expected = "|name ={{PAGENAME}}\n|specialty =[[Orthopedics]]";
 
         $result = remove_missing_infobox_images($input);
 
@@ -91,9 +91,9 @@ class RemoveMissingImagesTest extends bootstrap
             $this->markTestSkipped('Cannot reach Wikimedia Commons API');
         }
 
-        $input = "|name             ={{PAGENAME}}\n|image            =AwareLogo.png\n|caption          =Valid caption\n|image2           =Missing_image_xyz123456.png\n|caption2         =This should be removed\n|specialty        =[[Orthopedics]]";
+        $input = "|name ={{PAGENAME}}\n|image =AwareLogo.png\n|caption =Valid caption\n|image2 =Missing_image_xyz123456.png\n|caption2 =This should be removed\n|specialty =[[Orthopedics]]";
 
-        $expected = "|name             ={{PAGENAME}}\n|image            =AwareLogo.png\n|caption          =Valid caption\n|specialty        =[[Orthopedics]]";
+        $expected = "|name ={{PAGENAME}}\n|image =AwareLogo.png\n|caption =Valid caption\n|specialty =[[Orthopedics]]";
 
         $result = remove_missing_infobox_images($input);
 
@@ -220,9 +220,9 @@ class RemoveMissingImagesTest extends bootstrap
             $this->markTestSkipped('Cannot reach Wikimedia Commons API');
         }
 
-        $input = "{{Infobox disease\n|name             ={{PAGENAME}}\n|image            =Non_existent_infobox_xyz222.png\n|caption          =Remove this caption\n|specialty        =[[Orthopedics]]\n}}\n\nThis article discusses the condition.\n\n[[File:AwareLogo.png|thumb|right|A valid inline image]]\n\nMore information here.\n\n[[File:Another_missing_xyz333.jpg|left|Remove this too]]\n\nEnd of article.";
+        $input = "{{Infobox disease\n|name ={{PAGENAME}}\n|image =Non_existent_infobox_xyz222.png\n|caption =Remove this caption\n|specialty =[[Orthopedics]]\n}}\n\nThis article discusses the condition.\n\n[[File:AwareLogo.png|thumb|right|A valid inline image]]\n\nMore information here.\n\n[[File:Another_missing_xyz333.jpg|left|Remove this too]]\n\nEnd of article.";
 
-        $expected = "{{Infobox disease\n|name             ={{PAGENAME}}\n|specialty        =[[Orthopedics]]\n}}\n\nThis article discusses the condition.\n\n[[File:AwareLogo.png|thumb|right|A valid inline image]]\n\nMore information here.\n\n\n\nEnd of article.";
+        $expected = "{{Infobox disease\n|name ={{PAGENAME}}\n|specialty =[[Orthopedics]]\n}}\n\nThis article discusses the condition.\n\n[[File:AwareLogo.png|thumb|right|A valid inline image]]\n\nMore information here.\n\n\n\nEnd of article.";
 
         $result = remove_missing_images($input);
 
@@ -234,24 +234,37 @@ class RemoveMissingImagesTest extends bootstrap
      */
     public function testNoImages()
     {
-        $input = "|name             ={{PAGENAME}}\n|synonym          =\n|specialty        =[[Orthopedics]]\n\nThis is just plain text without any images.";
+        $input = "|name ={{PAGENAME}}\n|synonym =\n|specialty =[[Orthopedics]]\n\nThis is just plain text without any images.";
 
         $result = remove_missing_images($input);
 
         $this->assertEquals($input, $result);
     }
 
+
     /**
      * TEST 13: Complex nested caption with existing image
      * Note: This test requires API access and may be skipped in environments without internet
      */
-    public function testComplexNestedCaption()
+    public function testComplexNestedCaptionNccommons()
     {
         if (!$this->isCommonsAvailable()) {
             $this->markTestSkipped('Cannot reach Wikimedia Commons API');
         }
 
         $input = "[[File:AwareLogo.png|thumb|upright=1.3|Logo of the [[WHO]] Aware [[Classification]]]]";
+
+        $result = remove_missing_inline_images($input);
+
+        $this->assertEquals($result, "");
+    }
+    public function testComplexNestedCaptionCommons()
+    {
+        if (!$this->isCommonsAvailable()) {
+            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
+        }
+
+        $input = "[[File:Gallstones.png|thumb|upright=1.3|Gallstones typically form in the [[gallbladder]] and may result in symptoms if they block the biliary system.]]";
 
         $result = remove_missing_inline_images($input);
 
