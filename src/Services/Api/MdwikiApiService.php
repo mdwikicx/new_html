@@ -65,6 +65,9 @@ class MdwikiApiService
         $response = $this->httpClient->handleRawRequest($this->baseApiUrl, 'GET', $params);
         return $response;
     }
+    /**
+     * @return array{string, string}
+     */
     public function getWikitextFromMdwikiApi(string $title): array
     {
         $params = [

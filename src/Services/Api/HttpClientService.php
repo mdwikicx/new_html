@@ -20,8 +20,8 @@ class HttpClientService implements HttpClientInterface
      *
      * @param string $endPoint
      * @param string $method
-     * @param array $params
-     * @return array{error: string, httpCode: mixed, response: bool|string}
+     * @param array<string, mixed> $params
+     * @return array{printableUrl: string, httpCode: int, response: bool|string, error: string}
      */
     public function handleRawRequest(
         string $endPoint,
