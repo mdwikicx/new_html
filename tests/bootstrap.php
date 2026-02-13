@@ -6,6 +6,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Check environment variable to enable network tests
+// Usage: RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests
+$runNetworkTests = getenv('RUN_NETWORK_TESTS') === 'true';
+
+// Define constant for use in test classes
+define('RUN_NETWORK_TESTS', $runNetworkTests);
+
 $vendor_path = __DIR__ . '/../vendor/autoload.php';
 
 if (file_exists($vendor_path)) {

@@ -11,7 +11,10 @@ class TransformApiRealTest extends bootstrap
 {
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
+        // Skip network tests unless RUN_NETWORK_TESTS=true is set
+        if (!RUN_NETWORK_TESTS) {
+            $this->markTestSkipped('Network tests disabled. Set RUN_NETWORK_TESTS=true to run them.');
+        }
         // Check if Wikipedia API is available
         if (!$this->isWikipediaApiAvailable()) {
             $this->markTestSkipped('Wikipedia Transform API unavailable - skipping tests');

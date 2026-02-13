@@ -45,11 +45,26 @@ class MdwikiApiService
     }
 
     /**
-     * Get wikitext content from MDWiki API
+     * Get raw API response from MDWiki API for a given page title
      *
      * @param string $title The title of the page to fetch
-     * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+     * @return array{error: string, httpCode: mixed, response: bool|string} The raw API response (JSON string) or error information
      */
+    public function handleRawRequest(string $title): array
+    {
+        $params = [
+            "action" => "query",
+            "format" => "json",
+            "prop" => "revisions",
+            "titles" => $title,
+            "utf8" => 1,
+            "formatversion" => "2",
+            "rvprop" => "content|ids"
+        ];
+
+        $response = $this->httpClient->handleRawRequest($this->baseApiUrl, 'GET', $params);
+        return $response;
+    }
     public function getWikitextFromMdwikiApi(string $title): array
     {
         $params = [
@@ -70,7 +85,6 @@ class MdwikiApiService
         }
 
         $json = json_decode($response, true);
-
         $revisions = $json["query"]["pages"][0]["revisions"][0] ?? [];
 
         if (empty($revisions)) {
@@ -129,4 +143,16 @@ function getWikitextFromMdwikiRestApi(string $title): array
 {
     $service = new MdwikiApiService();
     return $service->getWikitextFromMdwikiRestApi($title);
+}
+/**
+ * Legacy function for backward compatibility
+ * Get raw API response from MDWiki API for a given page title
+ *
+ * @param string $title The title of the page to fetch
+ * @return array{error: string, httpCode: mixed, response: bool|string} The raw API response (JSON string) or error information
+ */
+function handleRawRequest(string $title): array
+{
+    $service = new MdwikiApiService();
+    return $service->handleRawRequest($title);
 }

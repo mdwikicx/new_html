@@ -13,7 +13,7 @@ namespace MDWiki\NewHtml\Services\Html;
 
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
-use function MDWiki\NewHtml\Services\Api\change_html_to_seg;
+use function MDWiki\NewHtml\Services\Api\changeHtmlToSeg;
 
 /**
  * Convert HTML to segments using the API
@@ -24,7 +24,7 @@ use function MDWiki\NewHtml\Services\Api\change_html_to_seg;
 function do_html_to_seg(string $text): string
 {
 
-    $fixed = change_html_to_seg($text);
+    $fixed = changeHtmlToSeg($text);
 
     // $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? "";

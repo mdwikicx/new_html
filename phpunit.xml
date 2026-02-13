@@ -2,11 +2,16 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.0/phpunit.xsd"
     bootstrap="tests/bootstrap.php"
-    colors="true">
+    colors="true"
+    testdox="true">
 
     <testsuites>
         <testsuite name="ParseWiki Test Suite">
             <directory suffix=".php">tests</directory>
+            <exclude>tests/NetworkRealTests</exclude>
+        </testsuite>
+        <testsuite name="network">
+            <directory suffix=".php">tests/NetworkRealTests</directory>
         </testsuite>
     </testsuites>
 

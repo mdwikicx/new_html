@@ -90,20 +90,51 @@ Available wikitext transformation modules:
 
 ### Running Tests
 
-Run the complete test suite:
+Run the complete test suite (excludes network tests):
 ```bash
 composer test
 ```
 
 Or run PHPUnit directly:
 ```bash
-vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml
+vendor/bin/phpunit
 ```
 
 Run specific test files:
 ```bash
 vendor/bin/phpunit tests/commons_api_test.php
 ```
+
+#### Network Tests
+
+Network tests are located in `tests/NetworkRealTests/` and test real API connections. They are **excluded from the default test suite** and require both the test suite option and `RUN_NETWORK_TESTS=true`:
+
+```bash
+# Run only network tests
+RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testsuite network
+```
+
+**Windows (Command Prompt):**
+```cmd
+set RUN_NETWORK_TESTS=true
+vendor/bin/phpunit tests/NetworkRealTests --testsuite network
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:RUN_NETWORK_TESTS="true"
+vendor/bin/phpunit tests/NetworkRealTests --testsuite network
+```
+
+The `phpunit.xml` configuration excludes `tests/NetworkRealTests/` from the default test suite, so regular tests never run network tests accidentally.
+
+**Available Network Tests:**
+- `CommonsApiRealTest` - Tests Wikimedia Commons API connectivity
+- `MdwikiApiRealTest` - Tests mdwiki.org REST API
+- `SegApiRealTest` - Tests HTML segmentation service
+- `TransformApiRealTest` - Tests Wikipedia wikitext transformation API
+
+Network tests automatically skip if external APIs are unreachable, making them safe to run even with intermittent connectivity.
 
 ### Static Analysis
 

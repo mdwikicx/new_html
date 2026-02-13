@@ -13,10 +13,13 @@ class CommonsApiRealTest extends bootstrap
      */
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
+        // Skip network tests unless RUN_NETWORK_TESTS=true is set
+        if (!RUN_NETWORK_TESTS) {
+            $this->markTestSkipped('Network tests disabled. Set RUN_NETWORK_TESTS=true to run them.');
+        }
         // Check if commons.wikimedia.org is accessible
         if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('MDWiki API unavailable - skipping tests');
+            $this->markTestSkipped('Commons API unavailable - skipping tests');
         }
     }
 
@@ -34,10 +37,6 @@ class CommonsApiRealTest extends bootstrap
      */
     public function testCheckCommonsImageExists()
     {
-        if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
-        }
-
         // Test with a well-known Commons image that should exist
         $result = check_commons_image_exists('Logo.png');
         $this->assertTrue($result, 'Logo.png should exist on Commons');
@@ -48,10 +47,6 @@ class CommonsApiRealTest extends bootstrap
      */
     public function testCheckCommonsImageNotExists()
     {
-        if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
-        }
-
         // Test with an image that definitely doesn't exist
         $result = check_commons_image_exists('NonExistentImageFileNameThatDoesNotExist12345678901234567890.png');
         $this->assertFalse($result, 'Non-existent image should return false');
