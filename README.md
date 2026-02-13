@@ -125,7 +125,7 @@ src/
 ├── Services/                # Service layer (business operations)
 │   ├── Api/                # External API integrations
 │   │   ├── CommonsApiService.php
-│   │   ├── HttpClient.php
+│   │   ├── HttpClientService.php
 │   │   ├── MdwikiApiService.php
 │   │   ├── SegmentApiService.php
 │   │   └── TransformApiService.php

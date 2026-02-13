@@ -82,7 +82,7 @@ src/
 ├── Services/                     # Service layer (business operations)
 │   ├── Api/                      [api_services/]
 │   │   ├── CommonsApiService.php         [commons_api.php]
-│   │   ├── HttpClient.php                [post.php]
+│   │   ├── HttpClientService.php                [post.php]
 │   │   ├── MdwikiApiService.php          [mdwiki_api_wikitext.php]
 │   │   ├── SegmentApiService.php         [seg_api.php]
 │   │   └── TransformApiService.php       [transform_api.php]
@@ -219,7 +219,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 **Goal:** Move business operations and API integrations
 
 #### 4.1: API Services
-- [ ] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
+- [ ] Migrate `api_services/post.php` → `Services/Api/HttpClientService.php`
 - [ ] Migrate `api_services/commons_api.php` → `Services/Api/CommonsApiService.php`
 - [ ] Migrate `api_services/mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
 - [ ] Migrate `post_mdwiki.php` → `Services/Api/MdwikiApiService.php`
@@ -423,7 +423,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 ### Phase 5: Service Layer - API (Day 8-9)
 - [ ] **HTTP Client**
-  - [ ] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
+  - [ ] Migrate `api_services/post.php` → `Services/Api/HttpClientService.php`
   - [ ] Update namespace: `MDWiki\NewHtml\Services\Api`
   - [ ] Refactor to class-based approach
   - [ ] Update all imports

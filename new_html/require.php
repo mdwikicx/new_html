@@ -49,7 +49,6 @@ require_once $src_path . "/Services/Api/HttpClientService.php";
 
 // ---------------------
 // require_once $src_path . "/Services/Api/CommonsApiService.php";
-require_once $src_path . "/Services/Api/HttpClient.php";
 require_once $src_path . "/Services/Api/MdwikiApiService.php";
 require_once $src_path . "/Services/Api/SegmentApiService.php";
 require_once $src_path . "/Services/Api/TransformApiService.php";
