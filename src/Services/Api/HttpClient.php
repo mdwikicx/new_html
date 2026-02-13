@@ -12,7 +12,7 @@
 namespace MDWiki\NewHtml\Services\Api;
 /*
 
-use function MDWiki\NewHtml\Services\Api\handle_url_request;
+use function MDWiki\NewHtml\Services\Api\handleUrlRequest;
 use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 
 */
@@ -72,7 +72,7 @@ function post_url_params_result(string $endPoint, array $params = []): string
  * @param array<string, mixed> $params Optional parameters to send with the request
  * @return string The response body, or empty string on failure
  */
-function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
+function handleUrlRequest(string $endPoint, string $method = 'GET', array $params = []): string
 {
     $ch = curl_init();
 

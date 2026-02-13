@@ -11,7 +11,7 @@
 namespace MDWiki\NewHtml\Services\Api;
 
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
-use function MDWiki\NewHtml\Services\Api\handle_url_request;
+use function MDWiki\NewHtml\Services\Api\handleUrlRequest;
 
 class HttpClientService implements HttpClientInterface
 {
@@ -25,6 +25,6 @@ class HttpClientService implements HttpClientInterface
      */
     public function request(string $endPoint, string $method = 'GET', array $params = []): string
     {
-        return handle_url_request($endPoint, $method, $params);
+        return handleUrlRequest($endPoint, $method, $params);
     }
 }
