@@ -196,7 +196,8 @@ class RemoveMissingImagesService
 }
 
 /**
- * Main function: Remove all missing images (both infobox and inline)
+ * Legacy function: Remove all missing images (both infobox and inline)
+ * Uses default CommonsImageService
  *
  * @param string $text The wikitext to process
  * @return string The processed wikitext with missing images removed
@@ -204,8 +205,5 @@ class RemoveMissingImagesService
 function removeMissingImages(string $text): string
 {
     $service = new RemoveMissingImagesService(new CommonsImageService());
-
-    $text = $service->removeMissingInfoboxImages($text);
-    $text = $service->removeMissingInlineImages($text);
-    return $text;
+    return $service->removeMissingImages($text);
 }
