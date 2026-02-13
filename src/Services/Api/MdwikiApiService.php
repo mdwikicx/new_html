@@ -89,7 +89,7 @@ class MdwikiApiService
      * @param string $title The title of the page to fetch
      * @return array{0: string, 1: string|int} Array containing [content, revision_id]
      */
-    public function getWikitextFromRestApi(string $title): array
+    public function getWikitextFromMdwikiRestApi(string $title): array
     {
         $titleEncoded = str_replace("/", "%2F", $title);
         $titleEncoded = str_replace(" ", "_", $titleEncoded);
@@ -125,8 +125,8 @@ function getWikitextFromMdwikiApi(string $title): array
  * @param string $title The title of the page to fetch
  * @return array{0: string, 1: string|int} Array containing [content, revision_id]
  */
-function getWikitextFromMdwikiRestapi(string $title): array
+function getWikitextFromMdwikiRestApi(string $title): array
 {
     $service = new MdwikiApiService();
-    return $service->getWikitextFromRestApi($title);
+    return $service->getWikitextFromMdwikiRestApi($title);
 }

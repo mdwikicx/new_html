@@ -5,7 +5,7 @@ namespace FixRefs\Tests\APIServices;
 use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiApi;
-use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestapi;
+use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestApi;
 
 
 class MdwikiApiRealTest extends bootstrap
@@ -63,7 +63,7 @@ class MdwikiApiRealTest extends bootstrap
     public function testGetWikitextFromMdwikiRestapiWithValidTitle()
     {
         $title = 'Diabetes';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         $this->assertNotEmpty($wikitext);
         $this->assertNotEmpty($revid);
@@ -73,7 +73,7 @@ class MdwikiApiRealTest extends bootstrap
     public function testGetWikitextFromMdwikiRestapiWithInvalidTitle()
     {
         $title = 'Nonexistent_Article_xyz123';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         // Should return empty strings
         $this->assertEquals('', $wikitext);
@@ -83,7 +83,7 @@ class MdwikiApiRealTest extends bootstrap
     public function testGetWikitextFromMdwikiRestapiReturnsArray()
     {
         $title = 'Diabetes';
-        $result = getWikitextFromMdwikiRestapi($title);
+        $result = getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -102,7 +102,7 @@ class MdwikiApiRealTest extends bootstrap
     public function testGetWikitextFromMdwikiRestapiWithSpaces()
     {
         $title = 'Heart attack';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         // Should handle spaces in title
         $this->assertIsString($wikitext);
@@ -113,7 +113,7 @@ class MdwikiApiRealTest extends bootstrap
     {
         // Test title with slash (should be encoded)
         $title = 'Test/Subpage';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         // Should handle slashes
         $this->assertIsString($wikitext);
@@ -137,7 +137,7 @@ class MdwikiApiRealTest extends bootstrap
     public function testGetWikitextFromMdwikiRestapiReturnsValidWikitext()
     {
         $title = 'Cancer';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         if (!empty($wikitext)) {
             $this->assertIsString($wikitext);
@@ -160,7 +160,7 @@ class MdwikiApiRealTest extends bootstrap
     public function testGetWikitextFromMdwikiRestapiWithEmptyTitle()
     {
         $title = '';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsString($wikitext);
         $this->assertIsString($revid);
@@ -182,7 +182,7 @@ class MdwikiApiRealTest extends bootstrap
     public function testGetWikitextFromMdwikiRestapiRevisionIdFormat()
     {
         $title = 'Influenza';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         if (!empty($revid)) {
             $this->assertMatchesRegularExpression('/^\d+$/', (string)$revid);
@@ -209,7 +209,7 @@ class MdwikiApiRealTest extends bootstrap
     {
         // REST API should handle underscores
         $title = 'Heart_disease';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsString($wikitext);
         $this->assertIsString($revid);
@@ -219,7 +219,7 @@ class MdwikiApiRealTest extends bootstrap
     {
         $title = 'Tuberculosis';
         [$wikitext1, $revid1] = getWikitextFromMdwikiApi($title);
-        [$wikitext2, $revid2] = getWikitextFromMdwikiRestapi($title);
+        [$wikitext2, $revid2] = getWikitextFromMdwikiRestApi($title);
 
         if (!empty($wikitext1) && !empty($wikitext2)) {
             // Both APIs should return the same content

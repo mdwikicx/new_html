@@ -105,7 +105,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertCount(2, $result);
     }
 
-    public function testGetWikitextFromRestApiWithValidTitle()
+    public function testGetWikitextFromMdwikiRestApiWithValidTitle()
     {
         $title = 'Diabetes';
         $wikitext = '==Diabetes==\nDiabetes is a disease.';
@@ -115,13 +115,13 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse($wikitext, $revid));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         $this->assertEquals($wikitext, $resultWikitext);
         $this->assertEquals($revid, $resultRevid);
     }
 
-    public function testGetWikitextFromRestApiWithInvalidTitle()
+    public function testGetWikitextFromMdwikiRestApiWithInvalidTitle()
     {
         $title = 'Nonexistent_Article_xyz123';
 
@@ -129,14 +129,14 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn('{}');
 
-        [$wikitext, $revid] = $this->service->getWikitextFromRestApi($title);
+        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should return empty strings
         $this->assertEquals('', $wikitext);
         $this->assertEquals('', $revid);
     }
 
-    public function testGetWikitextFromRestApiReturnsArray()
+    public function testGetWikitextFromMdwikiRestApiReturnsArray()
     {
         $title = 'Diabetes';
 
@@ -144,7 +144,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse('Content', '12345'));
 
-        $result = $this->service->getWikitextFromRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -166,7 +166,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertIsString($resultRevid);
     }
 
-    public function testGetWikitextFromRestApiWithSpaces()
+    public function testGetWikitextFromMdwikiRestApiWithSpaces()
     {
         $title = 'Heart attack';
         $wikitext = '==Heart attack==\nContent';
@@ -181,14 +181,14 @@ class MdwikiApiTest extends bootstrap
             )
             ->willReturn($this->createRestApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should handle spaces in title (converted to underscores)
         $this->assertIsString($resultWikitext);
         $this->assertIsString($resultRevid);
     }
 
-    public function testGetWikitextFromRestApiWithSlash()
+    public function testGetWikitextFromMdwikiRestApiWithSlash()
     {
         // Test title with slash (should be encoded)
         $title = 'Test/Subpage';
@@ -204,7 +204,7 @@ class MdwikiApiTest extends bootstrap
             )
             ->willReturn($this->createRestApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should handle slashes (encoded as %2F)
         $this->assertIsString($resultWikitext);
@@ -227,7 +227,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertGreaterThan(100, strlen($resultWikitext));
     }
 
-    public function testGetWikitextFromRestApiReturnsValidWikitext()
+    public function testGetWikitextFromMdwikiRestApiReturnsValidWikitext()
     {
         $title = 'Cancer';
         $wikitext = str_repeat('Cancer content here. ', 50); // Long wikitext
@@ -236,7 +236,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse($wikitext, '67890'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsString($resultWikitext);
         $this->assertGreaterThan(100, strlen($resultWikitext));
@@ -257,7 +257,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertIsString($revid);
     }
 
-    public function testGetWikitextFromRestApiWithEmptyTitle()
+    public function testGetWikitextFromMdwikiRestApiWithEmptyTitle()
     {
         $title = '';
 
@@ -265,7 +265,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse('', ''));
 
-        [$wikitext, $revid] = $this->service->getWikitextFromRestApi($title);
+        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsString($wikitext);
         $this->assertIsString($revid);
@@ -286,7 +286,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertMatchesRegularExpression('/^\d+$/', (string)$resultRevid);
     }
 
-    public function testGetWikitextFromRestApiRevisionIdFormat()
+    public function testGetWikitextFromMdwikiRestApiRevisionIdFormat()
     {
         $title = 'Influenza';
         $revid = '98765';
@@ -295,7 +295,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse('Content', $revid));
 
-        [$wikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+        [$wikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Revision ID should be numeric
         $this->assertMatchesRegularExpression('/^\d+$/', (string)$resultRevid);
@@ -319,7 +319,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertEquals($wikitext1, $wikitext2);
     }
 
-    public function testGetWikitextFromRestApiWithUnderscore()
+    public function testGetWikitextFromMdwikiRestApiWithUnderscore()
     {
         // REST API should handle underscores
         $title = 'Heart_disease';
@@ -335,7 +335,7 @@ class MdwikiApiTest extends bootstrap
             )
             ->willReturn($this->createRestApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsString($resultWikitext);
         $this->assertIsString($resultRevid);
@@ -357,7 +357,7 @@ class MdwikiApiTest extends bootstrap
             });
 
         [$wikitext1, $revid1] = $this->service->getWikitextFromApi($title);
-        [$wikitext2, $revid2] = $this->service->getWikitextFromRestApi($title);
+        [$wikitext2, $revid2] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Both APIs should return the same content
         $this->assertEquals($wikitext1, $wikitext2);
@@ -379,7 +379,7 @@ class MdwikiApiTest extends bootstrap
         $this->assertEquals('', $revid);
     }
 
-    public function testGetWikitextFromRestApiHandlesEmptyResponse()
+    public function testGetWikitextFromMdwikiRestApiHandlesEmptyResponse()
     {
         $title = 'Diabetes';
 
@@ -387,7 +387,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn('');
 
-        [$wikitext, $revid] = $this->service->getWikitextFromRestApi($title);
+        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should return empty strings when API fails
         $this->assertEquals('', $wikitext);

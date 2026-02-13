@@ -17,7 +17,7 @@ use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
 
-use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestapi;
+use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestApi;
 
 /**
  * Get wikitext for a page, optionally processing only the lead section
@@ -30,7 +30,7 @@ function get_wikitext(string $title, string $file): array
 
     $title = str_replace(" ", "_", $title);
 
-    $json1 = getWikitextFromMdwikiRestapi($title);
+    $json1 = getWikitextFromMdwikiRestApi($title);
 
     $source = $json1[0];
     $revid = $json1[1];
@@ -39,7 +39,7 @@ function get_wikitext(string $title, string $file): array
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
         $title = $matches[1];
         test_print("Redirecting to: $title\n");
-        $json1 = getWikitextFromMdwikiRestapi($title);
+        $json1 = getWikitextFromMdwikiRestApi($title);
         $source = $json1[0];
         $revid = $json1[1];
     }
@@ -79,7 +79,7 @@ function get_wikitext_all(string $title, string $file): array
 
     $title = str_replace(" ", "_", $title);
 
-    $json1 = getWikitextFromMdwikiRestapi($title);
+    $json1 = getWikitextFromMdwikiRestApi($title);
 
     $source = $json1[0];
     $revid = $json1[1];
@@ -88,7 +88,7 @@ function get_wikitext_all(string $title, string $file): array
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
         $title = $matches[1];
         test_print("Redirecting to: $title\n");
-        $json1 = getWikitextFromMdwikiRestapi($title);
+        $json1 = getWikitextFromMdwikiRestApi($title);
         $source = $json1[0];
         $revid = $json1[1];
     }
