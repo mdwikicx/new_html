@@ -3,229 +3,394 @@
 namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
-
-use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiApi;
-use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestapi;
-
+use MDWiki\NewHtml\Services\Api\MdwikiApiService;
+use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 class MdwikiApiTest extends bootstrap
 {
+    private ?MdwikiApiService $service;
+    private ?HttpClientInterface $mockHttpClient;
+
     protected function setUp(): void
     {
-        // Check if mdwiki.org is accessible
-        if (!$this->isMdwikiAvailable()) {
-            $this->markTestSkipped('MDWiki API unavailable - skipping tests');
-        }
+        // Create a mock HTTP client
+        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $this->service = new MdwikiApiService($this->mockHttpClient);
     }
 
-    private function isMdwikiAvailable(): bool
+    /**
+     * Helper to create a successful API response
+     *
+     * @param string $content The wikitext content
+     * @param int|string $revid The revision ID
+     * @return string JSON encoded response
+     */
+    private function createApiResponse(string $content, $revid): string
     {
-        $socket = @fsockopen('mdwiki.org', 443, $errno, $errstr, 5);
-        if ($socket) {
-            fclose($socket);
-            return true;
-        }
-        return false;
+        return json_encode([
+            'query' => [
+                'pages' => [
+                    [
+                        'revisions' => [
+                            [
+                                'content' => $content,
+                                'revid' => $revid
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]);
     }
 
-    public function testGetWikitextFromMdwikiApiWithValidTitle()
+    /**
+     * Helper to create a successful REST API response
+     *
+     * @param string $source The wikitext source
+     * @param int|string $revid The revision ID
+     * @return string JSON encoded response
+     */
+    private function createRestApiResponse(string $source, $revid): string
+    {
+        return json_encode([
+            'source' => $source,
+            'latest' => [
+                'id' => $revid
+            ]
+        ]);
+    }
+
+    public function testGetWikitextFromApiWithValidTitle()
     {
         $title = 'Aspirin';
-        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
+        $wikitext = '==Aspirin==\nAspirin is a medication.';
+        $revid = '12345';
 
-        // Should return non-empty wikitext and revision ID
-        $this->assertNotEmpty($wikitext);
-        $this->assertNotEmpty($revid);
-        $this->assertIsString($wikitext);
-        $this->assertIsNumeric($revid);
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createApiResponse($wikitext, $revid));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
+
+        $this->assertEquals($wikitext, $resultWikitext);
+        $this->assertEquals($revid, $resultRevid);
     }
 
-    public function testGetWikitextFromMdwikiApiWithInvalidTitle()
+    public function testGetWikitextFromApiWithInvalidTitle()
     {
         $title = 'This_Is_A_Nonexistent_Article_Title_12345';
-        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn(json_encode(['query' => ['pages' => [[]]]]));
+
+        [$wikitext, $revid] = $this->service->getWikitextFromApi($title);
 
         // Should return empty strings for nonexistent article
         $this->assertEquals('', $wikitext);
         $this->assertEquals('', $revid);
     }
 
-    public function testGetWikitextFromMdwikiApiReturnsArray()
+    public function testGetWikitextFromApiReturnsArray()
     {
         $title = 'Aspirin';
-        $result = getWikitextFromMdwikiApi($title);
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createApiResponse('Content', '12345'));
+
+        $result = $this->service->getWikitextFromApi($title);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithValidTitle()
+    public function testGetWikitextFromRestApiWithValidTitle()
     {
         $title = 'Diabetes';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        $wikitext = '==Diabetes==\nDiabetes is a disease.';
+        $revid = '67890';
 
-        $this->assertNotEmpty($wikitext);
-        $this->assertNotEmpty($revid);
-        $this->assertIsString($wikitext);
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createRestApiResponse($wikitext, $revid));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+
+        $this->assertEquals($wikitext, $resultWikitext);
+        $this->assertEquals($revid, $resultRevid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithInvalidTitle()
+    public function testGetWikitextFromRestApiWithInvalidTitle()
     {
         $title = 'Nonexistent_Article_xyz123';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn('{}');
+
+        [$wikitext, $revid] = $this->service->getWikitextFromRestApi($title);
 
         // Should return empty strings
         $this->assertEquals('', $wikitext);
         $this->assertEquals('', $revid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiReturnsArray()
+    public function testGetWikitextFromRestApiReturnsArray()
     {
         $title = 'Diabetes';
-        $result = getWikitextFromMdwikiRestapi($title);
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createRestApiResponse('Content', '12345'));
+
+        $result = $this->service->getWikitextFromRestApi($title);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
     }
 
-    public function testGetWikitextFromMdwikiApiWithSpecialCharacters()
+    public function testGetWikitextFromApiWithSpecialCharacters()
     {
         $title = 'Crohn\'s disease';
-        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
+        $wikitext = '==Crohn\'s disease==\nContent';
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createApiResponse($wikitext, '12345'));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
 
         // Should handle special characters
-        $this->assertIsString($wikitext);
-        $this->assertIsString($revid);
+        $this->assertIsString($resultWikitext);
+        $this->assertIsString($resultRevid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithSpaces()
+    public function testGetWikitextFromRestApiWithSpaces()
     {
         $title = 'Heart attack';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        $wikitext = '==Heart attack==\nContent';
 
-        // Should handle spaces in title
-        $this->assertIsString($wikitext);
-        $this->assertIsString($revid);
+        $this->mockHttpClient
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->stringContains('Heart_attack'),
+                $this->equalTo('GET'),
+                $this->equalTo([])
+            )
+            ->willReturn($this->createRestApiResponse($wikitext, '12345'));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+
+        // Should handle spaces in title (converted to underscores)
+        $this->assertIsString($resultWikitext);
+        $this->assertIsString($resultRevid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithSlash()
+    public function testGetWikitextFromRestApiWithSlash()
     {
         // Test title with slash (should be encoded)
         $title = 'Test/Subpage';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        $wikitext = '==Test/Subpage==\nContent';
 
-        // Should handle slashes
-        $this->assertIsString($wikitext);
-        $this->assertIsString($revid);
+        $this->mockHttpClient
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->stringContains('Test%2FSubpage'),
+                $this->equalTo('GET'),
+                $this->equalTo([])
+            )
+            ->willReturn($this->createRestApiResponse($wikitext, '12345'));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+
+        // Should handle slashes (encoded as %2F)
+        $this->assertIsString($resultWikitext);
+        $this->assertIsString($resultRevid);
     }
 
-    public function testGetWikitextFromMdwikiApiReturnsValidWikitext()
+    public function testGetWikitextFromApiReturnsValidWikitext()
     {
         $title = 'Paracetamol';
-        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
+        $wikitext = str_repeat('Wiki content here. ', 50); // Long wikitext
 
-        if (!empty($wikitext)) {
-            // Wikitext should contain typical wiki markup
-            $this->assertIsString($wikitext);
-            $this->assertGreaterThan(100, strlen($wikitext));
-        } else {
-            $this->markTestSkipped('Article not found or API unavailable');
-        }
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createApiResponse($wikitext, '12345'));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
+
+        // Wikitext should contain typical wiki markup
+        $this->assertIsString($resultWikitext);
+        $this->assertGreaterThan(100, strlen($resultWikitext));
     }
 
-    public function testGetWikitextFromMdwikiRestapiReturnsValidWikitext()
+    public function testGetWikitextFromRestApiReturnsValidWikitext()
     {
         $title = 'Cancer';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        $wikitext = str_repeat('Cancer content here. ', 50); // Long wikitext
 
-        if (!empty($wikitext)) {
-            $this->assertIsString($wikitext);
-            $this->assertGreaterThan(100, strlen($wikitext));
-        } else {
-            $this->markTestSkipped('Article not found or API unavailable');
-        }
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createRestApiResponse($wikitext, '67890'));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+
+        $this->assertIsString($resultWikitext);
+        $this->assertGreaterThan(100, strlen($resultWikitext));
     }
 
-    public function testGetWikitextFromMdwikiApiWithEmptyTitle()
+    public function testGetWikitextFromApiWithEmptyTitle()
     {
         $title = '';
-        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createApiResponse('', ''));
+
+        [$wikitext, $revid] = $this->service->getWikitextFromApi($title);
 
         // Should handle empty title gracefully
         $this->assertIsString($wikitext);
         $this->assertIsString($revid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithEmptyTitle()
+    public function testGetWikitextFromRestApiWithEmptyTitle()
     {
         $title = '';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createRestApiResponse('', ''));
+
+        [$wikitext, $revid] = $this->service->getWikitextFromRestApi($title);
 
         $this->assertIsString($wikitext);
         $this->assertIsString($revid);
     }
 
-    public function testGetWikitextFromMdwikiApiRevisionIdFormat()
+    public function testGetWikitextFromApiRevisionIdFormat()
     {
         $title = 'Hypertension';
-        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
+        $revid = '54321';
 
-        if (!empty($revid)) {
-            // Revision ID should be numeric
-            $this->assertMatchesRegularExpression('/^\d+$/', (string)$revid);
-        } else {
-            $this->markTestSkipped('Article not found');
-        }
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createApiResponse('Content', $revid));
+
+        [$wikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
+
+        // Revision ID should be numeric
+        $this->assertMatchesRegularExpression('/^\d+$/', (string)$resultRevid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiRevisionIdFormat()
+    public function testGetWikitextFromRestApiRevisionIdFormat()
     {
         $title = 'Influenza';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        $revid = '98765';
 
-        if (!empty($revid)) {
-            $this->assertMatchesRegularExpression('/^\d+$/', (string)$revid);
-        } else {
-            $this->markTestSkipped('Article not found');
-        }
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createRestApiResponse('Content', $revid));
+
+        [$wikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+
+        // Revision ID should be numeric
+        $this->assertMatchesRegularExpression('/^\d+$/', (string)$resultRevid);
     }
 
-    public function testGetWikitextFromMdwikiApiConsistency()
+    public function testGetWikitextFromApiConsistency()
     {
         $title = 'Diabetes';
-        [$wikitext1, $revid1] = getWikitextFromMdwikiApi($title);
-        [$wikitext2, $revid2] = getWikitextFromMdwikiApi($title);
+        $wikitext = 'Consistent content';
+        $revid = '11111';
 
-        if (!empty($wikitext1) && !empty($wikitext2)) {
-            // Same title should return same revision (unless edited between calls)
-            $this->assertEquals($revid1, $revid2);
-        } else {
-            $this->markTestSkipped('Article not found');
-        }
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createApiResponse($wikitext, $revid));
+
+        [$wikitext1, $revid1] = $this->service->getWikitextFromApi($title);
+        [$wikitext2, $revid2] = $this->service->getWikitextFromApi($title);
+
+        // Same title should return same revision
+        $this->assertEquals($revid1, $revid2);
+        $this->assertEquals($wikitext1, $wikitext2);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithUnderscore()
+    public function testGetWikitextFromRestApiWithUnderscore()
     {
         // REST API should handle underscores
         $title = 'Heart_disease';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestapi($title);
+        $wikitext = '==Heart disease==\nContent';
 
-        $this->assertIsString($wikitext);
-        $this->assertIsString($revid);
+        $this->mockHttpClient
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->stringContains('Heart_disease'),
+                $this->equalTo('GET'),
+                $this->equalTo([])
+            )
+            ->willReturn($this->createRestApiResponse($wikitext, '12345'));
+
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromRestApi($title);
+
+        $this->assertIsString($resultWikitext);
+        $this->assertIsString($resultRevid);
     }
 
-    public function testBothApIsReturnSimilarData()
+    public function testBothApisReturnSimilarData()
     {
         $title = 'Tuberculosis';
-        [$wikitext1, $revid1] = getWikitextFromMdwikiApi($title);
-        [$wikitext2, $revid2] = getWikitextFromMdwikiRestapi($title);
+        $wikitext = '==Tuberculosis==\nSame content from both APIs.';
+        $revid = '99999';
 
-        if (!empty($wikitext1) && !empty($wikitext2)) {
-            // Both APIs should return the same content
-            $this->assertEquals($wikitext1, $wikitext2);
-            $this->assertEquals($revid1, $revid2);
-        } else {
-            $this->markTestSkipped('Article not found or API unavailable');
-        }
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturnCallback(function ($url) use ($wikitext, $revid) {
+                if (strpos($url, '/api.php') !== false) {
+                    return $this->createApiResponse($wikitext, $revid);
+                }
+                return $this->createRestApiResponse($wikitext, $revid);
+            });
+
+        [$wikitext1, $revid1] = $this->service->getWikitextFromApi($title);
+        [$wikitext2, $revid2] = $this->service->getWikitextFromRestApi($title);
+
+        // Both APIs should return the same content
+        $this->assertEquals($wikitext1, $wikitext2);
+        $this->assertEquals($revid1, $revid2);
+    }
+
+    public function testGetWikitextFromApiHandlesEmptyResponse()
+    {
+        $title = 'Aspirin';
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn('');
+
+        [$wikitext, $revid] = $this->service->getWikitextFromApi($title);
+
+        // Should return empty strings when API fails
+        $this->assertEquals('', $wikitext);
+        $this->assertEquals('', $revid);
+    }
+
+    public function testGetWikitextFromRestApiHandlesEmptyResponse()
+    {
+        $title = 'Diabetes';
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn('');
+
+        [$wikitext, $revid] = $this->service->getWikitextFromRestApi($title);
+
+        // Should return empty strings when API fails
+        $this->assertEquals('', $wikitext);
+        $this->assertEquals('', $revid);
     }
 }

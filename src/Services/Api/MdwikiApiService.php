@@ -11,68 +11,100 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
+use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
-// https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html
-// https://mdwiki.org/w/rest.php/v1/revision/1420795/html
-
-
 /**
- * Handle URL requests to MDWiki with support for GET and POST methods
+ * Service for fetching wikitext content from MDWiki
  *
- * @param string $endPoint The API endpoint URL
- * @param string $method The HTTP method to use ('GET' or 'POST')
- * @param array<string, mixed> $params Optional parameters to send with the request
- * @return string The response body, or empty string on failure
+ * @package MDWiki\NewHtml\Services\Api
  */
-function handleUrlRequestMdwiki(string $endPoint, string $method = 'GET', array $params = []): string
+class MdwikiApiService
 {
-    $ch = curl_init();
+    private HttpClientInterface $httpClient;
+    private string $baseApiUrl;
+    private string $baseRestUrl;
 
-    $url = $endPoint;
-
-    if (!empty($params) && $method === 'GET') {
-        $query_string = http_build_query($params);
-        $url = strpos($url, '?') === false ? "$url?$query_string" : "$url&$query_string";
-        $endPoint = $url;
+    /**
+     * Constructor
+     *
+     * @param HttpClientInterface|null $httpClient HTTP client for making requests (uses HttpClientService if null)
+     * @param string $baseApiUrl The base URL for the MDWiki API
+     * @param string $baseRestUrl The base URL for the MDWiki REST API
+     */
+    public function __construct(
+        ?HttpClientInterface $httpClient = null,
+        string $baseApiUrl = 'https://mdwiki.org/w/api.php',
+        string $baseRestUrl = 'https://mdwiki.org/w/rest.php/v1',
+    ) {
+        $this->httpClient = $httpClient ?? new HttpClientService();
+        $this->baseApiUrl = $baseApiUrl;
+        $this->baseRestUrl = $baseRestUrl;
     }
 
-    curl_setopt($ch, CURLOPT_URL, $endPoint);
+    /**
+     * Get wikitext content from MDWiki API
+     *
+     * @param string $title The title of the page to fetch
+     * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+     */
+    public function getWikitextFromApi(string $title): array
+    {
+        $params = [
+            "action" => "query",
+            "format" => "json",
+            "prop" => "revisions",
+            "titles" => $title,
+            "utf8" => 1,
+            "formatversion" => "2",
+            "rvprop" => "content|ids"
+        ];
 
-    if ($method === 'POST') {
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+        $response = $this->httpClient->request($this->baseApiUrl, 'GET', $params);
+
+        if (empty($response)) {
+            test_print("Failed to fetch data from MDWiki API for title: $title");
+            return ['', ''];
+        }
+
+        $json = json_decode($response, true);
+
+        $revisions = $json["query"]["pages"][0]["revisions"][0] ?? [];
+
+        if (empty($revisions)) {
+            test_print("No revision data found for title: $title");
+            return ['', ''];
+        }
+
+        $source = $revisions["content"] ?? '';
+        $revid = $revisions["revid"] ?? '';
+        return [$source, $revid];
     }
 
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
-    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+    /**
+     * Get wikitext content from MDWiki REST API
+     *
+     * @param string $title The title of the page to fetch
+     * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+     */
+    public function getWikitextFromRestApi(string $title): array
+    {
+        $titleEncoded = str_replace("/", "%2F", $title);
+        $titleEncoded = str_replace(" ", "_", $titleEncoded);
+        $url = "{$this->baseRestUrl}/page/{$titleEncoded}";
 
-    test_print($url);
+        $response = $this->httpClient->request($url, 'GET');
+        $json = json_decode($response, true);
 
-    $output = curl_exec($ch);
+        $source = $json["source"] ?? '';
+        $revid = $json["latest"]["id"] ?? '';
 
-    if ($output === false) {
-        test_print("endPoint: ($endPoint), cURL Error: " . curl_error($ch));
-        curl_close($ch);
-        return '';
+        return [$source, $revid];
     }
-
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    if ($http_code !== 200) {
-        test_print("API returned HTTP $http_code: $http_code");
-        test_print(var_export($output, true));
-        $output = '';
-    }
-
-    curl_close($ch);
-
-    return $output;
 }
 
 /**
+ * Legacy function for backward compatibility
  * Get wikitext content from MDWiki API
  *
  * @param string $title The title of the page to fetch
@@ -80,39 +112,12 @@ function handleUrlRequestMdwiki(string $endPoint, string $method = 'GET', array 
  */
 function getWikitextFromMdwikiApi(string $title): array
 {
-    $params = [
-        "action" => "query",
-        "format" => "json",
-        "prop" => "revisions",
-        "titles" => $title,
-        "utf8" => 1,
-        "formatversion" => "2",
-        "rvprop" => "content|ids"
-    ];
-    $url = "https://mdwiki.org/w/api.php";
-
-    $req = handleUrlRequestMdwiki($url, 'GET', $params);
-
-    if (empty($req)) {
-        test_print("Failed to fetch data from MDWiki API for title: $title");
-        return ['', ''];
-    }
-
-    $json1 = json_decode($req, true);
-
-    $revisions = $json1["query"]["pages"][0]["revisions"][0] ?? [];
-
-    if (empty($revisions)) {
-        test_print("No revision data found for title: $title");
-        return ['', ''];
-    }
-
-    $source = $revisions["content"] ?? '';
-    $revid = $revisions["revid"] ?? '';
-    return [$source, $revid];
+    $service = new MdwikiApiService();
+    return $service->getWikitextFromApi($title);
 }
 
 /**
+ * Legacy function for backward compatibility
  * Get wikitext content from MDWiki REST API
  *
  * @param string $title The title of the page to fetch
@@ -120,15 +125,6 @@ function getWikitextFromMdwikiApi(string $title): array
  */
 function getWikitextFromMdwikiRestapi(string $title): array
 {
-    $titleEncoded = str_replace("/", "%2F", $title);
-    $titleEncoded = str_replace(" ", "_", $titleEncoded);
-    $url = "https://mdwiki.org/w/rest.php/v1/page/" . $titleEncoded;
-
-    $req = handleUrlRequestMdwiki($url, 'GET');
-    $json1 = json_decode($req, true);
-
-    $source = $json1["source"] ?? '';
-    $revid = $json1["latest"]["id"] ?? '';
-
-    return [$source, $revid];
+    $service = new MdwikiApiService();
+    return $service->getWikitextFromRestApi($title);
 }
