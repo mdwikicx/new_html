@@ -29,10 +29,11 @@ use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
  * @param array<string, mixed> $params Optional parameters to send with the request
  * @return string The response body, or empty string on failure
  */
+
 function handleUrlRequest(string $endPoint, string $method = 'GET', array $params = []): string
 {
     $ch = curl_init();
-
+    $user_agent = defined('USER_AGENT') ? USER_AGENT : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
     $printable_url = $endPoint;
     // POST with parameters should not have the parameters in the URL
     // GET with parameters should have the parameters in the URL
@@ -51,7 +52,7 @@ function handleUrlRequest(string $endPoint, string $method = 'GET', array $param
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
-    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
+    curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
