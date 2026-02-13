@@ -13,7 +13,6 @@ namespace MDWiki\NewHtml\Services\Api;
 /*
 
 use function MDWiki\NewHtml\Services\Api\handleUrlRequest;
-use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 
 */
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html
@@ -21,48 +20,6 @@ use function MDWiki\NewHtml\Services\Api\post_url_params_result;
 
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
-/**
- * Send a POST request to an API endpoint with parameters
- *
- * @param string $endPoint The API endpoint URL
- * @param array<string, mixed> $params Optional parameters to send with the request
- * @return string The response body, or empty string on failure
- */
-function post_url_params_result(string $endPoint, array $params = []): string
-{
-    $ch = curl_init();
-
-    $url = "{$endPoint}";
-
-    curl_setopt($ch, CURLOPT_URL, $endPoint);
-
-    if (count($params) > 0) {
-        $url = "{$endPoint}?" . http_build_query($params);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
-    }
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-
-    test_print($url);
-
-    $output = curl_exec($ch);
-    if ($output === FALSE) {
-        test_print("endPoint: ($endPoint), cURL Error: " . curl_error($ch));
-        curl_close($ch);
-        return '';
-    }
-    // Check HTTP response code
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    if ($http_code !== 200) {
-        test_print("API returned HTTP $http_code: $http_code");
-        // return ['error' => "Error: API returned HTTP $http_code"];
-    }
-    curl_close($ch);
-    return $output;
-}
 
 /**
  * Handle URL requests with support for GET and POST methods
@@ -76,12 +33,13 @@ function handleUrlRequest(string $endPoint, string $method = 'GET', array $param
 {
     $ch = curl_init();
 
-    $url = $endPoint;
-
+    $printable_url = $endPoint;
+    // POST with parameters should not have the parameters in the URL
+    // GET with parameters should have the parameters in the URL
     if (!empty($params) && $method === 'GET') {
         $query_string = http_build_query($params);
-        $url = strpos($url, '?') === false ? "$url?$query_string" : "$url&$query_string";
-        $endPoint = $url;
+        $printable_url = strpos($printable_url, '?') === false ? "$printable_url?$query_string" : "$printable_url&$query_string";
+        $endPoint = $printable_url;
     }
 
     curl_setopt($ch, CURLOPT_URL, $endPoint);
@@ -97,7 +55,7 @@ function handleUrlRequest(string $endPoint, string $method = 'GET', array $param
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
-    test_print($url);
+    test_print($printable_url);
 
     $output = curl_exec($ch);
 
