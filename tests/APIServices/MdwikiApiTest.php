@@ -12,7 +12,6 @@ class MdwikiApiTest extends bootstrap
 {
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
         // Check if mdwiki.org is accessible
         if (!$this->isMdwikiAvailable()) {
             $this->markTestSkipped('MDWiki API unavailable - skipping tests');

@@ -13,7 +13,6 @@ class CommonsApiTest extends bootstrap
      */
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
         // Check if commons.wikimedia.org is accessible
         if (!$this->isCommonsAvailable()) {
             $this->markTestSkipped('MDWiki API unavailable - skipping tests');

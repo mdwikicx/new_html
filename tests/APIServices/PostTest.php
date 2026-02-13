@@ -12,7 +12,6 @@ class PostTest extends bootstrap
 {
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
         // Check if network is available
         if (!$this->isNetworkAvailable()) {
             $this->markTestSkipped('Network unavailable - skipping API tests');

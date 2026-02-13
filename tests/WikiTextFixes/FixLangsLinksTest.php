@@ -286,4 +286,248 @@ class FixLangsLinksTest extends bootstrap
         $this->assertStringNotContainsString('[[simple:', $result);
         $this->assertStringContainsString('content', $result);
     }
+
+    public function testRemoveLangLinksWithPipeDisplayText()
+    {
+        // Language links can have pipe characters for display text
+        $text = '[[en:Article|Display Text]] content';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:Article|Display Text]]', $result);
+        $this->assertStringContainsString('content', $result);
+    }
+
+    public function testRemoveLangLinksConsecutiveWithoutSpace()
+    {
+        // Multiple language links right next to each other
+        $text = 'content[[en:Article]][[de:Artikel]][[fr:Article]]text';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:Article]]', $result);
+        $this->assertStringNotContainsString('[[de:Artikel]]', $result);
+        $this->assertStringNotContainsString('[[fr:Article]]', $result);
+        $this->assertStringContainsString('content', $result);
+        $this->assertStringContainsString('text', $result);
+    }
+
+    public function testRemoveLangLinksWithColonInArticleName()
+    {
+        // Article names can contain colons (e.g., namespaces)
+        $text = '[[en:User:Example]] [[de:Wikipedia:Featured article]]';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:User:Example]]', $result);
+        $this->assertStringNotContainsString('[[de:Wikipedia:Featured article]]', $result);
+    }
+
+    public function testIsValidLangCodeWithTwoCharacterCode()
+    {
+        // Boundary case: exactly 2 characters (minimum)
+        $this->assertTrue(is_valid_lang_code('en'));
+        $this->assertTrue(is_valid_lang_code('de'));
+        $this->assertTrue(is_valid_lang_code('fr'));
+        $this->assertTrue(is_valid_lang_code('ja'));
+    }
+
+    public function testIsValidLangCodeWithVeryLongHyphenatedCode()
+    {
+        // Very long hyphenated codes should still work
+        $this->assertTrue(is_valid_lang_code('zh-min-nan'));
+        $this->assertTrue(is_valid_lang_code('be-tarask'));
+        $this->assertTrue(is_valid_lang_code('roa-rup'));
+    }
+
+    public function testRemoveLangLinksPreservesWhitespace()
+    {
+        // Whitespace around removed links should be preserved
+        $text = "Line 1\n[[en:Article]]\nLine 2";
+        $result = remove_lang_links($text);
+
+        $this->assertStringContainsString("Line 1\n", $result);
+        $this->assertStringContainsString("\nLine 2", $result);
+        $this->assertStringNotContainsString('[[en:Article]]', $result);
+    }
+
+    public function testRemoveLangLinksAtVeryStartOfText()
+    {
+        // Language link as the first thing in the text
+        $text = '[[en:Article]] followed by content';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:Article]]', $result);
+        $this->assertStringContainsString('followed by content', $result);
+    }
+
+    public function testRemoveLangLinksAtVeryEndOfText()
+    {
+        // Language link as the last thing in the text
+        $text = 'content before [[en:Article]]';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:Article]]', $result);
+        $this->assertStringContainsString('content before', $result);
+    }
+
+    public function testRemoveLangLinksOnlyLanguageLinks()
+    {
+        // Text contains only language links, nothing else
+        $text = '[[en:Article]][[de:Artikel]][[fr:Article]]';
+        $result = remove_lang_links($text);
+
+        $this->assertEquals('', $result);
+    }
+
+    public function testIsValidLangCodeWithSingleCharacter()
+    {
+        // Single character should be invalid (minimum is 2)
+        $this->assertFalse(is_valid_lang_code('e'));
+        $this->assertFalse(is_valid_lang_code('x'));
+        $this->assertFalse(is_valid_lang_code('a'));
+    }
+
+    public function testIsValidLangCodeWithNumbersInCode()
+    {
+        // Language codes cannot contain numbers
+        $this->assertFalse(is_valid_lang_code('en1'));
+        $this->assertFalse(is_valid_lang_code('2de'));
+        $this->assertFalse(is_valid_lang_code('e3n'));
+        $this->assertFalse(is_valid_lang_code('en-123'));
+    }
+
+    public function testIsValidLangCodeWithMultipleHyphens()
+    {
+        // Multiple hyphens should work if properly formatted
+        $this->assertTrue(is_valid_lang_code('zh-min-nan'));
+        $this->assertFalse(is_valid_lang_code('en--de')); // Double hyphen
+        $this->assertFalse(is_valid_lang_code('en-')); // Trailing hyphen
+        $this->assertFalse(is_valid_lang_code('-en')); // Leading hyphen
+    }
+
+    public function testRemoveLangLinksDoesNotMatchUppercase()
+    {
+        // Uppercase language codes should not match (they're invalid)
+        $text = '[[EN:Article]] [[De:Artikel]] [[FR:Article]]';
+        $result = remove_lang_links($text);
+
+        // All should remain because they don't match the lowercase pattern
+        $this->assertStringContainsString('[[EN:Article]]', $result);
+        $this->assertStringContainsString('[[De:Artikel]]', $result);
+        $this->assertStringContainsString('[[FR:Article]]', $result);
+    }
+
+    public function testRemoveLangLinksWithUnicodeInArticleName()
+    {
+        // Article names with various Unicode characters
+        $text = '[[ja:日本語の記事]] [[ar:مقالة عربية]] [[ru:Русская статья]] [[zh:中文文章]]';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[ja:日本語の記事]]', $result);
+        $this->assertStringNotContainsString('[[ar:مقالة عربية]]', $result);
+        $this->assertStringNotContainsString('[[ru:Русская статья]]', $result);
+        $this->assertStringNotContainsString('[[zh:中文文章]]', $result);
+    }
+
+    public function testRemoveLangLinksWithComplexMixedContent()
+    {
+        // Complex real-world scenario with all types of content
+        $text = <<<TEXT
+== Section ==
+This is content with [[internal link]] and [[en:English article]].
+
+{{template|param=value}}
+More text [[Category:Test Category]] and [[de:Deutscher Artikel]].
+
+* List item with [[fr:Article français]]
+* Another item
+
+[[File:Example.jpg|thumb|Caption]]
+
+[[zh-min-nan:Bûn-chiuⁿ]]
+TEXT;
+        $result = remove_lang_links($text);
+
+        // Should preserve all non-language-link content
+        $this->assertStringContainsString('[[internal link]]', $result);
+        $this->assertStringContainsString('{{template|param=value}}', $result);
+        $this->assertStringContainsString('[[Category:Test Category]]', $result);
+        $this->assertStringContainsString('[[File:Example.jpg|thumb|Caption]]', $result);
+
+        // Should remove all language links
+        $this->assertStringNotContainsString('[[en:English article]]', $result);
+        $this->assertStringNotContainsString('[[de:Deutscher Artikel]]', $result);
+        $this->assertStringNotContainsString('[[fr:Article français]]', $result);
+        $this->assertStringNotContainsString('[[zh-min-nan:Bûn-chiuⁿ]]', $result);
+    }
+
+    public function testRemoveLangLinksWithTrailingSpaces()
+    {
+        // Language links with various whitespace
+        $text = "Before  [[en:Article]]  After";
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:Article]]', $result);
+        $this->assertStringContainsString('Before', $result);
+        $this->assertStringContainsString('After', $result);
+    }
+
+    public function testIsValidLangCodeWithSpecialCharacters()
+    {
+        // Language codes can only contain lowercase letters and hyphens
+        $this->assertFalse(is_valid_lang_code('en_us'));
+        $this->assertFalse(is_valid_lang_code('en.us'));
+        $this->assertFalse(is_valid_lang_code('en us'));
+        $this->assertFalse(is_valid_lang_code('en@us'));
+        $this->assertFalse(is_valid_lang_code('en:us'));
+    }
+
+    public function testRemoveLangLinksRegressionAllKnownCodes()
+    {
+        // Regression test: ensure all known Wikipedia language codes are properly removed
+        $problematicCodes = [
+            'be-tarask', 'bat-smg', 'cbk-zam', 'fiu-vro', 'map-bms',
+            'nds-nl', 'roa-rup', 'roa-tara', 'zh-classical', 'zh-min-nan', 'zh-yue'
+        ];
+
+        foreach ($problematicCodes as $code) {
+            $text = "Content [[{$code}:Article]] more text";
+            $result = remove_lang_links($text);
+
+            $this->assertStringNotContainsString("[[{$code}:", $result,
+                "Failed to remove language code: {$code}");
+            $this->assertStringContainsString('Content', $result);
+            $this->assertStringContainsString('more text', $result);
+        }
+    }
+
+    public function testRemoveLangLinksDoesNotRemoveImageLinks()
+    {
+        // Ensure we don't accidentally remove Image: or File: links
+        $text = '[[Image:Test.jpg]] [[File:Another.png]] [[en:Article]]';
+        $result = remove_lang_links($text);
+
+        $this->assertStringContainsString('[[Image:Test.jpg]]', $result);
+        $this->assertStringContainsString('[[File:Another.png]]', $result);
+        $this->assertStringNotContainsString('[[en:Article]]', $result);
+    }
+
+    public function testRemoveLangLinksWithParenthesesAndBrackets()
+    {
+        // Article names can have complex punctuation
+        $text = '[[en:Article (disambiguation)]] [[de:Begriff [Erklärung]]]';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:Article (disambiguation)]]', $result);
+        // Note: [Erklärung] inside might cause issues with regex, but should still work
+        // because the regex looks for the closing ]] of the outer link
+    }
+
+    public function testRemoveLangLinksWithQueryParameters()
+    {
+        // Article names with query-like parameters
+        $text = '[[en:Article?action=edit]] [[de:Artikel&param=value]]';
+        $result = remove_lang_links($text);
+
+        $this->assertStringNotContainsString('[[en:Article?action=edit]]', $result);
+        $this->assertStringNotContainsString('[[de:Artikel&param=value]]', $result);
+    }
 }

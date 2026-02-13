@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Missing image removal utilities
  *
@@ -59,7 +60,7 @@ function remove_missing_infobox_images(string $text): string
 
         // Replace the original template with the modified one
         if ($modified) {
-            $newText = $template->toString();
+            $newText = $template->toString(false, 0);
             $text = str_replace($originalText, $newText, $text);
         }
     }

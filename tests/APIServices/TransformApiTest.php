@@ -11,7 +11,6 @@ class TransformApiTest extends bootstrap
 {
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
         // Check if Wikipedia API is available
         if (!$this->isWikipediaApiAvailable()) {
             $this->markTestSkipped('Wikipedia Transform API unavailable - skipping tests');
