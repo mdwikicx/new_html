@@ -12,8 +12,7 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
-// TODO: Domain layer should not depend on Services\Api.
-use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
+use MDWiki\NewHtml\Services\Api\CommonsImageService;
 use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 /**
@@ -28,6 +27,8 @@ use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 
 function remove_missing_infobox_images_regex(string $text): string
 {
+    $service = new CommonsImageService();
+
     // Also handle non-template infobox parameters using regex
     // This handles cases where infobox fields are not wrapped in a template
     $pattern = '/^\s*\|(\s*image\d*\s*)=([^\n]*)/m';
@@ -35,13 +36,13 @@ function remove_missing_infobox_images_regex(string $text): string
     // Collect fields to remove
     $fieldsToRemove = [];
 
-    preg_replace_callback($pattern, function ($matches) use (&$fieldsToRemove) {
+    preg_replace_callback($pattern, function ($matches) use (&$fieldsToRemove, $service) {
         $fullMatch = $matches[0];
         $fieldName = trim($matches[1]);
         $filename = trim($matches[2]);
 
         // If empty or doesn't exist, mark for removal
-        if (empty($filename) || !check_commons_image_exists($filename)) {
+        if (empty($filename) || !$service->imageExists($filename)) {
             // Add both image and caption fields to removal list
             $fieldsToRemove[] = $fieldName;
 
@@ -64,6 +65,8 @@ function remove_missing_infobox_images_regex(string $text): string
 
 function remove_missing_infobox_images(string $text): string
 {
+    $service = new CommonsImageService();
+
     // First, try to parse templates using getTemplates
     $templates = getTemplates($text);
 
@@ -81,7 +84,7 @@ function remove_missing_infobox_images(string $text): string
                 $filename = trim($paramValue);
 
                 // If empty or doesn't exist, remove it and corresponding caption
-                if (empty($filename) || !check_commons_image_exists($filename)) {
+                if (empty($filename) || !$service->imageExists($filename)) {
                     $template->deleteParameter($paramName);
 
                     // Also remove corresponding caption parameter
@@ -116,6 +119,8 @@ function remove_missing_infobox_images(string $text): string
  */
 function remove_missing_inline_images(string $text): string
 {
+    $service = new CommonsImageService();
+
     // Pattern to match [[File:...]] or [[Image:...]] with proper bracket counting
     // This needs to handle nested [[links]] inside the caption
 
@@ -150,7 +155,7 @@ function remove_missing_inline_images(string $text): string
             $fullImageBlock = substr($text, $startPos, $endPos - $startPos + 1);
 
             // Check if the image exists
-            if (!check_commons_image_exists($filename)) {
+            if (!$service->imageExists($filename)) {
                 // Remove the entire image block
                 $text = substr($text, 0, $startPos) . substr($text, $endPos + 1);
                 $offset = $startPos;

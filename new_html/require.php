@@ -40,10 +40,16 @@ require_once $src_path . "/Infrastructure/Debug/PrintHelper.php";
 require_once $src_path . "/Infrastructure/Utils/FileUtils.php";
 require_once $src_path . "/Infrastructure/Utils/HtmlUtils.php";
 
+// --- new
 require_once $src_path . "/Services/Interfaces/HttpClientInterface.php";
+require_once $src_path . "/Services/Interfaces/CommonsImageServiceInterface.php";
+require_once $src_path . "/Domain/Fixes/Media/RemoveMissingImagesService.php";
 
+require_once $src_path . "/Services/Api/CommonsImageService.php";
 require_once $src_path . "/Services/Api/HttpClientService.php";
-require_once $src_path . "/Services/Api/CommonsApiService.php";
+
+// ---------------------
+// require_once $src_path . "/Services/Api/CommonsApiService.php";
 require_once $src_path . "/Services/Api/HttpClient.php";
 require_once $src_path . "/Services/Api/MdwikiApiService.php";
 require_once $src_path . "/Services/Api/SegmentApiService.php";
