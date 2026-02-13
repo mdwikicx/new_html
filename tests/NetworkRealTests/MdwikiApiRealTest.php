@@ -32,18 +32,6 @@ class MdwikiApiRealTest extends bootstrap
         return false;
     }
 
-    public function testGetWikitextFromMdwikiApiWithValidTitle()
-    {
-        $title = 'Aspirin';
-        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
-
-        // Should return non-empty wikitext and revision ID
-        $this->assertNotEmpty($wikitext);
-        $this->assertNotEmpty($revid);
-        $this->assertIsString($wikitext);
-        $this->assertIsNumeric($revid);
-    }
-
     public function testGetWikitextFromMdwikiApiWithInvalidTitle()
     {
         $title = 'This_Is_A_Nonexistent_Article_Title_12345';
@@ -63,17 +51,7 @@ class MdwikiApiRealTest extends bootstrap
         $this->assertCount(2, $result);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithValidTitle()
-    {
-        $title = 'Diabetes';
-        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
-
-        $this->assertNotEmpty($wikitext);
-        $this->assertNotEmpty($revid);
-        $this->assertIsString($wikitext);
-    }
-
-    public function testGetWikitextFromMdwikiRestapiWithInvalidTitle()
+    public function testGetWikitextFromMdwikiRestApiWithInvalidTitle()
     {
         $title = 'Nonexistent_Article_xyz123';
         [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
@@ -83,7 +61,7 @@ class MdwikiApiRealTest extends bootstrap
         $this->assertEquals('', $revid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiReturnsArray()
+    public function testGetWikitextFromMdwikiRestApiReturnsArray()
     {
         $title = 'Diabetes';
         $result = getWikitextFromMdwikiRestApi($title);
@@ -102,7 +80,7 @@ class MdwikiApiRealTest extends bootstrap
         $this->assertIsString($revid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithSpaces()
+    public function testGetWikitextFromMdwikiRestApiWithSpaces()
     {
         $title = 'Heart attack';
         [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
@@ -112,7 +90,7 @@ class MdwikiApiRealTest extends bootstrap
         $this->assertIsString($revid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithSlash()
+    public function testGetWikitextFromMdwikiRestApiWithSlash()
     {
         // Test title with slash (should be encoded)
         $title = 'Test/Subpage';
@@ -128,26 +106,18 @@ class MdwikiApiRealTest extends bootstrap
         $title = 'Paracetamol';
         [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
 
-        if (!empty($wikitext)) {
-            // Wikitext should contain typical wiki markup
-            $this->assertIsString($wikitext);
-            $this->assertGreaterThan(100, strlen($wikitext));
-        } else {
-            $this->markTestSkipped('Article not found or API unavailable');
-        }
+        // Wikitext should contain typical wiki markup
+        $this->assertIsString($wikitext);
+        $this->assertGreaterThan(100, strlen($wikitext));
     }
 
-    public function testGetWikitextFromMdwikiRestapiReturnsValidWikitext()
+    public function testGetWikitextFromMdwikiRestApiReturnsValidWikitext()
     {
         $title = 'Cancer';
         [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
-        if (!empty($wikitext)) {
-            $this->assertIsString($wikitext);
-            $this->assertGreaterThan(100, strlen($wikitext));
-        } else {
-            $this->markTestSkipped('Article not found or API unavailable');
-        }
+        $this->assertIsString($wikitext);
+        $this->assertGreaterThan(100, strlen($wikitext));
     }
 
     public function testGetWikitextFromMdwikiApiWithEmptyTitle()
@@ -160,7 +130,7 @@ class MdwikiApiRealTest extends bootstrap
         $this->assertIsString($revid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithEmptyTitle()
+    public function testGetWikitextFromMdwikiRestApiWithEmptyTitle()
     {
         $title = '';
         [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
@@ -174,24 +144,16 @@ class MdwikiApiRealTest extends bootstrap
         $title = 'Hypertension';
         [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
 
-        if (!empty($revid)) {
-            // Revision ID should be numeric
-            $this->assertMatchesRegularExpression('/^\d+$/', (string)$revid);
-        } else {
-            $this->markTestSkipped('Article not found');
-        }
+        // Revision ID should be numeric
+        $this->assertMatchesRegularExpression('/^\d+$/', (string)$revid);
     }
 
-    public function testGetWikitextFromMdwikiRestapiRevisionIdFormat()
+    public function testGetWikitextFromMdwikiRestApiRevisionIdFormat()
     {
         $title = 'Influenza';
         [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
 
-        if (!empty($revid)) {
-            $this->assertMatchesRegularExpression('/^\d+$/', (string)$revid);
-        } else {
-            $this->markTestSkipped('Article not found');
-        }
+        $this->assertMatchesRegularExpression('/^\d+$/', (string)$revid);
     }
 
     public function testGetWikitextFromMdwikiApiConsistency()
@@ -200,15 +162,11 @@ class MdwikiApiRealTest extends bootstrap
         [$wikitext1, $revid1] = getWikitextFromMdwikiApi($title);
         [$wikitext2, $revid2] = getWikitextFromMdwikiApi($title);
 
-        if (!empty($wikitext1) && !empty($wikitext2)) {
-            // Same title should return same revision (unless edited between calls)
-            $this->assertEquals($revid1, $revid2);
-        } else {
-            $this->markTestSkipped('Article not found');
-        }
+        // Same title should return same revision (unless edited between calls)
+        $this->assertEquals($revid1, $revid2);
     }
 
-    public function testGetWikitextFromMdwikiRestapiWithUnderscore()
+    public function testGetWikitextFromMdwikiRestApiWithUnderscore()
     {
         // REST API should handle underscores
         $title = 'Heart_disease';
@@ -224,12 +182,30 @@ class MdwikiApiRealTest extends bootstrap
         [$wikitext1, $revid1] = getWikitextFromMdwikiApi($title);
         [$wikitext2, $revid2] = getWikitextFromMdwikiRestApi($title);
 
-        if (!empty($wikitext1) && !empty($wikitext2)) {
-            // Both APIs should return the same content
-            $this->assertEquals($wikitext1, $wikitext2);
-            $this->assertEquals($revid1, $revid2);
-        } else {
-            $this->markTestSkipped('Article not found or API unavailable');
-        }
+        // Both APIs should return the same content
+        $this->assertEquals($wikitext1, $wikitext2);
+        $this->assertEquals($revid1, $revid2);
+    }
+
+    public function testGetWikitextFromMdwikiApiWithValidTitle()
+    {
+        $title = 'Aspirin';
+        [$wikitext, $revid] = getWikitextFromMdwikiApi($title);
+
+        // Should return non-empty wikitext and revision ID
+        $this->assertNotEmpty($revid);
+        $this->assertNotEmpty($wikitext);
+        $this->assertIsString($wikitext);
+        $this->assertIsNumeric($revid);
+    }
+
+    public function testGetWikitextFromMdwikiRestApiWithValidTitle()
+    {
+        $title = 'Diabetes';
+        [$wikitext, $revid] = getWikitextFromMdwikiRestApi($title);
+
+        $this->assertNotEmpty($revid);
+        $this->assertNotEmpty($wikitext);
+        $this->assertIsString($wikitext);
     }
 }
