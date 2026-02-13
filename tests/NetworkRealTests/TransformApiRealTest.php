@@ -4,7 +4,7 @@ namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\Services\Api\convert_wikitext_to_html;
+use function MDWiki\NewHtml\Services\Api\convertWikitextToHtml;
 
 
 class TransformApiRealTest extends bootstrap
@@ -32,7 +32,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Simple paragraph.";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -44,7 +44,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "'''Bold text'''";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -56,7 +56,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "''Italic text''";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -68,7 +68,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "[[Article]]";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -80,7 +80,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "==Heading==\nContent";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -92,7 +92,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "{{cite web|url=http://example.com|title=Example}}";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertTrue(isset($result['result']) || isset($result['error']));
@@ -102,7 +102,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         // Empty wikitext might return error or empty result
@@ -113,7 +113,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Test content";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
     }
@@ -122,7 +122,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "* Item 1\n* Item 2\n* Item 3";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -134,7 +134,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "# First\n# Second\n# Third";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -146,7 +146,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Text with citation.<ref>Reference content</ref>";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -158,7 +158,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Content";
         $title = "Test/Subpage";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         // Should handle slashes in title
@@ -169,7 +169,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "==Section==\n'''Bold''' and ''italic''.\n* List item\n[[Link]]";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -182,7 +182,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Simple text";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -194,7 +194,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Text with unicode: ñ, é, ü, 中文";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -206,7 +206,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "{|\n|Cell 1||Cell 2\n|-\n|Cell 3||Cell 4\n|}";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -218,7 +218,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "[http://example.com Example]";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -230,7 +230,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Content [[Category:Test]]";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -242,7 +242,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "[[File:Example.jpg|thumb|Caption]]";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertTrue(isset($result['result']) || isset($result['error']));
@@ -252,7 +252,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Paragraph 1\n\nParagraph 2\n\nParagraph 3";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -264,7 +264,7 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Test";
         $title = "Test";
-        $result = convert_wikitext_to_html($wikitext, $title);
+        $result = convertWikitextToHtml($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {

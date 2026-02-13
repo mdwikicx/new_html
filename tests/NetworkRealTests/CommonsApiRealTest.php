@@ -39,8 +39,8 @@ class CommonsApiRealTest extends bootstrap
         }
 
         // Test with a well-known Commons image that should exist
-        $result = check_commons_image_exists('AwareLogo.png');
-        $this->assertTrue($result, 'AwareLogo.png should exist on Commons');
+        $result = check_commons_image_exists('Logo.png');
+        $this->assertTrue($result, 'Logo.png should exist on Commons');
     }
 
     /**

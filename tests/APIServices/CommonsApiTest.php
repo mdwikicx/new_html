@@ -13,7 +13,6 @@ class CommonsApiTest extends bootstrap
      */
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
         // Check if commons.wikimedia.org is accessible
         if (!$this->isCommonsAvailable()) {
             $this->markTestSkipped('MDWiki API unavailable - skipping tests');
@@ -39,8 +38,8 @@ class CommonsApiTest extends bootstrap
         }
 
         // Test with a well-known Commons image that should exist
-        $result = check_commons_image_exists('AwareLogo.png');
-        $this->assertTrue($result, 'AwareLogo.png should exist on Commons');
+        $result = check_commons_image_exists('Logo.png');
+        $this->assertTrue($result, 'Logo.png should exist on Commons');
     }
 
     /**

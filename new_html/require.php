@@ -21,7 +21,7 @@ require_once $src_path . "/bootstrap.php";
 require_once $src_path . "/Application/Controllers/JsonDataController.php";
 require_once $src_path . "/Application/Handlers/WikitextHandler.php";
 require_once $src_path . "/Domain/Fixes/Media/FixImagesFixture.php";
-require_once $src_path . "/Domain/Fixes/Media/RemoveMissingImagesFixture.php";
+require_once $src_path . "/Domain/Fixes/Media/RemoveMissingImagesService.php";
 require_once $src_path . "/Domain/Fixes/References/DeleteEmptyRefsFixture.php";
 require_once $src_path . "/Domain/Fixes/References/ExpandRefsFixture.php";
 require_once $src_path . "/Domain/Fixes/References/RefWorkerFixture.php";
@@ -40,11 +40,15 @@ require_once $src_path . "/Infrastructure/Debug/PrintHelper.php";
 require_once $src_path . "/Infrastructure/Utils/FileUtils.php";
 require_once $src_path . "/Infrastructure/Utils/HtmlUtils.php";
 
+// --- new
 require_once $src_path . "/Services/Interfaces/HttpClientInterface.php";
+require_once $src_path . "/Services/Interfaces/CommonsImageServiceInterface.php";
 
+require_once $src_path . "/Services/Api/CommonsImageService.php";
 require_once $src_path . "/Services/Api/HttpClientService.php";
-require_once $src_path . "/Services/Api/CommonsApiService.php";
-require_once $src_path . "/Services/Api/HttpClient.php";
+
+// ---------------------
+// require_once $src_path . "/Services/Api/CommonsApiService.php";
 require_once $src_path . "/Services/Api/MdwikiApiService.php";
 require_once $src_path . "/Services/Api/SegmentApiService.php";
 require_once $src_path . "/Services/Api/TransformApiService.php";

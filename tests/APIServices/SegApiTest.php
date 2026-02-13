@@ -11,7 +11,6 @@ class SegApiTest extends bootstrap
 {
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
         // Check if the segmentation API is available
         if (!$this->isSegApiAvailable()) {
             $this->markTestSkipped('Segmentation API unavailable - skipping tests');

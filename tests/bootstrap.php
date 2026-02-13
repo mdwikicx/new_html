@@ -27,4 +27,16 @@ class bootstrap extends TestCase
             "Input:\n" . $input . "\n\nExpected:\n" . $expected . "\n\nGot:\n" . $result
         );
     }
+    public function assertEqualCompareRemoveNewLines(string $expected, string $input, string $result)
+    {
+        $expected = str_replace("\n", "", $expected);
+        $input = str_replace("\n", "", $input);
+        $result = str_replace("\n", "", $result);
+
+        $this->assertEquals(
+            $expected,
+            $result,
+            "Input:\n" . $input . "\n\nExpected:\n" . $expected . "\n\nGot:\n" . $result
+        );
+    }
 }

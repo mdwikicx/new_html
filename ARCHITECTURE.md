@@ -17,7 +17,7 @@ src/
 ├── Services/                # Service layer (business operations)
 │   ├── Api/                # External API integrations
 │   │   ├── CommonsApiService.php
-│   │   ├── HttpClient.php
+│   │   ├── HttpClientService.php
 │   │   ├── MdwikiApiService.php
 │   │   ├── SegmentApiService.php
 │   │   └── TransformApiService.php
@@ -48,7 +48,7 @@ src/
 │       │
 │       ├── Media/          # Media-related fixes
 │       │   ├── FixImagesFixture.php
-│       │   └── RemoveMissingImagesFixture.php
+│       │   └── RemoveMissingImagesService.php
 │       │
 │       └── Structure/      # Structural fixes
 │           ├── FixCategoriesFixture.php

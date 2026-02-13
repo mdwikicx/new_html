@@ -18,7 +18,7 @@ use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
+use function MDWiki\NewHtml\Domain\Fixes\Media\removeMissingImages;
 
 /**
  * Fix wikitext by removing unwanted templates, refs, and other elements
@@ -46,7 +46,7 @@ function fix_wikitext(string $text, string $title): string
 
     $text = remove_categories($text);
 
-    $text = remove_missing_images($text);
+    $text = removeMissingImages($text);
 
     $text = add_missing_title($text, $title);
 

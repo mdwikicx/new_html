@@ -82,7 +82,7 @@ src/
 ├── Services/                     # Service layer (business operations)
 │   ├── Api/                      [api_services/]
 │   │   ├── CommonsApiService.php         [commons_api.php]
-│   │   ├── HttpClient.php                [post.php]
+│   │   ├── HttpClientService.php                [post.php]
 │   │   ├── MdwikiApiService.php          [mdwiki_api_wikitext.php]
 │   │   ├── SegmentApiService.php         [seg_api.php]
 │   │   └── TransformApiService.php       [transform_api.php]
@@ -114,7 +114,7 @@ src/
 │       │
 │       ├── Media/
 │       │   ├── FixImagesFixture.php          [fix_images.php]
-│       │   └── RemoveMissingImagesFixture.php [remove_missing_images.php]
+│       │   └── RemoveMissingImagesService.php [remove_missing_images.php]
 │       │
 │       └── Structure/
 │           ├── FixCategoriesFixture.php      [fix_cats.php]
@@ -205,7 +205,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 #### 3.4: Fixes Migration (Media)
 - [ ] Migrate `WikiTextFixes/fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
-- [ ] Migrate `WikiTextFixes/remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
+- [ ] Migrate `WikiTextFixes/remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesService.php`
 - [ ] Update namespaces and imports
 - [ ] Run media tests
 
@@ -219,7 +219,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 **Goal:** Move business operations and API integrations
 
 #### 4.1: API Services
-- [ ] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
+- [ ] Migrate `api_services/post.php` → `Services/Api/HttpClientService.php`
 - [ ] Migrate `api_services/commons_api.php` → `Services/Api/CommonsApiService.php`
 - [ ] Migrate `api_services/mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
 - [ ] Migrate `post_mdwiki.php` → `Services/Api/MdwikiApiService.php`
@@ -404,7 +404,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 - [ ] **Media Fixes**
   - [ ] Migrate `fix_images.php` → `Domain/Fixes/Media/FixImagesFixture.php`
-  - [ ] Migrate `remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesFixture.php`
+  - [ ] Migrate `remove_missing_images.php` → `Domain/Fixes/Media/RemoveMissingImagesService.php`
   - [ ] Update namespaces
   - [ ] Update all imports
   - [ ] Run `tests/RemoveMissingImagesTest.php`
@@ -423,11 +423,11 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 ### Phase 5: Service Layer - API (Day 8-9)
 - [ ] **HTTP Client**
-  - [ ] Migrate `api_services/post.php` → `Services/Api/HttpClient.php`
+  - [ ] Migrate `api_services/post.php` → `Services/Api/HttpClientService.php`
   - [ ] Update namespace: `MDWiki\NewHtml\Services\Api`
   - [ ] Refactor to class-based approach
   - [ ] Update all imports
-  - [ ] Run `tests/APIServices/PostTest.php`
+  - [ ] Run `tests/APIServices/HttpClientServiceTest.php`
 
 - [ ] **Commons API**
   - [ ] Migrate `commons_api.php` → `Services/Api/CommonsApiService.php`

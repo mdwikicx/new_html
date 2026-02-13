@@ -4,7 +4,7 @@ You are a senior software architect. Refactor the codebase to follow Clean Archi
 Remove direct dependency from Domain layer on Services\Api layer by implementing Dependency Inversion Principle.
 
 **Current Issue:**
-- File: `src/Domain/Fixes/Media/RemoveMissingImagesFixture.php`
+- File: `src/Domain/Fixes/Media/RemoveMissingImagesService.php`
 - Uses: `use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;`
 - Violates: Domain should NOT depend on Services\Api
 
@@ -19,7 +19,7 @@ Remove direct dependency from Domain layer on Services\Api layer by implementing
    - Implements: `ImageValidatorInterface`
    - Wraps existing `check_commons_image_exists()` function
 
-3. Refactor `RemoveMissingImagesFixture`:
+3. Refactor `RemoveMissingImagesService`:
    - Inject `ImageValidatorInterface` via constructor
    - Replace function calls with interface method calls
 
