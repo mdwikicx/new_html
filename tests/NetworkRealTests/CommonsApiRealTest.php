@@ -37,10 +37,6 @@ class CommonsApiRealTest extends bootstrap
      */
     public function testCheckCommonsImageExists()
     {
-        if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
-        }
-
         // Test with a well-known Commons image that should exist
         $result = check_commons_image_exists('Logo.png');
         $this->assertTrue($result, 'Logo.png should exist on Commons');
@@ -51,10 +47,6 @@ class CommonsApiRealTest extends bootstrap
      */
     public function testCheckCommonsImageNotExists()
     {
-        if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
-        }
-
         // Test with an image that definitely doesn't exist
         $result = check_commons_image_exists('NonExistentImageFileNameThatDoesNotExist12345678901234567890.png');
         $this->assertFalse($result, 'Non-existent image should return false');
