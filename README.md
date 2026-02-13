@@ -90,7 +90,7 @@ Available wikitext transformation modules:
 
 ### Running Tests
 
-Run the complete test suite:
+Run the complete test suite (excludes network tests):
 ```bash
 composer test
 ```
@@ -104,6 +104,29 @@ Run specific test files:
 ```bash
 vendor/bin/phpunit tests/commons_api_test.php
 ```
+
+#### Network Tests
+
+Network tests are located in `tests/NetworkRealTests/` and test real API connections. They are **disabled by default** and require the `--network` flag to run:
+
+```bash
+# Run only network tests
+vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml --network
+
+# Run all tests including network tests
+vendor/bin/phpunit tests --testdox --colors=always -c phpunit.xml --network
+
+# Alternative: use environment variable
+RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testdox --colors=always -c phpunit.xml
+```
+
+**Available Network Tests:**
+- `CommonsApiRealTest` - Tests Wikimedia Commons API connectivity
+- `MdwikiApiRealTest` - Tests mdwiki.org REST API
+- `SegApiRealTest` - Tests HTML segmentation service
+- `TransformApiRealTest` - Tests Wikipedia wikitext transformation API
+
+Network tests automatically skip if external APIs are unreachable, making them safe to run even with intermittent connectivity.
 
 ### Static Analysis
 
