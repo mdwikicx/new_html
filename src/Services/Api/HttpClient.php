@@ -34,13 +34,13 @@ function handleUrlRequest(string $endPoint, string $method = 'GET', array $param
 {
     $ch = curl_init();
     $user_agent = defined('USER_AGENT') ? USER_AGENT : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
-    $printable_url = $endPoint;
+    $printableUrl = $endPoint;
     // POST with parameters should not have the parameters in the URL
     // GET with parameters should have the parameters in the URL
     if (!empty($params) && $method === 'GET') {
         $query_string = http_build_query($params);
-        $printable_url = strpos($printable_url, '?') === false ? "$printable_url?$query_string" : "$printable_url&$query_string";
-        $endPoint = $printable_url;
+        $printableUrl = strpos($printableUrl, '?') === false ? "$printableUrl?$query_string" : "$printableUrl&$query_string";
+        $endPoint = $printableUrl;
     }
 
     curl_setopt($ch, CURLOPT_URL, $endPoint);
@@ -56,7 +56,7 @@ function handleUrlRequest(string $endPoint, string $method = 'GET', array $param
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
-    test_print($printable_url);
+    test_print($printableUrl);
 
     $output = curl_exec($ch);
 
