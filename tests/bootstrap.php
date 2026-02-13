@@ -6,6 +6,23 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Check for --network flag in command line arguments
+$runNetworkTests = false;
+foreach ($argv ?? [] as $arg) {
+    if ($arg === '--network') {
+        $runNetworkTests = true;
+        break;
+    }
+}
+
+// Also check environment variable
+if (getenv('RUN_NETWORK_TESTS') === 'true') {
+    $runNetworkTests = true;
+}
+
+// Define constant for use in test classes
+define('RUN_NETWORK_TESTS', $runNetworkTests);
+
 $vendor_path = __DIR__ . '/../vendor/autoload.php';
 
 if (file_exists($vendor_path)) {

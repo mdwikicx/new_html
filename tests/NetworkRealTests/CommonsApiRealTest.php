@@ -13,10 +13,13 @@ class CommonsApiRealTest extends bootstrap
      */
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
+        // Skip network tests unless --network flag is provided
+        if (!RUN_NETWORK_TESTS) {
+            $this->markTestSkipped('Network tests disabled. Use --network flag to run them.');
+        }
         // Check if commons.wikimedia.org is accessible
         if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('MDWiki API unavailable - skipping tests');
+            $this->markTestSkipped('Commons API unavailable - skipping tests');
         }
     }
 

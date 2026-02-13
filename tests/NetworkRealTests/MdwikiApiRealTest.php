@@ -12,7 +12,10 @@ class MdwikiApiRealTest extends bootstrap
 {
     protected function setUp(): void
     {
-        $this->markTestSkipped('skipping newwork tests for now');
+        // Skip network tests unless --network flag is provided
+        if (!RUN_NETWORK_TESTS) {
+            $this->markTestSkipped('Network tests disabled. Use --network flag to run them.');
+        }
         // Check if mdwiki.org is accessible
         if (!$this->isMdwikiAvailable()) {
             $this->markTestSkipped('MDWiki API unavailable - skipping tests');
