@@ -3,56 +3,92 @@
 namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
-
-use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
+use MDWiki\NewHtml\Services\Api\CommonsImageService;
+use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 class CommonsApiTest extends bootstrap
 {
-    /**
-     * Check if we can reach the Wikimedia Commons API
-     */
+    private ?CommonsImageService $service;
+    private ?HttpClientInterface $mockHttpClient;
+
     protected function setUp(): void
     {
-        // Check if commons.wikimedia.org is accessible
-        if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('MDWiki API unavailable - skipping tests');
-        }
+        // Create a mock HTTP client
+        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $this->service = new CommonsImageService($this->mockHttpClient);
     }
 
-    private function isCommonsAvailable(): bool
-    {
-        $socket = @fsockopen('commons.wikimedia.org', 443, $errno, $errstr, 5);
-        if ($socket) {
-            fclose($socket);
-            return true;
-        }
-        return false;
-    }
     /**
-     * Test that check_commons_image_exists returns true for a known existing image
+     * Helper to create a successful API response (image exists)
+     *
+     * @param string $filename The filename
+     * @return string JSON encoded response
+     */
+    private function createImageExistsResponse(string $filename): string
+    {
+        return json_encode([
+            'query' => [
+                'pages' => [
+                    [
+                        'pageid' => 12345,
+                        'ns' => 6,
+                        'title' => 'File:' . $filename
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Helper to create a response for missing image
+     *
+     * @param string $filename The filename
+     * @return string JSON encoded response
+     */
+    private function createImageMissingResponse(string $filename): string
+    {
+        return json_encode([
+            'query' => [
+                'pages' => [
+                    [
+                        'ns' => 6,
+                        'title' => 'File:' . $filename,
+                        'missing' => ''
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Test that imageExists returns true for a known existing image
      */
     public function testCheckCommonsImageExists()
     {
-        if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
-        }
+        $filename = 'Logo.png';
 
-        // Test with a well-known Commons image that should exist
-        $result = check_commons_image_exists('Logo.png');
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createImageExistsResponse($filename));
+
+        $result = $this->service->imageExists($filename);
+
         $this->assertTrue($result, 'Logo.png should exist on Commons');
     }
 
     /**
-     * Test that check_commons_image_exists returns false for non-existent image
+     * Test that imageExists returns false for non-existent image
      */
     public function testCheckCommonsImageNotExists()
     {
-        if (!$this->isCommonsAvailable()) {
-            $this->markTestSkipped('Cannot reach Wikimedia Commons API');
-        }
+        $filename = 'NonExistentImageFileNameThatDoesNotExist12345678901234567890.png';
 
-        // Test with an image that definitely doesn't exist
-        $result = check_commons_image_exists('NonExistentImageFileNameThatDoesNotExist12345678901234567890.png');
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createImageMissingResponse($filename));
+
+        $result = $this->service->imageExists($filename);
+
         $this->assertFalse($result, 'Non-existent image should return false');
     }
 
@@ -61,7 +97,102 @@ class CommonsApiTest extends bootstrap
      */
     public function testCheckCommonsImageEmptyFilename()
     {
-        $this->assertFalse(check_commons_image_exists(''));
-        $this->assertFalse(check_commons_image_exists('   '));
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn('');
+
+        $this->assertFalse($this->service->imageExists(''));
+        $this->assertFalse($this->service->imageExists('   '));
+    }
+
+    /**
+     * Test that imageExists handles File: prefix
+     */
+    public function testCheckCommonsImageWithFilePrefix()
+    {
+        $filename = 'Logo.png';
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createImageExistsResponse($filename));
+
+        // Should handle File: prefix
+        $result = $this->service->imageExists('File:' . $filename);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test that imageExists handles Image: prefix
+     */
+    public function testCheckCommonsImageWithImagePrefix()
+    {
+        $filename = 'Logo.png';
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createImageExistsResponse($filename));
+
+        // Should handle Image: prefix
+        $result = $this->service->imageExists('Image:' . $filename);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test that imageExists handles API failure gracefully
+     */
+    public function testCheckCommonsImageHandlesApiFailure()
+    {
+        $filename = 'Logo.png';
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn(''); // Empty response simulates API failure
+
+        // On API failure, should return true (assumes exists)
+        $result = $this->service->imageExists($filename);
+
+        $this->assertTrue($result, 'Should return true on API failure');
+    }
+
+    /**
+     * Test that imageExists sends correct API parameters
+     */
+    public function testCheckCommonsImageSendsCorrectParameters()
+    {
+        $filename = 'Logo.png';
+
+        $this->mockHttpClient
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->stringContains('commons.wikimedia.org/w/api.php'),
+                $this->equalTo('GET'),
+                $this->callback(function ($params) use ($filename) {
+                    return $params['action'] === 'query'
+                        && $params['titles'] === 'File:' . $filename
+                        && $params['format'] === 'json';
+                })
+            )
+            ->willReturn($this->createImageExistsResponse($filename));
+
+        $this->service->imageExists($filename);
+    }
+
+    /**
+     * Test that imageExists handles whitespace in filename
+     */
+    public function testCheckCommonsImageHandlesWhitespace()
+    {
+        $filename = 'Logo.png';
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn($this->createImageExistsResponse($filename));
+
+        $result = $this->service->imageExists('  ' . $filename . '  ');
+
+        $this->assertTrue($result);
     }
 }
