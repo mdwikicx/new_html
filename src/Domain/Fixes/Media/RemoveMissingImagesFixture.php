@@ -25,44 +25,6 @@ use function MDWiki\NewHtml\Domain\Parser\getTemplates;
  * @return string The processed wikitext
  */
 
-function remove_missing_infobox_images_regex(string $text): string
-{
-    $service = new CommonsImageService();
-
-    // Also handle non-template infobox parameters using regex
-    // This handles cases where infobox fields are not wrapped in a template
-    $pattern = '/^\s*\|(\s*image\d*\s*)=([^\n]*)/m';
-
-    // Collect fields to remove
-    $fieldsToRemove = [];
-
-    preg_replace_callback($pattern, function ($matches) use (&$fieldsToRemove, $service) {
-        $fullMatch = $matches[0];
-        $fieldName = trim($matches[1]);
-        $filename = trim($matches[2]);
-
-        // If empty or doesn't exist, mark for removal
-        if (empty($filename) || !$service->imageExists($filename)) {
-            // Add both image and caption fields to removal list
-            $fieldsToRemove[] = $fieldName;
-
-            // The caption field would be like caption or caption2
-            $number = preg_replace('/^image(\d*)$/i', '$1', $fieldName);
-            $captionFieldName = 'caption' . $number;
-            $fieldsToRemove[] = $captionFieldName;
-        }
-
-        return $fullMatch;
-    }, $text);
-
-    // Remove the marked fields
-    foreach ($fieldsToRemove as $field) {
-        $fieldPattern = '/^\s*\|\s*' . preg_quote($field, '/') . '\s*=[^\n]*\n?/m';
-        $text = preg_replace($fieldPattern, '', $text);
-    }
-    return $text;
-}
-
 function remove_missing_infobox_images(string $text): string
 {
     $service = new CommonsImageService();
@@ -107,6 +69,44 @@ function remove_missing_infobox_images(string $text): string
 
     $text = remove_missing_infobox_images_regex($text);
 
+    return $text;
+}
+
+function remove_missing_infobox_images_regex(string $text): string
+{
+    $service = new CommonsImageService();
+
+    // Also handle non-template infobox parameters using regex
+    // This handles cases where infobox fields are not wrapped in a template
+    $pattern = '/^\s*\|(\s*image\d*\s*)=([^\n]*)/m';
+
+    // Collect fields to remove
+    $fieldsToRemove = [];
+
+    preg_replace_callback($pattern, function ($matches) use (&$fieldsToRemove, $service) {
+        $fullMatch = $matches[0];
+        $fieldName = trim($matches[1]);
+        $filename = trim($matches[2]);
+
+        // If empty or doesn't exist, mark for removal
+        if (empty($filename) || !$service->imageExists($filename)) {
+            // Add both image and caption fields to removal list
+            $fieldsToRemove[] = $fieldName;
+
+            // The caption field would be like caption or caption2
+            $number = preg_replace('/^image(\d*)$/i', '$1', $fieldName);
+            $captionFieldName = 'caption' . $number;
+            $fieldsToRemove[] = $captionFieldName;
+        }
+
+        return $fullMatch;
+    }, $text);
+
+    // Remove the marked fields
+    foreach ($fieldsToRemove as $field) {
+        $fieldPattern = '/^\s*\|\s*' . preg_quote($field, '/') . '\s*=[^\n]*\n?/m';
+        $text = preg_replace($fieldPattern, '', $text);
+    }
     return $text;
 }
 
