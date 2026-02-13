@@ -25,7 +25,7 @@ use function MDWiki\NewHtml\Domain\Parser\getTemplates;
  * @return string The processed wikitext
  */
 
-function remove_missing_infobox_images(string $text): string
+function removeMissingInfoboxImages(string $text): string
 {
     $service = new CommonsImageService();
 
@@ -117,7 +117,7 @@ function remove_missing_infobox_images_regex(string $text): string
  * @param string $text The wikitext to process
  * @return string The processed wikitext
  */
-function remove_missing_inline_images(string $text): string
+function removeMissingInlineImages(string $text): string
 {
     $service = new CommonsImageService();
 
@@ -178,9 +178,9 @@ function remove_missing_inline_images(string $text): string
  * @param string $text The wikitext to process
  * @return string The processed wikitext with missing images removed
  */
-function remove_missing_images(string $text): string
+function removeMissingImages(string $text): string
 {
-    $text = remove_missing_infobox_images($text);
-    $text = remove_missing_inline_images($text);
+    $text = removeMissingInfoboxImages($text);
+    $text = removeMissingInlineImages($text);
     return $text;
 }

@@ -3,9 +3,9 @@
 namespace FixRefs\Tests;
 
 use FixRefs\Tests\bootstrap;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_infobox_images;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_inline_images;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_missing_images;
+use function MDWiki\NewHtml\Domain\Fixes\Media\removeMissingInfoboxImages;
+use function MDWiki\NewHtml\Domain\Fixes\Media\removeMissingInlineImages;
+use function MDWiki\NewHtml\Domain\Fixes\Media\removeMissingImages;
 
 class RemoveMissingImagesTest extends bootstrap
 {
@@ -17,7 +17,7 @@ class RemoveMissingImagesTest extends bootstrap
     {
         $input = "|name ={{PAGENAME}}\n|image =AwareLogo.png\n|caption =This is a valid image\n|specialty =[[Orthopedics]]";
 
-        $result = remove_missing_infobox_images($input);
+        $result = removeMissingInfoboxImages($input);
 
         // Should not change since AwareLogo.png exists
         $this->assertEquals($input, $result);
@@ -33,7 +33,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "|name ={{PAGENAME}}\n|specialty =[[Orthopedics]]";
 
-        $result = remove_missing_infobox_images($input);
+        $result = removeMissingInfoboxImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
     }
@@ -47,7 +47,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "|name ={{PAGENAME}}\n|specialty =[[Orthopedics]]";
 
-        $result = remove_missing_infobox_images($input);
+        $result = removeMissingInfoboxImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
     }
@@ -62,7 +62,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "|name ={{PAGENAME}}\n|image =AwareLogo.png\n|caption =Valid caption\n|specialty =[[Orthopedics]]";
 
-        $result = remove_missing_infobox_images($input);
+        $result = removeMissingInfoboxImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
     }
@@ -75,7 +75,7 @@ class RemoveMissingImagesTest extends bootstrap
     {
         $input = "This is some text with an image:\n[[File:AwareLogo.png|thumb|A valid image caption]]\nMore text here.";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEquals($input, $result);
     }
@@ -90,7 +90,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "This is some text with an image:\n\nMore text here.";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
     }
@@ -105,7 +105,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "Start of article.\n[[File:AwareLogo.png|thumb|Keep this image]]\nSome middle text.\n\nEnd of article.";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
     }
@@ -120,7 +120,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
     }
@@ -135,7 +135,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
     }
@@ -148,7 +148,7 @@ class RemoveMissingImagesTest extends bootstrap
     {
         $input = "[[Image:AwareLogo.png|thumb|Old style but valid]]";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEquals($input, $result);
     }
@@ -163,12 +163,12 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "{{Infobox disease|name={{PAGENAME}}|specialty=[[Orthopedics]]}}This article discusses the condition.[[File:Gallstones.png|thumb|right|A valid inline image]]More information here.End of article.";
 
-        $result = remove_missing_images($input);
+        $result = removeMissingImages($input);
 
         $this->assertEqualCompare($expected, $input, $result);
 
-        // assert dosnt contain [[File:Gallstones.png|thumb|right|A valid inline image]]
-        $this->assertStringNotContainsString('[[File:Gallstones.png|thumb|right|A valid inline image]]', $result);
+        // assert contains [[File:Gallstones.png|thumb|right|A valid inline image]]
+        $this->assertStringContainsString('[[File:Gallstones.png|thumb|right|A valid inline image]]', $result);
         $this->assertStringNotContainsString('Non_existent_infobox_xyz222.png', $result);
     }
 
@@ -179,7 +179,7 @@ class RemoveMissingImagesTest extends bootstrap
     {
         $input = "|name ={{PAGENAME}}\n|synonym =\n|specialty =[[Orthopedics]]\n\nThis is just plain text without any images.";
 
-        $result = remove_missing_images($input);
+        $result = removeMissingImages($input);
 
         $this->assertEquals($input, $result);
     }
@@ -193,7 +193,7 @@ class RemoveMissingImagesTest extends bootstrap
     {
         $input = "[[File:AwareLogo.png|thumb|upright=1.3|Logo of the [[WHO]] Aware [[Classification]]]]";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEquals($result, "");
     }
@@ -201,7 +201,7 @@ class RemoveMissingImagesTest extends bootstrap
     {
         $input = "[[File:Gallstones.png|thumb|upright=1.3|Gallstones typically form in the [[gallbladder]] and may result in symptoms if they block the biliary system.]]";
 
-        $result = remove_missing_inline_images($input);
+        $result = removeMissingInlineImages($input);
 
         $this->assertEquals($input, $result);
     }
