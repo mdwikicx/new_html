@@ -77,7 +77,7 @@ class SegmentApiService
  * @param string $text The HTML text to convert to segments
  * @return array<string, string> Array with 'result' key on success or 'error' key on failure
  */
-function change_html_to_seg(string $text): array
+function changeHtmlToSeg(string $text): array
 {
     $service = new SegmentApiService();
     return $service->changeHtmlToSeg($text);
