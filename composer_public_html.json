@@ -12,7 +12,7 @@
     },
     "autoload": {},
     "scripts": {
-        "test": "vendor/bin/phpunit tests  -c phpunit.xml",
+        "test": "vendor/bin/phpunit tests",
         "phpstan": "vendor/bin/phpstan analyse --memory-limit=256M"
     },
     "config": {
