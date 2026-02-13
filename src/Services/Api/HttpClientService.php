@@ -16,28 +16,18 @@ use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 class HttpClientService implements HttpClientInterface
 {
     /**
-     * Send an HTTP request to the specified endpoint
+     * Handle a raw HTTP request using cURL
      *
-     * @param string $endPoint The API endpoint URL
-     * @param string $method The HTTP method to use ('GET' or 'POST')
-     * @param array<string, mixed> $params Optional parameters to send with the request
-     * @return string The response body, or empty string on failure
+     * @param string $endPoint
+     * @param string $method
+     * @param array $params
+     * @return array{error: string, httpCode: mixed, response: bool|string}
      */
-    public function request(string $endPoint, string $method = 'GET', array $params = []): string
-    {
-        return $this->handleUrlRequest($endPoint, $method, $params);
-    }
-
-    /**
-     * Handle URL requests with support for GET and POST methods
-     *
-     * @param string $endPoint The API endpoint URL
-     * @param string $method The HTTP method to use ('GET' or 'POST')
-     * @param array<string, mixed> $params Optional parameters to send with the request
-     * @return string The response body, or empty string on failure
-     */
-    private function handleUrlRequest(string $endPoint, string $method = 'GET', array $params = []): string
-    {
+    public function handleRawRequest(
+        string $endPoint,
+        string $method = 'GET',
+        array $params = [],
+    ): array {
         $ch = curl_init();
         $user_agent = defined('USER_AGENT') ? USER_AGENT : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
 
@@ -63,27 +53,49 @@ class HttpClientService implements HttpClientInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
         curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-
-        test_print($printableUrl);
 
         $output = curl_exec($ch);
 
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        return [
+            'printableUrl' => $printableUrl,
+            'httpCode' => $httpCode,
+            'response' => $output,
+            'error' => curl_error($ch)
+        ];
+    }
+    /**
+     * Handle URL requests with support for GET and POST methods
+     *
+     * @param string $endPoint The API endpoint URL
+     * @param string $method The HTTP method to use ('GET' or 'POST')
+     * @param array<string, mixed> $params Optional parameters to send with the request
+     * @return string The response body, or empty string on failure
+     */
+    public function request(string $endPoint, string $method = 'GET', array $params = []): string
+    {
+        $rawResponse = $this->handleRawRequest($endPoint, $method, $params);
+
+        $printableUrl = $rawResponse['printableUrl'];
+        $httpCode = $rawResponse['httpCode'];
+        $output = $rawResponse['response'];
+        $error = $rawResponse['error'];
+
+        test_print($printableUrl);
+
         if ($output === false) {
-            test_print("endPoint: ($endPoint), cURL Error: " . curl_error($ch));
-            curl_close($ch);
+            test_print("endPoint: ($endPoint), cURL Error: " . $error);
             return '';
         }
 
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($httpCode !== 200) {
             test_print("API returned HTTP $httpCode: $httpCode");
             test_print(var_export($output, true));
             $output = '';
         }
-
-        curl_close($ch);
 
         return $output;
     }
