@@ -70,7 +70,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createApiResponse($wikitext, $revid));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiApi($title);
 
         $this->assertEquals($wikitext, $resultWikitext);
         $this->assertEquals($revid, $resultRevid);
@@ -84,7 +84,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn(json_encode(['query' => ['pages' => [[]]]]));
 
-        [$wikitext, $revid] = $this->service->getWikitextFromApi($title);
+        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiApi($title);
 
         // Should return empty strings for nonexistent article
         $this->assertEquals('', $wikitext);
@@ -99,7 +99,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createApiResponse('Content', '12345'));
 
-        $result = $this->service->getWikitextFromApi($title);
+        $result = $this->service->getWikitextFromMdwikiApi($title);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -159,7 +159,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiApi($title);
 
         // Should handle special characters
         $this->assertIsString($resultWikitext);
@@ -220,7 +220,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
+        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiApi($title);
 
         // Wikitext should contain typical wiki markup
         $this->assertIsString($resultWikitext);
@@ -250,7 +250,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createApiResponse('', ''));
 
-        [$wikitext, $revid] = $this->service->getWikitextFromApi($title);
+        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiApi($title);
 
         // Should handle empty title gracefully
         $this->assertIsString($wikitext);
@@ -280,7 +280,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createApiResponse('Content', $revid));
 
-        [$wikitext, $resultRevid] = $this->service->getWikitextFromApi($title);
+        [$wikitext, $resultRevid] = $this->service->getWikitextFromMdwikiApi($title);
 
         // Revision ID should be numeric
         $this->assertMatchesRegularExpression('/^\d+$/', (string)$resultRevid);
@@ -311,8 +311,8 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createApiResponse($wikitext, $revid));
 
-        [$wikitext1, $revid1] = $this->service->getWikitextFromApi($title);
-        [$wikitext2, $revid2] = $this->service->getWikitextFromApi($title);
+        [$wikitext1, $revid1] = $this->service->getWikitextFromMdwikiApi($title);
+        [$wikitext2, $revid2] = $this->service->getWikitextFromMdwikiApi($title);
 
         // Same title should return same revision
         $this->assertEquals($revid1, $revid2);
@@ -356,7 +356,7 @@ class MdwikiApiTest extends bootstrap
                 return $this->createRestApiResponse($wikitext, $revid);
             });
 
-        [$wikitext1, $revid1] = $this->service->getWikitextFromApi($title);
+        [$wikitext1, $revid1] = $this->service->getWikitextFromMdwikiApi($title);
         [$wikitext2, $revid2] = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Both APIs should return the same content
@@ -372,7 +372,7 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn('');
 
-        [$wikitext, $revid] = $this->service->getWikitextFromApi($title);
+        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiApi($title);
 
         // Should return empty strings when API fails
         $this->assertEquals('', $wikitext);

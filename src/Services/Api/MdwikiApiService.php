@@ -50,7 +50,7 @@ class MdwikiApiService
      * @param string $title The title of the page to fetch
      * @return array{0: string, 1: string|int} Array containing [content, revision_id]
      */
-    public function getWikitextFromApi(string $title): array
+    public function getWikitextFromMdwikiApi(string $title): array
     {
         $params = [
             "action" => "query",
@@ -115,7 +115,7 @@ class MdwikiApiService
 function getWikitextFromMdwikiApi(string $title): array
 {
     $service = new MdwikiApiService();
-    return $service->getWikitextFromApi($title);
+    return $service->getWikitextFromMdwikiApi($title);
 }
 
 /**
