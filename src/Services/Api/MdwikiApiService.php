@@ -120,9 +120,9 @@ function get_wikitext_from_mdwiki_api(string $title): array
  */
 function get_wikitext_from_mdwiki_restapi(string $title): array
 {
-    $title2 = str_replace("/", "%2F", $title);
-    $title2 = str_replace(" ", "_", $title2);
-    $url = "https://mdwiki.org/w/rest.php/v1/page/" . $title2;
+    $titleEncoded = str_replace("/", "%2F", $title);
+    $titleEncoded = str_replace(" ", "_", $titleEncoded);
+    $url = "https://mdwiki.org/w/rest.php/v1/page/" . $titleEncoded;
 
     $req = handle_url_request_mdwiki($url, 'GET');
     $json1 = json_decode($req, true);
