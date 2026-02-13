@@ -92,6 +92,7 @@ function handleUrlRequest(string $endPoint, string $method = 'GET', array $param
     }
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
     curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
