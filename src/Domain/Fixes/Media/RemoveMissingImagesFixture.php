@@ -67,12 +67,12 @@ function removeMissingInfoboxImages(string $text): string
         }
     }
 
-    $text = remove_missing_infobox_images_regex($text);
+    $text = removeMissingInfoboxImagesRegex($text);
 
     return $text;
 }
 
-function remove_missing_infobox_images_regex(string $text): string
+function removeMissingInfoboxImagesRegex(string $text): string
 {
     $service = new CommonsImageService();
 
