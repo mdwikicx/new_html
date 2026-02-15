@@ -12,6 +12,7 @@ try {
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
     }
     $dotenv->load();
+    $dotenv->required('REVISIONS_DIR')->notEmpty();
 } catch (Exception $e) {
     // Handle exception if needed
     error_log('Failed to load environment variables: ' . $e->getMessage());

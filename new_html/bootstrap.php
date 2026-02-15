@@ -37,9 +37,12 @@ if (defined('DEBUGX') && DEBUGX === true) {
 $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
 
 if (!defined('REVISIONS_PATH')) {
-    $rev_path = getenv('REVISIONS_DIR') ? getenv('REVISIONS_DIR') : (
-        $home ? $home . '/public_html/revisions_new1' : dirname(__DIR__) . '/revisions_new1'
-    );
+    $env_value = getenv('REVISIONS_DIR') ?: $_SERVER['REVISIONS_DIR'];
+    if ($env_value) {
+        $rev_path = $env_value;
+    } else {
+        $rev_path = $home ? $home . '/public_html/revisions_new1' : dirname(__DIR__) . '/revisions_new1';
+    }
     define('REVISIONS_PATH', $rev_path);
 }
 
