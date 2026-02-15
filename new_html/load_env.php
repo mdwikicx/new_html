@@ -7,11 +7,13 @@ $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
 $homeEnv = $home . '/.env';
 try {
     if (!empty($home) && file_exists($homeEnv)) {
-        Dotenv::createImmutable($home)->load();
+        $dotenv = Dotenv::createImmutable($home);
     } else {
-        Dotenv::createImmutable(dirname(__DIR__))->load();
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
     }
+    $dotenv->load();
 } catch (Exception $e) {
     // Handle exception if needed
     error_log('Failed to load environment variables: ' . $e->getMessage());
+    // echo 'Failed to load environment variables. Please check the logs for details.';
 }
