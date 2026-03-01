@@ -10,8 +10,44 @@
         "phpunit/phpunit": "^9.6",
         "phpstan/phpstan": "^1.10"
     },
-    "autoload": {},
-    "autoload-dev": {},
+    "autoload": {
+        "psr-4": {
+            "MDWiki\\NewHtml\\": "src/"
+        },
+        "files": [
+            "src/Domain/Parser/CategoryParser.php",
+            "src/Domain/Parser/CitationsParser.php",
+            "src/Domain/Parser/LeadSectionParser.php",
+            "src/Domain/Parser/ParserTemplates.php",
+            "src/Domain/Fixes/References/DeleteEmptyRefsFixture.php",
+            "src/Domain/Fixes/References/ExpandRefsFixture.php",
+            "src/Domain/Fixes/References/RefWorkerFixture.php",
+            "src/Domain/Fixes/Structure/FixCategoriesFixture.php",
+            "src/Domain/Fixes/Structure/FixLanguageLinksFixture.php",
+            "src/Domain/Fixes/Templates/DeleteTemplatesFixture.php",
+            "src/Domain/Fixes/Templates/FixTemplatesFixture.php",
+            "src/Domain/Fixes/Media/FixImagesFixture.php",
+            "src/Domain/Fixes/Media/RemoveMissingImagesService.php",
+            "src/Infrastructure/Debug/PrintHelper.php",
+            "src/Infrastructure/Utils/FileUtils.php",
+            "src/Infrastructure/Utils/HtmlUtils.php",
+            "src/Application/Controllers/JsonDataController.php",
+            "src/Application/Handlers/WikitextHandler.php",
+            "src/Services/Api/CommonsImageService.php",
+            "src/Services/Api/HttpClientService.php",
+            "src/Services/Api/MdwikiApiService.php",
+            "src/Services/Api/SegmentApiService.php",
+            "src/Services/Api/TransformApiService.php",
+            "src/Services/Html/HtmlToSegmentsService.php",
+            "src/Services/Html/WikitextToHtmlService.php",
+            "src/Services/Wikitext/WikitextFixerService.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MDWiki\\NewHtml\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
         "test": "vendor/bin/phpunit tests",
         "phpstan": "vendor/bin/phpstan analyse --memory-limit=256M"
