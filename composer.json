@@ -15,6 +15,8 @@
             "MDWiki\\NewHtml\\": "src/"
         },
         "files": [
+            "new_html/utils.php",
+            "src/bootstrap.php",
             "src/Domain/Parser/CategoryParser.php",
             "src/Domain/Parser/CitationsParser.php",
             "src/Domain/Parser/LeadSectionParser.php",

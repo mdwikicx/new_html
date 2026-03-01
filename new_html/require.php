@@ -3,23 +3,15 @@
 /**
  * Source file loader for MDWiki NewHtml application
  *
- * This file uses PSR-4 autoloading via Composer for all MDWiki\NewHtml
- * namespaced classes and functions. Manual requires are only needed
- * for files outside the autoloaded namespace.
+ * This file is maintained for backward compatibility.
+ * All source files are now loaded via PSR-4 autoloading configured in composer.json:
+ * - Classes: Autoloaded when first used via "use" statements  
+ * - Functions: Loaded via "files" autoload in composer.json
+ * - Utils and bootstrap: Also loaded via "files" autoload
  *
  * @package MDWiki\NewHtml
+ * @deprecated Use Composer autoloading directly via vendor/autoload.php
  */
 
-// Load utils.php which has a different namespace (MDWiki\NewHtmlMain\Utils)
-require_once __DIR__ . "/utils.php";
-
-// Load the src/bootstrap.php for application constants
-$src_path = __DIR__ . '/src/';
-if (!is_dir($src_path)) {
-    $src_path = __DIR__ . '/../src/';
-}
-require_once $src_path . "/bootstrap.php";
-
-// All other files are loaded via PSR-4 autoloading configured in composer.json
-// Classes: Autoloaded when first used via "use" statements
-// Functions: Loaded via "files" autoload in composer.json
+// This file intentionally left minimal.
+// All loading is handled by Composer's PSR-4 autoloader.
