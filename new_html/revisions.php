@@ -15,8 +15,6 @@ declare(strict_types=1);
 <html lang="en">
 
 <?php
-
-declare(strict_types=1);
 define('DEBUGX', true); // Set APP_DEBUG=1 in development
 
 if (defined('DEBUGX') && DEBUGX === true) {
