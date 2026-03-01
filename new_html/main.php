@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Main API endpoint for processing MDWiki page content
  *

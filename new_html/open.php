@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * File viewer for generated content
  *

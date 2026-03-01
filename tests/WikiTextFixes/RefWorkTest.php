@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FixRefs\Tests\WikiTextFixes;
 
 use FixRefs\Tests\bootstrap;

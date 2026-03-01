@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * JSON data storage for title-revision mappings
  *

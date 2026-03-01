@@ -18,6 +18,8 @@
 </head>
 
 <?php
+
+declare(strict_types=1);
 /**
  * Wikitext fixing test page
  *

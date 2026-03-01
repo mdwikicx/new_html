@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * HTTP Client Interface for API requests
  *

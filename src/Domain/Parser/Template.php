@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * MediaWiki template parsing utilities
  *
@@ -90,11 +92,11 @@ class Template
     /**
      * Get a parameter value by key with optional default
      *
-     * @param string $key The parameter key
+     * @param string|int $key The parameter key
      * @param string $default The default value if key not found
      * @return string The parameter value or default
      */
-    public function getParameter(string $key, string $default = ""): string
+    public function getParameter(string|int $key, string $default = ""): string
     {
         return $this->parameters[$key] ?? $default;
     }

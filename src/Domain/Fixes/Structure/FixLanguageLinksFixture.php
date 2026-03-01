@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Language link removal utilities
  *
@@ -10,7 +12,14 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
-$lang_codes = [
+/**
+ * Get the list of valid Wikipedia language codes
+ *
+ * @return array<string> Array of language code strings
+ */
+function get_lang_codes(): array
+{
+    return [
     "aa",
     "ab",
     "ace",
@@ -329,7 +338,8 @@ $lang_codes = [
     "zh-min-nan",
     "zh-yue",
     "zu",
-];
+    ];
+}
 
 /**
  * Remove language links from wikitext
@@ -339,8 +349,7 @@ $lang_codes = [
  */
 function remove_lang_links(string $text): string
 {
-
-    global $lang_codes;
+    $lang_codes = get_lang_codes();
 
     // make patern like (ar|en|de)
     $langs = implode('|', $lang_codes);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FixRefs\Tests\Utils;
 
 use FixRefs\Tests\bootstrap;
