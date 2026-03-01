@@ -1,10 +1,18 @@
-# MDWiki NewHtml - Refactored Architecture
+# MDWiki NewHtml - Architecture
 
 ## Overview
 
-This project has been refactored to follow modern PHP architecture patterns with clear separation of concerns and PSR-4 autoloading.
+This project follows modern PHP 8.2+ architecture patterns with strict typing, PSR-4 autoloading, and clear separation of concerns.
 
-## New Directory Structure
+## Technical Standards
+
+- **PHP 8.2+** with `declare(strict_types=1)` in all files
+- **PSR-4 autoloading** via Composer for classes and interfaces
+- **Composer `files` autoloading** for namespaced standalone functions
+- **PHPUnit 9.6** for testing
+- **PHPStan** for static analysis
+
+## Directory Structure
 
 ```text
 src/
@@ -16,7 +24,7 @@ src/
 │
 ├── Services/                # Service layer (business operations)
 │   ├── Api/                # External API integrations
-│   │   ├── CommonsApiService.php
+│   │   ├── CommonsImageService.php
 │   │   ├── HttpClientService.php
 │   │   ├── MdwikiApiService.php
 │   │   ├── SegmentApiService.php
@@ -26,6 +34,10 @@ src/
 │   │   ├── HtmlToSegmentsService.php
 │   │   └── WikitextToHtmlService.php
 │   │
+│   ├── Interfaces/         # Service contracts
+│   │   ├── CommonsImageServiceInterface.php
+│   │   └── HttpClientInterface.php
+│   │
 │   └── Wikitext/           # Wikitext processing services
 │       └── WikitextFixerService.php
 │
@@ -34,190 +46,113 @@ src/
 │   │   ├── CategoryParser.php
 │   │   ├── CitationsParser.php
 │   │   ├── LeadSectionParser.php
-│   │   └── TemplateParser.php
+│   │   ├── ParserTemplate.php
+│   │   ├── ParserTemplates.php
+│   │   └── Template.php
 │   │
 │   └── Fixes/              # Wikitext fixing operations
-│       ├── References/     # Reference-related fixes
+│       ├── References/
 │       │   ├── DeleteEmptyRefsFixture.php
 │       │   ├── ExpandRefsFixture.php
 │       │   └── RefWorkerFixture.php
 │       │
-│       ├── Templates/      # Template-related fixes
+│       ├── Templates/
 │       │   ├── DeleteTemplatesFixture.php
 │       │   └── FixTemplatesFixture.php
 │       │
-│       ├── Media/          # Media-related fixes
+│       ├── Media/
 │       │   ├── FixImagesFixture.php
 │       │   └── RemoveMissingImagesService.php
 │       │
-│       └── Structure/      # Structural fixes
+│       └── Structure/
 │           ├── FixCategoriesFixture.php
 │           └── FixLanguageLinksFixture.php
 │
 ├── Infrastructure/          # Infrastructure layer (utilities & support)
-│   ├── Utils/              # Utility functions
+│   ├── Utils/
 │   │   ├── FileUtils.php
 │   │   └── HtmlUtils.php
 │   │
-│   └── Debug/              # Debug utilities
+│   └── Debug/
 │       └── PrintHelper.php
 │
-├── bootstrap.php           # Application bootstrap
+└── bootstrap.php           # Application constants
+
+new_html/                   # HTTP entry points
+├── index.php              # Router
+├── main.php               # Main API endpoint
+├── bootstrap.php          # Application initialization
+├── utils.php              # CORS, content-type, error helpers
+├── fix.php                # Wikitext fix test interface
+└── require.php            # Backward compatibility (now uses autoloader)
 ```
 
-## Namespace Structure
+## Autoloading
 
-All new code follows the `MDWiki\NewHtml\{Layer}\{Component}` namespace pattern:
+Configured in `composer.json`:
 
-- `MDWiki\NewHtml\Application\Controllers\*` - Application controllers
-- `MDWiki\NewHtml\Application\Handlers\*` - Request handlers
-- `MDWiki\NewHtml\Services\Api\*` - API services
-- `MDWiki\NewHtml\Services\Html\*` - HTML services
-- `MDWiki\NewHtml\Services\Wikitext\*` - Wikitext services
-- `MDWiki\NewHtml\Domain\Parser\*` - Parsers
-- `MDWiki\NewHtml\Domain\Fixes\{Category}\*` - Fix operations
-- `MDWiki\NewHtml\Infrastructure\Utils\*` - Utilities
-- `MDWiki\NewHtml\Infrastructure\Debug\*` - Debug tools
+- **PSR-4**: `MDWiki\NewHtml\` → `src/` (classes and interfaces)
+- **Files**: Standalone namespaced functions loaded explicitly
+- **Test PSR-4**: `FixRefs\Tests\` → `tests/`
 
-## Backward Compatibility
+## Namespace Convention
 
-All legacy namespaces are still supported through compatibility wrappers:
+All code uses `MDWiki\NewHtml\{Layer}\{Component}` namespace pattern:
 
-- `Printn\*` → `MDWiki\NewHtml\Infrastructure\Debug\*`
-- `NewHtml\FileHelps\*` → `MDWiki\NewHtml\Infrastructure\Utils\*`
-- `HtmlFixes\*` → `MDWiki\NewHtml\Infrastructure\Utils\*`
-- `WikiParse\*` → `MDWiki\NewHtml\Domain\Parser\*`
-- `Lead\*` → `MDWiki\NewHtml\Domain\Parser\*`
-- `Fixes\*` → `MDWiki\NewHtml\Domain\Fixes\*`
-- `APIServices\*` → `MDWiki\NewHtml\Services\Api\*`
-- `Segments\*` → `MDWiki\NewHtml\Services\Html\*`
-- `Html\*` → `MDWiki\NewHtml\Services\Html\*`
-- `FixText\*` → `MDWiki\NewHtml\Services\Wikitext\*`
-- `NewHtml\JsonData\*` → `MDWiki\NewHtml\Application\Controllers\*`
-- `Wikitext\*` → `MDWiki\NewHtml\Application\Handlers\*`
-- `PostMdwiki\*` → `MDWiki\NewHtml\Application\Handlers\*`
+- `MDWiki\NewHtml\Application\Controllers\*`
+- `MDWiki\NewHtml\Application\Handlers\*`
+- `MDWiki\NewHtml\Services\Api\*`
+- `MDWiki\NewHtml\Services\Html\*`
+- `MDWiki\NewHtml\Services\Interfaces\*`
+- `MDWiki\NewHtml\Services\Wikitext\*`
+- `MDWiki\NewHtml\Domain\Parser\*`
+- `MDWiki\NewHtml\Domain\Fixes\{Category}\*`
+- `MDWiki\NewHtml\Infrastructure\Utils\*`
+- `MDWiki\NewHtml\Infrastructure\Debug\*`
 
-## Migration Guide
+Entry point utilities use `MDWiki\NewHtmlMain\Utils` namespace.
 
-### For New Code
+## Processing Pipeline
 
-Use the new namespaces:
+1. Fetch wikitext from mdwiki.org REST API
+2. Apply wikitext fixes via `fix_wikitext()`
+3. Transform to HTML using Wikipedia's REST API
+4. Generate segmented content via HtmltoSegments tool
+5. Return JSON with segments and categories
 
-```php
-<?php
+## Architecture Layers
 
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
-use function MDWiki\NewHtml\Domain\Parser\get_categories;
-use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
+### Application Layer
+Entry points and request handlers. Processes HTTP requests and generates responses.
 
-// Your code here
-```
+### Service Layer
+Business operations and external API integrations. Services orchestrate domain logic and infrastructure. Interfaces define contracts for dependency injection and testability.
 
-### For Existing Code
+### Domain Layer
+Core business logic including parsers and fix operations. Pure wikitext processing with no external dependencies.
 
-No changes required - legacy namespaces still work:
-
-```php
-<?php
-
-use function Printn\test_print;
-use function WikiParse\Category\get_categories;
-use function FixText\fix_wikitext;
-
-// Your existing code continues to work
-```
-
-### Gradual Migration
-
-Update imports gradually as you work on files:
-
-1. Replace old namespace imports with new ones
-2. Test thoroughly
-3. Commit changes
-
-Example:
-
-```php
-// Old
-use function Printn\test_print;
-
-// New
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
-```
-
-## Installation
-
-```bash
-# Install dependencies
-composer install
-
-# Generate optimized autoloader
-composer dump-autoload -o
-```
+### Infrastructure Layer
+Utilities and support code: file I/O, HTML utilities, debugging tools.
 
 ## Testing
 
 ```bash
-# Run all tests
+# Run all tests (excludes network tests)
 composer test
+
+# Run specific test file
+vendor/bin/phpunit tests/WikiParse/CategoryTest.php
+
+# Run network tests (requires internet)
+RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests --testsuite network
 
 # Run static analysis
 composer phpstan
 ```
 
-## Benefits of New Structure
+## Installation
 
-### Code Quality
-- ✅ Better organized and maintainable
-- ✅ Easier to understand for new developers
-- ✅ Clear dependency boundaries
-- ✅ Improved testability
-
-### Development Experience
-- ✅ Faster feature development
-- ✅ Easier to locate and modify code
-- ✅ Better IDE support (autocomplete, navigation)
-- ✅ Reduced cognitive load
-
-### Scalability
-- ✅ Easy to add new features
-- ✅ Simple to refactor individual components
-- ✅ Better support for dependency injection
-- ✅ Preparation for future enhancements
-
-### Maintainability
-- ✅ Clear responsibility for each component
-- ✅ Easier to identify and fix bugs
-- ✅ Simplified onboarding for new team members
-- ✅ Better documentation structure
-
-## Architecture Layers
-
-### Application Layer
-Entry points and request handlers. This is where HTTP requests are processed and responses are generated.
-
-### Service Layer
-Business operations and external API integrations. Services orchestrate domain logic and infrastructure.
-
-### Domain Layer
-Core business logic including parsers and fix operations. This is where the essential wikitext processing happens.
-
-### Infrastructure Layer
-Utilities and support code. File I/O, HTML utilities, debugging tools, etc.
-
-## Contributing
-
-When adding new features:
-
-1. Place code in the appropriate layer (Application/Services/Domain/Infrastructure)
-2. Use proper namespacing: `MDWiki\NewHtml\{Layer}\{Component}`
-3. Add backward compatibility wrappers if replacing legacy code
-4. Update tests
-5. Run `composer dump-autoload -o`
-
-## Questions?
-
-For questions about the new architecture, please refer to:
-- `REFACTORING_PLAN.md` - Detailed refactoring plan
-- This README - Architecture overview
-- Code comments - Inline documentation
+```bash
+composer install
+composer dump-autoload -o
+```

@@ -35,6 +35,11 @@
             "src/Infrastructure/Debug/PrintHelper.php",
             "src/Infrastructure/Utils/FileUtils.php",
             "src/Infrastructure/Utils/HtmlUtils.php",
+            "src/Services/Api/CommonsImageService.php",
+            "src/Services/Api/HttpClientService.php",
+            "src/Services/Api/MdwikiApiService.php",
+            "src/Services/Api/SegmentApiService.php",
+            "src/Services/Api/TransformApiService.php",
             "src/Services/Html/HtmlToSegmentsService.php",
             "src/Services/Html/WikitextToHtmlService.php",
             "src/Services/Wikitext/WikitextFixerService.php"
