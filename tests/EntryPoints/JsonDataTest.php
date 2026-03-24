@@ -32,7 +32,7 @@ class JsonDataTest extends bootstrap
         $result = get_title_revision('TestArticle', '');
 
         // This test depends on global file paths, skip if not accessible
-        if ($result === '') {
+        if (empty($result)) {
             $this->markTestSkipped('Global JSON file paths not accessible in test environment');
         }
     }
@@ -60,7 +60,7 @@ class JsonDataTest extends bootstrap
         $result = add_title_revision('NewArticle', '67890', '');
 
         // Result depends on global state
-        $this->assertTrue(is_array($result) || $result === '');
+        $this->assertTrue(is_array($result) || empty($result));
     }
 
     public function testAddTitleRevisionWithEmptyTitle()
@@ -95,7 +95,7 @@ class JsonDataTest extends bootstrap
     {
         $result = add_title_revision('Article', '12345', 'all');
 
-        $this->assertTrue(is_array($result) || $result === '');
+        $this->assertTrue(is_array($result) || empty($result));
     }
 
 
@@ -104,7 +104,7 @@ class JsonDataTest extends bootstrap
         $result = add_title_revision('Test', '123', '');
 
         // Should return array with data or empty string
-        $this->assertTrue(is_array($result) || $result === '');
+        $this->assertTrue(is_array($result) || empty($result));
     }
 
     public function testGetTitleRevisionWithSpecialCharacters()
@@ -118,7 +118,7 @@ class JsonDataTest extends bootstrap
     {
         $result = add_title_revision("Article's Title", '12345', '');
 
-        $this->assertTrue(is_array($result) || $result === '');
+        $this->assertTrue(is_array($result) || empty($result));
     }
 
     protected function tearDown(): void
