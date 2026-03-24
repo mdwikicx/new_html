@@ -136,7 +136,7 @@ class MdwikiApiService
  * Get wikitext content from MDWiki API
  *
  * @param string $title The title of the page to fetch
- * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+ * @return array{source: string, revid: string|int} Array containing source and revid
  */
 function getWikitextFromMdwikiApi(string $title): array
 {
