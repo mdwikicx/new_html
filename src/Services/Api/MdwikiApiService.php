@@ -113,7 +113,7 @@ class MdwikiApiService
      * Get wikitext content from MDWiki REST API
      *
      * @param string $title The title of the page to fetch
-     * @return array{source: string, revid: string|int} Array containing source and revision_id
+     * @return array{source: string, revid: string|int, error: string}
      */
     public function getWikitextFromMdwikiRestApi(string $title): array
     {
@@ -123,11 +123,12 @@ class MdwikiApiService
 
         $responseArray = $this->httpClient->request($url, 'GET');
         $response = $responseArray['output'];
+        $error    = $responseArray['error'];
 
         if (empty($response)) {
             error_log("MdwikiApiService: Failed to fetch data from MDWiki REST API for title: $title");
             test_print("Failed to fetch data from MDWiki REST API for title: $title");
-            return ['source' => '', 'revid' => ''];
+            return ['source' => '', 'revid' => '', 'error' => $error];
         }
 
         $json = json_decode($response, true);
@@ -138,6 +139,7 @@ class MdwikiApiService
         return [
             "source" => $source,
             "revid" => $revid,
+            "error" => $error,
         ];
     }
 }
@@ -160,7 +162,7 @@ function getWikitextFromMdwikiApi(string $title): array
  * Get wikitext content from MDWiki REST API
  *
  * @param string $title The title of the page to fetch
- * @return array{source: string, revid: string|int} Array containing source and revision_id
+ * @return array{source: string, revid: string|int, error: string}
  */
 function getWikitextFromMdwikiRestApi(string $title): array
 {

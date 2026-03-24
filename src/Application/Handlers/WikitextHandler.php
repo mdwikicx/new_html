@@ -16,7 +16,6 @@ use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
-
 use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestApi;
 
 /**
@@ -76,26 +75,24 @@ function get_wikitext(string $title, string $file): array
  * Get full wikitext for a page
  *
  * @param string $title The page title to fetch
- * @return array{source: string, revid: string|int} Array containing source and revision_id
+ * @return array{source: string, revid: string|int, error: string}
  */
 function get_wikitext_all(string $title, string $file): array
 {
 
     $title = str_replace(" ", "_", $title);
-
     $json1 = getWikitextFromMdwikiRestApi($title);
 
-    $source = $json1["source"];
-    $revid = $json1["revid"];
-
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
-    if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
+    if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $json1["source"], $matches)) {
         $title = $matches[1];
         test_print("Redirecting to: $title\n");
         $json1 = getWikitextFromMdwikiRestApi($title);
-        $source = $json1["source"];
-        $revid = $json1["revid"];
     }
+
+    $source = $json1["source"];
+    $revid  = $json1["revid"];
+    $error  = $json1["error"];
 
     if ($source != '') {
         test_print("source is not empty\n");
@@ -114,5 +111,6 @@ function get_wikitext_all(string $title, string $file): array
     return [
         "source" => $source,
         "revid" => $revid,
+        "error" => $error,
     ];
 }

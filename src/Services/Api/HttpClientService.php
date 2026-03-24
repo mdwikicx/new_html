@@ -171,19 +171,3 @@ class HttpClientService implements HttpClientInterface
         return $result;
     }
 }
-
-/**
- * Legacy function for backward compatibility
- * Handle URL requests with support for GET and POST methods
- *
- * @param string $endPoint The API endpoint URL
- * @param string $method The HTTP method to use ('GET' or 'POST')
- * @param array<string, mixed> $params Optional parameters to send with the request
- * @return string The response body, or empty string on failure
- */
-function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
-{
-    $service = new HttpClientService();
-    $result = $service->request($endPoint, $method, $params);
-    return $result['output'];
-}
