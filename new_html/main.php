@@ -146,6 +146,7 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
 
         $HTML_text = remove_data_parsoid($HTML_text);
     } catch (Exception $e) {
+        error_log("HTML generation failed for title: $title. Error: " . $e->getMessage());
         test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
         http_response_code(500);
         exit(json_encode(['error' => 'Failed to generate HTML content']));
