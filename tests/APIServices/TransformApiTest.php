@@ -27,7 +27,7 @@ class TransformApiTest extends bootstrap
     {
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($response);
+            ->willReturn(["output" => $response, "error_code" => "", "error" => ""]);
     }
 
     /**
@@ -223,7 +223,7 @@ class TransformApiTest extends bootstrap
                 $this->equalTo('POST'),
                 $this->anything()
             )
-            ->willReturn($this->createSuccessResponse('<p>Content</p>'));
+            ->willReturn(["output" => $this->createSuccessResponse('<p>Content</p>'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->convertWikitextToHtml($wikitext, $title);
 
@@ -364,7 +364,7 @@ class TransformApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('');
+            ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
         $result = $this->service->convertWikitextToHtml($wikitext, $title);
 
@@ -380,7 +380,7 @@ class TransformApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('<html><body>Wikimedia Error</body></html>');
+            ->willReturn(["output" => '<html><body>Wikimedia Error</body></html>', "error_code" => "", "error" => ""]);
 
         $result = $this->service->convertWikitextToHtml($wikitext, $title);
 
@@ -396,7 +396,7 @@ class TransformApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('Not valid HTML');
+            ->willReturn(["output" => 'Not valid HTML', "error_code" => "", "error" => ""]);
 
         $result = $this->service->convertWikitextToHtml($wikitext, $title);
 

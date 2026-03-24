@@ -18,7 +18,17 @@ interface HttpClientInterface
      * @param array<string, mixed> $params Optional parameters to send with the request
      * @return string The response body, or empty string on failure
      */
-    public function request(string $endPoint, string $method = 'GET', array $params = []): string;
+    public function request_string(string $endPoint, string $method = 'GET', array $params = []): string;
+
+    /**
+     * Send an HTTP request to the specified endpoint
+     *
+     * @param string $endPoint The API endpoint URL
+     * @param string $method The HTTP method to use ('GET' or 'POST')
+     * @param array<string, mixed> $params Optional parameters to send with the request
+     * @return array{output: string, error_code: string, error: string}
+     */
+    public function request(string $endPoint, string $method = 'GET', array $params = []): array;
 
     /**
      * Handle URL requests with support for GET and POST methods, returning detailed response information

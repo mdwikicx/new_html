@@ -33,12 +33,12 @@ class HttpClientServiceTest extends bootstrap
         // Create a mock to test the interface without network
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->method('request')
-            ->willReturn('{"test": "response"}');
+            ->willReturn(["output" => '{"test": "response"}', "error_code" => "", "error" => ""]);
 
         $result = $mockHttpClient->request('https://example.com/api', 'GET');
 
-        $this->assertIsString($result);
-        $this->assertEquals('{"test": "response"}', $result);
+        $this->assertIsArray($result);
+        $this->assertEquals('{"test": "response"}', $result['output']);
     }
 
     /**
@@ -54,11 +54,11 @@ class HttpClientServiceTest extends bootstrap
                 $this->equalTo('GET'),
                 $this->equalTo(['param' => 'value'])
             )
-            ->willReturn('{"result": "success"}');
+            ->willReturn(["output" => '{"result": "success"}', "error_code" => "", "error" => ""]);
 
         $result = $mockHttpClient->request('https://example.com/api', 'GET', ['param' => 'value']);
 
-        $this->assertEquals('{"result": "success"}', $result);
+        $this->assertEquals('{"result": "success"}', $result['output']);
     }
 
     /**
@@ -74,11 +74,11 @@ class HttpClientServiceTest extends bootstrap
                 $this->equalTo('POST'),
                 $this->equalTo(['data' => 'test'])
             )
-            ->willReturn('{"posted": true}');
+            ->willReturn(["output" => '{"posted": true}', "error_code" => "", "error" => ""]);
 
         $result = $mockHttpClient->request('https://example.com/api', 'POST', ['data' => 'test']);
 
-        $this->assertEquals('{"posted": true}', $result);
+        $this->assertEquals('{"posted": true}', $result['output']);
     }
 
     /**
@@ -88,11 +88,11 @@ class HttpClientServiceTest extends bootstrap
     {
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->method('request')
-            ->willReturn('');
+            ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
         $result = $mockHttpClient->request('https://example.com/api', 'GET');
 
-        $this->assertEquals('', $result);
+        $this->assertEquals('', $result['output']);
     }
 
     /**
@@ -102,11 +102,11 @@ class HttpClientServiceTest extends bootstrap
     {
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->method('request')
-            ->willReturn('{"error": "Not found"}');
+            ->willReturn(["output" => '{"error": "Not found"}', "error_code" => "", "error" => ""]);
 
         $result = $mockHttpClient->request('https://example.com/notfound', 'GET');
 
-        $this->assertStringContainsString('error', $result);
+        $this->assertStringContainsString('error', $result['output']);
     }
 
     /**
@@ -116,21 +116,21 @@ class HttpClientServiceTest extends bootstrap
     {
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->method('request')
-            ->willReturnCallback(function ($url, $method, $params) {
+            ->willReturnCallback(function ($url) {
                 if (strpos($url, 'api1') !== false) {
-                    return '{"api": "1"}';
+                    return ["output" => '{"api": "1"}', "error_code" => "", "error" => ""];
                 }
                 if (strpos($url, 'api2') !== false) {
-                    return '{"api": "2"}';
+                    return ["output" => '{"api": "2"}', "error_code" => "", "error" => ""];
                 }
-                return '{}';
+                return ["output" => "{}", "error_code" => "", "error" => ""];
             });
 
         $result1 = $mockHttpClient->request('https://api1.example.com', 'GET');
         $result2 = $mockHttpClient->request('https://api2.example.com', 'GET');
 
-        $this->assertEquals('{"api": "1"}', $result1);
-        $this->assertEquals('{"api": "2"}', $result2);
+        $this->assertEquals('{"api": "1"}', $result1['output']);
+        $this->assertEquals('{"api": "2"}', $result2['output']);
     }
 
     /**
@@ -146,11 +146,11 @@ class HttpClientServiceTest extends bootstrap
                 $this->anything(),
                 $this->equalTo([])
             )
-            ->willReturn('{}');
+            ->willReturn(["output" => "{}", "error_code" => "", "error" => ""]);
 
         $result = $mockHttpClient->request('https://example.com', 'GET', []);
 
-        $this->assertEquals('{}', $result);
+        $this->assertEquals('{}', $result['output']);
     }
 
     /**
@@ -166,7 +166,7 @@ class HttpClientServiceTest extends bootstrap
                 $this->anything(),
                 $this->equalTo(['special' => 'value with spaces & symbols'])
             )
-            ->willReturn('{"received": true}');
+            ->willReturn(["output" => '{"received": true}', "error_code" => "", "error" => ""]);
 
         $result = $mockHttpClient->request(
             'https://example.com',
@@ -174,7 +174,7 @@ class HttpClientServiceTest extends bootstrap
             ['special' => 'value with spaces & symbols']
         );
 
-        $this->assertEquals('{"received": true}', $result);
+        $this->assertEquals('{"received": true}', $result['output']);
     }
 
     /**
@@ -193,7 +193,7 @@ class HttpClientServiceTest extends bootstrap
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturnCallback(function ($url) use ($mockResponses) {
-                return $mockResponses[$url] ?? '{}';
+                return ["output" => $mockResponses[$url] ?? '{}', "error_code" => "", "error" => ""];
             });
 
         // Simulate a service using the HTTP client
@@ -201,9 +201,9 @@ class HttpClientServiceTest extends bootstrap
         $postsResponse = $mockHttpClient->request('https://api.example.com/posts', 'GET');
         $unknownResponse = $mockHttpClient->request('https://api.example.com/unknown', 'GET');
 
-        $this->assertEquals('{"users": [1, 2, 3]}', $usersResponse);
-        $this->assertEquals('{"posts": ["a", "b", "c"]}', $postsResponse);
-        $this->assertEquals('{}', $unknownResponse);
+        $this->assertEquals('{"users": [1, 2, 3]}', $usersResponse['output']);
+        $this->assertEquals('{"posts": ["a", "b", "c"]}', $postsResponse['output']);
+        $this->assertEquals('{}', $unknownResponse['output']);
     }
 
     /**
@@ -214,15 +214,15 @@ class HttpClientServiceTest extends bootstrap
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturnCallback(function ($url, $method) {
-                return json_encode(['method' => strtoupper($method)]);
+                return ["output" => json_encode(['method' => strtoupper($method)]), "error_code" => "", "error" => ""];
             });
 
         $getResult = $mockHttpClient->request('https://example.com', 'GET');
         $postResult = $mockHttpClient->request('https://example.com', 'post');
         $PostResult = $mockHttpClient->request('https://example.com', 'POST');
 
-        $this->assertStringContainsString('GET', $getResult);
-        $this->assertStringContainsString('POST', $PostResult);
-        $this->assertStringContainsString('POST', $postResult);
+        $this->assertStringContainsString('GET', $getResult['output']);
+        $this->assertStringContainsString('POST', $PostResult['output']);
+        $this->assertStringContainsString('POST', $postResult['output']);
     }
 }

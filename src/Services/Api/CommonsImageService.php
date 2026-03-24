@@ -56,10 +56,11 @@ class CommonsImageService implements CommonsImageServiceInterface
 
         $url = "https://commons.wikimedia.org/w/api.php";
 
-        $response = $this->httpClient->request($url, 'GET', $params);
+        $responseArray = $this->httpClient->request($url, 'GET', $params);
+        $response = $responseArray['output'];
 
         // Handle the response from the API
-        if ($response === "") {
+        if (empty($response)) {
             return true; // Assume exists on API failure
         }
 

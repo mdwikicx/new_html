@@ -68,7 +68,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createApiResponse($wikitext, $revid));
+            ->willReturn(["output" => $this->createApiResponse($wikitext, $revid), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -82,7 +82,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn(json_encode(['query' => ['pages' => [[]]]]));
+            ->willReturn(["output" => json_encode(['query' => ['pages' => [[]]]]), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -97,7 +97,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createApiResponse('Content', '12345'));
+            ->willReturn(["output" => $this->createApiResponse('Content', '12345'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -113,7 +113,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createRestApiResponse($wikitext, $revid));
+            ->willReturn(["output" => $this->createRestApiResponse($wikitext, $revid), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -127,7 +127,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('{}');
+            ->willReturn(["output" => '{}', "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -142,7 +142,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createRestApiResponse('Content', '12345'));
+            ->willReturn(["output" => $this->createRestApiResponse('Content', '12345'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -158,7 +158,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createApiResponse($wikitext, '12345'));
+            ->willReturn(["output" => $this->createApiResponse($wikitext, '12345'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -180,7 +180,7 @@ class MdwikiApiTest extends bootstrap
                 $this->equalTo('GET'),
                 $this->equalTo([])
             )
-            ->willReturn($this->createRestApiResponse($wikitext, '12345'));
+            ->willReturn(["output" => $this->createRestApiResponse($wikitext, '12345'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -203,7 +203,7 @@ class MdwikiApiTest extends bootstrap
                 $this->equalTo('GET'),
                 $this->equalTo([])
             )
-            ->willReturn($this->createRestApiResponse($wikitext, '12345'));
+            ->willReturn(["output" => $this->createRestApiResponse($wikitext, '12345'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -219,7 +219,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createApiResponse($wikitext, '12345'));
+            ->willReturn(["output" => $this->createApiResponse($wikitext, '12345'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -235,7 +235,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createRestApiResponse($wikitext, '67890'));
+            ->willReturn(["output" => $this->createRestApiResponse($wikitext, '67890'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -249,7 +249,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createApiResponse('', ''));
+            ->willReturn(["output" => $this->createApiResponse('', ''), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -264,7 +264,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createRestApiResponse('', ''));
+            ->willReturn(["output" => $this->createRestApiResponse('', ''), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -279,7 +279,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createApiResponse('Content', $revid));
+            ->willReturn(["output" => $this->createApiResponse('Content', $revid), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -294,7 +294,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createRestApiResponse('Content', $revid));
+            ->willReturn(["output" => $this->createRestApiResponse('Content', $revid), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -310,10 +310,15 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createApiResponse($wikitext, $revid));
+            ->willReturn(["output" => $this->createApiResponse($wikitext, $revid), "error_code" => "", "error" => ""]);
 
-        [$wikitext1, $revid1] = $this->service->getWikitextFromMdwikiApi($title);
-        [$wikitext2, $revid2] = $this->service->getWikitextFromMdwikiApi($title);
+        $result1 = $this->service->getWikitextFromMdwikiApi($title);
+        $result2 = $this->service->getWikitextFromMdwikiApi($title);
+
+        $wikitext1 = $result1['source'];
+        $revid1 = $result1['revid'];
+        $wikitext2 = $result2['source'];
+        $revid2 = $result2['revid'];
 
         // Same title should return same revision
         $this->assertEquals($revid1, $revid2);
@@ -334,7 +339,7 @@ class MdwikiApiTest extends bootstrap
                 $this->equalTo('GET'),
                 $this->equalTo([])
             )
-            ->willReturn($this->createRestApiResponse($wikitext, '12345'));
+            ->willReturn(["output" => $this->createRestApiResponse($wikitext, '12345'), "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
@@ -352,9 +357,9 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturnCallback(function ($url) use ($wikitext, $revid) {
                 if (strpos($url, '/api.php') !== false) {
-                    return $this->createApiResponse($wikitext, $revid);
+                    return ["output" => $this->createApiResponse($wikitext, $revid), "error_code" => "", "error" => ""];
                 }
-                return $this->createRestApiResponse($wikitext, $revid);
+                return ["output" => $this->createRestApiResponse($wikitext, $revid), "error_code" => "", "error" => ""];
             });
 
         $result1 = $this->service->getWikitextFromMdwikiApi($title);
@@ -371,7 +376,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('');
+            ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -386,7 +391,7 @@ class MdwikiApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('');
+            ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 

@@ -52,31 +52,28 @@ class TransformApiService
         $url = "{$this->baseUrl}/transform/wikitext/to/html/{$titleEncoded}";
 
         $data = ['wikitext' => $text];
-        $response = $this->httpClient->request($url, 'POST', $data);
+        $responseArray = $this->httpClient->request($url, 'POST', $data);
+        $response = $responseArray['output'];
 
         // Handle the response from the API
-        if ($response === "") {
+        if (empty($response)) {
             error_log("TransformApiService: API request failed for title: $title");
+            if ($responseArray['error']) {
+                error_log("Error details: " . $responseArray['error'] . " (" . $responseArray['error_code'] . ")");
+            }
             test_print("API request failed: " . json_encode($data));
             return ['error' => 'Error: Could not reach API.'];
         }
 
         // Check if response contains an error
-        if (strpos($response, ">Wikimedia Error<") !== false) {
+        if (str_contains($response, ">Wikimedia Error<")) {
             error_log("TransformApiService: API returned error for title: $title");
             test_print("API returned error: $response");
             return ['error' => 'Error: Wikipedia API returned an error.'];
         }
 
-        // Check if response is empty
-        if (empty($response)) {
-            error_log("TransformApiService: API returned empty response for title: $title");
-            test_print("API returned empty response: " . json_encode($data));
-            return ['error' => 'Error: Wikipedia API returned an empty response.'];
-        }
-
         // Check if response is valid HTML
-        if (strpos($response, "<html") === false) {
+        if (!str_contains($response, "<html")) {
             error_log("TransformApiService: API returned invalid HTML for title: $title");
             test_print("API returned invalid HTML: " . json_encode($data));
             return ['error' => 'Error: Wikipedia API returned invalid HTML.'];

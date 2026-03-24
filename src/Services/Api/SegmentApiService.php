@@ -47,10 +47,11 @@ class SegmentApiService
     public function changeHtmlToSeg(string $html): array
     {
         $data = ['html' => $html];
-        $response = $this->httpClient->request($this->apiUrl, 'POST', $data);
+        $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data);
+        $response = $responseArray['output'];
 
         // Handle the response from the API
-        if ($response === "") {
+        if (empty($response)) {
             error_log("SegmentApiService: API request failed");
             test_print("API request failed: " . json_encode($data));
             return ['error' => 'Error: Could not reach API.'];

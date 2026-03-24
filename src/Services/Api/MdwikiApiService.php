@@ -83,7 +83,8 @@ class MdwikiApiService
             "rvprop" => "content|ids"
         ];
 
-        $response = $this->httpClient->request($this->baseApiUrl, 'GET', $params);
+        $responseArray = $this->httpClient->request($this->baseApiUrl, 'GET', $params);
+        $response = $responseArray['output'];
 
         if (empty($response)) {
             error_log("MdwikiApiService: Failed to fetch data from MDWiki API for title: $title");
@@ -120,7 +121,15 @@ class MdwikiApiService
         $titleEncoded = str_replace(" ", "_", $titleEncoded);
         $url = "{$this->baseRestUrl}/page/{$titleEncoded}";
 
-        $response = $this->httpClient->request($url, 'GET');
+        $responseArray = $this->httpClient->request($url, 'GET');
+        $response = $responseArray['output'];
+
+        if (empty($response)) {
+            error_log("MdwikiApiService: Failed to fetch data from MDWiki REST API for title: $title");
+            test_print("Failed to fetch data from MDWiki REST API for title: $title");
+            return ['source' => '', 'revid' => ''];
+        }
+
         $json = json_decode($response, true);
 
         $source = $json["source"] ?? '';
