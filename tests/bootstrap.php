@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 // Set test environment
 putenv('APP_ENV=testing');
-putenv('REVISIONS_DIR=I:/mdwikicx/revisions_new');
+putenv('REVISIONS_DIR=I:/MD_TOOLS/mdwikicx.toolforge.org/revisions_new');
 putenv('APP_DEBUG=1');
 
 // Check environment variable to enable network tests
