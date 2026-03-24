@@ -87,11 +87,13 @@ class HttpClientService implements HttpClientInterface
         test_print($printableUrl);
 
         if ($output === false) {
+            error_log("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
             test_print("endPoint: ($endPoint), cURL Error: " . $error);
             return '';
         }
 
         if ($httpCode !== 200) {
+            error_log("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
             test_print("API returned HTTP $httpCode: $httpCode");
             test_print(var_export($output, true));
             $output = '';
