@@ -28,23 +28,20 @@ function get_wikitext(string $title, string $file): array
 {
 
     $title = str_replace(" ", "_", $title);
-
     $json1 = getWikitextFromMdwikiRestApi($title);
 
-    $source = $json1["source"];
-    $revid = $json1["revid"];
-
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
-    if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
+    if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $json1["source"], $matches)) {
         $title = $matches[1];
         test_print("Redirecting to: $title\n");
         $json1 = getWikitextFromMdwikiRestApi($title);
-        $source = $json1["source"];
-        $revid = $json1["revid"];
     }
 
-    if ($source != '') {
+    $source = $json1["source"];
+    $revid  = $json1["revid"];
+    $error  = $json1["error"];
 
+    if ($source != '') {
         test_print("source is not empty\n");
         test_print("get_lead_section: \n");
         $full_text = $source;
@@ -68,6 +65,7 @@ function get_wikitext(string $title, string $file): array
     return [
         "source" => $source,
         "revid" => $revid,
+        "error" => $error,
     ];
 }
 
