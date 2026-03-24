@@ -97,9 +97,7 @@ function get_wikitext_all(string $title, string $file): array
     }
 
     if ($source != '') {
-
         test_print("source is not empty\n");
-
         $source = fix_wikitext($source, $title);
     }
 
