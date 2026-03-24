@@ -1,16 +1,13 @@
 <?php
 
 /**
- * Reisions dashboard page
+ * Reisions API
  *
- * Displays all processed revisions in an HTML table with links to view
- * generated files (wikitext, HTML, segments). Also handles JSON cache
- * regeneration.
+ * Returns JSON data for revisions dashboard.
  *
  * @package MDWiki\NewHtml
  */
-?>
-<?php
+
 define('DEBUGX', true); // Set APP_DEBUG=1 in development
 
 if (defined('DEBUGX') && DEBUGX === true) {
@@ -33,11 +30,9 @@ use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
  */
 function make_badge(array $files, string $file): string
 {
-
     if (!in_array($file, $files)) {
         return "<span class='badge bg-danger'>Missing</span>";
     }
-
     return "";
 }
 
@@ -50,11 +45,8 @@ function make_badge(array $files, string $file): string
 function get_Data(string $tyt): array
 {
     $file = ($tyt == 'all') ? JSON_FILE_ALL : JSON_FILE;
-
     $file_text = read_file($file);
-
     if (empty($file_text)) return [];
-
     $data = json_decode($file_text, true) ?? [];
     return $data;
 }
@@ -67,7 +59,7 @@ usort($dirs, function ($a, $b) {
     return $timeB - $timeA;
 });
 
-$tbody = '';
+$results = [];
 $number = 0;
 $main_data = get_Data('');
 $main_data_all = get_Data('all');
@@ -75,7 +67,6 @@ $main_data_all = get_Data('all');
 $make_dump = empty($main_data);
 
 foreach ($dirs as $dir) {
-
     $number += 1;
 
     $wikitextFile = $dir . '/wikitext.txt';
@@ -84,21 +75,18 @@ foreach ($dirs as $dir) {
         : date('Y-m-d H:i', filemtime($dir));
 
     $dir = rtrim($dir, '/');
-
     $dir_path = basename($dir);
     $oldid_number = str_replace('_all', '', $dir_path);
 
     $files = array_filter(glob("$dir/*"), 'is_file');
-
     $files = array_map('basename', $files);
 
-    // if wikitext.txt in $files
     $wikitext_tag = make_badge($files, 'wikitext.txt');
     $html_tag = make_badge($files, 'html.html');
     $seg_tag = make_badge($files, 'seg.html');
 
-    $title = (is_file("$dir/title.txt")) ? file_get_contents("$dir/title.txt") : '';
-
+    $title_path = "$dir/title.txt";
+    $title = (is_file($title_path)) ? file_get_contents($title_path) : '';
     $title = str_replace('_', ' ', $title);
 
     if (!empty($title) && $make_dump && !empty($oldid_number)) {
@@ -112,38 +100,24 @@ foreach ($dirs as $dir) {
         }
     }
 
-    $title = htmlspecialchars($title);
+    $title_esc = htmlspecialchars($title);
+    $url_base = "open.php?revid=$dir_path&file";
 
-    $url = "open.php?revid=$dir_path&file";
-
-    $re_create_td = (isset($_GET['re'])) ? <<<HTML
-        <td>
-            <a class="card-link" href="/new_html/index.php?new=1&title=$title" target="_blank">Re create</a>
-        </td>
-    HTML : "";
-
-    $tbody .= <<<HTML
-        <tr>
-            <td>$number</td>
-            <td>$lastModified</td>
-            <td>
-                <a class="card-link" href="https://mdwiki.org/wiki/index.php?title=$title" target="_blank">$title</a>
-            </td>
-            $re_create_td
-            <td>
-                <a class="card-link" href="https://mdwiki.org/wiki/index.php?oldid=$oldid_number" target="_blank">$dir_path</a>
-            </td>
-            <td>
-                <a class="card-link" href="$url=wikitext.txt" target="_blank">Wikitext</a> $wikitext_tag
-            </td>
-            <td>
-                <a class="card-link" href="$url=html.html" target="_blank">Html</a> $html_tag
-            </td>
-            <td>
-                <a class="card-link" href="$url=seg.html" target="_blank">Segments</a> $seg_tag
-            </td>
-        </tr>
-    HTML;
+    $results[] = [
+        'number' => $number,
+        'lastModified' => $lastModified,
+        'title' => $title,
+        'title_esc' => $title_esc,
+        'dir_path' => $dir_path,
+        'oldid_number' => $oldid_number,
+        'wikitext_tag' => $wikitext_tag,
+        'html_tag' => $html_tag,
+        'seg_tag' => $seg_tag,
+        'url_wikitext' => "$url_base=wikitext.txt",
+        'url_html' => "$url_base=html.html",
+        'url_seg' => "$url_base=seg.html",
+        'url_recreate' => "/new_html/index.php?new=1&title=" . urlencode($title)
+    ];
 }
 
 function file_write(?string $file, string $text): void
@@ -163,3 +137,6 @@ if ($make_dump) {
     file_write(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
     file_write(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
+
+header('Content-Type: application/json');
+echo json_encode(['results' => $results]);

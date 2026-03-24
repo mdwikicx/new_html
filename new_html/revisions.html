@@ -70,31 +70,82 @@
         </div>
     </div>
     <script>
-        function getFormData(d) {
-            return d;
+        const urlParams = new URLSearchParams(window.location.search);
+        const showReCreate = urlParams.has('re');
+
+        const columns = [
+            {
+                data: null,
+                title: '#',
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                },
+                className: 'dt-center'
+            },
+            {
+                data: 'lastModified',
+                title: 'lastModified'
+            },
+            {
+                data: 'title',
+                title: 'Title',
+                render: function (data, type, row) {
+                    return `<a class="card-link" href="https://mdwiki.org/wiki/index.php?title=${encodeURIComponent(data)}" target="_blank">${row.title_esc}</a>`;
+                }
+            }
+        ];
+
+        if (showReCreate) {
+            columns.push({
+                data: 'url_recreate',
+                title: 'Re create',
+                render: function (data, type, row) {
+                    return `<a class="card-link" href="${data}" target="_blank">Re create</a>`;
+                }
+            });
         }
+
+        columns.push(
+            {
+                data: 'dir_path',
+                title: 'Revision',
+                render: function (data, type, row) {
+                    return `<a class="card-link" href="https://mdwiki.org/wiki/index.php?oldid=${row.oldid_number}" target="_blank">${data}</a>`;
+                }
+            },
+            {
+                data: 'url_wikitext',
+                title: 'Wikitext',
+                render: function (data, type, row) {
+                    return `<a class="card-link" href="${data}" target="_blank">Wikitext</a> ${row.wikitext_tag}`;
+                }
+            },
+            {
+                data: 'url_html',
+                title: 'Html',
+                render: function (data, type, row) {
+                    return `<a class="card-link" href="${data}" target="_blank">Html</a> ${row.html_tag}`;
+                }
+            },
+            {
+                data: 'url_seg',
+                title: 'Segments',
+                render: function (data, type, row) {
+                    return `<a class="card-link" href="${data}" target="_blank">Segments</a> ${row.seg_tag}`;
+                }
+            }
+        );
+
         $('#main_table').DataTable({
             stateSave: true,
             paging: false,
-            info: false,
-            searching: false,
+            info: true,
+            searching: true,
             ajax: {
-                url: '/revisions_api.php',
-                data: getFormData,
-                dataSrc: function (json) {
-                    return json.results;
-                }
+                url: 'revisions_api.php',
+                dataSrc: 'results'
             },
-            columns: [
-                {
-                    data: null,
-                    title: '#',
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1;
-                    },
-                    className: 'dt-center'
-                },
-            ]
+            columns: columns
         });
     </script>
 
