@@ -41,32 +41,31 @@ function get_wikitext(string $title, string $file): array
     $revid  = $json1["revid"];
     $error  = $json1["error"];
 
-    if ($source != '') {
-        test_print("source is not empty\n");
-        test_print("get_lead_section: \n");
-        $full_text = $source;
-        $lead = get_lead_section($source);
-        if ($lead != '') {
-            $source = refs_expend_work($lead, $full_text);
-        }
-
-        $source = fix_wikitext($source, $title);
-    }
-
-    if (empty($source)) {
-        error_log("WikitextHandler: wikitext empty for title: $title");
-        test_print("wikitext empty!.");
-    };
-
-    if (!empty($revid)) {
-        add_title_revision($title, $revid, $file);
-    }
-
-    return [
+    $result = [
         "source" => $source,
         "revid" => $revid,
         "error" => $error,
     ];
+    if (!empty($revid)) {
+        add_title_revision($title, $revid, $file);
+    }
+    if (empty($source)) {
+        error_log("WikitextHandler: wikitext empty for title: $title");
+        test_print("wikitext empty!.");
+        return $result;
+    };
+
+    test_print("source is not empty\n");
+
+    test_print("get_lead_section: \n");
+    $full_text = $source;
+    $lead = get_lead_section($source);
+    if ($lead != '') {
+        $source = refs_expend_work($lead, $full_text);
+    }
+
+    $source = fix_wikitext($source, $title);
+    return $result;
 }
 
 /**
@@ -92,23 +91,24 @@ function get_wikitext_all(string $title, string $file): array
     $revid  = $json1["revid"];
     $error  = $json1["error"];
 
-    if ($source != '') {
-        test_print("source is not empty\n");
-        $source = fix_wikitext($source, $title);
-    }
-
-    if (empty($source)) {
-        error_log("WikitextHandler: wikitext empty for title: $title");
-        test_print("wikitext empty!.");
-    };
+    $result = [
+        "source" => $source,
+        "revid" => $revid,
+        "error" => $error,
+    ];
 
     if (!empty($revid)) {
         add_title_revision($title, $revid, $file);
     }
 
-    return [
-        "source" => $source,
-        "revid" => $revid,
-        "error" => $error,
-    ];
+    if (empty($source)) {
+        error_log("WikitextHandler: wikitext empty for title: $title");
+        test_print("wikitext empty!.");
+        return $result;
+    };
+
+    test_print("source is not empty\n");
+
+    $source = fix_wikitext($source, $title);
+    return $result;
 }
