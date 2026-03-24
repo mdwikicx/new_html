@@ -110,7 +110,7 @@ function get_wikitext_revision(string $title, string $all): array
 
     $file = (!empty($all)) ? JSON_FILE_ALL : JSON_FILE;
 
-    if ($wikitext == '' || $revision == '') {
+    if (empty($wikitext) || empty($revision)) {
         [$wikitext, $revision] = get_from_json($title, $all, $file);
         $from_cache = !empty($wikitext);
     }
@@ -221,7 +221,7 @@ function start(array $request, string $title): void
 
     // $revision = (isset($request['revision'])) ? $request['revision'] : $revision;
 
-    if ($wikitext == '' || $revision == '') {
+    if (empty($wikitext) || empty($revision)) {
         exit(error_1($title, $revision));
     }
 
@@ -282,7 +282,7 @@ function start(array $request, string $title): void
 
 $title = get_title();
 
-if ($title == '') {
+if (empty($title)) {
     header("Content-type: application/json");
     echo json_encode([
         'error' => 'title is empty',

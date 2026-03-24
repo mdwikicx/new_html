@@ -29,14 +29,14 @@ function do_wiki_text_to_html(string $wikitext, string $title): mixed
 
     $title = str_replace(" ", "_", $title);
 
-    if ($wikitext == '') return "";
+    if (empty($wikitext)) return "";
 
     $fixed = convertWikitextToHtml($wikitext, $title);
 
     $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? '';
 
-    if ($result == '') return "";
+    if (empty($result)) return "";
 
     $result = del_div_error($result);
     $result = fix_link_red($result);
@@ -64,11 +64,11 @@ function wiki_text_to_html(string $wikitext, string $file_html, string $title, b
         if (!empty($text)) return [$text, true];
     }
 
-    if ($wikitext == '') return ["", $from_cache];
+    if (empty($wikitext)) return ["", $from_cache];
 
     $result = do_wiki_text_to_html($wikitext, $title);
 
-    if ($result == '') return ["", $from_cache];
+    if (empty($result)) return ["", $from_cache];
 
     file_write($file_html, $result);
 

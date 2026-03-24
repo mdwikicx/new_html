@@ -138,7 +138,7 @@ function get_Data(string $tyt): array
 
     $file_text = read_file($file);
 
-    if ($file_text == '') return [];
+    if (empty($file_text)) return [];
 
     $data = json_decode($file_text, true) ?? [];
     return $data;

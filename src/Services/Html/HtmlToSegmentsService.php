@@ -59,7 +59,7 @@ function html_to_seg(string $text, string $file_seg): array
 
     $result = do_html_to_seg($text);
 
-    if ($result == '') return ["", $from_cache];
+    if (empty($result)) return ["", $from_cache];
 
     file_write($file_seg, $result);
 
