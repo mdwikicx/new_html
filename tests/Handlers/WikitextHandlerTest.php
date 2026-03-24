@@ -19,7 +19,8 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Test_Article', '');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextWithSpacesInTitle()
@@ -28,16 +29,16 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Test Article', '');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextReturnsWikitextAndRevid()
     {
         $result = get_wikitext('Sample_Page', '');
 
-        list($wikitext, $revid) = $result;
-        $this->assertIsString($wikitext);
-        $this->assertTrue(is_string($revid) || is_int($revid));
+        $this->assertIsString($result["source"]);
+        $this->assertTrue(is_string($result["revid"]) || is_int($result["revid"]));
     }
 
     public function testGetWikitextWithEmptyAllParameter()
@@ -46,7 +47,8 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Test_Page', '');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextWithNonEmptyAllParameter()
@@ -55,7 +57,8 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Test_Page', 'all');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextHandlesEmptyResponse()
@@ -63,8 +66,7 @@ class WikitextHandlerTest extends bootstrap
         // Test with likely non-existent page
         $result = get_wikitext('NonExistentPage999999', '');
 
-        list($wikitext, $revid) = $result;
-        $this->assertIsString($wikitext);
+        $this->assertIsString($result["source"]);
     }
 
     public function testGetWikitextWithSpecialCharacters()
@@ -72,8 +74,7 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Test/Page-Name_123', '');
 
         $this->assertIsArray($result);
-        list($wikitext, $revid) = $result;
-        $this->assertIsString($wikitext);
+        $this->assertIsString($result["source"]);
     }
 
     public function testGetWikitextReplacesSpacesWithUnderscores()
@@ -82,7 +83,8 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Multiple  Spaces  Here', '');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextLeadSectionExtraction()
@@ -90,8 +92,7 @@ class WikitextHandlerTest extends bootstrap
         // Test that lead section is extracted when $all is empty
         $result = get_wikitext('Test_Article', '');
 
-        list($wikitext, $revid) = $result;
-        $this->assertIsString($wikitext);
+        $this->assertIsString($result["source"]);
         // Lead section should end with references section
         // This depends on actual content, so we just verify it's a string
     }
@@ -101,8 +102,7 @@ class WikitextHandlerTest extends bootstrap
         // Test full text retrieval with non-empty $all
         $result = get_wikitext('Test_Article', 'full');
 
-        list($wikitext, $revid) = $result;
-        $this->assertIsString($wikitext);
+        $this->assertIsString($result["source"]);
     }
 
     public function testGetWikitextWithUnicodeTitle()
@@ -110,7 +110,8 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Tëst_Articlé', '');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextEmptyTitle()
@@ -118,19 +119,17 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('', '');
 
         $this->assertIsArray($result);
-        list($wikitext, $revid) = $result;
-        $this->assertIsString($wikitext);
+        $this->assertIsString($result["source"]);
     }
 
     public function testGetWikitextReturnsValidStructure()
     {
         $result = get_wikitext('Any_Title', '');
 
-        // Verify structure: array with 2 elements
+        // Verify structure: array with source and revid keys
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
-        $this->assertArrayHasKey(0, $result);
-        $this->assertArrayHasKey(1, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextProcessesRedirect()
@@ -140,7 +139,8 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext('Possible_Redirect', '');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextWithLongTitle()
@@ -149,6 +149,7 @@ class WikitextHandlerTest extends bootstrap
         $result = get_wikitext($longTitle, '');
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 }

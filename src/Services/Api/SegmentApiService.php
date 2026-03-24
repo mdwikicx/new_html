@@ -51,6 +51,7 @@ class SegmentApiService
 
         // Handle the response from the API
         if ($response === "") {
+            error_log("SegmentApiService: API request failed");
             test_print("API request failed: " . json_encode($data));
             return ['error' => 'Error: Could not reach API.'];
         }

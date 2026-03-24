@@ -101,10 +101,13 @@ function get_wikitext_revision(string $title, string $all): array
     // test_print("title: $title, all: $all, printetxt: $printetxt");
 
     if (!empty($all)) {
-        [$wikitext, $revision] = get_wikitext_all($title, JSON_FILE);
+        $json1 = get_wikitext_all($title, JSON_FILE);
     } else {
-        [$wikitext, $revision] = get_wikitext($title, JSON_FILE_ALL);
+        $json1 = get_wikitext($title, JSON_FILE_ALL);
     }
+
+    $wikitext = $json1["source"];
+    $revision = $json1["revid"];
 
     $file = (!empty($all)) ? JSON_FILE_ALL : JSON_FILE;
 
@@ -143,6 +146,7 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
 
         $HTML_text = remove_data_parsoid($HTML_text);
     } catch (Exception $e) {
+        error_log("HTML generation failed for title: $title. Error: " . $e->getMessage());
         test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
         http_response_code(500);
         exit(json_encode(['error' => 'Failed to generate HTML content']));

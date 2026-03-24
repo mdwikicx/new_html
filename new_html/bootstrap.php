@@ -21,7 +21,11 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     throw new RuntimeException('Autoload file not found');
 }
 
-include_once __DIR__ . '/load_env.php';
+$env = getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? 'development');
+
+if ($env === 'development' && file_exists(__DIR__ . '/load_env.php')) {
+    include_once __DIR__ . '/load_env.php';
+}
 include_once __DIR__ . '/require.php';
 
 // Set up error reporting for development
@@ -37,9 +41,12 @@ if (defined('DEBUGX') && DEBUGX === true) {
 $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
 
 if (!defined('REVISIONS_PATH')) {
-    $rev_path = getenv('REVISIONS_DIR') ? getenv('REVISIONS_DIR') : (
-        $home ? $home . '/public_html/revisions_new1' : dirname(__DIR__) . '/revisions_new1'
-    );
+    $env_value = getenv('REVISIONS_DIR') ?: $_SERVER['REVISIONS_DIR'];
+    if ($env_value) {
+        $rev_path = $env_value;
+    } else {
+        $rev_path = $home ? $home . '/public_html/revisions_new1' : dirname(__DIR__) . '/revisions_new1';
+    }
     define('REVISIONS_PATH', $rev_path);
 }
 
