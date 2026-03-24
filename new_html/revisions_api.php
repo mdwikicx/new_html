@@ -22,21 +22,6 @@ require_once __DIR__ . "/bootstrap.php";
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
 /**
- * Generate a badge indicating if a file exists in the list
- *
- * @param string[] $files Array of existing filenames
- * @param string $file The filename to check
- * @return string HTML badge markup, or empty string if file exists
- */
-function make_badge(array $files, string $file): string
-{
-    if (!in_array($file, $files)) {
-        return "<span class='badge bg-danger'>Missing</span>";
-    }
-    return "";
-}
-
-/**
  * Get data from JSON file based on type
  *
  * @param string $tyt The type of data to retrieve ('all' for complete data, otherwise main data)
@@ -81,9 +66,9 @@ foreach ($dirs as $dir) {
     $files = array_filter(glob("$dir/*"), 'is_file');
     $files = array_map('basename', $files);
 
-    $wikitext_tag = make_badge($files, 'wikitext.txt');
-    $html_tag = make_badge($files, 'html.html');
-    $seg_tag = make_badge($files, 'seg.html');
+    $wikitext_exists = in_array('wikitext.txt', $files);
+    $html_exists = in_array('html.html', $files);
+    $seg_exists = in_array('seg.html', $files);
 
     $title_path = "$dir/title.txt";
     $title = (is_file($title_path)) ? file_get_contents($title_path) : '';
@@ -100,23 +85,15 @@ foreach ($dirs as $dir) {
         }
     }
 
-    $title_esc = htmlspecialchars($title);
-    $url_base = "open.php?revid=$dir_path&file";
-
     $results[] = [
         'number' => $number,
         'lastModified' => $lastModified,
         'title' => $title,
-        'title_esc' => $title_esc,
         'dir_path' => $dir_path,
         'oldid_number' => $oldid_number,
-        'wikitext_tag' => $wikitext_tag,
-        'html_tag' => $html_tag,
-        'seg_tag' => $seg_tag,
-        'url_wikitext' => "$url_base=wikitext.txt",
-        'url_html' => "$url_base=html.html",
-        'url_seg' => "$url_base=seg.html",
-        'url_recreate' => "/new_html/index.php?new=1&title=" . urlencode($title)
+        'wikitext_exists' => $wikitext_exists,
+        'html_exists' => $html_exists,
+        'seg_exists' => $seg_exists
     ];
 }
 
