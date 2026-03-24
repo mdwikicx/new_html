@@ -23,7 +23,7 @@ use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestApi;
  * Get wikitext for a page, optionally processing only the lead section
  *
  * @param string $title The page title to fetch
- * @return array{0: string, 1: string|int} Array containing [wikitext, revision_id]
+ * @return array{source: string, revid: string|int} Array containing source and revision_id
  */
 function get_wikitext(string $title, string $file): array
 {
@@ -32,16 +32,16 @@ function get_wikitext(string $title, string $file): array
 
     $json1 = getWikitextFromMdwikiRestApi($title);
 
-    $source = $json1[0];
-    $revid = $json1[1];
+    $source = $json1["source"];
+    $revid = $json1["revid"];
 
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
         $title = $matches[1];
         test_print("Redirecting to: $title\n");
         $json1 = getWikitextFromMdwikiRestApi($title);
-        $source = $json1[0];
-        $revid = $json1[1];
+        $source = $json1["source"];
+        $revid = $json1["revid"];
     }
 
     if ($source != '') {
@@ -65,14 +65,17 @@ function get_wikitext(string $title, string $file): array
         add_title_revision($title, $revid, $file);
     }
 
-    return [$source, $revid];
+    return [
+        "source" => $source,
+        "revid" => $revid,
+    ];
 }
 
 /**
  * Get full wikitext for a page
  *
  * @param string $title The page title to fetch
- * @return array{0: string, 1: string|int} Array containing [wikitext, revision_id]
+ * @return array{source: string, revid: string|int} Array containing source and revision_id
  */
 function get_wikitext_all(string $title, string $file): array
 {
@@ -81,16 +84,16 @@ function get_wikitext_all(string $title, string $file): array
 
     $json1 = getWikitextFromMdwikiRestApi($title);
 
-    $source = $json1[0];
-    $revid = $json1[1];
+    $source = $json1["source"];
+    $revid = $json1["revid"];
 
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
         $title = $matches[1];
         test_print("Redirecting to: $title\n");
         $json1 = getWikitextFromMdwikiRestApi($title);
-        $source = $json1[0];
-        $revid = $json1[1];
+        $source = $json1["source"];
+        $revid = $json1["revid"];
     }
 
     if ($source != '') {
@@ -108,5 +111,8 @@ function get_wikitext_all(string $title, string $file): array
         add_title_revision($title, $revid, $file);
     }
 
-    return [$source, $revid];
+    return [
+        "source" => $source,
+        "revid" => $revid,
+    ];
 }

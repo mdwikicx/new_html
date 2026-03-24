@@ -104,7 +104,7 @@ class MdwikiApiService
      * Get wikitext content from MDWiki REST API
      *
      * @param string $title The title of the page to fetch
-     * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+     * @return array{source: string, revid: string|int} Array containing source and revision_id
      */
     public function getWikitextFromMdwikiRestApi(string $title): array
     {
@@ -118,7 +118,10 @@ class MdwikiApiService
         $source = $json["source"] ?? '';
         $revid = $json["latest"]["id"] ?? '';
 
-        return [$source, $revid];
+        return [
+            "source" => $source,
+            "revid" => $revid,
+        ];
     }
 }
 
@@ -140,7 +143,7 @@ function getWikitextFromMdwikiApi(string $title): array
  * Get wikitext content from MDWiki REST API
  *
  * @param string $title The title of the page to fetch
- * @return array{0: string, 1: string|int} Array containing [content, revision_id]
+ * @return array{source: string, revid: string|int} Array containing source and revision_id
  */
 function getWikitextFromMdwikiRestApi(string $title): array
 {

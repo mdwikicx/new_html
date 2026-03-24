@@ -115,10 +115,10 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse($wikitext, $revid));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
-        $this->assertEquals($wikitext, $resultWikitext);
-        $this->assertEquals($revid, $resultRevid);
+        $this->assertEquals($wikitext, $result["source"]);
+        $this->assertEquals($revid, $result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiRestApiWithInvalidTitle()
@@ -129,11 +129,11 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn('{}');
 
-        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should return empty strings
-        $this->assertEquals('', $wikitext);
-        $this->assertEquals('', $revid);
+        $this->assertEquals('', $result["source"]);
+        $this->assertEquals('', $result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiRestApiReturnsArray()
@@ -147,7 +147,8 @@ class MdwikiApiTest extends bootstrap
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         $this->assertIsArray($result);
-        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('source', $result);
+        $this->assertArrayHasKey('revid', $result);
     }
 
     public function testGetWikitextFromMdwikiApiWithSpecialCharacters()
@@ -181,11 +182,11 @@ class MdwikiApiTest extends bootstrap
             )
             ->willReturn($this->createRestApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should handle spaces in title (converted to underscores)
-        $this->assertIsString($resultWikitext);
-        $this->assertIsString($resultRevid);
+        $this->assertIsString($result["source"]);
+        $this->assertIsString($result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiRestApiWithSlash()
@@ -204,11 +205,11 @@ class MdwikiApiTest extends bootstrap
             )
             ->willReturn($this->createRestApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should handle slashes (encoded as %2F)
-        $this->assertIsString($resultWikitext);
-        $this->assertIsString($resultRevid);
+        $this->assertIsString($result["source"]);
+        $this->assertIsString($result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiApiReturnsValidWikitext()
@@ -236,10 +237,10 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse($wikitext, '67890'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
-        $this->assertIsString($resultWikitext);
-        $this->assertGreaterThan(100, strlen($resultWikitext));
+        $this->assertIsString($result["source"]);
+        $this->assertGreaterThan(100, strlen($result["source"]));
     }
 
     public function testGetWikitextFromMdwikiApiWithEmptyTitle()
@@ -265,10 +266,10 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse('', ''));
 
-        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
-        $this->assertIsString($wikitext);
-        $this->assertIsString($revid);
+        $this->assertIsString($result["source"]);
+        $this->assertIsString($result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiApiRevisionIdFormat()
@@ -295,10 +296,10 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn($this->createRestApiResponse('Content', $revid));
 
-        [$wikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Revision ID should be numeric
-        $this->assertMatchesRegularExpression('/^\d+$/', (string)$resultRevid);
+        $this->assertMatchesRegularExpression('/^\d+$/', (string)$result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiApiConsistency()
@@ -335,10 +336,10 @@ class MdwikiApiTest extends bootstrap
             )
             ->willReturn($this->createRestApiResponse($wikitext, '12345'));
 
-        [$resultWikitext, $resultRevid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
-        $this->assertIsString($resultWikitext);
-        $this->assertIsString($resultRevid);
+        $this->assertIsString($result["source"]);
+        $this->assertIsString($result["revid"]);
     }
 
     public function testBothApisReturnSimilarData()
@@ -356,12 +357,12 @@ class MdwikiApiTest extends bootstrap
                 return $this->createRestApiResponse($wikitext, $revid);
             });
 
-        [$wikitext1, $revid1] = $this->service->getWikitextFromMdwikiApi($title);
-        [$wikitext2, $revid2] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result1 = $this->service->getWikitextFromMdwikiApi($title);
+        $result2 = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Both APIs should return the same content
-        $this->assertEquals($wikitext1, $wikitext2);
-        $this->assertEquals($revid1, $revid2);
+        $this->assertEquals($result1["source"], $result2["source"]);
+        $this->assertEquals($result1["revid"], $result2["revid"]);
     }
 
     public function testGetWikitextFromMdwikiApiHandlesEmptyResponse()
@@ -387,10 +388,10 @@ class MdwikiApiTest extends bootstrap
             ->method('request')
             ->willReturn('');
 
-        [$wikitext, $revid] = $this->service->getWikitextFromMdwikiRestApi($title);
+        $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Should return empty strings when API fails
-        $this->assertEquals('', $wikitext);
-        $this->assertEquals('', $revid);
+        $this->assertEquals('', $result["source"]);
+        $this->assertEquals('', $result["revid"]);
     }
 }
