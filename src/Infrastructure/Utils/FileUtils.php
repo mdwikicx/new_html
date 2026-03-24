@@ -36,6 +36,7 @@ function file_write(?string $file, string $text): void
     try {
         file_put_contents($file, $text, LOCK_EX);
     } catch (\Exception $e) {
+        error_log("FileUtils: Could not write to file: $file - " . $e->getMessage());
         test_print("Error: Could not write to file: $file");
     }
 }
@@ -56,6 +57,7 @@ function read_file(?string $file): bool|string
     try {
         return file_get_contents($file);
     } catch (\Exception $e) {
+        error_log("FileUtils: Could not read file: $file - " . $e->getMessage());
         test_print("Error: Could not read file: $file");
     }
 

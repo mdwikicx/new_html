@@ -86,6 +86,7 @@ class MdwikiApiService
         $response = $this->httpClient->request($this->baseApiUrl, 'GET', $params);
 
         if (empty($response)) {
+            error_log("MdwikiApiService: Failed to fetch data from MDWiki API for title: $title");
             test_print("Failed to fetch data from MDWiki API for title: $title");
             return ['source' => '', 'revid' => ''];
         }
@@ -94,6 +95,7 @@ class MdwikiApiService
         $revisions = $json["query"]["pages"][0]["revisions"][0] ?? [];
 
         if (empty($revisions)) {
+            error_log("MdwikiApiService: No revision data found for title: $title");
             test_print("No revision data found for title: $title");
             return ['source' => '', 'revid' => ''];
         }

@@ -58,6 +58,7 @@ function get_wikitext(string $title, string $file): array
     }
 
     if (empty($source)) {
+        error_log("WikitextHandler: wikitext empty for title: $title");
         test_print("wikitext empty!.");
     };
 
@@ -102,6 +103,7 @@ function get_wikitext_all(string $title, string $file): array
     }
 
     if (empty($source)) {
+        error_log("WikitextHandler: wikitext empty for title: $title");
         test_print("wikitext empty!.");
     };
 
