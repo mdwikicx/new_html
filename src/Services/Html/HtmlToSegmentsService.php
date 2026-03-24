@@ -52,7 +52,7 @@ function html_to_seg(string $text, string $file_seg): array
     if (!isset($_GET['new'])) {
         $seg_text = read_file($file_seg);
 
-        if ($seg_text != '') {
+        if (!empty($seg_text)) {
             return [$seg_text, true];
         }
     }

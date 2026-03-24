@@ -61,7 +61,7 @@ function wiki_text_to_html(string $wikitext, string $file_html, string $title, b
 
         $text = read_file($file_html);
 
-        if ($text != '') return [$text, true];
+        if (!empty($text)) return [$text, true];
     }
 
     if ($wikitext == '') return ["", $from_cache];

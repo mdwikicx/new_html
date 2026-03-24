@@ -29,7 +29,6 @@ use function MDWiki\NewHtmlMain\Utils\get_content_type;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
-use function MDWiki\NewHtml\Application\Handlers\get_wikitext_all;
 use function MDWiki\NewHtml\Services\Html\html_to_seg;
 use function MDWiki\NewHtml\Services\Html\wiki_text_to_html;
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
@@ -101,7 +100,7 @@ function get_wikitext_revision(string $title, string $all): array
     // test_print("title: $title, all: $all, printetxt: $printetxt");
 
     if (!empty($all)) {
-        $json1 = get_wikitext_all($title, JSON_FILE);
+        $json1 = get_wikitext($title, JSON_FILE, true);
     } else {
         $json1 = get_wikitext($title, JSON_FILE_ALL);
     }
@@ -113,7 +112,7 @@ function get_wikitext_revision(string $title, string $all): array
 
     if ($wikitext == '' || $revision == '') {
         [$wikitext, $revision] = get_from_json($title, $all, $file);
-        $from_cache = $wikitext != '';
+        $from_cache = !empty($wikitext);
     }
 
     if ($printetxt == "wikitext") {

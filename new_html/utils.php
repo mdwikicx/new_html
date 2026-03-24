@@ -18,7 +18,7 @@ function get_file_dir(string $revision, string $all): string
 
     $file_dir = REVISIONS_PATH . "/$revision";
 
-    if ($all != '') $file_dir .= "_all";
+    if (!empty($all)) $file_dir .= "_all";
 
     if (!is_dir($file_dir)) {
         if (!mkdir($file_dir, 0755, true)) {
