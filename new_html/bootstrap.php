@@ -21,7 +21,11 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     throw new RuntimeException('Autoload file not found');
 }
 
-include_once __DIR__ . '/load_env.php';
+$env = getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? 'development');
+
+if ($env === 'development' && file_exists(__DIR__ . '/load_env.php')) {
+    include_once __DIR__ . '/load_env.php';
+}
 include_once __DIR__ . '/require.php';
 
 // Set up error reporting for development
