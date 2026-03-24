@@ -41,7 +41,7 @@ if (defined('DEBUGX') && DEBUGX === true) {
 $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
 
 if (!defined('REVISIONS_PATH')) {
-    $env_value = getenv('REVISIONS_DIR') ?: $_SERVER['REVISIONS_DIR'];
+    $env_value = getenv('REVISIONS_DIR') ?: ($_SERVER['REVISIONS_DIR'] ?? null);
     if ($env_value) {
         $rev_path = $env_value;
     } else {
