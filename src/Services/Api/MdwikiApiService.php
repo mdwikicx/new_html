@@ -66,7 +66,10 @@ class MdwikiApiService
         return $response;
     }
     /**
-     * @return array{string, string}
+     * Get wikitext content from MDWiki API
+     *
+     * @param string $title The title of the page to fetch
+     * @return array{source: string, revid: string|int} Array containing source and revid
      */
     public function getWikitextFromMdwikiApi(string $title): array
     {
@@ -84,7 +87,7 @@ class MdwikiApiService
 
         if (empty($response)) {
             test_print("Failed to fetch data from MDWiki API for title: $title");
-            return ['', ''];
+            return ['source' => '', 'revid' => ''];
         }
 
         $json = json_decode($response, true);
@@ -92,12 +95,15 @@ class MdwikiApiService
 
         if (empty($revisions)) {
             test_print("No revision data found for title: $title");
-            return ['', ''];
+            return ['source' => '', 'revid' => ''];
         }
 
         $source = $revisions["content"] ?? '';
         $revid = $revisions["revid"] ?? '';
-        return [$source, $revid];
+        return [
+            "source" => $source,
+            "revid" => $revid,
+        ];
     }
 
     /**
