@@ -262,10 +262,9 @@ function start(array $request, string $title): void
         [$SEG_text, $seg_cache] = get_SEG_text($HTML_text, $file_seg);
 
         $jsonData['cache_data']['seg'] = $seg_cache;
-
         $jsonData['segmentedContent'] = $SEG_text;
 
-        if ($SEG_text == "") {
+        if (empty($SEG_text)) {
             // send request error code using http_response_code
             http_response_code(404);
             $jsonData['error_type'] = "SEG_text:($SEG_text) is empty";
