@@ -10,10 +10,10 @@
  * @package MDWiki\NewHtml
  */
 ?>
+<!doctype html>
 <html lang="en">
 
 <?php
-define('DEBUGX', true); // Set APP_DEBUG=1 in development
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);

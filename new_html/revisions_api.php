@@ -8,8 +8,6 @@
  * @package MDWiki\NewHtml
  */
 
-define('DEBUGX', true); // Set APP_DEBUG=1 in development
-
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);

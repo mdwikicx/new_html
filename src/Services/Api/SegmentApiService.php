@@ -48,6 +48,12 @@ class SegmentApiService
     {
         $data = ['html' => $html];
         $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data);
+
+        if (!empty($responseArray['error_code']) || !empty($responseArray['error'])) {
+            error_log("SegmentApiService: API request failed");
+            return ['error' => 'Error: Could not reach API.'];
+        }
+
         $response = $responseArray['output'];
 
         // Handle the response from the API
