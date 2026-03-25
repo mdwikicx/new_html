@@ -71,5 +71,7 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
     }
 
     $source = fix_wikitext($source, $title);
+    $result["source"] = $source;
+
     return $result;
 }
