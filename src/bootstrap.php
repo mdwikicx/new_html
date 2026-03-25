@@ -10,6 +10,6 @@
  */
 
 if (!defined('USER_AGENT')) {
-    $user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
+    $user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.mdwikicx@toolforge.org)';
     define('USER_AGENT', $user_agent);
 }

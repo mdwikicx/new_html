@@ -64,7 +64,7 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
     if ($just_lead) {
         test_print("get_lead_section: \n");
         $full_text = $source;
-        $lead = get_lead_section($source);
+        $lead = get_lead_section($full_text);
         if (!empty($lead)) {
             $source = refs_expend_work($lead, $full_text);
         }
