@@ -27,7 +27,7 @@ class SegApiTest extends bootstrap
     {
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($response);
+            ->willReturn(["output" => $response, "error_code" => "", "error" => ""]);
     }
 
     /**
@@ -235,7 +235,7 @@ class SegApiTest extends bootstrap
         // Simulate network failure (empty response)
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('');
+            ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
         $result = $this->service->changeHtmlToSeg($html);
 
@@ -251,7 +251,7 @@ class SegApiTest extends bootstrap
         // Simulate unexpected response format (missing both result and error)
         $this->mockHttpClient
             ->method('request')
-            ->willReturn(json_encode(['unexpected_key' => 'value']));
+            ->willReturn(["output" => json_encode(['unexpected_key' => 'value']), "error_code" => "", "error" => ""]);
 
         $result = $this->service->changeHtmlToSeg($html);
 

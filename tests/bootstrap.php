@@ -6,6 +6,22 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Set test environment
+putenv('APP_ENV=testing');
+
+$revisions_new_path_local = "I:/MD_TOOLS/mdwikicx.toolforge.org/revisions_new";
+if (!is_dir($revisions_new_path_local)) {
+    putenv(
+        'REVISIONS_DIR='
+            . rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR)
+            . DIRECTORY_SEPARATOR
+            . 'mdwiki-newhtml-revisions'
+    );
+}
+
+putenv('REVISIONS_DIR=' . $revisions_new_path_local);
+putenv('APP_DEBUG=1');
+
 // Check environment variable to enable network tests
 // Usage: RUN_NETWORK_TESTS=true vendor/bin/phpunit tests/NetworkRealTests
 $runNetworkTests = getenv('RUN_NETWORK_TESTS') === 'true';

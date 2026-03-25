@@ -34,7 +34,7 @@ function get_title_revision(string $title, string $file): string
 
     $file_text = read_file($file);
 
-    if ($file_text == '') return '';
+    if (empty($file_text)) return '';
 
     $data = json_decode($file_text, true);
 
@@ -60,7 +60,7 @@ function add_title_revision(string $title, string $revision, string $file): arra
 
     $file_text = read_file($file);
 
-    if ($file_text == '') return '';
+    if (empty($file_text)) return '';
 
     $data = json_decode($file_text, true);
 

@@ -16,31 +16,6 @@ use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 */
 
 /**
- * Get the lead section of wikitext (old implementation)
- *
- * @param string $wikitext The wikitext to process
- * @return string The lead section with references tag appended
- */
-function get_lead_section_old(string $wikitext): string
-{
-    if (empty($wikitext) || strpos($wikitext, '==') === false) {
-        return $wikitext;
-    }
-
-    // Split the wikitext into sections by lines starting with ==+ and get only the first section
-    $sections = preg_split('/==+/', $wikitext, 2, PREG_SPLIT_NO_EMPTY);
-    $lead = $sections[0] ?? '';
-
-    if (empty($lead)) {
-        return $wikitext;
-    }
-    $lead .= "\n==References==\n<references />";
-
-    // $lead = refs_expend_work($lead, $wikitext);
-    return $lead;
-}
-
-/**
  * Get the lead section of wikitext
  *
  * @param string $wikitext The wikitext to process

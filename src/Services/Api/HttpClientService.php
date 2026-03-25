@@ -75,7 +75,7 @@ class HttpClientService implements HttpClientInterface
      * @param array<string, mixed> $params Optional parameters to send with the request
      * @return string The response body, or empty string on failure
      */
-    public function request(string $endPoint, string $method = 'GET', array $params = []): string
+    public function request_string(string $endPoint, string $method = 'GET', array $params = []): string
     {
         $rawResponse = $this->handleRawRequest($endPoint, $method, $params);
 
@@ -94,26 +94,80 @@ class HttpClientService implements HttpClientInterface
 
         if ($httpCode !== 200) {
             error_log("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
+
+            // Check for Cloudflare protection
+            $isCloudflareProtected = false;
+            if (is_string($output) && str_contains($output, 'Just a moment...')) {
+                $isCloudflareProtected = true;
+                error_log("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
+                test_print("⚠️ Cloudflare protection detected: 'Just a moment...' page returned");
+            }
+
             test_print("API returned HTTP $httpCode: $httpCode");
-            test_print(var_export($output, true));
+            if (!$isCloudflareProtected) {
+                test_print(var_export($output, true));
+            }
             $output = '';
         }
 
         return $output;
     }
-}
+    /**
+     * Handle URL requests with support for GET and POST methods
+     *
+     * @param string $endPoint The API endpoint URL
+     * @param string $method The HTTP method to use ('GET' or 'POST')
+     * @param array<string, mixed> $params Optional parameters to send with the request
+     * @return array{output: string, error_code: string, error: string}
+     */
+    public function request(string $endPoint, string $method = 'GET', array $params = []): array
+    {
+        $rawResponse = $this->handleRawRequest($endPoint, $method, $params);
 
-/**
- * Legacy function for backward compatibility
- * Handle URL requests with support for GET and POST methods
- *
- * @param string $endPoint The API endpoint URL
- * @param string $method The HTTP method to use ('GET' or 'POST')
- * @param array<string, mixed> $params Optional parameters to send with the request
- * @return string The response body, or empty string on failure
- */
-function handle_url_request(string $endPoint, string $method = 'GET', array $params = []): string
-{
-    $service = new HttpClientService();
-    return $service->request($endPoint, $method, $params);
+        $printableUrl = $rawResponse['printableUrl'];
+        $httpCode = $rawResponse['httpCode'];
+        $output = $rawResponse['response'];
+        $error = $rawResponse['error'];
+
+        test_print($printableUrl);
+
+        $result = [
+            "output" => "",
+            "error_code" => "",
+            "error" => "",
+        ];
+
+        if ($output === false) {
+            $result["error"] = $error;
+            $result["error_code"] = "CURL_ERROR";
+            error_log("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
+            test_print("endPoint: ($endPoint), cURL Error: " . $error);
+            return $result;
+        }
+        $result["output"] = $output;
+
+        if ($httpCode !== 200) {
+            error_log("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
+            $result["error"] = "HTTP_ERROR";
+            $result["error_code"] = "$httpCode";
+
+            // Check for Cloudflare protection
+            $isCloudflareProtected = false;
+            if (is_string($output) && str_contains($output, 'Just a moment...')) {
+                $isCloudflareProtected = true;
+                error_log("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
+                test_print("⚠️ Cloudflare protection detected: 'Just a moment...' page returned");
+                $result["error"] = "CLOUDFLARE_PROTECTION";
+            }
+
+            test_print("API returned HTTP $httpCode: $httpCode");
+            if (!$isCloudflareProtected) {
+                test_print(var_export($output, true));
+            }
+
+            $result["output"] = '';
+        }
+
+        return $result;
+    }
 }

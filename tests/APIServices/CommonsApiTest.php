@@ -69,7 +69,7 @@ class CommonsApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createImageExistsResponse($filename));
+            ->willReturn(["output" => $this->createImageExistsResponse($filename), "error_code" => "", "error" => ""]);
 
         $result = $this->service->imageExists($filename);
 
@@ -85,7 +85,7 @@ class CommonsApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createImageMissingResponse($filename));
+            ->willReturn(["output" => $this->createImageMissingResponse($filename), "error_code" => "", "error" => ""]);
 
         $result = $this->service->imageExists($filename);
 
@@ -99,7 +99,7 @@ class CommonsApiTest extends bootstrap
     {
         $this->mockHttpClient
             ->method('request')
-            ->willReturn('');
+            ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
         $this->assertFalse($this->service->imageExists(''));
         $this->assertFalse($this->service->imageExists('   '));
@@ -114,7 +114,7 @@ class CommonsApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createImageExistsResponse($filename));
+            ->willReturn(["output" => $this->createImageExistsResponse($filename), "error_code" => "", "error" => ""]);
 
         // Should handle File: prefix
         $result = $this->service->imageExists('File:' . $filename);
@@ -131,7 +131,7 @@ class CommonsApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createImageExistsResponse($filename));
+            ->willReturn(["output" => $this->createImageExistsResponse($filename), "error_code" => "", "error" => ""]);
 
         // Should handle Image: prefix
         $result = $this->service->imageExists('Image:' . $filename);
@@ -148,7 +148,7 @@ class CommonsApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn(''); // Empty response simulates API failure
+            ->willReturn(["output" => "", "error_code" => "", "error" => ""]); // Empty response simulates API failure
 
         // On API failure, should return true (assumes exists)
         $result = $this->service->imageExists($filename);
@@ -175,7 +175,7 @@ class CommonsApiTest extends bootstrap
                         && $params['format'] === 'json';
                 })
             )
-            ->willReturn($this->createImageExistsResponse($filename));
+            ->willReturn(["output" => $this->createImageExistsResponse($filename), "error_code" => "", "error" => ""]);
 
         $this->service->imageExists($filename);
     }
@@ -189,7 +189,7 @@ class CommonsApiTest extends bootstrap
 
         $this->mockHttpClient
             ->method('request')
-            ->willReturn($this->createImageExistsResponse($filename));
+            ->willReturn(["output" => $this->createImageExistsResponse($filename), "error_code" => "", "error" => ""]);
 
         $result = $this->service->imageExists('  ' . $filename . '  ');
 

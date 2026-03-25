@@ -29,10 +29,10 @@ class JsonDataTest extends bootstrap
         $data = ['TestArticle' => '12345'];
         file_put_contents($this->testJsonFile, json_encode($data));
 
-        $result = get_title_revision('TestArticle', '');
+        $revision = get_title_revision('TestArticle', '');
 
         // This test depends on global file paths, skip if not accessible
-        if ($result === '') {
+        if ($revision === '') {
             $this->markTestSkipped('Global JSON file paths not accessible in test environment');
         }
     }

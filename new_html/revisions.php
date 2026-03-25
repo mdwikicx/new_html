@@ -10,10 +10,10 @@
  * @package MDWiki\NewHtml
  */
 ?>
+<!doctype html>
 <html lang="en">
 
 <?php
-define('DEBUGX', true); // Set APP_DEBUG=1 in development
 
 if (defined('DEBUGX') && DEBUGX === true) {
     ini_set('display_errors', 1);
@@ -138,7 +138,7 @@ function get_Data(string $tyt): array
 
     $file_text = read_file($file);
 
-    if ($file_text == '') return [];
+    if (empty($file_text)) return [];
 
     $data = json_decode($file_text, true) ?? [];
     return $data;
@@ -243,14 +243,9 @@ function file_write(?string $file, string $text): void
     }
 }
 
-function dump_both_data(array $main_data, array $main_data_all): void
-{
-
+if ($make_dump) {
     file_write(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
     file_write(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
-}
-if ($make_dump) {
-    dump_both_data($main_data, $main_data_all);
 }
 
 $re_create_th = (isset($_GET['re'])) ? "<th>Re create</th>" : '';
