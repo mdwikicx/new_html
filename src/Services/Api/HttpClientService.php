@@ -100,7 +100,7 @@ class HttpClientService implements HttpClientInterface
             if (is_string($output) && str_contains($output, 'Just a moment...')) {
                 $isCloudflareProtected = true;
                 error_log("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
-                test_print("⚠️ Cloudflare protection detected: 'Just a moment...' page returned");
+                test_print("Cloudflare protection detected: 'Just a moment...' page returned");
             }
 
             test_print("API returned HTTP $httpCode: $httpCode");
@@ -156,7 +156,7 @@ class HttpClientService implements HttpClientInterface
             if (is_string($output) && str_contains($output, 'Just a moment...')) {
                 $isCloudflareProtected = true;
                 error_log("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
-                test_print("⚠️ Cloudflare protection detected: 'Just a moment...' page returned");
+                test_print("Cloudflare protection detected: 'Just a moment...' page returned");
                 $result["error"] = "CLOUDFLARE_PROTECTION";
             }
 
