@@ -38,10 +38,10 @@ if (defined('DEBUGX') && DEBUGX === true) {
     error_reporting(0);
 }
 
-$home = getenv('HOME') ?: ($_SERVER['HOME'] ?? '');
+$home = getenv('HOME') ?: ($_ENV['HOME'] ?? '');
 
 if (!defined('REVISIONS_PATH')) {
-    $env_value = getenv('REVISIONS_DIR') ?: ($_SERVER['REVISIONS_DIR'] ?? null);
+    $env_value = getenv('REVISIONS_DIR') ?: ($_ENV['REVISIONS_DIR'] ?? null);
     if ($env_value) {
         $rev_path = $env_value;
     } else {
