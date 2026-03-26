@@ -99,7 +99,7 @@ function get_wikitext_revision(string $title, string $all): array
 
     // test_print("title: $title, all: $all, printetxt: $printetxt");
 
-    if (!empty($all)) {
+    if (empty($all)) {
         $json1 = get_wikitext($title, JSON_FILE, true);
     } else {
         $json1 = get_wikitext($title, JSON_FILE_ALL);
