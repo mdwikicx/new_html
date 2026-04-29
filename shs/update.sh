@@ -7,6 +7,8 @@ readonly TARGET_DIR="$HOME/public_html/new_html_1"
 readonly CLONE_DIR="$HOME/new_html_temp"
 readonly CLEAN_INSTALL="${CLEAN_INSTALL:-1}"
 readonly BRANCH="${1:-main}"
+# Centralized backup directory
+readonly OLD_REPOS_BASE="${HOME}/old_repos"
 
 # Color output
 readonly RED='\033[0;31m'
@@ -47,8 +49,14 @@ main() {
     # Handle clean install
     if [ "$CLEAN_INSTALL" -eq 1 ]; then
         if [ -d "$TARGET_DIR" ]; then
-            local backup_dir="${TARGET_DIR}_backup_$(date +%Y%m%d_%H%M%S)"
-            log_warn "Backing up to: $backup_dir"
+            # Ensure the centralized archive directory exists
+            mkdir -p "$OLD_REPOS_BASE"
+
+            # Extract folder name and set the new backup destination
+            local dir_name=$(basename "$TARGET_DIR")
+            local backup_dir="${OLD_REPOS_BASE}/${dir_name}_backup_$(date +%Y%m%d_%H%M%S)"
+
+            log_warn "Archiving old version to: $backup_dir"
             mv "$TARGET_DIR" "$backup_dir"
         fi
         mv "$CLONE_DIR/new_html" "$TARGET_DIR"
@@ -57,6 +65,7 @@ main() {
         mkdir -p "$TARGET_DIR"
         cp -rf "$CLONE_DIR"/new_html/* "$TARGET_DIR/"
     fi
+
     # copy composer_public_html.json to $HOME/public_html
     cp "$CLONE_DIR/composer_public_html.json" "$HOME/public_html/composer.json" -v
 
@@ -68,6 +77,7 @@ main() {
         log_error "Composer not found. Install it first."
         exit 1
     fi
+
     rm -rf vendor composer.lock
     composer install --no-dev --optimize-autoloader --no-interaction
 
