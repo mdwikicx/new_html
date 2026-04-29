@@ -1,14 +1,16 @@
-name: deploy.yml
+name: Auto Update Toolforge
+
 on:
     push:
         branches:
             - main
 jobs:
-    build:
+    update:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v6
-            - name: Deploy to server
+            - name: Checkout repository
+              uses: actions/checkout@v6
+            - name: Deploy on Toolforge
               uses: appleboy/ssh-action@v1.2.4
               with:
                   host: ${{ secrets.HOST }}
@@ -18,4 +20,6 @@ jobs:
                   script_stop: true
                   key: ${{ secrets.KEY }}
                   script: |
-                      become mdwikicx bash -lc "shs/update_new_all.sh && echo ''"
+                      become mdwikicx bash -lc "
+                        toolforge-jobs run update --image php8.2 --command ~/shs/update_new_all.sh --wait
+                      "
