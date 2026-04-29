@@ -1,4 +1,5 @@
 #!/bin/bash
+# toolforge-jobs run update --image php8.2 --command "~/shs/update_new_all.sh" --wait
 set -euo pipefail  # Exit on error, undefined vars, pipe failures
 
 # Configuration
