@@ -183,6 +183,9 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
         $SEG_text = remove_data_parsoid($SEG_text);
     }
 
+    if ($SEG_text == 'Content for translate is not given or is empty') $SEG_text = "";
+    if ($SEG_text == 'Sectionwrap: Attempting to remove a non-section tag: undefined') $SEG_text = "";
+
     if ($printetxt == "seg") {
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
         echo $SEG_text;
