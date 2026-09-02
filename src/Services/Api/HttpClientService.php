@@ -27,6 +27,7 @@ class HttpClientService implements HttpClientInterface
         string $endPoint,
         string $method = 'GET',
         array $params = [],
+        bool $json = false,
     ): array {
         $ch = curl_init();
         $user_agent = defined('USER_AGENT') ? USER_AGENT : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
@@ -47,7 +48,16 @@ class HttpClientService implements HttpClientInterface
 
         if ($method === 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+            if ($json) {
+                $jsonBody = json_encode($params);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($jsonBody),
+                ]);
+            } else {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+            }
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -75,9 +85,9 @@ class HttpClientService implements HttpClientInterface
      * @param array<string, mixed> $params Optional parameters to send with the request
      * @return string The response body, or empty string on failure
      */
-    public function request_string(string $endPoint, string $method = 'GET', array $params = []): string
+    public function request_string(string $endPoint, string $method = 'GET', array $params = [], bool $json = false): string
     {
-        $rawResponse = $this->handleRawRequest($endPoint, $method, $params);
+        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json);
 
         $printableUrl = $rawResponse['printableUrl'];
         $httpCode = $rawResponse['httpCode'];
@@ -118,11 +128,12 @@ class HttpClientService implements HttpClientInterface
      * @param string $endPoint The API endpoint URL
      * @param string $method The HTTP method to use ('GET' or 'POST')
      * @param array<string, mixed> $params Optional parameters to send with the request
+     * @param bool $json Whether to send the request as JSON
      * @return array{output: string, error_code: string, error: string}
      */
-    public function request(string $endPoint, string $method = 'GET', array $params = []): array
+    public function request(string $endPoint, string $method = 'GET', array $params = [], bool $json = false): array
     {
-        $rawResponse = $this->handleRawRequest($endPoint, $method, $params);
+        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json);
 
         $printableUrl = $rawResponse['printableUrl'];
         $httpCode = $rawResponse['httpCode'];

@@ -48,7 +48,8 @@ class SegmentApiService
     public function changeHtmlToSeg(string $html): array
     {
         $data = ['html' => $html];
-        $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data);
+        $as_json = $this->apiUrl == 'https://mdwikipy.toolforge.org/HtmltoSegments' ? true : false;
+        $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data, $as_json);
 
         if (!empty($responseArray['error_code']) || !empty($responseArray['error'])) {
             error_log("SegmentApiService: API request failed");
