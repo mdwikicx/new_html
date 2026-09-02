@@ -32,7 +32,8 @@ class SegmentApiService
      */
     public function __construct(
         ?HttpClientInterface $httpClient = null,
-        string $apiUrl = 'https://ncc2c.toolforge.org/HtmltoSegments',
+        // string $apiUrl = 'https://ncc2c.toolforge.org/HtmltoSegments',
+        string $apiUrl = 'https://mdwikipy.toolforge.org/HtmltoSegments',
     ) {
         $this->httpClient = $httpClient ?? new HttpClientService();
         $this->apiUrl = $apiUrl;
