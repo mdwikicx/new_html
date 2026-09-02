@@ -1,5 +1,7 @@
 # MediaWiki Content Transformation & API Services
 
+> live at [https://mdwikicx.toolforge.org/new_html_1](https://mdwikicx.toolforge.org/new_html_1)
+
 A comprehensive PHP library for processing MediaWiki articles and generating segmented content for the [ContentTranslation tool](https://github.com/mdwikicx/cx-1).
 
 ## Overview
