@@ -32,7 +32,8 @@ class SegmentApiService
      */
     public function __construct(
         ?HttpClientInterface $httpClient = null,
-        string $apiUrl = 'https://ncc2c.toolforge.org/HtmltoSegments',
+        // string $apiUrl = 'https://ncc2c.toolforge.org/HtmltoSegments',
+        string $apiUrl = 'https://mdwikipy.toolforge.org/HtmltoSegments',
     ) {
         $this->httpClient = $httpClient ?? new HttpClientService();
         $this->apiUrl = $apiUrl;
@@ -47,7 +48,8 @@ class SegmentApiService
     public function changeHtmlToSeg(string $html): array
     {
         $data = ['html' => $html];
-        $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data);
+        $as_json = $this->apiUrl == 'https://mdwikipy.toolforge.org/HtmltoSegments' ? true : false;
+        $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data, $as_json);
 
         if (!empty($responseArray['error_code']) || !empty($responseArray['error'])) {
             error_log("SegmentApiService: API request failed");
