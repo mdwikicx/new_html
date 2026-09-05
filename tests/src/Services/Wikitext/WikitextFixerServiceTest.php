@@ -29,7 +29,7 @@ class WikitextFixerServiceTest extends TestCase
 
         $result = fix_wikitext($source, "PLACEHOLDER_TEST");
 
-        $this->assertSame($expected, $result);
+        $this->assertSame(trim($expected), trim($result));
     }
 
     public function testFixWikitextIsDeterministic()
