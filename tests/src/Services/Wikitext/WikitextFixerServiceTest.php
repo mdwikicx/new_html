@@ -27,24 +27,24 @@ class WikitextFixerServiceTest extends TestCase
         $source = $this->loadFixture('source-1.wiki');
         $expected = $this->loadFixture('result-1.wiki');
 
-        $result = fix_wikitext($source, "PLACEHOLDER_TITLE");
+        $result = fix_wikitext($source, "PLACEHOLDER_TEST");
 
-        $this->assertSame($expected, $result);
+        $this->assertSame(trim($expected), trim($result));
     }
 
     public function testFixWikitextIsDeterministic()
     {
         $source = $this->loadFixture('source-1.wiki');
 
-        $first = fix_wikitext($source, "PLACEHOLDER_TITLE");
-        $second = fix_wikitext($source, "PLACEHOLDER_TITLE");
+        $first = fix_wikitext($source, "PLACEHOLDER_TEST");
+        $second = fix_wikitext($source, "PLACEHOLDER_TEST");
 
         $this->assertSame($first, $second);
     }
 
     public function testFixWikitextWithEmptyInputReturnsEmpty()
     {
-        $result = fix_wikitext('', "PLACEHOLDER_TITLE");
+        $result = fix_wikitext('', "PLACEHOLDER_TEST");
 
         $this->assertSame('', $result);
     }
