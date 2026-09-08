@@ -8,6 +8,7 @@ readonly TARGET_DIR="$HOME/public_html/new_html_1"
 readonly CLONE_DIR="$HOME/new_html_temp"
 readonly CLEAN_INSTALL="${CLEAN_INSTALL:-1}"
 readonly BRANCH="${1:-main}"
+
 # Centralized backup directory
 readonly OLD_REPOS_BASE="${HOME}/old_repos"
 
