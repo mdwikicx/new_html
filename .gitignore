@@ -19,3 +19,5 @@ composer.lock.1
 /revisions_new1
 new_html/load_env.php
 /.commandcode
+src/revisions_new1/json_data.json
+src/revisions_new1/json_data_all.json
