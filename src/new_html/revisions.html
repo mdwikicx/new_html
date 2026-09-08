@@ -92,7 +92,7 @@
                 data: 'title',
                 title: 'Title',
                 render: function (data, type, row) {
-                    return `<a class="card-link" href="https://mdwiki.org/wiki/index.php?title=${encodeURIComponent(data)}" target="_blank">${data}</a>`;
+                    return `<a class="card-link" href="https://mdwiki.org/wiki/${encodeURIComponent(data)}" target="_blank">${data}</a>`;
                 }
             }
         ];
