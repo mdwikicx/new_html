@@ -22,13 +22,13 @@ use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
  * @param string $alltext The full page text containing full ref definitions
  * @return string The text with short refs expanded to full refs
  */
-function refs_expend_work(string $first, string $alltext): string
+function expand_text_refs(string $first, string $alltext): string
 {
     if (empty($alltext)) {
         $alltext = $first;
     }
 
-    test_print("refs_expend_work: \n");
+    test_print("expand_text_refs: \n");
 
     $allpage_fullrefs = get_full_refs($alltext);
 
@@ -53,7 +53,7 @@ function refs_expend_work(string $first, string $alltext): string
         $rr = $allpage_fullrefs[$name] ?? "";
 
         if (!empty($rr)) {
-            test_print("refs_expend_work: name:($name), refe:($refe), rr:($rr)\n");
+            test_print("expand_text_refs: name:($name), refe:($refe), rr:($rr)\n");
             $first = str_replace($refe, $rr, $first);
         }
     }

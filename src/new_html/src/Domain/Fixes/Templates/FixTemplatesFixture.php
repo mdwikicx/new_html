@@ -10,7 +10,7 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Templates;
 
-use function MDWiki\NewHtml\Domain\Parser\getTemplates;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 /**
  * Add missing title parameter to infobox templates
@@ -32,7 +32,8 @@ function add_missing_title(string $text, string $title, int $ljust = 17): string
 
     ];
 
-    $temps_in = getTemplates($text);
+    $parser = new ParserTemplates($text);
+    $temps_in = $parser->getTemplates();
 
     $new_text = $text;
 

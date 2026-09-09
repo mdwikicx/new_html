@@ -8,94 +8,105 @@ This project has been refactored to follow modern PHP architecture patterns with
 
 ```text
 src/
-├── Application/              # Application layer (entry points & controllers)
-│   ├── Controllers/         # Business logic controllers
-│   │   └── JsonDataController.php
-│   └── Handlers/            # Request handlers
-│       └── WikitextHandler.php
-│
-├── Services/                # Service layer (business operations)
-│   ├── Api/                # External API integrations
-│   │   ├── CommonsApiService.php
-│   │   ├── HttpClientService.php
-│   │   ├── MdwikiApiService.php
-│   │   ├── SegmentApiService.php
-│   │   └── TransformApiService.php
-│   │
-│   ├── Html/               # HTML processing services
-│   │   ├── HtmlToSegmentsService.php
-│   │   └── WikitextToHtmlService.php
-│   │
-│   └── Wikitext/           # Wikitext processing services
-│       └── WikitextFixerService.php
-│
-├── Domain/                  # Domain layer (core business logic)
-│   ├── Parser/             # Wikitext parsing
-│   │   ├── CategoryParser.php
-│   │   ├── CitationsParser.php
-│   │   ├── LeadSectionParser.php
-│   │   └── TemplateParser.php
-│   │
-│   └── Fixes/              # Wikitext fixing operations
-│       ├── References/     # Reference-related fixes
-│       │   ├── DeleteEmptyRefsFixture.php
-│       │   ├── ExpandRefsFixture.php
-│       │   └── RefWorkerFixture.php
-│       │
-│       ├── Templates/      # Template-related fixes
-│       │   ├── DeleteTemplatesFixture.php
-│       │   └── FixTemplatesFixture.php
-│       │
-│       ├── Media/          # Media-related fixes
-│       │   ├── FixImagesFixture.php
-│       │   └── RemoveMissingImagesService.php
-│       │
-│       └── Structure/      # Structural fixes
-│           ├── FixCategoriesFixture.php
-│           └── FixLanguageLinksFixture.php
-│
-├── Infrastructure/          # Infrastructure layer (utilities & support)
-│   ├── Utils/              # Utility functions
-│   │   ├── FileUtils.php
-│   │   └── HtmlUtils.php
-│   │
-│   └── Debug/              # Debug utilities
-│       └── PrintHelper.php
-│
-├── bootstrap.php           # Application bootstrap
+└── new_html/
+    └── src/
+        ├── Application/                            # Application layer (entry points & controllers)
+        │   ├── Controllers/                        # Business logic controllers
+        │   │   ├── JsonDataController.php
+        │   │   └── TextProcessorController.php     # [new - orchestrates processing]
+        │   └── Handlers/                           # Request handlers
+        │       └── WikitextHandler.php
+        │
+        ├── Domain/                                 # Domain layer (core business logic)
+        │   ├── Fixes/                              # Wikitext fixing operations
+        │   │   ├── Media/                          # Media-related fixes
+        │   │   │   ├── FixImagesFixture.php
+        │   │   │   └── RemoveMissingImagesService.php
+        │   │   │
+        │   │   ├── References/                     # Reference-related fixes
+        │   │   │   ├── DeleteEmptyRefsFixture.php
+        │   │   │   ├── ExpandRefsFixture.php
+        │   │   │   └── RefWorkerFixture.php
+        │   │   │
+        │   │   ├── Structure/                      # Structural fixes
+        │   │   │   ├── FixCategoriesFixture.php
+        │   │   │   └── FixLanguageLinksFixture.php
+        │   │   │
+        │   │   └── Templates/                      # Template-related fixes
+        │   │       ├── DeleteTemplatesFixture.php
+        │   │       └── FixTemplatesFixture.php
+        │   │
+        │   └── Parser/                             # Wikitext parsing
+        │       ├── CategoryParser.php
+        │       ├── CitationsParser.php
+        │       ├── LeadSectionParser.php
+        │       └── TemplateParser.php
+        │
+        ├── Infrastructure/                         # Infrastructure layer (utilities & support)
+        │   ├── Debug/                              # Debug utilities
+        │   │   └── PrintHelper.php
+        │   ├── Storage/
+        │   │   ├── FileStorage.php                 # [new - file operations]
+        │   │   └── JsonStorage.php                 # [logic from json_data.php]
+        │   └── Utils/                              # Utility functions
+        │       ├── FileUtils.php
+        │       ├── HtmlUtils.php
+        │       └── StringUtils.php                 # [new - string operations]
+        │
+        ├── Services/                               # Service layer (business operations)
+        │   ├── Api/                                # External API integrations
+        │   │   ├── CommonsImageService.php
+        │   │   ├── HttpClientService.php
+        │   │   ├── MdwikiApiService.php
+        │   │   ├── SegmentApiService.php
+        │   │   └── TransformApiService.php
+        │   │
+        │   ├── Html/                               # HTML processing services
+        │   │   ├── HtmlToSegmentsService.php
+        │   │   └── WikitextToHtmlService.php
+        │   │
+        │   ├── Interfaces/
+        │   │   ├── CommonsImageServiceInterface.php
+        │   │   └── HttpClientInterface.php
+        │   │
+        │   └── Wikitext/                           # Wikitext processing services
+        │       ├── WikitextFixerService.php
+        │       └── WikitextRetrieverService.php    # [logic from get_text.php]
+        │
+        └── bootstrap.php                           # Application bootstrap
 ```
 
 ## Namespace Structure
 
 All new code follows the `MDWiki\NewHtml\{Layer}\{Component}` namespace pattern:
 
-- `MDWiki\NewHtml\Application\Controllers\*` - Application controllers
-- `MDWiki\NewHtml\Application\Handlers\*` - Request handlers
-- `MDWiki\NewHtml\Services\Api\*` - API services
-- `MDWiki\NewHtml\Services\Html\*` - HTML services
-- `MDWiki\NewHtml\Services\Wikitext\*` - Wikitext services
-- `MDWiki\NewHtml\Domain\Parser\*` - Parsers
-- `MDWiki\NewHtml\Domain\Fixes\{Category}\*` - Fix operations
-- `MDWiki\NewHtml\Infrastructure\Utils\*` - Utilities
-- `MDWiki\NewHtml\Infrastructure\Debug\*` - Debug tools
+-   `MDWiki\NewHtml\Application\Controllers\*` - Application controllers
+-   `MDWiki\NewHtml\Application\Handlers\*` - Request handlers
+-   `MDWiki\NewHtml\Services\Api\*` - API services
+-   `MDWiki\NewHtml\Services\Html\*` - HTML services
+-   `MDWiki\NewHtml\Services\Wikitext\*` - Wikitext services
+-   `MDWiki\NewHtml\Domain\Parser\*` - Parsers
+-   `MDWiki\NewHtml\Domain\Fixes\{Category}\*` - Fix operations
+-   `MDWiki\NewHtml\Infrastructure\Utils\*` - Utilities
+-   `MDWiki\NewHtml\Infrastructure\Debug\*` - Debug tools
 
 ## Backward Compatibility
 
 All legacy namespaces are still supported through compatibility wrappers:
 
-- `Printn\*` → `MDWiki\NewHtml\Infrastructure\Debug\*`
-- `NewHtml\FileHelps\*` → `MDWiki\NewHtml\Infrastructure\Utils\*`
-- `HtmlFixes\*` → `MDWiki\NewHtml\Infrastructure\Utils\*`
-- `WikiParse\*` → `MDWiki\NewHtml\Domain\Parser\*`
-- `Lead\*` → `MDWiki\NewHtml\Domain\Parser\*`
-- `Fixes\*` → `MDWiki\NewHtml\Domain\Fixes\*`
-- `APIServices\*` → `MDWiki\NewHtml\Services\Api\*`
-- `Segments\*` → `MDWiki\NewHtml\Services\Html\*`
-- `Html\*` → `MDWiki\NewHtml\Services\Html\*`
-- `FixText\*` → `MDWiki\NewHtml\Services\Wikitext\*`
-- `NewHtml\JsonData\*` → `MDWiki\NewHtml\Application\Controllers\*`
-- `Wikitext\*` → `MDWiki\NewHtml\Application\Handlers\*`
-- `PostMdwiki\*` → `MDWiki\NewHtml\Application\Handlers\*`
+-   `Printn\*` → `MDWiki\NewHtml\Infrastructure\Debug\*`
+-   `NewHtml\FileHelps\*` → `MDWiki\NewHtml\Infrastructure\Utils\*`
+-   `HtmlFixes\*` → `MDWiki\NewHtml\Infrastructure\Utils\*`
+-   `WikiParse\*` → `MDWiki\NewHtml\Domain\Parser\*`
+-   `Lead\*` → `MDWiki\NewHtml\Domain\Parser\*`
+-   `Fixes\*` → `MDWiki\NewHtml\Domain\Fixes\*`
+-   `APIServices\*` → `MDWiki\NewHtml\Services\Api\*`
+-   `Segments\*` → `MDWiki\NewHtml\Services\Html\*`
+-   `Html\*` → `MDWiki\NewHtml\Services\Html\*`
+-   `FixText\*` → `MDWiki\NewHtml\Services\Wikitext\*`
+-   `NewHtml\JsonData\*` → `MDWiki\NewHtml\Application\Controllers\*`
+-   `Wikitext\*` → `MDWiki\NewHtml\Application\Handlers\*`
+-   `PostMdwiki\*` → `MDWiki\NewHtml\Application\Handlers\*`
 
 ## Migration Guide
 
@@ -168,41 +179,49 @@ composer phpstan
 ## Benefits of New Structure
 
 ### Code Quality
-- ✅ Better organized and maintainable
-- ✅ Easier to understand for new developers
-- ✅ Clear dependency boundaries
-- ✅ Improved testability
+
+-   ✅ Better organized and maintainable
+-   ✅ Easier to understand for new developers
+-   ✅ Clear dependency boundaries
+-   ✅ Improved testability
 
 ### Development Experience
-- ✅ Faster feature development
-- ✅ Easier to locate and modify code
-- ✅ Better IDE support (autocomplete, navigation)
-- ✅ Reduced cognitive load
+
+-   ✅ Faster feature development
+-   ✅ Easier to locate and modify code
+-   ✅ Better IDE support (autocomplete, navigation)
+-   ✅ Reduced cognitive load
 
 ### Scalability
-- ✅ Easy to add new features
-- ✅ Simple to refactor individual components
-- ✅ Better support for dependency injection
-- ✅ Preparation for future enhancements
+
+-   ✅ Easy to add new features
+-   ✅ Simple to refactor individual components
+-   ✅ Better support for dependency injection
+-   ✅ Preparation for future enhancements
 
 ### Maintainability
-- ✅ Clear responsibility for each component
-- ✅ Easier to identify and fix bugs
-- ✅ Simplified onboarding for new team members
-- ✅ Better documentation structure
+
+-   ✅ Clear responsibility for each component
+-   ✅ Easier to identify and fix bugs
+-   ✅ Simplified onboarding for new team members
+-   ✅ Better documentation structure
 
 ## Architecture Layers
 
 ### Application Layer
+
 Entry points and request handlers. This is where HTTP requests are processed and responses are generated.
 
 ### Service Layer
+
 Business operations and external API integrations. Services orchestrate domain logic and infrastructure.
 
 ### Domain Layer
+
 Core business logic including parsers and fix operations. This is where the essential wikitext processing happens.
 
 ### Infrastructure Layer
+
 Utilities and support code. File I/O, HTML utilities, debugging tools, etc.
 
 ## Contributing
@@ -218,6 +237,7 @@ When adding new features:
 ## Questions?
 
 For questions about the new architecture, please refer to:
-- `REFACTORING_PLAN.md` - Detailed refactoring plan
-- This README - Architecture overview
-- Code comments - Inline documentation
+
+-   `REFACTORING_PLAN.md` - Detailed refactoring plan
+-   This README - Architecture overview
+-   Code comments - Inline documentation

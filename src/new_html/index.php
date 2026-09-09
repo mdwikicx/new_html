@@ -1,5 +1,8 @@
 <?php
 
+use function MDWiki\NewHtmlMain\Utils\set_cors_headers;
+use function MDWiki\NewHtmlMain\Main\start;
+
 /**
  * Route handler for new_html application
  *
@@ -10,11 +13,40 @@
  * @package MDWiki\NewHtml
  */
 
-// http://localhost:14/new_html/
+function get_content_type(string $printetxt): string
+{
+    $content_types = [
+        "wikitext" => "text/plain",
+        "html" => "text/html",
+        "seg" => "text/html",
+    ];
+
+    return $content_types[$printetxt] ?? "application/json";
+}
 
 if ((empty($_GET) && empty($_POST)) || (count($_GET) == 1 && isset($_GET["test"]))) {
     // require_once __DIR__ . "/revisions.html";
     header("Location: revisions.html");
 } else {
+    $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
+    $content_type = get_content_type($printetxt);
+    header("Content-type: $content_type");
+
+    require_once __DIR__ . "/bootstrap.php";
+    set_cors_headers();
+
     require_once __DIR__ . "/main.php";
+
+    $title = $_GET['title'] ?? '';
+    // first litter in $title must be capital
+    $title = ucfirst($title);
+
+    if (empty($title)) {
+        header("Content-type: application/json");
+        echo json_encode([
+            'error' => 'title is empty',
+        ]);
+        exit;
+    }
+    start($_GET, $title);
 }

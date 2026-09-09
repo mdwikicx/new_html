@@ -12,8 +12,7 @@
 namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
-use MDWiki\NewHtml\Services\Api\CommonsImageService;
-use function MDWiki\NewHtml\Domain\Parser\getTemplates;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 class RemoveMissingImagesService
 {
@@ -38,7 +37,8 @@ class RemoveMissingImagesService
     public function removeMissingInfoboxImages(string $text): string
     {
         // First, try to parse templates using getTemplates
-        $templates = getTemplates($text);
+        $parser = new ParserTemplates($text);
+        $templates = $parser->getTemplates();
 
         // Process templates using the template parser
         foreach ($templates as $template) {
@@ -187,23 +187,10 @@ class RemoveMissingImagesService
      * @param string $text The wikitext to process
      * @return string The processed wikitext with missing images removed
      */
-    public function removeMissingImages(string $text): string
+    public function run(string $text): string
     {
         $text = $this->removeMissingInfoboxImages($text);
         $text = $this->removeMissingInlineImages($text);
         return $text;
     }
-}
-
-/**
- * Legacy function: Remove all missing images (both infobox and inline)
- * Uses default CommonsImageService
- *
- * @param string $text The wikitext to process
- * @return string The processed wikitext with missing images removed
- */
-function removeMissingImages(string $text): string
-{
-    $service = new RemoveMissingImagesService(new CommonsImageService());
-    return $service->removeMissingImages($text);
 }

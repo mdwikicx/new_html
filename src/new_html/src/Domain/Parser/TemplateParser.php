@@ -234,3 +234,188 @@ class Template
         return $result;
     }
 }
+
+/**
+ * Parser for a single MediaWiki template
+ */
+class ParserTemplate
+{
+    private string $templateText;
+    private string $name;
+    /** @var array<string|int, string> */
+    private array $parameters;
+    private string $pipe = "|";
+    private string $pipeR = "-_-";
+
+    /**
+     * Constructor for ParserTemplate
+     *
+     * @param string $templateText The template text to parse
+     */
+    public function __construct(string $templateText)
+    {
+        $this->templateText = trim($templateText);
+        $this->name = "";
+        $this->parameters = [];
+        $this->parse();
+    }
+
+    /**
+     * Parse the template text into name and parameters
+     *
+     * @return void
+     */
+    public function parse(): void
+    {
+        $this->name = "";
+        $this->parameters = [];
+        if (preg_match("/^\{\{(.*?)(\}\})$/s", $this->templateText, $matchesR)) {
+            $DTemplate = $matchesR[1];
+
+            $matches = [];
+            preg_match_all("/\{\{(.*?)\}\}/", $DTemplate, $matches);
+            foreach ($matches[1] as $matche) {
+                $DTemplate = str_replace($matche, str_replace($this->pipe, $this->pipeR, $matche), $DTemplate);
+            }
+            $matches = [];
+            preg_match_all("/\[\[(.*?)\]\]/", $DTemplate, $matches);
+            foreach ($matches[1] as $matche) {
+                $DTemplate = str_replace($matche, str_replace($this->pipe, $this->pipeR, $matche), $DTemplate);
+            }
+            /*
+                TODO: use preg_replace_callback() after testing nested templates more thoroughly
+                $pipe = $this->pipe;
+                $pipeR = $this->pipeR;
+                $DTemplate = preg_replace_callback("/\{\{(.*?)\}\}/s", function ($m) use ($pipe, $pipeR) {
+                    return str_replace($pipe, $pipeR, $m[0]);
+                }, $DTemplate);
+                $DTemplate = preg_replace_callback("/\[\[(.*?)\]\]/s", function ($m) use ($pipe, $pipeR) {
+                    return str_replace($pipe, $pipeR, $m[0]);
+                }, $DTemplate);
+            */
+            $params = explode("|", $DTemplate);
+            $pipeR = $this->pipeR;
+            $pipe = $this->pipe;
+            $params = array_map(function ($string) use ($pipeR, $pipe) {
+                return str_replace($pipeR, $pipe, $string);
+            }, $params);
+            $data = [];
+            $this->name = $params[0];
+            for ($i = 1; $i < count($params); $i++) {
+                $param = $params[$i];
+                if (strpos($param, "=") !== false) {
+                    $parts = explode("=", $param, 2);
+                    $key = trim($parts[0]);
+                    $value = trim($parts[1]);
+                    $data[$key] = $value;
+                } else {
+                    $data[$i] = $param;
+                }
+            }
+            $this->parameters = $data;
+        }
+    }
+
+    /**
+     * Get the parsed Template object
+     *
+     * @return Template The parsed template
+     */
+    public function getTemplate(): Template
+    {
+        return new Template($this->name, $this->parameters, $this->templateText);
+    }
+}
+
+
+/**
+ * Parser for multiple MediaWiki templates in text
+ */
+class ParserTemplates
+{
+    private string $text;
+    /** @var array<int, Template> */
+    private array $templates;
+
+    /**
+     * Constructor for ParserTemplates
+     *
+     * @param string $text The text containing templates to parse
+     */
+    public function __construct(string $text)
+    {
+        $this->text = $text;
+        $this->templates = [];
+        if (!empty($text)) {
+            $this->parse();
+        }
+    }
+    /**
+     * Find all sub-templates in a string using regex recursion
+     *
+     * @param string $string The string to search
+     * @return array<int, array<int, string>> Array of matches
+     */
+    private function find_sub_templates(string $string): array
+    {
+        preg_match_all("/\{{2}((?>[^\{\}]+)|(?R))*\}{2}/xm", $string, $matches);
+        return $matches;
+    }
+
+    /**
+     * Parse sub-templates from text
+     *
+     * @param string $text The text to parse
+     * @return void
+     */
+    private function parse_sub(string $text): void
+    {
+        $text_templates = $this->find_sub_templates($text);
+        foreach ($text_templates[0] as $text_template) {
+            $_parser = new ParserTemplate($text_template);
+            $this->templates[] = $_parser->getTemplate();
+        }
+        // echo "lenth this->templates:" . count($this->templates) . "\n";
+    }
+
+    /**
+     * Parse all templates from the text
+     *
+     * @return void
+     */
+    public function parse(): void
+    {
+        $text_templates = $this->find_sub_templates($this->text);
+        foreach ($text_templates[0] as $text_template) {
+            $_parser = new ParserTemplate($text_template);
+            $this->templates[] = $_parser->getTemplate();
+            $text_template2 = trim($text_template);
+            // remove first 2 litters and 2 last
+            $text_template2 = substr($text_template2, 2, -2);
+            $this->parse_sub($text_template2);
+        }
+        // echo "lenth this->templates:" . count($this->templates) . "\n";
+    }
+
+    /**
+     * Get all parsed templates
+     *
+     * @return array<int, Template> Array of Template objects
+     */
+    public function getTemplates(): array
+    {
+        return $this->templates;
+    }
+    public function expendAllTemplates(int $ljust = 17): string
+    {
+        $new_text = $this->text;
+
+        foreach ($this->templates as $temp) {
+            $old_text_template = $temp->getTemplateText();
+            $new_text_str = $temp->toString(true, $ljust);
+            $new_text = str_replace($old_text_template, $new_text_str, $new_text);
+        };
+
+        return $new_text;
+    }
+}

@@ -15,7 +15,7 @@ use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
 use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
-use function MDWiki\NewHtml\Services\Api\convertWikitextToHtml;
+use MDWiki\NewHtml\Services\Api\TransformApiService;
 
 /**
  * Convert wikitext to HTML using the API and apply fixes
@@ -24,19 +24,24 @@ use function MDWiki\NewHtml\Services\Api\convertWikitextToHtml;
  * @param string $title The page title for context
  * @return mixed The HTML result or empty string on failure
  */
-function do_wiki_text_to_html(string $wikitext, string $title): mixed
+function _do_wiki_text_to_html(string $wikitext, string $title): mixed
 {
 
     $title = str_replace(" ", "_", $title);
 
-    if (empty($wikitext)) return "";
+    if (empty($wikitext)) {
+        return "";
+    }
 
-    $fixed = convertWikitextToHtml($wikitext, $title);
+    $transform = new TransformApiService();
+    $fixed = $transform->convert($wikitext, $title);
 
     $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? '';
 
-    if (empty($result)) return "";
+    if (empty($result)) {
+        return "";
+    }
 
     $result = del_div_error($result);
     $result = fix_link_red($result);
@@ -58,17 +63,21 @@ function wiki_text_to_html(string $wikitext, string $file_html, string $title, b
     $from_cache = false;
 
     if (!$new) {
-
         $text = read_file($file_html);
-
-        if (!empty($text)) return [$text, true];
+        if (!empty($text)) {
+            return [$text, true];
+        }
     }
 
-    if (empty($wikitext)) return ["", $from_cache];
+    if (empty($wikitext)) {
+        return ["", $from_cache];
+    }
 
-    $result = do_wiki_text_to_html($wikitext, $title);
+    $result = _do_wiki_text_to_html($wikitext, $title);
 
-    if (empty($result)) return ["", $from_cache];
+    if (empty($result)) {
+        return ["", $from_cache];
+    }
 
     file_write($file_html, $result);
 

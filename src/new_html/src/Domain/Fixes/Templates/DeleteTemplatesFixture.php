@@ -12,7 +12,7 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Templates;
 
-use function MDWiki\NewHtml\Domain\Parser\getTemplates;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 /**
  * Check if a template matches deletion patterns and remove it
@@ -92,7 +92,8 @@ function check_temp_to_delete(string $name): bool
  */
 function remove_templates(string $text): string
 {
-    $temps_in = getTemplates($text);
+    $parser = new ParserTemplates($text);
+    $temps_in = $parser->getTemplates();
 
     $new_text = $text;
 

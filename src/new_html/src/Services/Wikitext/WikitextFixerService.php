@@ -11,6 +11,9 @@
 
 namespace MDWiki\NewHtml\Services\Wikitext;
 
+use MDWiki\NewHtml\Services\Api\CommonsImageService;
+use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
+
 use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
@@ -18,37 +21,81 @@ use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
-use function MDWiki\NewHtml\Domain\Fixes\Media\removeMissingImages;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
+use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
+// use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 
-/**
- * Fix wikitext by removing unwanted templates, refs, and other elements
- *
- * @param string $text The wikitext to fix
- * @param string $title The page title for context
- * @return string The fixed wikitext
- */
-function fix_wikitext(string $text, string $title): string
+class WikitextFixerService
 {
-    $text = str_replace("{{drugbox", "{{Infobox drug", $text);
-    $text = str_replace("{{Drugbox", "{{Infobox drug", $text);
+    public function __construct()
+    {
+        // init
+    }
 
-    $text = remove_templates($text);
-    $text = remove_lead_templates($text);
+    /**
+     * Fix wikitext by removing unwanted templates, refs, and other elements
+     *
+     * @param string $text The wikitext to fix
+     * @param string $title The page title for context
+     * @return string The fixed wikitext
+     */
+    public function fix(string $text, string $title): string
+    {
+        // Replace templates
+        $text = str_replace("{{drugbox", "{{Infobox drug", $text);
+        $text = str_replace("{{Drugbox", "{{Infobox drug", $text);
 
-    $text = remove_bad_refs($text);
-    $text = del_empty_refs($text);
+        // Clean up templates
+        $text = remove_templates($text);
+        $text = remove_lead_templates($text);
 
-    // $text = remove_lang_links($text);
+        // Clean up references
+        $text = remove_bad_refs($text);
+        $text = del_empty_refs($text);
 
-    $text = remove_videos($text);
+        // Remove language links
+        // $text = remove_lang_links($text);
 
-    // $text = remove_images($text);
+        // Remove videos
+        $text = remove_videos($text);
+        // $text = remove_images($text);
 
-    $text = remove_categories($text);
+        // Remove categories
+        $text = remove_categories($text);
 
-    $text = removeMissingImages($text);
+        // Handle missing images and add title
+        $service = new RemoveMissingImagesService(new CommonsImageService());
+        $text = $service->run($text);
 
-    $text = add_missing_title($text, $title);
+        // Add a missing title parameter to infobox templates.
+        $text = add_missing_title($text, $title);
+        // *******************
+        // *******************
 
-    return $text;
+        return $text;
+    }
+
+    /**
+     * Extracts the lead section from the given text and expands its references if applicable.
+     */
+    public function stripTextIntoLeadSection(string $text): string
+    {
+        $lead = get_lead_section($text);
+
+        if ($lead && $lead !== $text) {
+            return expand_text_refs($lead, $text);
+        }
+
+        return $text;
+    }
+
+    public function run(string $text, string $title, bool $lead_only = false): string
+    {
+        if ($lead_only) {
+            $text = $this->stripTextIntoLeadSection($text);
+        }
+        $text = $this->fix($text, $title);
+
+        return $text;
+    }
 }

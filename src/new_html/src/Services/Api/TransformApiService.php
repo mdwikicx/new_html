@@ -45,7 +45,7 @@ class TransformApiService
      * @param string $title The title of the page (used for context in conversion)
      * @return array<string, string> Array with 'result' key on success or 'error' key on failure
      */
-    public function convertWikitextToHtml(string $text, string $title): array
+    public function convert(string $text, string $title): array
     {
         $titleEncoded = str_replace("/", "%2F", $title);
         // $titleEncoded = str_replace(" ", "_", $titleEncoded);
@@ -81,19 +81,4 @@ class TransformApiService
 
         return ['result' => $response];
     }
-}
-
-/**
- * Legacy function for backward compatibility
- *
- * Converts wikitext to HTML using the Wikipedia REST API.
- *
- * @param string $text The wikitext to convert
- * @param string $title The title of the page (used for context in conversion)
- * @return array<string, string> Array with 'result' key on success or 'error' key on failure
- */
-function convertWikitextToHtml(string $text, string $title): array
-{
-    $service = new TransformApiService();
-    return $service->convertWikitextToHtml($text, $title);
 }

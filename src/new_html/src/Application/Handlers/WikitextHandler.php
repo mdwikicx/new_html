@@ -11,12 +11,12 @@
 
 namespace MDWiki\NewHtml\Application\Handlers;
 
-use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
+use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
-use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
-use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestApi;
+use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 
 /**
  * Get wikitext for a page
@@ -29,14 +29,15 @@ use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestApi;
 function get_wikitext(string $title, string $file, bool $just_lead = false): array
 {
 
+    $service = new MdwikiApiService();
     $title = str_replace(" ", "_", $title);
-    $json1 = getWikitextFromMdwikiRestApi($title);
+    $json1 = $service->getWikitextFromMdwikiRestApi($title);
 
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $json1["source"], $matches)) {
         $title = $matches[1];
         test_print("Redirecting to: $title\n");
-        $json1 = getWikitextFromMdwikiRestApi($title);
+        $json1 = $service->getWikitextFromMdwikiRestApi($title);
     }
 
     $source = $json1["source"];
@@ -66,11 +67,12 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
         $full_text = $source;
         $lead = get_lead_section($full_text);
         if (!empty($lead)) {
-            $source = refs_expend_work($lead, $full_text);
+            $source = expand_text_refs($lead, $full_text);
         }
     }
+    $service = new WikitextFixerService();
+    $source = $service->fix($source, $title);
 
-    $source = fix_wikitext($source, $title);
     $result["source"] = $source;
 
     return $result;

@@ -26,9 +26,7 @@ src/
     │   │       ├── CategoryParser.php
     │   │       ├── CitationsParser.php
     │   │       ├── LeadSectionParser.php
-    │   │       ├── ParserTemplate.php
-    │   │       ├── ParserTemplates.php
-    │   │       └── Template.php
+    │   │       └── TemplateParser.php
     │   ├── Infrastructure/
     │   │   ├── Debug/
     │   │   │   └── PrintHelper.php
@@ -45,20 +43,19 @@ src/
     │   │   ├── Html/
     │   │   │   ├── HtmlToSegmentsService.php
     │   │   │   └── WikitextToHtmlService.php
+        │   │
     │   │   ├── Interfaces/
     │   │   │   ├── CommonsImageServiceInterface.php
     │   │   │   └── HttpClientInterface.php
+        │   │
     │   │   └── Wikitext/
     │   │       └── WikitextFixerService.php
     │   └── bootstrap.php
     ├── bootstrap.php
-    ├── check.php
     ├── fix.php
     ├── index.php
-    ├── load_env.php
     ├── main.php
     ├── open.php
-    ├── require.php
     ├── revisions_api.php
     └── utils.php
 

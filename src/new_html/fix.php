@@ -30,15 +30,22 @@
 
 require_once __DIR__ . "/bootstrap.php";
 
-use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 $text = $_POST['text'] ?? '';
 $title = $_POST['title'] ?? '';
+$lead_only = (isset($_POST['lead_only']) && $_POST['lead_only'] == 'on');
+$lead_only_checked = $lead_only ? 'checked' : '';
 
 $msg = "";
 
+$changed_text = $text;
+
 if ($text && $title) {
-    $changed_text = fix_wikitext($text, $title);
+
+    $service = new WikitextFixerService();
+    $changed_text = $service->run($text, $title, $lead_only);
+
     if ($changed_text == $text) {
         $msg = <<<HTML
             <div class="alert alert-warning" role="alert">
@@ -46,7 +53,6 @@ if ($text && $title) {
             </div>
         HTML;
     } else {
-        $text = $changed_text;
         $msg = <<<HTML
             <div class="alert alert-success" role="alert">
                 Changes made.
@@ -54,37 +60,48 @@ if ($text && $title) {
         HTML;
     }
 }
-
-?>
-<div class="container">
-    <div class='card'>
-        <div class='card-header aligncenter' style='font-weight:bold;'>
-            input infos
-        </div>
-        <div class='card-body'>
-            <form action='fix.php' method='POST'>
-                <div class='container'>
-                    <div class='row'>
-                        <div class='col-md-3'>
-                            <div class='input-group mb-3'>
-                                <div class='input-group-prepend'>
-                                    <span class='input-group-text'>title</span>
+echo <<<HTML
+    <div class="container">
+        $msg
+        <div class='card'>
+            <div class='card-header aligncenter' style='font-weight:bold;'>
+                Test
+            </div>
+            <div class='card-body'>
+                <form action='fix.php' method='POST'>
+                    <div class='container'>
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                <div class='input-group mb-3'>
+                                    <div class='input-group-prepend'>
+                                        <span class='input-group-text'>title</span>
+                                    </div>
+                                    <input class='form-control' type='text' id='title' name='title' value='$title' />
                                 </div>
-                                <input class='form-control' type='text' id='title' name='title' value='<?php echo $title; ?>' />
+                            </div>
+                            <div class='col-md-3'>
+                                <!-- check box with id lead_only -->
+                                <div class='input-group mb-3'>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="on" id="lead_only" name="lead_only" $lead_only_checked>
+                                        <label class="form-check-label" for="lead_only">
+                                            Lead only
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-md-3'>
+                                <h4 class='aligncenter'>
+                                    <input class='btn btn-outline-primary' type='submit' value='start'>
+                                </h4>
                             </div>
                         </div>
-                        <div class='col-md-3'>
-                            <h4 class='aligncenter'>
-                                <input class='btn btn-outline-primary' type='submit' value='start'>
-                            </h4>
-                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <textarea id="text" name="text" rows="5" class="form-control" required><?php echo $text; ?></textarea>
-                </div>
-            </form>
-            <?php echo $msg; ?>
+                    <div class="mb-3">
+                        <textarea id="text" name="text" rows="15" class="form-control" required>$changed_text</textarea>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+HTML;
