@@ -8,6 +8,7 @@ readonly TARGET_DIR="$HOME/public_html/new_html_1"
 readonly CLONE_DIR="$HOME/new_html_temp"
 readonly CLEAN_INSTALL="${CLEAN_INSTALL:-1}"
 readonly BRANCH="${1:-main}"
+
 # Centralized backup directory
 readonly OLD_REPOS_BASE="${HOME}/old_repos"
 
@@ -45,7 +46,7 @@ main() {
     log_info "Removing vendor and composer.lock..."
     rm -rf "$CLONE_DIR/vendor" "$CLONE_DIR/composer.lock"
 
-    mv "$CLONE_DIR/src" "$CLONE_DIR/new_html"
+    # mv "$CLONE_DIR/src" "$CLONE_DIR/new_html"
 
     # Handle clean install
     if [ "$CLEAN_INSTALL" -eq 1 ]; then
@@ -60,11 +61,11 @@ main() {
             log_warn "Archiving old version to: $backup_dir"
             mv "$TARGET_DIR" "$backup_dir"
         fi
-        mv "$CLONE_DIR/new_html" "$TARGET_DIR"
+        mv "$CLONE_DIR/src/new_html" "$TARGET_DIR"
     else
         log_info "Updating existing installation..."
         mkdir -p "$TARGET_DIR"
-        cp -rf "$CLONE_DIR"/new_html/* "$TARGET_DIR/"
+        cp -rf "$CLONE_DIR"/src/new_html/* "$TARGET_DIR/"
     fi
 
     # copy composer_public_html.json to $HOME/public_html

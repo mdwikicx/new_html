@@ -77,146 +77,164 @@ vendor/bin/phpunit --filter testGetCategoriesWithMultipleCategories tests/WikiPa
 ### WikiParse Module Tests (4 files, ~100 tests)
 
 **CategoryTest.php** - Tests category extraction functionality:
-- Single and multiple categories
-- Categories with sort keys
-- Case insensitive matching
-- Whitespace handling
-- Special characters
-- Edge cases (empty text, no categories)
+
+-   Single and multiple categories
+-   Categories with sort keys
+-   Case insensitive matching
+-   Whitespace handling
+-   Special characters
+-   Edge cases (empty text, no categories)
 
 **CitationsRegTest.php** - Tests citation/reference parsing:
-- Full references with and without names
-- Short self-closing references
-- Multiple citation extraction
-- Name attribute parsing (quoted and unquoted)
-- Complex attributes and nested content
-- Edge cases (anonymous refs, empty names)
+
+-   Full references with and without names
+-   Short self-closing references
+-   Multiple citation extraction
+-   Name attribute parsing (quoted and unquoted)
+-   Complex attributes and nested content
+-   Edge cases (anonymous refs, empty names)
 
 **ParserTemplatesTest.php** - Tests template parsing and manipulation:
-- Template construction and parameter access
-- Parameter setting, deletion, and renaming
-- Template to string conversion (inline and multiline)
-- Nested template parsing
-- Multiple template extraction
-- Edge cases (empty text, malformed templates)
+
+-   Template construction and parameter access
+-   Parameter setting, deletion, and renaming
+-   Template to string conversion (inline and multiline)
+-   Nested template parsing
+-   Multiple template extraction
+-   Edge cases (empty text, malformed templates)
 
 **LeadSectionTest.php** - Tests lead section extraction:
-- Section splitting at headings
-- References section addition
-- Multi-level heading handling
-- Content preservation (templates, links, formatting)
-- Edge cases (no sections, empty lead)
+
+-   Section splitting at headings
+-   References section addition
+-   Multi-level heading handling
+-   Content preservation (templates, links, formatting)
+-   Edge cases (no sections, empty lead)
 
 ### WikiTextFixes Module Tests (8 files, ~150 tests)
 
 **DelMtRefsTest.php** - Tests empty reference deletion:
-- Orphan short reference removal
-- Full reference replacement
-- Multiple reference handling
-- Anonymous reference preservation
-- Complex name matching
+
+-   Orphan short reference removal
+-   Full reference replacement
+-   Multiple reference handling
+-   Anonymous reference preservation
+-   Complex name matching
 
 **DelTempsTest.php** - Tests template removal:
-- Metadata template deletion (short description, featured article, etc.)
-- Stub template removal
-- Protection template removal
-- Pattern-based removal (pp-*, articles *, *-stub)
-- Lead template extraction (infobox, drugbox, speciesbox)
-- Case insensitive matching
+
+-   Metadata template deletion (short description, featured article, etc.)
+-   Stub template removal
+-   Protection template removal
+-   Pattern-based removal (pp-_, articles _, \*-stub)
+-   Lead template extraction (infobox, drugbox, speciesbox)
+-   Case insensitive matching
 
 **ExpendRefsTest.php** - Tests reference expansion:
-- Short reference expansion with full content
-- Handling existing full references
-- Multiple reference expansion
-- Empty alltext fallback
-- Special characters in reference names
+
+-   Short reference expansion with full content
+-   Handling existing full references
+-   Multiple reference expansion
+-   Empty alltext fallback
+-   Special characters in reference names
 
 **FixCatsTest.php** - Tests category removal:
-- Single and multiple category removal
-- Categories with sort keys
-- Case variation handling
-- Preserving other wiki elements
-- Edge cases (inline categories, duplicates)
+
+-   Single and multiple category removal
+-   Categories with sort keys
+-   Case variation handling
+-   Preserving other wiki elements
+-   Edge cases (inline categories, duplicates)
 
 **FixImagesTest.php** - Tests image and video handling:
-- Image wrapping with #ifexist
-- Video file removal (webm, ogv, ogg, mp4)
-- Complex parameter preservation
-- Nested content handling
-- Extension case sensitivity
+
+-   Image wrapping with #ifexist
+-   Video file removal (webm, ogv, ogg, mp4)
+-   Complex parameter preservation
+-   Nested content handling
+-   Extension case sensitivity
 
 **FixLangsLinksTest.php** - Tests language link removal:
-- Interwiki language link removal
-- Multiple language handling
-- Preserving normal links and categories
-- Special characters and complex names
-- Pattern matching across known language codes
+
+-   Interwiki language link removal
+-   Multiple language handling
+-   Preserving normal links and categories
+-   Special characters and complex names
+-   Pattern matching across known language codes
 
 **FixTempsTest.php** - Tests template title fixing:
-- Missing title addition for infoboxes and drugboxes
-- Empty/whitespace title replacement
-- Multiple template handling
-- Parameter preservation
-- Case insensitive template matching
+
+-   Missing title addition for infoboxes and drugboxes
+-   Empty/whitespace title replacement
+-   Multiple template handling
+-   Parameter preservation
+-   Case insensitive template matching
 
 **RefWorkTest.php** - Tests bad reference removal:
-- Predatory journal detection (DOI patterns)
-- Open access journal filtering
-- Self-published source detection
-- URL pattern matching
-- Multiple bad reference removal
-- Good reference preservation
+
+-   Predatory journal detection (DOI patterns)
+-   Open access journal filtering
+-   Self-published source detection
+-   URL pattern matching
+-   Multiple bad reference removal
+-   Good reference preservation
 
 ### APIServices Module Tests (4 files, ~80 tests)
 
 **HttpClientServiceTest.php** - Tests HTTP request functionality:
-- GET and POST requests
-- Parameter handling
-- Error handling (invalid URLs, timeouts)
-- User agent setting
-- HTTP status code handling
-- Network availability checking
+
+-   GET and POST requests
+-   Parameter handling
+-   Error handling (invalid URLs, timeouts)
+-   User agent setting
+-   HTTP status code handling
+-   Network availability checking
 
 **MdwikiApiTest.php** - Tests MDWiki API integration:
-- Wikitext fetching via API and REST endpoints
-- Valid and invalid article handling
-- Special character handling
-- Revision ID extraction
-- API consistency checking
-- Network availability detection
+
+-   Wikitext fetching via API and REST endpoints
+-   Valid and invalid article handling
+-   Special character handling
+-   Revision ID extraction
+-   API consistency checking
+-   Network availability detection
 
 **SegApiTest.php** - Tests HTML segmentation API:
-- Simple and complex HTML segmentation
-- Various HTML elements (headings, lists, tables)
-- Unicode and special character handling
-- Error handling
-- Large document handling
-- API availability checking
+
+-   Simple and complex HTML segmentation
+-   Various HTML elements (headings, lists, tables)
+-   Unicode and special character handling
+-   Error handling
+-   Large document handling
+-   API availability checking
 
 **TransformApiTest.php** - Tests wikitext to HTML transformation:
-- Basic wikitext conversion
-- Wiki markup (bold, italic, links, headings)
-- Templates and references
-- Lists, tables, and images
-- Unicode character handling
-- Title with special characters
-- API availability checking
+
+-   Basic wikitext conversion
+-   Wiki markup (bold, italic, links, headings)
+-   Templates and references
+-   Lists, tables, and images
+-   Unicode character handling
+-   Title with special characters
+-   API availability checking
 
 ### EntryPoints Module Tests (2 files, ~35 tests)
 
 **CheckTest.php** - Tests revision check endpoint:
-- Missing and empty revid handling
-- Directory and file existence checking
-- Boolean output validation
-- Security (path traversal prevention)
-- Test mode activation
+
+-   Missing and empty revid handling
+-   Directory and file existence checking
+-   Boolean output validation
+-   Security (path traversal prevention)
+-   Test mode activation
 
 **JsonDataTest.php** - Tests JSON data management:
-- Title-revision mapping
-- Data retrieval and storage
-- File handling (empty, corrupted)
-- Special character handling
-- Large dataset handling
+
+-   Title-revision mapping
+-   Data retrieval and storage
+-   File handling (empty, corrupted)
+-   Special character handling
+-   Large dataset handling
 
 ## Test Features
 
@@ -238,34 +256,36 @@ This makes tests safe to run offline or in CI environments without network acces
 ### Edge Case Coverage
 
 Each test suite includes comprehensive edge case testing:
-- Empty inputs
-- Special characters and Unicode
-- Malformed data
-- Boundary conditions
-- Security concerns (injection, path traversal)
+
+-   Empty inputs
+-   Special characters and Unicode
+-   Malformed data
+-   Boundary conditions
+-   Security concerns (injection, path traversal)
 
 ### Integration Testing
 
 API tests verify real-world integration with:
-- MDWiki.org REST API
-- Wikipedia Transform API
-- HtmltoSegments service
-- HTTP request handling
+
+-   MDWiki.org REST API
+-   Wikipedia Transform API
+-   HtmltoSegments service
+-   HTTP request handling
 
 ## Test Conventions
 
 ### Naming
 
-- Test files: `{ClassName}Test.php`
-- Test methods: `test{FunctionName}With{Scenario}`
-- Example: `testGetCategoriesWithMultipleCategories`
+-   Test files: `{ClassName}Test.php`
+-   Test methods: `test{FunctionName}With{Scenario}`
+-   Example: `testGetCategoriesWithMultipleCategories`
 
 ### Assertions
 
-- Use specific assertions: `assertStringContainsString`, `assertArrayHasKey`
-- Test both positive and negative cases
-- Verify data types: `assertIsArray`, `assertIsString`
-- Check counts: `assertCount`, `assertEmpty`
+-   Use specific assertions: `assertStringContainsString`, `assertArrayHasKey`
+-   Test both positive and negative cases
+-   Verify data types: `assertIsArray`, `assertIsString`
+-   Check counts: `assertCount`, `assertEmpty`
 
 ### Structure
 
@@ -289,14 +309,16 @@ composer phpstan
 ## Continuous Integration
 
 Tests are designed to run in CI environments:
-- Automatic skipping of unavailable services
-- No external dependencies required for core tests
-- Fast execution for unit tests
-- Comprehensive coverage reporting
+
+-   Automatic skipping of unavailable services
+-   No external dependencies required for core tests
+-   Fast execution for unit tests
+-   Comprehensive coverage reporting
 
 ## Contributing
 
 When adding new functionality:
+
 1. Write tests first (TDD approach)
 2. Cover main functionality and edge cases
 3. Include negative test cases
@@ -341,6 +363,6 @@ chmod -R 755 tests/
 
 ## Additional Resources
 
-- [PHPUnit Documentation](https://phpunit.de/documentation.html)
-- [MediaWiki API Documentation](https://www.mediawiki.org/wiki/API)
-- [Project README](../README.md)
+-   [PHPUnit Documentation](https://phpunit.de/documentation.html)
+-   [MediaWiki API Documentation](https://www.mediawiki.org/wiki/API)
+-   [Project README](../README.md)

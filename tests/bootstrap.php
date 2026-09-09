@@ -36,7 +36,7 @@ if (file_exists($vendor_path)) {
 };
 
 // Use modern PSR-4 autoloading via bootstrap
-require __DIR__ . '/../new_html/bootstrap.php';
+require __DIR__ . '/../src/new_html/bootstrap.php';
 
 use PHPUnit\Framework\TestCase;
 

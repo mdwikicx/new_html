@@ -52,6 +52,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/new_html">new_html</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/new_html_1">new_html_1</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -92,7 +95,7 @@
                 data: 'title',
                 title: 'Title',
                 render: function (data, type, row) {
-                    return `<a class="card-link" href="https://mdwiki.org/wiki/index.php?title=${encodeURIComponent(data)}" target="_blank">${data}</a>`;
+                    return `<a class="card-link" href="https://mdwiki.org/wiki/${encodeURIComponent(data)}" target="_blank">${data}</a>`;
                 }
             }
         ];
