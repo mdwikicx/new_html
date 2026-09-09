@@ -98,11 +98,9 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
     $from_cache = false;
 
     try {
-
         [$HTML_text, $from_cache] = wiki_text_to_html($wikitext, $file_html, $title, $new);
-
         $HTML_text = remove_data_parsoid($HTML_text);
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         error_log("HTML generation failed for title: $title. Error: " . $e->getMessage());
         test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
         http_response_code(500);

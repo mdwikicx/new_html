@@ -73,6 +73,7 @@ foreach ($dirs as $dir) {
     $title = str_replace('_', ' ', $title);
 
     if (!empty($title) && $make_dump && !empty($oldid_number)) {
+        // @phpstan-ignore nullCoalesce.expr
         $id = (int)$oldid_number ?? 0;
         if ($id > 0) {
             if (strpos($dir_path, '_all') !== false) {
