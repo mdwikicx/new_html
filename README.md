@@ -95,7 +95,6 @@ Available wikitext transformation modules:
 | Endpoint             | Method | Description                                                             |
 | -------------------- | ------ | ----------------------------------------------------------------------- |
 | `/`                  | GET    | Main entry - router (redirects to dashboard or processes `title` param) |
-| `/check.php`         | GET    | Check if cached content exists for a revision ID                        |
 | `/open.php`          | GET    | View generated files (wikitext, HTML, segments) by revision ID          |
 | `/fix.php`           | GET    | Wikitext fix testing form                                               |
 | `/fix.php`           | POST   | Apply wikitext fixes and display result                                 |

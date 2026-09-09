@@ -23,7 +23,6 @@ use MDWiki\NewHtml\Services\Api\SegmentApiService;
  */
 function do_html_to_seg(string $text): string
 {
-
     $service = new SegmentApiService();
     $fixed = $service->HtmltoSegments($text);
 

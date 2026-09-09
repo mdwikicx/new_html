@@ -35,8 +35,8 @@ class TransformApiRealTest extends bootstrap
         $wikitext = "Simple paragraph.";
         $title = "Test";
 
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -48,8 +48,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "'''Bold text'''";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -61,8 +61,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "''Italic text''";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -74,8 +74,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "[[Article]]";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -87,8 +87,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "==Heading==\nContent";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -100,8 +100,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "{{cite web|url=http://example.com|title=Example}}";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertTrue(isset($result['result']) || isset($result['error']));
@@ -111,8 +111,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         // Empty wikitext might return error or empty result
@@ -123,8 +123,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Test content";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
     }
@@ -133,8 +133,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "* Item 1\n* Item 2\n* Item 3";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -146,8 +146,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "# First\n# Second\n# Third";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -159,8 +159,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Text with citation.<ref>Reference content</ref>";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -172,8 +172,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Content";
         $title = "Test/Subpage";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         // Should handle slashes in title
@@ -184,8 +184,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "==Section==\n'''Bold''' and ''italic''.\n* List item\n[[Link]]";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -198,8 +198,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Simple text";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -211,8 +211,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Text with unicode: ñ, é, ü, 中文";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -224,8 +224,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "{|\n|Cell 1||Cell 2\n|-\n|Cell 3||Cell 4\n|}";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -237,8 +237,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "[http://example.com Example]";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -250,8 +250,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Content [[Category:Test]]";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -263,8 +263,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "[[File:Example.jpg|thumb|Caption]]";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertTrue(isset($result['result']) || isset($result['error']));
@@ -274,8 +274,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Paragraph 1\n\nParagraph 2\n\nParagraph 3";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {
@@ -287,8 +287,8 @@ class TransformApiRealTest extends bootstrap
     {
         $wikitext = "Test";
         $title = "Test";
-        $service = new TransformApiService();
-        $result = $service->convert($wikitext, $title);
+        $transform = new TransformApiService();
+        $result = $transform->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         if (isset($result['result'])) {

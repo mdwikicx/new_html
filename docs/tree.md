@@ -52,7 +52,6 @@ src/
     │   │       └── WikitextFixerService.php
     │   └── bootstrap.php
     ├── bootstrap.php
-    ├── check.php
     ├── fix.php
     ├── index.php
     ├── load_env.php

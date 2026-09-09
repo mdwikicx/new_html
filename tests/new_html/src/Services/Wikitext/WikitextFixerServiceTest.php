@@ -4,7 +4,7 @@ namespace Tests\Services\Wikitext;
 
 use PHPUnit\Framework\TestCase;
 
-use function MDWiki\NewHtml\Services\Wikitext\expend_all_templates;
+use function MDWiki\NewHtml\Domain\Parser\expend_all_templates;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 /**

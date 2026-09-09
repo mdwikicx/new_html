@@ -21,7 +21,6 @@ use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
-use function MDWiki\NewHtml\Domain\Parser\getTemplates;
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 // use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
@@ -99,18 +98,4 @@ class WikitextFixerService
 
         return $text;
     }
-}
-
-function expend_all_templates(string $text, int $ljust = 17): string
-{
-    $temps_in = getTemplates($text);
-    $new_text = $text;
-
-    foreach ($temps_in as $temp) {
-        $old_text_template = $temp->getTemplateText();
-        $new_text_str = $temp->toString(true, $ljust);
-        $new_text = str_replace($old_text_template, $new_text_str, $new_text);
-    };
-
-    return $new_text;
 }

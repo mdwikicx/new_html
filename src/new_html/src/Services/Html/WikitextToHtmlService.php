@@ -24,20 +24,24 @@ use MDWiki\NewHtml\Services\Api\TransformApiService;
  * @param string $title The page title for context
  * @return mixed The HTML result or empty string on failure
  */
-function do_wiki_text_to_html(string $wikitext, string $title): mixed
+function _do_wiki_text_to_html(string $wikitext, string $title): mixed
 {
 
     $title = str_replace(" ", "_", $title);
 
-    if (empty($wikitext)) return "";
+    if (empty($wikitext)) {
+        return "";
+    }
 
-    $service = new TransformApiService();
-    $fixed = $service->convert($wikitext, $title);
+    $transform = new TransformApiService();
+    $fixed = $transform->convert($wikitext, $title);
 
     $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? '';
 
-    if (empty($result)) return "";
+    if (empty($result)) {
+        return "";
+    }
 
     $result = del_div_error($result);
     $result = fix_link_red($result);
@@ -59,17 +63,21 @@ function wiki_text_to_html(string $wikitext, string $file_html, string $title, b
     $from_cache = false;
 
     if (!$new) {
-
         $text = read_file($file_html);
-
-        if (!empty($text)) return [$text, true];
+        if (!empty($text)) {
+            return [$text, true];
+        }
     }
 
-    if (empty($wikitext)) return ["", $from_cache];
+    if (empty($wikitext)) {
+        return ["", $from_cache];
+    }
 
-    $result = do_wiki_text_to_html($wikitext, $title);
+    $result = _do_wiki_text_to_html($wikitext, $title);
 
-    if (empty($result)) return ["", $from_cache];
+    if (empty($result)) {
+        return ["", $from_cache];
+    }
 
     file_write($file_html, $result);
 

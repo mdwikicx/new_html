@@ -30,7 +30,9 @@ class ParserTemplates
     {
         $this->text = $text;
         $this->templates = [];
-        $this->parse();
+        if (!empty($text)) {
+            $this->parse();
+        }
     }
     /**
      * Find all sub-templates in a string using regex recursion
@@ -88,6 +90,18 @@ class ParserTemplates
     {
         return $this->templates;
     }
+    public function expendAllTemplates(int $ljust = 17): string
+    {
+        $new_text = $this->text;
+
+        foreach ($this->templates as $temp) {
+            $old_text_template = $temp->getTemplateText();
+            $new_text_str = $temp->toString(true, $ljust);
+            $new_text = str_replace($old_text_template, $new_text_str, $new_text);
+        };
+
+        return $new_text;
+    }
 }
 
 /**
@@ -98,10 +112,13 @@ class ParserTemplates
  */
 function getTemplates(string $text): array
 {
-    if (empty($text)) {
-        return [];
-    }
     $parser = new ParserTemplates($text);
     $temps = $parser->getTemplates();
     return $temps;
+}
+
+function expend_all_templates(string $text, int $ljust = 17): string
+{
+    $parser = new ParserTemplates($text);
+    return $parser->expendAllTemplates($ljust);
 }
