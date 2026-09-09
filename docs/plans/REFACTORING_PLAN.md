@@ -75,60 +75,66 @@ src/new_html_src/
 
 ```
 src/
-├── Application/                  # Application layer (entry points & controllers)
-│   ├── Controllers/
-│   │   ├── JsonDataController.php        [json_data.php]
-│   │   └── TextProcessorController.php   [new - orchestrates processing]
-│   └── Handlers/
-│       └── WikitextHandler.php           [get_text.php]
+├── Application/                            # Application layer (entry points & controllers)
+│   ├── Controllers/                        # Business logic controllers
+│   │   ├── JsonDataController.php
+│   │   └── TextProcessorController.php     # [new - orchestrates processing]
+│   └── Handlers/                           # Request handlers
+│       └── WikitextHandler.php
 │
-├── Domain/                       # Domain layer (core business logic)
-│   ├── Fixes/                    [WikiTextFixes/]
-│   │   ├── Media/
-│   │   │   ├── FixImagesFixture.php          [fix_images.php]
-│   │   │   └── RemoveMissingImagesService.php [remove_missing_images.php]
-│   │   ├── References/
-│   │   │   ├── DeleteEmptyRefsFixture.php    [del_mt_refs.php]
-│   │   │   ├── ExpandRefsFixture.php         [expend_refs.php]
-│   │   │   └── RefWorkerFixture.php          [ref_work.php]
-│   │   ├── Structure/
-│   │   │   ├── FixCategoriesFixture.php      [fix_cats.php]
-│   │   │   └── FixLanguageLinksFixture.php   [fix_langs_links.php]
-│   │   └── Templates/
-│   │       ├── DeleteTemplatesFixture.php    [del_temps.php]
-│   │       └── FixTemplatesFixture.php       [fix_temps.php]
-│   └── Parser/                   [WikiParse/]
-│       ├── CategoryParser.php            [Category.php]
-│       ├── CitationsParser.php           [Citations_reg.php]
-│       ├── LeadSectionParser.php         [lead_section.php]
-│       └── TemplateParser.php            [ParserTemplates.php]
+├── Domain/                                 # Domain layer (core business logic)
+│   ├── Fixes/                              # Wikitext fixing operations
+│   │   ├── Media/                          # Media-related fixes
+│   │   │   ├── FixImagesFixture.php
+│   │   │   └── RemoveMissingImagesService.php
+│   │   │
+│   │   ├── References/                     # Reference-related fixes
+│   │   │   ├── DeleteEmptyRefsFixture.php
+│   │   │   ├── ExpandRefsFixture.php
+│   │   │   └── RefWorkerFixture.php
+│   │   │
+│   │   ├── Structure/                      # Structural fixes
+│   │   │   ├── FixCategoriesFixture.php
+│   │   │   └── FixLanguageLinksFixture.php
+│   │   │
+│   │   └── Templates/                      # Template-related fixes
+│   │       ├── DeleteTemplatesFixture.php
+│   │       └── FixTemplatesFixture.php
+│   │
+│   └── Parser/                             # Wikitext parsing
+│       ├── CategoryParser.php
+│       ├── CitationsParser.php
+│       ├── LeadSectionParser.php
+│       └── TemplateParser.php
 │
-├── Infrastructure/               # Infrastructure layer (utilities & support)
-│   ├── Debug/
-│   │   └── PrintHelper.php               [print.php]
+├── Infrastructure/                         # Infrastructure layer (utilities & support)
+│   ├── Debug/                              # Debug utilities
+│   │   └── PrintHelper.php
 │   ├── Storage/
-│   │   ├── FileStorage.php               [new - file operations]
-│   │   └── JsonStorage.php               [logic from json_data.php]
-│   └── Utils/                    [utils/]
-│       ├── FileUtils.php                 [files_utils.php]
-│       ├── HtmlUtils.php                 [html_utils.php]
-│       └── StringUtils.php               [new - string operations]
+│   │   ├── FileStorage.php                 # [new - file operations]
+│   │   └── JsonStorage.php                 # [logic from json_data.php]
+│   └── Utils/                              # Utility functions
+│       ├── FileUtils.php
+│       ├── HtmlUtils.php
+│       └── StringUtils.php                 # [new - string operations]
 │
-├── Services/                     # Service layer (business operations)
-│   ├── Api/                      [api_services/]
-│   │   ├── CommonsApiService.php         [commons_api.php]
-│   │   ├── HttpClientService.php                [post.php]
-│   │   ├── MdwikiApiService.php          [mdwiki_api_wikitext.php]
-│   │   ├── SegmentApiService.php         [seg_api.php]
-│   │   └── TransformApiService.php       [transform_api.php]
-│   ├── Html/                     [html_services/]
-│   │   ├── HtmlToSegmentsService.php     [html_to_segments.php]
-│   │   └── WikitextToHtmlService.php     [wikitext_to_html.php]
-│   └── Wikitext/
-│       ├── WikitextFixerService.php      [fix_wikitext.php]
-│       └── WikitextRetrieverService.php  [logic from get_text.php]
+├── Services/                               # Service layer (business operations)
+│   ├── Api/                                # External API integrations
+│   │   ├── CommonsApiService.php
+│   │   ├── HttpClientService.php
+│   │   ├── MdwikiApiService.php
+│   │   ├── SegmentApiService.php
+│   │   └── TransformApiService.php
+│   │
+│   ├── Html/                               # HTML processing services
+│   │   ├── HtmlToSegmentsService.php
+│   │   └── WikitextToHtmlService.php
+│   │
+│   └── Wikitext/                           # Wikitext processing services
+│       ├── WikitextFixerService.php
+│       └── WikitextRetrieverService.php    # [logic from get_text.php]
 │
-└── bootstrap.php                 [require.php - modernized]
+└── bootstrap.php                           # Application bootstrap
 ```
 
 ### Namespace Mapping

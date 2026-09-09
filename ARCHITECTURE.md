@@ -8,67 +8,66 @@ This project has been refactored to follow modern PHP architecture patterns with
 
 ```text
 src/
-├── Application/                  # Application layer (entry points & controllers)
-│   ├── Controllers/         # Business logic controllers
+├── Application/                            # Application layer (entry points & controllers)
+│   ├── Controllers/                        # Business logic controllers
 │   │   ├── JsonDataController.php
-│   │   └── TextProcessorController.php   [new - orchestrates processing]
-│   └── Handlers/                 # Request handlers
+│   │   └── TextProcessorController.php     # [new - orchestrates processing]
+│   └── Handlers/                           # Request handlers
 │       └── WikitextHandler.php
 │
-├── Domain/                       # Domain layer (core business logic)
-│   ├── Fixes/                    # Wikitext fixing operations
-│   │   ├── Media/          # Media-related fixes
+├── Domain/                                 # Domain layer (core business logic)
+│   ├── Fixes/                              # Wikitext fixing operations
+│   │   ├── Media/                          # Media-related fixes
 │   │   │   ├── FixImagesFixture.php
 │   │   │   └── RemoveMissingImagesService.php
 │   │   │
-│   │   ├── References/     # Reference-related fixes
+│   │   ├── References/                     # Reference-related fixes
 │   │   │   ├── DeleteEmptyRefsFixture.php
 │   │   │   ├── ExpandRefsFixture.php
 │   │   │   └── RefWorkerFixture.php
 │   │   │
-│   │   ├── Structure/      # Structural fixes
+│   │   ├── Structure/                      # Structural fixes
 │   │   │   ├── FixCategoriesFixture.php
 │   │   │   └── FixLanguageLinksFixture.php
 │   │   │
-│   │   └── Templates/      # Template-related fixes
+│   │   └── Templates/                      # Template-related fixes
 │   │       ├── DeleteTemplatesFixture.php
 │   │       └── FixTemplatesFixture.php
 │   │
-│   └── Parser/                   # Wikitext parsing
+│   └── Parser/                             # Wikitext parsing
 │       ├── CategoryParser.php
 │       ├── CitationsParser.php
 │       ├── LeadSectionParser.php
 │       └── TemplateParser.php
-│   │
 │
-├── Infrastructure/               # Infrastructure layer (utilities & support)
-│   ├── Debug/                    # Debug utilities
+├── Infrastructure/                         # Infrastructure layer (utilities & support)
+│   ├── Debug/                              # Debug utilities
 │   │   └── PrintHelper.php
 │   ├── Storage/
-│   │   ├── FileStorage.php               [new - file operations]
-│   │   └── JsonStorage.php               [logic from json_data.php]
-│   └── Utils/              # Utility functions
+│   │   ├── FileStorage.php                 # [new - file operations]
+│   │   └── JsonStorage.php                 # [logic from json_data.php]
+│   └── Utils/                              # Utility functions
 │       ├── FileUtils.php
 │       ├── HtmlUtils.php
-│       └── StringUtils.php               [new - string operations]
+│       └── StringUtils.php                 # [new - string operations]
 │
-├── Services/                     # Service layer (business operations)
-│   ├── Api/                      # External API integrations
+├── Services/                               # Service layer (business operations)
+│   ├── Api/                                # External API integrations
 │   │   ├── CommonsApiService.php
 │   │   ├── HttpClientService.php
 │   │   ├── MdwikiApiService.php
 │   │   ├── SegmentApiService.php
 │   │   └── TransformApiService.php
 │   │
-│   ├── Html/                     # HTML processing services
+│   ├── Html/                               # HTML processing services
 │   │   ├── HtmlToSegmentsService.php
 │   │   └── WikitextToHtmlService.php
 │   │
-│   └── Wikitext/                 # Wikitext processing services
+│   └── Wikitext/                           # Wikitext processing services
 │       ├── WikitextFixerService.php
-│       └── WikitextRetrieverService.php  [logic from get_text.php]
+│       └── WikitextRetrieverService.php    # [logic from get_text.php]
 │
-└── bootstrap.php                 # Application bootstrap
+└── bootstrap.php                           # Application bootstrap
 ```
 
 ## Namespace Structure
