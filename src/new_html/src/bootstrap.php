@@ -25,12 +25,11 @@ require_once __DIR__ . "/Domain/Fixes/Structure/FixCategoriesFixture.php";
 require_once __DIR__ . "/Domain/Fixes/Structure/FixLanguageLinksFixture.php";
 require_once __DIR__ . "/Domain/Fixes/Templates/DeleteTemplatesFixture.php";
 require_once __DIR__ . "/Domain/Fixes/Templates/FixTemplatesFixture.php";
+
 require_once __DIR__ . "/Domain/Parser/CategoryParser.php";
 require_once __DIR__ . "/Domain/Parser/CitationsParser.php";
 require_once __DIR__ . "/Domain/Parser/LeadSectionParser.php";
-require_once __DIR__ . "/Domain/Parser/ParserTemplate.php";
 require_once __DIR__ . "/Domain/Parser/TemplateParser.php";
-require_once __DIR__ . "/Domain/Parser/Template.php";
 
 require_once __DIR__ . "/Infrastructure/Debug/PrintHelper.php";
 require_once __DIR__ . "/Infrastructure/Utils/FileUtils.php";
@@ -44,7 +43,6 @@ require_once __DIR__ . "/Services/Api/CommonsImageService.php";
 require_once __DIR__ . "/Services/Api/HttpClientService.php";
 
 // ---------------------
-// require_once __DIR__ . "/Services/Api/CommonsApiService.php";
 require_once __DIR__ . "/Services/Api/MdwikiApiService.php";
 require_once __DIR__ . "/Services/Api/SegmentApiService.php";
 require_once __DIR__ . "/Services/Api/TransformApiService.php";

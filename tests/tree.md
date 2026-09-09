@@ -54,13 +54,30 @@ tests/
 │   │       │   ├── CommonsImageServiceInterfaceTest.php
 │   │       │   └── HttpClientInterfaceTest.php
 │   │       └── Wikitext/
-│   │           ├── data/
-│   │           │   ├── result-1.wiki
-│   │           │   ├── result-2.wiki
-│   │           │   ├── source-1.wiki
-│   │           │   └── source-2.wiki
+│   │           ├── fixtures/
+│   │           │   ├── output/
+│   │           │   │   ├── abdominal_pain.wiki
+│   │           │   │   ├── obstructive_sleep_apnea.wiki
+│   │           │   │   ├── test-1.wiki
+│   │           │   │   ├── test-2.wiki
+│   │           │   │   ├── Uterine_atony.wiki
+│   │           │   │   └── Wernicke–Korsakoff_syndrome.wiki
+│   │           │   ├── result/
+│   │           │   │   ├── abdominal_pain.wiki
+│   │           │   │   ├── obstructive_sleep_apnea.wiki
+│   │           │   │   ├── test-1.wiki
+│   │           │   │   ├── test-2.wiki
+│   │           │   │   ├── Uterine_atony.wiki
+│   │           │   │   └── Wernicke–Korsakoff_syndrome.wiki
+│   │           │   └── source/
+│   │           │       ├── abdominal_pain.wiki
+│   │           │       ├── obstructive_sleep_apnea.wiki
+│   │           │       ├── test-1.wiki
+│   │           │       ├── test-2.wiki
+│   │           │       ├── Uterine_atony.wiki
+│   │           │       └── Wernicke–Korsakoff_syndrome.wiki
 │   │           └── WikitextFixerServiceTest.php
-│   └── mainTest.php
+│   └── utilsTest.php
 ├── bootstrap.php
 ├── README.md
 └── tree.md

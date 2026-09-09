@@ -5,7 +5,6 @@ namespace FixRefs\Tests\WikiParse;
 use FixRefs\Tests\bootstrap;
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
-use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 class ParserTemplatesTest extends bootstrap
 {

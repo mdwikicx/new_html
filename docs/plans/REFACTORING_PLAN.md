@@ -120,7 +120,7 @@ src/
 │
 ├── Services/                               # Service layer (business operations)
 │   ├── Api/                                # External API integrations
-│   │   ├── CommonsApiService.php
+│   │   ├── CommonsImageService.php
 │   │   ├── HttpClientService.php
 │   │   ├── MdwikiApiService.php
 │   │   ├── SegmentApiService.php
@@ -129,6 +129,10 @@ src/
 │   ├── Html/                               # HTML processing services
 │   │   ├── HtmlToSegmentsService.php
 │   │   └── WikitextToHtmlService.php
+│   │
+│   ├── Interfaces/
+│   │   ├── CommonsImageServiceInterface.php
+│   │   └── HttpClientInterface.php
 │   │
 │   └── Wikitext/                           # Wikitext processing services
 │       ├── WikitextFixerService.php
@@ -192,7 +196,6 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 -   [ ] Migrate `WikiParse/Category.php` → `Domain/Parser/CategoryParser.php`
 -   [ ] Migrate `WikiParse/Citations_reg.php` → `Domain/Parser/CitationsParser.php`
 -   [ ] Migrate `WikiParse/lead_section.php` → `Domain/Parser/LeadSectionParser.php`
--   [ ] Migrate `WikiParse/TemplateParser.php` → `Domain/Parser/TemplateParser.php`
 -   [ ] Update namespaces and imports
 -   [ ] Run parser tests
 
@@ -231,25 +234,25 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 #### 4.1: API Services
 
--   [ ] Migrate `api_services/post.php` → `Services/Api/HttpClientService.php`
--   [ ] Migrate `api_services/commons_api.php` → `Services/Api/CommonsApiService.php`
--   [ ] Migrate `api_services/mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
--   [ ] Migrate `post_mdwiki.php` → `Services/Api/MdwikiApiService.php`
--   [ ] Migrate `api_services/seg_api.php` → `Services/Api/SegmentApiService.php`
--   [ ] Migrate `api_services/transform_api.php` → `Services/Api/TransformApiService.php`
--   [ ] Update namespaces and imports
--   [ ] Run API tests
+-   [x] Migrate `api_services/post.php` → `Services/Api/HttpClientService.php`
+-   [x] Migrate `api_services/commons_api.php` → `Services/Api/CommonsImageService.php`
+-   [x] Migrate `api_services/mdwiki_api_wikitext.php` → `Services/Api/MdwikiApiService.php`
+-   [x] Migrate `post_mdwiki.php` → `Services/Api/MdwikiApiService.php`
+-   [x] Migrate `api_services/seg_api.php` → `Services/Api/SegmentApiService.php`
+-   [x] Migrate `api_services/transform_api.php` → `Services/Api/TransformApiService.php`
+-   [x] Update namespaces and imports
+-   [x] Run API tests
 
 #### 4.2: HTML Services
 
--   [ ] Migrate `html_services/html_to_segments.php` → `Services/Html/HtmlToSegmentsService.php`
--   [ ] Migrate `html_services/wikitext_to_html.php` → `Services/Html/WikitextToHtmlService.php`
--   [ ] Update namespaces and imports
--   [ ] Run HTML service tests
+-   [x] Migrate `html_services/html_to_segments.php` → `Services/Html/HtmlToSegmentsService.php`
+-   [x] Migrate `html_services/wikitext_to_html.php` → `Services/Html/WikitextToHtmlService.php`
+-   [x] Update namespaces and imports
+-   [x] Run HTML service tests
 
 #### 4.3: Wikitext Services
 
--   [ ] Migrate `fix_wikitext.php` → `Services/Wikitext/WikitextFixerService.php`
+-   [x] Migrate `fix_wikitext.php` → `Services/Wikitext/WikitextFixerService.php`
 -   [ ] Extract logic from `get_text.php` → `Services/Wikitext/WikitextRetrieverService.php`
 -   [ ] Update namespaces and imports
 -   [ ] Run wikitext service tests
@@ -258,12 +261,12 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 **Goal:** Move entry points and controllers
 
--   [ ] Migrate `json_data.php` → `Application/Controllers/JsonDataController.php`
--   [ ] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
+-   [x] Migrate `json_data.php` → `Application/Controllers/JsonDataController.php`
+-   [x] Migrate `get_text.php` → `Application/Handlers/WikitextHandler.php`
 -   [ ] Create `Application/Controllers/TextProcessorController.php` (orchestration)
 -   [ ] Update namespaces and imports
--   [ ] Update entry points in `src/` to use new handlers
--   [ ] Run integration tests
+-   [x] Update entry points in `src/` to use new handlers
+-   [x] Run integration tests
 
 ### Phase 6: Bootstrap & Autoloading
 
@@ -274,7 +277,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 -   [ ] Remove manual `require_once` statements
 -   [ ] Update `composer.json` autoload configuration
 -   [ ] Run `composer dump-autoload`
--   [ ] Test autoloading with all files
+-   [x] Test autoloading with all files
 
 ### Phase 7: Entry Point Updates
 
@@ -406,7 +409,6 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 -   [ ] **Template Parser**
 
-    -   [ ] Migrate `WikiParse/TemplateParser.php` → `Domain/Parser/TemplateParser.php`
     -   [ ] Update namespace
     -   [ ] Update all imports
     -   [ ] Run `tests/WikiParse/ParserTemplatesTest.php`
@@ -468,7 +470,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 -   [ ] **Commons API**
 
-    -   [ ] Migrate `commons_api.php` → `Services/Api/CommonsApiService.php`
+    -   [ ] Migrate `commons_api.php` → `Services/Api/CommonsImageService.php`
     -   [ ] Update namespace and dependencies
     -   [ ] Update all imports
     -   [ ] Run `tests/APIServices/CommonsApiTest.php`
