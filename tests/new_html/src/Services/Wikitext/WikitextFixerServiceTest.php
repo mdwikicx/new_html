@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Services\Wikitext\expend_all_templates;
 use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 /**
  * Unit tests for WikitextFixerService.
@@ -62,7 +63,8 @@ class WikitextFixerServiceTest extends TestCase
         $expected = $this->loadFixture($file, 'result');
         $expected = $this->stripResult($expected);
 
-        $result = fix_wikitext($source, 'PLACEHOLDER_TEST', $allFlag);
+        $service = new WikitextFixerService();
+        $result = $service->run($source, 'PLACEHOLDER_TEST', $allFlag);
         $result = $this->stripResult($result);
 
         // Write processed result to the output directory

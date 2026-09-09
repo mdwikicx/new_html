@@ -15,7 +15,7 @@ use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
-use function MDWiki\NewHtml\Domain\Fixes\References\refs_expend_work;
+use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 use function MDWiki\NewHtml\Services\Api\getWikitextFromMdwikiRestApi;
 
 /**
@@ -66,7 +66,7 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
         $full_text = $source;
         $lead = get_lead_section($full_text);
         if (!empty($lead)) {
-            $source = refs_expend_work($lead, $full_text);
+            $source = expand_text_refs($lead, $full_text);
         }
     }
 
