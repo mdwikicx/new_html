@@ -170,61 +170,11 @@ vendor/bin/phpstan analyse
 
 ```text
 src/
-├── Application/              # Application layer (entry points & controllers)
-│   ├── Controllers/         # Business logic controllers
-│   │   └── JsonDataController.php
-│   └── Handlers/            # Request handlers
-│       └── WikitextHandler.php
-│
+├── Application/             # Application layer (entry points & controllers)
 ├── Services/                # Service layer (business operations)
-│   ├── Api/                # External API integrations
-│   │   ├── CommonsApiService.php
-│   │   ├── HttpClientService.php
-│   │   ├── MdwikiApiService.php
-│   │   ├── SegmentApiService.php
-│   │   └── TransformApiService.php
-│   │
-│   ├── Html/               # HTML processing services
-│   │   ├── HtmlToSegmentsService.php
-│   │   └── WikitextToHtmlService.php
-│   │
-│   └── Wikitext/           # Wikitext processing services
-│       └── WikitextFixerService.php
-│
 ├── Domain/                  # Domain layer (core business logic)
-│   ├── Parser/             # Wikitext parsing
-│   │   ├── CategoryParser.php
-│   │   ├── CitationsParser.php
-│   │   ├── LeadSectionParser.php
-│   │   └── TemplateParser.php
-│   │
-│   └── Fixes/              # Wikitext fixing operations
-│       ├── References/     # Reference-related fixes
-│       │   ├── DeleteEmptyRefsFixture.php
-│       │   ├── ExpandRefsFixture.php
-│       │   └── RefWorkerFixture.php
-│       │
-│       ├── Templates/      # Template-related fixes
-│       │   ├── DeleteTemplatesFixture.php
-│       │   └── FixTemplatesFixture.php
-│       │
-│       ├── Media/          # Media-related fixes
-│       │   ├── FixImagesFixture.php
-│       │   └── RemoveMissingImagesService.php
-│       │
-│       └── Structure/      # Structural fixes
-│           ├── FixCategoriesFixture.php
-│           └── FixLanguageLinksFixture.php
-│
 ├── Infrastructure/          # Infrastructure layer (utilities & support)
-│   ├── Utils/              # Utility functions
-│   │   ├── FileUtils.php
-│   │   └── HtmlUtils.php
-│   │
-│   └── Debug/              # Debug utilities
-│       └── PrintHelper.php
-│
-├── bootstrap.php           # Application bootstrap
+├── bootstrap.php            # Application bootstrap
 ```
 
 ## Testing
