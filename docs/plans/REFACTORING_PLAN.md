@@ -82,6 +82,38 @@ src/
 │   └── Handlers/
 │       └── WikitextHandler.php           [get_text.php]
 │
+├── Domain/                       # Domain layer (core business logic)
+│   ├── Fixes/                    [WikiTextFixes/]
+│   │   ├── Media/
+│   │   │   ├── FixImagesFixture.php          [fix_images.php]
+│   │   │   └── RemoveMissingImagesService.php [remove_missing_images.php]
+│   │   ├── References/
+│   │   │   ├── DeleteEmptyRefsFixture.php    [del_mt_refs.php]
+│   │   │   ├── ExpandRefsFixture.php         [expend_refs.php]
+│   │   │   └── RefWorkerFixture.php          [ref_work.php]
+│   │   ├── Structure/
+│   │   │   ├── FixCategoriesFixture.php      [fix_cats.php]
+│   │   │   └── FixLanguageLinksFixture.php   [fix_langs_links.php]
+│   │   └── Templates/
+│   │       ├── DeleteTemplatesFixture.php    [del_temps.php]
+│   │       └── FixTemplatesFixture.php       [fix_temps.php]
+│   └── Parser/                   [WikiParse/]
+│       ├── CategoryParser.php            [Category.php]
+│       ├── CitationsParser.php           [Citations_reg.php]
+│       ├── LeadSectionParser.php         [lead_section.php]
+│       └── TemplateParser.php            [ParserTemplates.php]
+│
+├── Infrastructure/               # Infrastructure layer (utilities & support)
+│   ├── Debug/
+│   │   └── PrintHelper.php               [print.php]
+│   ├── Storage/
+│   │   ├── FileStorage.php               [new - file operations]
+│   │   └── JsonStorage.php               [logic from json_data.php]
+│   └── Utils/                    [utils/]
+│       ├── FileUtils.php                 [files_utils.php]
+│       ├── HtmlUtils.php                 [html_utils.php]
+│       └── StringUtils.php               [new - string operations]
+│
 ├── Services/                     # Service layer (business operations)
 │   ├── Api/                      [api_services/]
 │   │   ├── CommonsApiService.php         [commons_api.php]
@@ -89,54 +121,15 @@ src/
 │   │   ├── MdwikiApiService.php          [mdwiki_api_wikitext.php]
 │   │   ├── SegmentApiService.php         [seg_api.php]
 │   │   └── TransformApiService.php       [transform_api.php]
-│   │
 │   ├── Html/                     [html_services/]
 │   │   ├── HtmlToSegmentsService.php     [html_to_segments.php]
 │   │   └── WikitextToHtmlService.php     [wikitext_to_html.php]
-│   │
 │   └── Wikitext/
 │       ├── WikitextFixerService.php      [fix_wikitext.php]
 │       └── WikitextRetrieverService.php  [logic from get_text.php]
 │
-├── Domain/                       # Domain layer (core business logic)
-│   ├── Parser/                   [WikiParse/]
-│   │   ├── CategoryParser.php            [Category.php]
-│   │   ├── CitationsParser.php           [Citations_reg.php]
-│   │   ├── LeadSectionParser.php         [lead_section.php]
-│   │   └── TemplateParser.php            [ParserTemplates.php]
-│   │
-│   └── Fixes/                    [WikiTextFixes/]
-│       ├── References/
-│       │   ├── DeleteEmptyRefsFixture.php    [del_mt_refs.php]
-│       │   ├── ExpandRefsFixture.php         [expend_refs.php]
-│       │   └── RefWorkerFixture.php          [ref_work.php]
-│       │
-│       ├── Templates/
-│       │   ├── DeleteTemplatesFixture.php    [del_temps.php]
-│       │   └── FixTemplatesFixture.php       [fix_temps.php]
-│       │
-│       ├── Media/
-│       │   ├── FixImagesFixture.php          [fix_images.php]
-│       │   └── RemoveMissingImagesService.php [remove_missing_images.php]
-│       │
-│       └── Structure/
-│           ├── FixCategoriesFixture.php      [fix_cats.php]
-│           └── FixLanguageLinksFixture.php   [fix_langs_links.php]
-│
-├── Infrastructure/               # Infrastructure layer (utilities & support)
-│   ├── Utils/                    [utils/]
-│   │   ├── FileUtils.php                 [files_utils.php]
-│   │   ├── HtmlUtils.php                 [html_utils.php]
-│   │   └── StringUtils.php               [new - string operations]
-│   │
-│   ├── Storage/
-│   │   ├── JsonStorage.php               [logic from json_data.php]
-│   │   └── FileStorage.php               [new - file operations]
-│   │
-│   └── Debug/
-│       └── PrintHelper.php               [print.php]
-│
 └── bootstrap.php                 [require.php - modernized]
+
 ```
 
 ### Namespace Mapping
