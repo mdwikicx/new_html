@@ -1,6 +1,6 @@
 parameters:
     bootstrapFiles:
-        - new_html/bootstrap.php
+        - src/new_html/bootstrap.php
     level: 6
     paths:
         - src/
