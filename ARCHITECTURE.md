@@ -25,15 +25,12 @@ src/
 │   │   │   ├── DeleteEmptyRefsFixture.php
 │   │   │   ├── ExpandRefsFixture.php
 │   │   │   └── RefWorkerFixture.php
-│   │   │
 │   │   ├── Structure/      # Structural fixes
 │   │   │   ├── FixCategoriesFixture.php
 │   │   │   └── FixLanguageLinksFixture.php
-│   │   │
 │   │   └── Templates/      # Template-related fixes
 │   │       ├── DeleteTemplatesFixture.php
 │   │       └── FixTemplatesFixture.php
-│   │
 │   └── Parser/             # Wikitext parsing
 │       ├── CategoryParser.php
 │       ├── CitationsParser.php
@@ -55,7 +52,6 @@ src/
     │   ├── MdwikiApiService.php
     │   ├── SegmentApiService.php
     │   └── TransformApiService.php
-    │
     ├── Html/               # HTML processing services
     │   ├── HtmlToSegmentsService.php
     │   └── WikitextToHtmlService.php
