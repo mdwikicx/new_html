@@ -5,7 +5,7 @@ namespace FixRefs\Tests\WikiParse;
 use FixRefs\Tests\bootstrap;
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
-use function MDWiki\NewHtml\Domain\Parser\getTemplates;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 class ParserTemplatesTest extends bootstrap
 {
@@ -30,18 +30,11 @@ class ParserTemplatesTest extends bootstrap
         $this->assertGreaterThanOrEqual(1, count($templates));
     }
 
-    public function testGetTemplatesFunction()
-    {
-        $text = '{{Template1}} and {{Template2|param=value}}';
-        $templates = getTemplates($text);
-
-        $this->assertIsArray($templates);
-        $this->assertGreaterThanOrEqual(2, count($templates));
-    }
 
     public function testGetTemplatesWithEmptyText()
     {
-        $templates = getTemplates('');
+        $parser = new ParserTemplates('');
+        $templates = $parser->getTemplates();
 
         $this->assertIsArray($templates);
         $this->assertEmpty($templates);
@@ -49,7 +42,8 @@ class ParserTemplatesTest extends bootstrap
 
     public function testGetTemplatesWithNoTemplates()
     {
-        $templates = getTemplates('Just plain text without templates');
+        $parser = new ParserTemplates('Just plain text without templates');
+        $templates = $parser->getTemplates();
 
         $this->assertIsArray($templates);
         $this->assertEmpty($templates);

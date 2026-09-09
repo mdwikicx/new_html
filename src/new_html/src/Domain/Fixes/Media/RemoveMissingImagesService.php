@@ -12,7 +12,7 @@
 namespace MDWiki\NewHtml\Domain\Fixes\Media;
 
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
-use function MDWiki\NewHtml\Domain\Parser\getTemplates;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 class RemoveMissingImagesService
 {
@@ -37,7 +37,8 @@ class RemoveMissingImagesService
     public function removeMissingInfoboxImages(string $text): string
     {
         // First, try to parse templates using getTemplates
-        $templates = getTemplates($text);
+        $parser = new ParserTemplates($text);
+        $templates = $parser->getTemplates();
 
         // Process templates using the template parser
         foreach ($templates as $template) {

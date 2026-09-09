@@ -103,22 +103,3 @@ class ParserTemplates
         return $new_text;
     }
 }
-
-/**
- * Helper function to get all templates from text
- *
- * @param string $text The text to parse
- * @return array<int, Template> Array of Template objects
- */
-function getTemplates(string $text): array
-{
-    $parser = new ParserTemplates($text);
-    $temps = $parser->getTemplates();
-    return $temps;
-}
-
-function expend_all_templates(string $text, int $ljust = 17): string
-{
-    $parser = new ParserTemplates($text);
-    return $parser->expendAllTemplates($ljust);
-}

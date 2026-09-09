@@ -4,8 +4,14 @@ namespace Tests\Services\Wikitext;
 
 use PHPUnit\Framework\TestCase;
 
-use function MDWiki\NewHtml\Domain\Parser\expend_all_templates;
+use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
+
+function expend_all_templates(string $text, int $ljust = 17): string
+{
+    $parser = new ParserTemplates($text);
+    return $parser->expendAllTemplates($ljust);
+}
 
 /**
  * Unit tests for WikitextFixerService.

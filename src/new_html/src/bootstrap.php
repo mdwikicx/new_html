@@ -29,7 +29,7 @@ require_once __DIR__ . "/Domain/Parser/CategoryParser.php";
 require_once __DIR__ . "/Domain/Parser/CitationsParser.php";
 require_once __DIR__ . "/Domain/Parser/LeadSectionParser.php";
 require_once __DIR__ . "/Domain/Parser/ParserTemplate.php";
-require_once __DIR__ . "/Domain/Parser/ParserTemplates.php";
+require_once __DIR__ . "/Domain/Parser/TemplateParser.php";
 require_once __DIR__ . "/Domain/Parser/Template.php";
 
 require_once __DIR__ . "/Infrastructure/Debug/PrintHelper.php";

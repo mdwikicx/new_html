@@ -45,7 +45,7 @@ src/new_html_src/
 │   ├── Category.php
 │   ├── Citations_reg.php
 │   ├── lead_section.php
-│   └── ParserTemplates.php
+│   └── TemplateParser.php
 └── WikiTextFixes/                # Wikitext fixing operations
     ├── del_mt_refs.php
     ├── del_temps.php
@@ -192,7 +192,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 -   [ ] Migrate `WikiParse/Category.php` → `Domain/Parser/CategoryParser.php`
 -   [ ] Migrate `WikiParse/Citations_reg.php` → `Domain/Parser/CitationsParser.php`
 -   [ ] Migrate `WikiParse/lead_section.php` → `Domain/Parser/LeadSectionParser.php`
--   [ ] Migrate `WikiParse/ParserTemplates.php` → `Domain/Parser/TemplateParser.php`
+-   [ ] Migrate `WikiParse/TemplateParser.php` → `Domain/Parser/TemplateParser.php`
 -   [ ] Update namespaces and imports
 -   [ ] Run parser tests
 
@@ -406,7 +406,7 @@ Infrastructure\Debug\*            -> MDWiki\NewHtml\Infrastructure\Debug
 
 -   [ ] **Template Parser**
 
-    -   [ ] Migrate `WikiParse/ParserTemplates.php` → `Domain/Parser/TemplateParser.php`
+    -   [ ] Migrate `WikiParse/TemplateParser.php` → `Domain/Parser/TemplateParser.php`
     -   [ ] Update namespace
     -   [ ] Update all imports
     -   [ ] Run `tests/WikiParse/ParserTemplatesTest.php`

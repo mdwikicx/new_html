@@ -26,7 +26,7 @@ src/
 │       ├── CitationsParser.php
 │       ├── LeadSectionParser.php
 │       ├── ParserTemplate.php
-│       ├── ParserTemplates.php
+│       ├── TemplateParser.php
 │       └── Template.php
 │
 ├── Infrastructure/
