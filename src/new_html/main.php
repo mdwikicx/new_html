@@ -27,7 +27,7 @@ use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 use function MDWiki\NewHtmlMain\Utils\error_1;
 use function MDWiki\NewHtmlMain\Utils\get_content_type;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
-use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
 use function MDWiki\NewHtml\Services\Html\html_to_seg;
 use function MDWiki\NewHtml\Services\Html\wiki_text_to_html;
@@ -117,7 +117,8 @@ function get_wikitext_revision(string $title, string $all): array
 
     if ($printetxt == "wikitext") {
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
-        $wikitext = fix_wikitext($wikitext, $title);
+        $service = new WikitextFixerService();
+        $wikitext = $service->fix($wikitext, $title);
         echo $wikitext;
         exit();
     }
@@ -235,7 +236,8 @@ function start(array $request, string $title): void
     $file_seg      = $file_dir . "/seg.html";
     $file_title    = $file_dir . "/title.txt";
 
-    $wikitext = fix_wikitext($wikitext, $title);
+    $service = new WikitextFixerService();
+    $wikitext = $service->fix($wikitext, $title);
 
     file_write($file_wikitext, $wikitext);
 
