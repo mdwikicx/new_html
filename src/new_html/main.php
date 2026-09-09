@@ -24,8 +24,6 @@ use function MDWiki\NewHtmlMain\Utils\set_cors_headers;
 set_cors_headers();
 
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
-use function MDWiki\NewHtmlMain\Utils\error_1;
-use function MDWiki\NewHtmlMain\Utils\get_content_type;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
@@ -35,12 +33,6 @@ use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
-
-$printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
-
-$content_type = get_content_type($printetxt);
-
-header("Content-type: $content_type");
 
 /**
  * Get and normalize the page title from request parameters
@@ -93,11 +85,7 @@ function get_from_json(string $title, string $all, string $file): array
  */
 function get_wikitext_revision(string $title, string $all): array
 {
-    global $printetxt;
-
     $from_cache = false;
-
-    // test_print("title: $title, all: $all, printetxt: $printetxt");
 
     if (empty($all)) {
         $json1 = get_wikitext($title, JSON_FILE, true);
@@ -115,13 +103,6 @@ function get_wikitext_revision(string $title, string $all): array
         $from_cache = !empty($wikitext);
     }
 
-    if ($printetxt == "wikitext") {
-        // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
-        $service = new WikitextFixerService();
-        $wikitext = $service->fix($wikitext, $title);
-        echo $wikitext;
-        exit();
-    }
     return [$wikitext, $revision, $from_cache];
 }
 
@@ -136,8 +117,6 @@ function get_wikitext_revision(string $title, string $all): array
  */
 function get_HTML_text(string $wikitext, string $file_html, string $title, bool $new): array
 {
-    global $printetxt;
-
     $from_cache = false;
 
     try {
@@ -155,12 +134,6 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
     if ($HTML_text == $wikitext) {
         $HTML_text = '';
     }
-
-    if ($printetxt == "html") {
-        // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
-        echo $HTML_text;
-        exit();
-    }
     return [$HTML_text, $from_cache];
 }
 
@@ -173,7 +146,6 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
  */
 function get_SEG_text(string $HTML_text, string $file_seg): array
 {
-    global $printetxt;
 
     $from_cache = false;
     $SEG_text = "";
@@ -187,11 +159,6 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
     if ($SEG_text == 'Content for translate is not given or is empty') $SEG_text = "";
     if ($SEG_text == 'Sectionwrap: Attempting to remove a non-section tag: undefined') $SEG_text = "";
 
-    if ($printetxt == "seg") {
-        // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
-        echo $SEG_text;
-        exit();
-    }
     return [$SEG_text, $from_cache];
 }
 
@@ -204,7 +171,7 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
  */
 function start(array $request, string $title): void
 {
-
+    $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
     $new = isset($request['new']);
 
     $all = $request['all'] ?? '';
@@ -221,12 +188,30 @@ function start(array $request, string $title): void
 
     [$wikitext, $revision, $text_cache] = get_wikitext_revision($title, $all);
 
+    if ($printetxt == "wikitext") {
+        // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
+        $service = new WikitextFixerService();
+        $wikitext = $service->fix($wikitext, $title);
+        echo $wikitext;
+        exit();
+    }
     $cache_data['wikitext'] = $text_cache;
 
     // $revision = (isset($request['revision'])) ? $request['revision'] : $revision;
 
     if (empty($wikitext) || empty($revision)) {
-        exit(error_1($title, $revision));
+        // send request error code using http_response_code
+        http_response_code(404);
+        $data = [
+            "sourceLanguage" => "en",
+            "title" => $title,
+            "revision" => $revision,
+            "segmentedContent" => "",
+            "categories" => [],
+            "error_type" => "title:($title) or revision:($revision) not found",
+            "error" => "No content found!",
+        ];
+        exit(json_encode($data));
     }
 
     $file_dir = get_file_dir($revision, $all);
@@ -244,6 +229,12 @@ function start(array $request, string $title): void
     file_write($file_title, $title);
 
     [$HTML_text, $html_cache] = get_HTML_text($wikitext, $file_html, $title, $new);
+
+    if ($printetxt == "html") {
+        // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
+        echo $HTML_text;
+        exit();
+    }
 
     $cache_data['html'] = $html_cache;
 
@@ -265,6 +256,12 @@ function start(array $request, string $title): void
         $jsonData['error'] = "No content found";
     } else {
         [$SEG_text, $seg_cache] = get_SEG_text($HTML_text, $file_seg);
+
+        if ($printetxt == "seg") {
+            // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
+            echo $SEG_text;
+            exit();
+        }
 
         $jsonData['cache_data']['seg'] = $seg_cache;
         $jsonData['segmentedContent'] = $SEG_text;

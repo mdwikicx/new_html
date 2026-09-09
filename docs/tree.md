@@ -54,7 +54,6 @@ src/
     ├── bootstrap.php
     ├── fix.php
     ├── index.php
-    ├── load_env.php
     ├── main.php
     ├── open.php
     ├── require.php
