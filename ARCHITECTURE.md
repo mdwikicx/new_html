@@ -8,15 +8,15 @@ This project has been refactored to follow modern PHP architecture patterns with
 
 ```text
 src/
-├── bootstrap.php           # Application bootstrap
-├── Application/              # Application layer (entry points & controllers)
+├── Application/                  # Application layer (entry points & controllers)
 │   ├── Controllers/         # Business logic controllers
-│   │   └── JsonDataController.php
-│   └── Handlers/            # Request handlers
+│   │   ├── JsonDataController.php
+│   │   └── TextProcessorController.php   [new - orchestrates processing]
+│   └── Handlers/                 # Request handlers
 │       └── WikitextHandler.php
 │
-├── Domain/                  # Domain layer (core business logic)
-│   ├── Fixes/              # Wikitext fixing operations
+├── Domain/                       # Domain layer (core business logic)
+│   ├── Fixes/                    # Wikitext fixing operations
 │   │   ├── Media/          # Media-related fixes
 │   │   │   ├── FixImagesFixture.php
 │   │   │   └── RemoveMissingImagesService.php
@@ -25,39 +25,50 @@ src/
 │   │   │   ├── DeleteEmptyRefsFixture.php
 │   │   │   ├── ExpandRefsFixture.php
 │   │   │   └── RefWorkerFixture.php
+│   │   │
 │   │   ├── Structure/      # Structural fixes
 │   │   │   ├── FixCategoriesFixture.php
 │   │   │   └── FixLanguageLinksFixture.php
+│   │   │
 │   │   └── Templates/      # Template-related fixes
 │   │       ├── DeleteTemplatesFixture.php
 │   │       └── FixTemplatesFixture.php
-│   └── Parser/             # Wikitext parsing
+│   │
+│   └── Parser/                   # Wikitext parsing
 │       ├── CategoryParser.php
 │       ├── CitationsParser.php
 │       ├── LeadSectionParser.php
 │       └── TemplateParser.php
-│
-├── Infrastructure/          # Infrastructure layer (utilities & support)
-│   ├── Debug/              # Debug utilities
-│   │   └── PrintHelper.php
 │   │
+│
+├── Infrastructure/               # Infrastructure layer (utilities & support)
+│   ├── Debug/                    # Debug utilities
+│   │   └── PrintHelper.php
+│   ├── Storage/
+│   │   ├── FileStorage.php               [new - file operations]
+│   │   └── JsonStorage.php               [logic from json_data.php]
 │   └── Utils/              # Utility functions
 │       ├── FileUtils.php
-│       └── HtmlUtils.php
+│       ├── HtmlUtils.php
+│       └── StringUtils.php               [new - string operations]
 │
-└── Services/                # Service layer (business operations)
-    ├── Api/                # External API integrations
-    │   ├── CommonsApiService.php
-    │   ├── HttpClientService.php
-    │   ├── MdwikiApiService.php
-    │   ├── SegmentApiService.php
-    │   └── TransformApiService.php
-    ├── Html/               # HTML processing services
-    │   ├── HtmlToSegmentsService.php
-    │   └── WikitextToHtmlService.php
-    │
-    └── Wikitext/           # Wikitext processing services
-        └── WikitextFixerService.php
+├── Services/                     # Service layer (business operations)
+│   ├── Api/                      # External API integrations
+│   │   ├── CommonsApiService.php
+│   │   ├── HttpClientService.php
+│   │   ├── MdwikiApiService.php
+│   │   ├── SegmentApiService.php
+│   │   └── TransformApiService.php
+│   │
+│   ├── Html/                     # HTML processing services
+│   │   ├── HtmlToSegmentsService.php
+│   │   └── WikitextToHtmlService.php
+│   │
+│   └── Wikitext/                 # Wikitext processing services
+│       ├── WikitextFixerService.php
+│       └── WikitextRetrieverService.php  [logic from get_text.php]
+│
+└── bootstrap.php                 # Application bootstrap
 ```
 
 ## Namespace Structure

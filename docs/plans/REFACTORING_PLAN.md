@@ -129,7 +129,6 @@ src/
 │       └── WikitextRetrieverService.php  [logic from get_text.php]
 │
 └── bootstrap.php                 [require.php - modernized]
-
 ```
 
 ### Namespace Mapping
