@@ -1,5 +1,6 @@
 <?php
 
+namespace MDWiki\NewHtmlMain\Main;
 /**
  * Main API endpoint for processing MDWiki page content
  *
@@ -17,8 +18,6 @@
  * @package MDWiki\NewHtml
  */
 
-require_once __DIR__ . "/bootstrap.php";
-
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
@@ -29,23 +28,6 @@ use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
-
-/**
- * Get and normalize the page title from request parameters
- *
- * Ensures the first letter of the title is capitalized.
- *
- * @return string The normalized page title, or empty string if not provided
- */
-function get_title(): string
-{
-    $title = $_GET['title'] ?? '';
-
-    // first litter in $title must be capital
-    $title = ucfirst($title);
-
-    return $title;
-}
 
 
 /**
@@ -276,15 +258,3 @@ function start(array $request, string $title): void
     // Output the JSON
     echo $jsonOutput;
 }
-
-$title = get_title();
-
-if (empty($title)) {
-    header("Content-type: application/json");
-    echo json_encode([
-        'error' => 'title is empty',
-    ]);
-    exit;
-}
-
-start($_GET, $title);

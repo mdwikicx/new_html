@@ -1,6 +1,7 @@
 <?php
 
 use function MDWiki\NewHtmlMain\Utils\set_cors_headers;
+use function MDWiki\NewHtmlMain\Main\start;
 
 /**
  * Route handler for new_html application
@@ -35,4 +36,17 @@ if ((empty($_GET) && empty($_POST)) || (count($_GET) == 1 && isset($_GET["test"]
     set_cors_headers();
 
     require_once __DIR__ . "/main.php";
+
+    $title = $_GET['title'] ?? '';
+    // first litter in $title must be capital
+    $title = ucfirst($title);
+
+    if (empty($title)) {
+        header("Content-type: application/json");
+        echo json_encode([
+            'error' => 'title is empty',
+        ]);
+        exit;
+    }
+    start($_GET, $title);
 }
