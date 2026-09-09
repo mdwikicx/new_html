@@ -4,7 +4,7 @@ namespace FixRefs\Tests\APIServices;
 
 use FixRefs\Tests\bootstrap;
 
-use function MDWiki\NewHtml\Services\Api\check_commons_image_exists;
+use MDWiki\NewHtml\Services\Api\CommonsImageService;
 
 class CommonsApiRealTest extends bootstrap
 {
@@ -33,22 +33,24 @@ class CommonsApiRealTest extends bootstrap
         return false;
     }
     /**
-     * Test that check_commons_image_exists returns true for a known existing image
+     * Test that CommonsImageService returns true for a known existing image
      */
     public function testCheckCommonsImageExists()
     {
         // Test with a well-known Commons image that should exist
-        $result = check_commons_image_exists('Logo.png');
+        $service = new CommonsImageService();
+        $result = $service->imageExists('Logo.png');
         $this->assertTrue($result, 'Logo.png should exist on Commons');
     }
 
     /**
-     * Test that check_commons_image_exists returns false for non-existent image
+     * Test that CommonsImageService returns false for non-existent image
      */
     public function testCheckCommonsImageNotExists()
     {
         // Test with an image that definitely doesn't exist
-        $result = check_commons_image_exists('NonExistentImageFileNameThatDoesNotExist12345678901234567890.png');
+        $service = new CommonsImageService();
+        $result = $service->imageExists('NonExistentImageFileNameThatDoesNotExist12345678901234567890.png');
         $this->assertFalse($result, 'Non-existent image should return false');
     }
 
@@ -57,7 +59,8 @@ class CommonsApiRealTest extends bootstrap
      */
     public function testCheckCommonsImageEmptyFilename()
     {
-        $this->assertFalse(check_commons_image_exists(''));
-        $this->assertFalse(check_commons_image_exists('   '));
+        $service = new CommonsImageService();
+        $this->assertFalse($service->imageExists(''));
+        $this->assertFalse($service->imageExists('   '));
     }
 }

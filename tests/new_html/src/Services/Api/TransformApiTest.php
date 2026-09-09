@@ -59,7 +59,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -74,7 +74,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -89,7 +89,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -104,7 +104,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -119,7 +119,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -133,7 +133,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<span class="cite">Example</span>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -146,7 +146,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse(''));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -159,7 +159,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<p>Test content</p>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
     }
@@ -172,7 +172,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -187,7 +187,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -202,7 +202,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedHtml));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -225,7 +225,7 @@ class TransformApiTest extends bootstrap
             )
             ->willReturn(["output" => $this->createSuccessResponse('<p>Content</p>'), "error_code" => "", "error" => ""]);
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -238,7 +238,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<h2>Section</h2><p><b>Bold</b> and <i>italic</i>.</p><ul><li>List item</li></ul><a href="/wiki/Link">Link</a>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -253,7 +253,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<p>Simple text</p>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -267,7 +267,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<p>Text with unicode: ñ, é, ü, 中文</p>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -281,7 +281,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<table><tr><td>Cell 1</td><td>Cell 2</td></tr><tr><td>Cell 3</td><td>Cell 4</td></tr></table>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -295,7 +295,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<a href="http://example.com">Example</a>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -309,7 +309,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<p>Content </p>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -323,7 +323,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<figure><img src="Example.jpg" /><figcaption>Caption</figcaption></figure>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -336,7 +336,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -350,7 +350,7 @@ class TransformApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<p>Test</p>'));
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -366,7 +366,7 @@ class TransformApiTest extends bootstrap
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);
@@ -382,7 +382,7 @@ class TransformApiTest extends bootstrap
             ->method('request')
             ->willReturn(["output" => '<html><body>Wikimedia Error</body></html>', "error_code" => "", "error" => ""]);
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);
@@ -398,7 +398,7 @@ class TransformApiTest extends bootstrap
             ->method('request')
             ->willReturn(["output" => 'Not valid HTML', "error_code" => "", "error" => ""]);
 
-        $result = $this->service->convertWikitextToHtml($wikitext, $title);
+        $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);

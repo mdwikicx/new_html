@@ -59,7 +59,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -73,7 +73,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -87,7 +87,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -100,7 +100,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse('<seg>Test content</seg>'));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -113,7 +113,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -127,7 +127,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -140,7 +140,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -154,7 +154,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -167,7 +167,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -181,7 +181,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -194,7 +194,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -208,7 +208,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -221,7 +221,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createErrorResponse($errorMessage));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);
@@ -237,7 +237,7 @@ class SegApiTest extends bootstrap
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);
@@ -253,7 +253,7 @@ class SegApiTest extends bootstrap
             ->method('request')
             ->willReturn(["output" => json_encode(['unexpected_key' => 'value']), "error_code" => "", "error" => ""]);
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);
@@ -268,7 +268,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -281,7 +281,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -295,7 +295,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -308,7 +308,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -322,7 +322,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -335,7 +335,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);
@@ -348,7 +348,7 @@ class SegApiTest extends bootstrap
 
         $this->setupMockResponse($this->createSuccessResponse($expectedResult));
 
-        $result = $this->service->changeHtmlToSeg($html);
+        $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('result', $result);

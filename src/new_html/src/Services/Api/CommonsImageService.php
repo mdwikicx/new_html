@@ -73,15 +73,3 @@ class CommonsImageService implements CommonsImageServiceInterface
         return false;
     }
 }
-
-/**
- * Legacy function for backward compatibility
- *
- * @param string $filename The filename to check (without File: prefix)
- * @return bool True if the image exists, false otherwise
- */
-function check_commons_image_exists(string $filename): bool
-{
-    $service = new CommonsImageService();
-    return $service->imageExists($filename);
-}

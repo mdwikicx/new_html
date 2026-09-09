@@ -11,7 +11,7 @@
 
 namespace MDWiki\NewHtml\Application\Handlers;
 
-use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
@@ -69,8 +69,9 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
             $source = expand_text_refs($lead, $full_text);
         }
     }
+    $service = new WikitextFixerService();
+    $source = $service->fix($source, $title);
 
-    $source = fix_wikitext($source, $title);
     $result["source"] = $source;
 
     return $result;

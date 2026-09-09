@@ -45,7 +45,7 @@ class SegmentApiService
      * @param string $html The HTML text to convert to segments
      * @return array<string, string> Array with 'result' key on success or 'error' key on failure
      */
-    public function changeHtmlToSeg(string $html): array
+    public function HtmltoSegments(string $html): array
     {
         $data = ['html' => $html];
         $as_json = $this->apiUrl == 'https://mdwikipy.toolforge.org/HtmltoSegments' ? true : false;
@@ -77,18 +77,4 @@ class SegmentApiService
             return ['error' => 'Error: Unexpected response format.'];
         }
     }
-}
-
-/**
- * Legacy function for backward compatibility
- *
- * Converts HTML to segments using the default API endpoint.
- *
- * @param string $text The HTML text to convert to segments
- * @return array<string, string> Array with 'result' key on success or 'error' key on failure
- */
-function changeHtmlToSeg(string $text): array
-{
-    $service = new SegmentApiService();
-    return $service->changeHtmlToSeg($text);
 }

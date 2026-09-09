@@ -15,7 +15,7 @@ use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
 use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
-use function MDWiki\NewHtml\Services\Api\convertWikitextToHtml;
+use MDWiki\NewHtml\Services\Api\TransformApiService;
 
 /**
  * Convert wikitext to HTML using the API and apply fixes
@@ -31,7 +31,8 @@ function do_wiki_text_to_html(string $wikitext, string $title): mixed
 
     if (empty($wikitext)) return "";
 
-    $fixed = convertWikitextToHtml($wikitext, $title);
+    $service = new TransformApiService();
+    $fixed = $service->convert($wikitext, $title);
 
     $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? '';

@@ -5,13 +5,12 @@ namespace Tests\Services\Wikitext;
 use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Services\Wikitext\expend_all_templates;
-use function MDWiki\NewHtml\Services\Wikitext\fix_wikitext;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 /**
  * Unit tests for WikitextFixerService.
  *
- * @covers \MDWiki\NewHtml\Services\Wikitext\fix_wikitext
+ * @covers \MDWiki\NewHtml\Services\Wikitext\WikitextFixerService
  */
 class WikitextFixerServiceTest extends TestCase
 {
@@ -64,7 +63,7 @@ class WikitextFixerServiceTest extends TestCase
         $expected = $this->stripResult($expected);
 
         $service = new WikitextFixerService();
-        $result = $service->run($source, 'PLACEHOLDER_TEST', $allFlag);
+        $result = $service->run($source, 'PLACEHOLDER_TEST', !$allFlag);
         $result = $this->stripResult($result);
 
         // Write processed result to the output directory
@@ -119,7 +118,8 @@ class WikitextFixerServiceTest extends TestCase
 
     public function testFixWikitextWithEmptyInputReturnsEmpty(): void
     {
-        $result = fix_wikitext('', 'PLACEHOLDER_TEST');
+        $service = new WikitextFixerService();
+        $result = $service->fix('', 'PLACEHOLDER_TEST');
 
         $this->assertSame('', $result);
     }

@@ -66,7 +66,7 @@ class WikitextFixerService
 
         // Handle missing images and add title
         $service = new RemoveMissingImagesService(new CommonsImageService());
-        $text = $service->removeMissingImages($text);
+        $text = $service->run($text);
 
         // Add a missing title parameter to infobox templates.
         $text = add_missing_title($text, $title);
@@ -90,30 +90,15 @@ class WikitextFixerService
         return $text;
     }
 
-    public function run(string $text, string $title, bool $allFlag = false): string
+    public function run(string $text, string $title, bool $lead_only = false): string
     {
-        if (!$allFlag) {
+        if ($lead_only) {
             $text = $this->stripTextIntoLeadSection($text);
         }
         $text = $this->fix($text, $title);
 
         return $text;
     }
-}
-
-/**
- * Fix wikitext by removing unwanted templates, refs, and other elements
- *
- * @param string $text The wikitext to fix
- * @param string $title The page title for context
- * @return string The fixed wikitext
- */
-function fix_wikitext(string $text, string $title): string
-{
-    $service = new WikitextFixerService();
-    $text = $service->fix($text, $title);
-
-    return $text;
 }
 
 function expend_all_templates(string $text, int $ljust = 17): string

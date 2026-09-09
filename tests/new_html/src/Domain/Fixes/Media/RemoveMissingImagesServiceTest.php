@@ -223,7 +223,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $expected = "{{Infobox disease|name={{PAGENAME}}|specialty=[[Orthopedics]]}}This article discusses the condition.[[File:Gallstones.png|thumb|right|A valid inline image]]More information here.End of article.";
 
-        $result = $this->service->removeMissingImages($input);
+        $result = $this->service->run($input);
 
         $this->assertEqualCompare($expected, $input, $result);
 
@@ -241,7 +241,7 @@ class RemoveMissingImagesTest extends bootstrap
 
         $input = "|name ={{PAGENAME}}\n|synonym =\n|specialty =[[Orthopedics]]\n\nThis is just plain text without any images.";
 
-        $result = $this->service->removeMissingImages($input);
+        $result = $this->service->run($input);
 
         $this->assertEquals($input, $result);
     }
