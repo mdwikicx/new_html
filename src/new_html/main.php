@@ -19,10 +19,6 @@
 
 require_once __DIR__ . "/bootstrap.php";
 
-use function MDWiki\NewHtmlMain\Utils\set_cors_headers;
-
-set_cors_headers();
-
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;

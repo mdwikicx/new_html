@@ -1,5 +1,7 @@
 <?php
 
+use function MDWiki\NewHtmlMain\Utils\set_cors_headers;
+
 /**
  * Route handler for new_html application
  *
@@ -28,6 +30,9 @@ if ((empty($_GET) && empty($_POST)) || (count($_GET) == 1 && isset($_GET["test"]
     $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
     $content_type = get_content_type($printetxt);
     header("Content-type: $content_type");
+
+    require_once __DIR__ . "/bootstrap.php";
+    set_cors_headers();
 
     require_once __DIR__ . "/main.php";
 }
