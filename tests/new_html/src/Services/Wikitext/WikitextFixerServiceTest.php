@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
-function expend_all_templates(string $text, int $ljust = 17): string
+function expendAllTemplates(string $text, int $ljust = 17): string
 {
     $parser = new ParserTemplates($text);
     return $parser->expendAllTemplates($ljust);
@@ -82,8 +82,8 @@ class WikitextFixerServiceTest extends TestCase
         file_put_contents($outputPath, $result . "\n");
 
         $this->assertSame(
-            expend_all_templates($result),
-            expend_all_templates($expected)
+            expendAllTemplates($result),
+            expendAllTemplates($expected)
         );
     }
 

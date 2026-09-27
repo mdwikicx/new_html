@@ -27,7 +27,7 @@ class CitationsRegTest extends bootstrap
         $this->assertEquals('test_ref', $result);
     }
 
-    public function testGetNameWithoutQuotes()
+    public function testGetNameWithoutQuotes(): void
     {
         $options = ' name=test_ref ';
         $result = get_ref_name($options);
@@ -129,7 +129,7 @@ Line 3</ref>';
         // $this->assertArrayHasKey('', $result);
     }
 
-    public function testget_short_citations()
+    public function testgetShortCitations()
     {
         $text = 'Text <ref name="test" /> more text';
         $result = get_short_citations($text);
@@ -141,7 +141,7 @@ Line 3</ref>';
         $this->assertEquals('<ref name="test" />', $result[0]['tag']);
     }
 
-    public function testget_short_citationsWithMultiple()
+    public function testgetShortCitationsWithMultiple()
     {
         $text = '<ref name="a"/> and <ref name="b" /> and <ref name="c"/>';
         $result = get_short_citations($text);
@@ -153,7 +153,7 @@ Line 3</ref>';
         $this->assertEquals('c', $result[2]['name']);
     }
 
-    public function testget_short_citationsWithSpaceVariations()
+    public function testgetShortCitationsWithSpaceVariations()
     {
         $text = '<ref name="test"/><ref name="test2" /><ref name="test3"  />';
         $result = get_short_citations($text);
@@ -162,7 +162,7 @@ Line 3</ref>';
         $this->assertCount(3, $result);
     }
 
-    public function testget_short_citationsWithNoShortRefs()
+    public function testgetShortCitationsWithNoShortRefs()
     {
         $text = '<ref name="full">Content</ref>';
         $result = get_short_citations($text);
@@ -182,7 +182,7 @@ Line 3</ref>';
         $this->assertStringContainsString('group="notes"', $result[0]['options']);
     }
 
-    public function testget_short_citationsWithComplexAttributes()
+    public function testgetShortCitationsWithComplexAttributes()
     {
         $text = '<ref name="test" group="notes" />';
         $result = get_short_citations($text);
