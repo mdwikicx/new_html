@@ -31,7 +31,7 @@ class WikitextToHtmlServiceTest extends TestCase
     // ------------------------------------------------------------------
 
     /**
-     * Stub: يهمنا فقط ما يرجعه الـ API، ولا نتحقق من كيفية استدعائه.
+     * Stub: only the value returned by the API matters; how it is called is not verified.
      */
     private function serviceReturning(array $response): WikitextToHtmlService
     {
@@ -42,7 +42,7 @@ class WikitextToHtmlServiceTest extends TestCase
     }
 
     /**
-     * Mock: نتوقع أن الـ API لا يُستدعى إطلاقًا.
+     * Mock: the API is expected to never be called.
      */
     private function serviceThatMustNotCallApi(): WikitextToHtmlService
     {
@@ -64,7 +64,7 @@ class WikitextToHtmlServiceTest extends TestCase
     }
 
     // ------------------------------------------------------------------
-    // convert(): تهمنا القيمة المرجعة (Stub)
+    // convert(): the returned value matters (Stub)
     // ------------------------------------------------------------------
 
     public function testConvertReturnsHtmlOnSuccess(): void
@@ -98,7 +98,7 @@ class WikitextToHtmlServiceTest extends TestCase
     }
 
     // ------------------------------------------------------------------
-    // convert(): يهمنا كيف استُدعي الـ API (Mock)
+    // convert(): how the API is called matters (Mock)
     // ------------------------------------------------------------------
 
     public function testConvertReturnsEmptyStringForEmptyWikitextWithoutCallingApi(): void
@@ -120,7 +120,7 @@ class WikitextToHtmlServiceTest extends TestCase
     }
 
     // ------------------------------------------------------------------
-    // convertWithCache(): نتيجة فقط (Stub)
+    // convertWithCache(): result only (Stub)
     // ------------------------------------------------------------------
 
     public function testApiResultIsReturnedAndFileWrittenWhenCacheIsMissing(): void
@@ -175,7 +175,7 @@ class WikitextToHtmlServiceTest extends TestCase
     }
 
     // ------------------------------------------------------------------
-    // convertWithCache(): تجنّب الـ API هو المطلوب (Mock)
+    // convertWithCache(): avoiding the API is the requirement (Mock)
     // ------------------------------------------------------------------
 
     public function testCacheIsUsedWhenNotNewAndFileHasContent(): void
