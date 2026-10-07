@@ -3,7 +3,7 @@
 namespace Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
-use function MDWiki\NewHtmlMain\Utils\get_file_dir;
+use function MDWiki\NewHtml\Utils\get_file_dir;
 
 class utilsTest extends TestCase
 {

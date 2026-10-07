@@ -18,13 +18,13 @@ namespace MDWiki\NewHtmlMain\Main;
  * @package MDWiki\NewHtml
  */
 
-use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 use function MDWiki\NewHtml\Services\Html\html_to_seg;
+use function MDWiki\NewHtml\Utils\get_file_dir;
 use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;

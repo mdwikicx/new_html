@@ -1,7 +1,7 @@
 <?php
 
 use function MDWiki\NewHtmlMain\Main\start;
-use function MDWiki\NewHtmlMain\Utils\set_cors_headers;
+use function MDWiki\NewHtml\Cors\set_cors_headers;
 
 /**
  * Route handler for new_html application

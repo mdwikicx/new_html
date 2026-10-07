@@ -1,33 +1,38 @@
-<?php
-namespace MDWiki\NewHtmlMain\Utils;
+<?PHP
+namespace MDWiki\NewHtml\Cors;
 
-use MDWiki\NewHtml\Logger;
-/**
- * Get the file directory for a specific revision
- *
- * @param string $revision The revision ID
- * @param string $all Whether to use the '_all' suffix (non-empty string) or not (empty string)
- * @return string The directory path, or empty string on error
- */
-function get_file_dir(string $revision, string $all): string
+const ALLOWED_DOMAINS = [
+    'mdwikicx.toolforge.org',
+    'mdwiki.toolforge.org',
+    'medwiki.toolforge.org',
+];
+
+function is_allowed()
 {
-    if (empty($revision) || ! ctype_digit($revision)) {
-        Logger::error('Error: revision is empty in get_file_dir().');
-        return '';
+
+    $env = getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? '');
+
+    if ($env === 'development') {
+        return true;
     }
 
-    $file_dir = REVISIONS_PATH . "/$revision";
+    $domains = ['medwiki.toolforge.org', 'mdwikicx.toolforge.org'];
+    // Check if the request is coming from allowed domains
+    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+    $origin  = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
-    if (! empty($all)) {
-        $file_dir .= "_all";
-    }
-
-    if (! is_dir($file_dir)) {
-        if (! mkdir($file_dir, 0755, true)) {
-            Logger::error(sprintf('Failed to create directory "%s".', $file_dir));
+    $isAllowed = false;
+    foreach ($domains as $domain) {
+        if (strpos($referer, $domain) !== false || strpos($origin, $domain) !== false) {
+            $isAllowed = $domain;
+            break;
         }
     }
-    return $file_dir;
+
+    // log $_SERVER to file
+    // file_put_contents(__DIR__ . '/cors.log', print_r($_SERVER, true));
+
+    return $isAllowed;
 }
 
 /**
@@ -39,11 +44,6 @@ function get_file_dir(string $revision, string $all): string
  */
 function set_cors_headers(): void
 {
-    $allowed_domains = [
-        'mdwikicx.toolforge.org',
-        'mdwiki.toolforge.org',
-        'medwiki.toolforge.org',
-    ];
 
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
@@ -59,7 +59,7 @@ function set_cors_headers(): void
     $origin_host = parse_url($origin, PHP_URL_HOST);
 
     // Reject unauthorized origins
-    if (! in_array($origin_host, $allowed_domains, true)) {
+    if (! in_array($origin_host, ALLOWED_DOMAINS, true)) {
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             http_response_code(403);
             exit;
