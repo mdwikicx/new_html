@@ -2,27 +2,19 @@
 
 namespace Tests\Domain;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 
-class RemoveMissingImagesServiceTest extends TestCase
+class RemoveMissingImagesTest extends bootstrap
 {
     private ?RemoveMissingImagesService $service;
     private ?CommonsImageServiceInterface $mockImageService;
 
-    public function assertEqualCompare(string $expected, string $input, string $result)
-    {
-        $this->assertEquals(
-            $expected,
-            $result,
-            "Input:\n" . $input . "\n\nExpected:\n" . $expected . "\n\nGot:\n" . $result
-        );
-    }
     protected function setUp(): void
     {
         // Create a mock image service
-        $this->mockImageService = $this->createStub(CommonsImageServiceInterface::class);
+        $this->mockImageService = $this->createMock(CommonsImageServiceInterface::class);
         $this->service = new RemoveMissingImagesService($this->mockImageService);
     }
 

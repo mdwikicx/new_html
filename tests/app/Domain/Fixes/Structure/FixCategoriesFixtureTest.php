@@ -2,11 +2,11 @@
 
 namespace Tests\WikiTextFixes;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
 
-class FixCategoriesFixtureTest extends TestCase
+class FixCatsTest extends bootstrap
 {
     public function testRemoveCategoriesWithSingleCategory()
     {

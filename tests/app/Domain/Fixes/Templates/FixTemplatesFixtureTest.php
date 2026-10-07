@@ -2,11 +2,11 @@
 
 namespace Tests\WikiTextFixes;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
 
-class FixTemplatesFixtureTest extends TestCase
+class FixTempsTest extends bootstrap
 {
     public function testAddMissingTitleWithDrugbox()
     {

@@ -2,12 +2,12 @@
 
 namespace Tests\WikiTextFixes;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 
-class DeleteTemplatesFixtureTest extends TestCase
+class DelTempsTest extends bootstrap
 {
     public function testRemoveTemplatesWithShortDescription()
     {

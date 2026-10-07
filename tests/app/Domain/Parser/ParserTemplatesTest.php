@@ -2,11 +2,11 @@
 
 namespace Tests\WikiParse;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 
-class ParserTemplatesTest extends TestCase
+class ParserTemplatesTest extends bootstrap
 {
 
     public function testParserTemplatesMultiple()

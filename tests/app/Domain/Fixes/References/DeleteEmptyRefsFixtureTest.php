@@ -2,11 +2,11 @@
 
 namespace Tests\WikiTextFixes;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
 
-class DeleteEmptyRefsFixtureTest extends TestCase
+class DelMtRefsTest extends bootstrap
 {
     public function testDelEmptyRefsWithValidShortRef()
     {

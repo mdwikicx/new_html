@@ -17,77 +17,69 @@ use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 
-class WikitextToHtmlService
+/**
+ * Convert wikitext to HTML using the API and apply fixes
+ *
+ * @param string $wikitext The wikitext to convert
+ * @param string $title The page title for context
+ * @return mixed The HTML result or empty string on failure
+ */
+function _do_wiki_text_to_html(string $wikitext, string $title): mixed
 {
-    private TransformApiService $transformService;
 
-    /**
-     * @param TransformApiService|null $transformService Optional injected service (useful for testing)
-     */
-    public function __construct(?TransformApiService $transformService = null)
-    {
-        $this->transformService = $transformService ?? new TransformApiService();
+    $title = str_replace(" ", "_", $title);
+
+    if (empty($wikitext)) {
+        return "";
     }
 
-    /**
-     * Convert wikitext to HTML using the API and apply fixes
-     *
-     * @param string $wikitext The wikitext to convert
-     * @param string $title The page title for context
-     * @return string The HTML result or empty string on failure
-     */
-    public function convert(string $wikitext, string $title): string
-    {
-        if (empty($wikitext)) {
-            return "";
-        }
+    $transform = new TransformApiService();
+    $fixed = $transform->convert($wikitext, $title);
 
-        $title = str_replace(" ", "_", $title);
+    $error  = $fixed['error'] ?? '';
+    $result = $fixed['result'] ?? '';
 
-        $fixed = $this->transformService->convert($wikitext, $title);
-
-        $result = $fixed['result'] ?? '';
-
-        if (empty($result)) {
-            return "";
-        }
-
-        $result = del_div_error($result);
-        $result = fix_link_red($result);
-
-        return $result;
+    if (empty($result)) {
+        return "";
     }
 
-    /**
-     * Convert wikitext to HTML with caching support
-     *
-     * @param string $wikitext The wikitext to convert
-     * @param string $file_html The path to the cached HTML file
-     * @param string $title The page title for context
-     * @param bool $new Whether to force regeneration (true) or use cache (false)
-     * @return array{0: string, 1: bool} Array containing [html_content, from_cache]
-     */
-    public function convertWithCache(string $wikitext, string $file_html, string $title, bool $new): array
-    {
-        if (!$new) {
-            $text = read_file($file_html);
-            if (!empty($text)) {
-                return [$text, true];
-            }
+    $result = del_div_error($result);
+    $result = fix_link_red($result);
+    return $result;
+}
+
+/**
+ * Convert wikitext to HTML with caching support
+ *
+ * @param string $wikitext The wikitext to convert
+ * @param string $file_html The path to the cached HTML file
+ * @param string $title The page title for context
+ * @param bool $new Whether to force regeneration (true) or use cache (false)
+ * @return array{0: string, 1: bool} Array containing [html_content, from_cache]
+ */
+function wiki_text_to_html(string $wikitext, string $file_html, string $title, bool $new): array
+{
+
+    $from_cache = false;
+
+    if (!$new) {
+        $text = read_file($file_html);
+        if (!empty($text)) {
+            return [$text, true];
         }
-
-        if (empty($wikitext)) {
-            return ["", false];
-        }
-
-        $result = $this->convert($wikitext, $title);
-
-        if (empty($result)) {
-            return ["", false];
-        }
-
-        file_write($file_html, $result);
-
-        return [$result, false];
     }
+
+    if (empty($wikitext)) {
+        return ["", $from_cache];
+    }
+
+    $result = _do_wiki_text_to_html($wikitext, $title);
+
+    if (empty($result)) {
+        return ["", $from_cache];
+    }
+
+    file_write($file_html, $result);
+
+    return [$result, $from_cache];
 }

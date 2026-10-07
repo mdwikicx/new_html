@@ -2,12 +2,12 @@
 
 namespace Tests\WikiTextFixes;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\check_one_cite;
 use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
 
-class RefWorkerFixtureTest extends TestCase
+class RefWorkTest extends bootstrap
 {
     public function testCheckOneCiteWithBadDOI()
     {

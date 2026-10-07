@@ -2,12 +2,12 @@
 
 namespace Tests\EntryPoints;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 
-class JsonDataControllerTest extends TestCase
+class JsonDataTest extends bootstrap
 {
     private $testJsonFile;
     private $testJsonFileAll;

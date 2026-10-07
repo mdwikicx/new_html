@@ -2,11 +2,11 @@
 
 namespace Tests\APIServices;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 
-class TransformApiRealTest extends TestCase
+class TransformApiRealTest extends bootstrap
 {
     protected function setUp(): void
     {

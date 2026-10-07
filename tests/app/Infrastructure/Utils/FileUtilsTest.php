@@ -2,12 +2,12 @@
 
 namespace Tests\Utils;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
-class FileUtilsTest extends TestCase
+class FileUtilsTest extends bootstrap
 {
     private $testDir;
     private $testFile;

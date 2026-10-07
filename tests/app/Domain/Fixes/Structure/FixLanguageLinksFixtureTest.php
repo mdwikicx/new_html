@@ -2,12 +2,12 @@
 
 namespace Tests\WikiTextFixes;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 use function MDWiki\NewHtml\Domain\Fixes\Structure\is_valid_lang_code;
 
-class FixLanguageLinksFixtureTest extends TestCase
+class FixLangsLinksTest extends bootstrap
 {
     /**
      * Complete list of Wikipedia language codes (from the original array)

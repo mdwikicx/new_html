@@ -2,11 +2,11 @@
 
 namespace Tests\APIServices;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 use MDWiki\NewHtml\Services\Api\SegmentApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class SegmentApiServiceTest extends TestCase
+class SegApiTest extends bootstrap
 {
     private ?SegmentApiService $service;
     private ?HttpClientInterface $mockHttpClient;
@@ -14,7 +14,7 @@ class SegmentApiServiceTest extends TestCase
     protected function setUp(): void
     {
         // Create a mock HTTP client
-        $this->mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
         $this->service = new SegmentApiService($this->mockHttpClient);
     }
 
@@ -236,8 +236,6 @@ class SegmentApiServiceTest extends TestCase
         $this->mockHttpClient
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
-
-        $this->expectOutputRegex('/API request failed/');
 
         $result = $this->service->HtmltoSegments($html);
 

@@ -2,11 +2,11 @@
 
 namespace Tests\Handlers;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
 
-class WikitextHandlerTest extends TestCase
+class WikitextHandlerTest extends bootstrap
 {
     protected function setUp(): void
     {

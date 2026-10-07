@@ -2,10 +2,10 @@
 
 namespace Tests\Utils;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 
-class utilsTest extends TestCase
+class mainTest extends bootstrap
 {
     public function testGetFileDirWithVeryLongRevision()
     {
@@ -34,11 +34,16 @@ class utilsTest extends TestCase
         $this->assertStringContainsString('_all', $result);
     }
 
+    public function testGetFileDirWithEmptyRevision()
+    {
+        $result = get_file_dir('', '');
+
+        $this->assertEquals('', $result);
+    }
+
     public function testGetFileDirWithNonNumericRevision()
     {
         $result = get_file_dir('abc123', '');
-
-        $this->expectOutputRegex('/revision is empty in get_file_dir/');
 
         $this->assertEquals('', $result);
     }

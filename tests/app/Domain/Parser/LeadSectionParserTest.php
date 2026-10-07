@@ -2,11 +2,11 @@
 
 namespace Tests\WikiParse;
 
-use PHPUnit\Framework\TestCase;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 
-class LeadSectionParserTest extends TestCase
+class LeadSectionTest extends bootstrap
 {
     public function testGetLeadSectionWithSections()
     {
