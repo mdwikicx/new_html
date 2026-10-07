@@ -31,7 +31,7 @@ class HttpClientServiceTest extends TestCase
     public function testRequestReturnsString()
     {
         // Create a mock to test the interface without network
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturn(["output" => '{"test": "response"}', "error_code" => "", "error" => ""]);
 
@@ -46,7 +46,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestAcceptsGetMethod()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -66,7 +66,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestAcceptsPostMethod()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -86,7 +86,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestHandlesEmptyResponse()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
@@ -100,7 +100,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestHandlesErrorResponse()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturn(["output" => '{"error": "Not found"}', "error_code" => "", "error" => ""]);
 
@@ -114,7 +114,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestWithDifferentUrls()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturnCallback(function ($url) {
                 if (strpos($url, 'api1') !== false) {
@@ -138,7 +138,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestWithEmptyParams()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -158,7 +158,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestWithSpecialCharacters()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -190,7 +190,7 @@ class HttpClientServiceTest extends TestCase
             'https://api.example.com/posts' => '{"posts": ["a", "b", "c"]}',
         ];
 
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturnCallback(function ($url) use ($mockResponses) {
                 return ["output" => $mockResponses[$url] ?? '{}', "error_code" => "", "error" => ""];
@@ -211,7 +211,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestMethodCaseHandling()
     {
-        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient = $this->createStub(HttpClientInterface::class);
         $mockHttpClient->method('request')
             ->willReturnCallback(function ($url, $method) {
                 return ["output" => json_encode(['method' => strtoupper($method)]), "error_code" => "", "error" => ""];

@@ -14,7 +14,7 @@ class TransformApiTest extends TestCase
     protected function setUp(): void
     {
         // Create a mock HTTP client
-        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $this->mockHttpClient = $this->createStub(HttpClientInterface::class);
         $this->service = new TransformApiService($this->mockHttpClient);
     }
 

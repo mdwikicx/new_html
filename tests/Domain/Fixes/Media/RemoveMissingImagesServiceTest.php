@@ -22,7 +22,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     protected function setUp(): void
     {
         // Create a mock image service
-        $this->mockImageService = $this->createMock(CommonsImageServiceInterface::class);
+        $this->mockImageService = $this->createStub(CommonsImageServiceInterface::class);
         $this->service = new RemoveMissingImagesService($this->mockImageService);
     }
 

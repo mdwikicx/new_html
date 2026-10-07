@@ -5,7 +5,7 @@ namespace FixRefs\Tests\Utils;
 use PHPUnit\Framework\TestCase;
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 
-class mainTest extends bootstrap
+class utilsTest extends TestCase
 {
     public function testGetFileDirWithVeryLongRevision()
     {
