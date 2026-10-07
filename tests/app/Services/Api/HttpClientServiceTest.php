@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\APIServices;
+namespace Tests\APIServices;
 
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\HttpClientService;

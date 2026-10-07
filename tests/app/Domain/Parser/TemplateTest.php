@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\WikiParse;
+namespace Tests\WikiParse;
 
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Parser\Template;

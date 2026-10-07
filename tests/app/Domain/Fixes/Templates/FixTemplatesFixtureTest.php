@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\WikiTextFixes;
+namespace Tests\WikiTextFixes;
 
 use PHPUnit\Framework\TestCase;
 

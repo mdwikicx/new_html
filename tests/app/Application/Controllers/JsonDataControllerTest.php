@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\EntryPoints;
+namespace Tests\EntryPoints;
 
 use PHPUnit\Framework\TestCase;
 

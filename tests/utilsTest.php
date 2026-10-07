@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\Utils;
+namespace Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;

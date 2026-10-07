@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\Handlers;
+namespace Tests\Handlers;
 
 use PHPUnit\Framework\TestCase;
 

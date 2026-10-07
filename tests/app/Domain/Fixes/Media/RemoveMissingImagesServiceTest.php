@@ -1,6 +1,6 @@
 <?php
 
-namespace FixRefs\Tests\Domain;
+namespace Tests\Domain;
 
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
