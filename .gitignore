@@ -23,3 +23,4 @@ src/revisions_new1/json_data_all.json
 load_env.php
 /_work_files
 tests/new_html/src/Services/Wikitext/fixtures/output/**
+.phpunit.cache/**
