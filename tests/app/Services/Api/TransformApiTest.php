@@ -2,11 +2,11 @@
 
 namespace Tests\APIServices;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class TransformApiTest extends bootstrap
+class TransformApiTest extends TestCase
 {
     private ?TransformApiService $service;
     private ?HttpClientInterface $mockHttpClient;

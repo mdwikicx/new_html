@@ -2,12 +2,12 @@
 
 namespace Tests\WikiTextFixes;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
 
-class FixImagesTest extends bootstrap
+class FixImagesTest extends TestCase
 {
     public function testRemoveImagesWithSimpleImage()
     {

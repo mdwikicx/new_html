@@ -2,11 +2,11 @@
 
 namespace Tests\WikiTextFixes;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 
-class ExpendRefsTest extends bootstrap
+class ExpendRefsTest extends TestCase
 {
     public function testExpandTextRefsWithShortRefAndFullInAlltext()
     {

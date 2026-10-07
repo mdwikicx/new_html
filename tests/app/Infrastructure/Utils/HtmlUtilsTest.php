@@ -2,14 +2,14 @@
 
 namespace Tests\Utils;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
 use function MDWiki\NewHtml\Infrastructure\Utils\get_attrs;
 use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 
-class HtmlUtilsTest extends bootstrap
+class HtmlUtilsTest extends TestCase
 {
     public function testDelDivErrorRemovesSingleErrorDiv()
     {

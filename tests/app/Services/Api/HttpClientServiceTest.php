@@ -2,11 +2,11 @@
 
 namespace Tests\APIServices;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\HttpClientService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class HttpClientServiceTest extends bootstrap
+class HttpClientServiceTest extends TestCase
 {
     private ?HttpClientService $httpClient;
 

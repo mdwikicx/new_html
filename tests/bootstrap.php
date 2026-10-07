@@ -36,29 +36,3 @@ if (file_exists($vendor_path)) {
 
 // Use modern PSR-4 autoloading via bootstrap
 require __DIR__ . '/../src/bootstrap.php';
-
-use PHPUnit\Framework\TestCase;
-
-class bootstrap extends TestCase
-{
-    public function assertEqualCompare(string $expected, string $input, string $result)
-    {
-        $this->assertEquals(
-            $expected,
-            $result,
-            "Input:\n" . $input . "\n\nExpected:\n" . $expected . "\n\nGot:\n" . $result
-        );
-    }
-    public function assertEqualCompareRemoveNewLines(string $expected, string $input, string $result)
-    {
-        $expected = str_replace("\n", "", $expected);
-        $input = str_replace("\n", "", $input);
-        $result = str_replace("\n", "", $result);
-
-        $this->assertEquals(
-            $expected,
-            $result,
-            "Input:\n" . $input . "\n\nExpected:\n" . $expected . "\n\nGot:\n" . $result
-        );
-    }
-}

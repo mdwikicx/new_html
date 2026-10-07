@@ -2,14 +2,14 @@
 
 namespace Tests\WikiParse;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Parser\get_ref_name;
 use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
 use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
 
-class CitationsRegTest extends bootstrap
+class CitationsRegTest extends TestCase
 {
     public function testGetNameWithDoubleQuotes()
     {

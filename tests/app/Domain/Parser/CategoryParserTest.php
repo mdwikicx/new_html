@@ -2,11 +2,11 @@
 
 namespace Tests\WikiParse;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
-class CategoryTest extends bootstrap
+class CategoryTest extends TestCase
 {
     public function testGetCategoriesWithSingleCategory()
     {

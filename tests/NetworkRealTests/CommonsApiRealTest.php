@@ -2,11 +2,11 @@
 
 namespace Tests\APIServices;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 
 use MDWiki\NewHtml\Services\Api\CommonsImageService;
 
-class CommonsApiRealTest extends bootstrap
+class CommonsApiRealTest extends TestCase
 {
     /**
      * Check if we can reach the Wikimedia Commons API

@@ -2,11 +2,11 @@
 
 namespace Tests\APIServices;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class MdwikiApiTest extends bootstrap
+class MdwikiApiTest extends TestCase
 {
     private ?MdwikiApiService $service;
     private ?HttpClientInterface $mockHttpClient;

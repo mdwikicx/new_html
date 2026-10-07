@@ -2,11 +2,11 @@
 
 namespace Tests\Domain;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 
-class RemoveMissingImagesTest extends bootstrap
+class RemoveMissingImagesTest extends TestCase
 {
     private ?RemoveMissingImagesService $service;
     private ?CommonsImageServiceInterface $mockImageService;
