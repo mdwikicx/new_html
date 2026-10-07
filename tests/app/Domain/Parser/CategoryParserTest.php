@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
-class CategoryTest extends TestCase
+class CategoryParserTest extends TestCase
 {
     public function testGetCategoriesWithSingleCategory()
     {

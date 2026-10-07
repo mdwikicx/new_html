@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use function MDWiki\NewHtml\Domain\Fixes\References\check_one_cite;
 use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
 
-class RefWorkTest extends TestCase
+class RefWorkerFixtureTest extends TestCase
 {
     public function testCheckOneCiteWithBadDOI()
     {

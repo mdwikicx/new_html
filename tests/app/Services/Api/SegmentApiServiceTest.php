@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\SegmentApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class SegApiTest extends TestCase
+class SegmentApiServiceTest extends TestCase
 {
     private ?SegmentApiService $service;
     private ?HttpClientInterface $mockHttpClient;
@@ -14,7 +14,7 @@ class SegApiTest extends TestCase
     protected function setUp(): void
     {
         // Create a mock HTTP client
-        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $this->mockHttpClient = $this->createStub(HttpClientInterface::class);
         $this->service = new SegmentApiService($this->mockHttpClient);
     }
 
@@ -236,6 +236,8 @@ class SegApiTest extends TestCase
         $this->mockHttpClient
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
+
+        $this->expectOutputRegex('/API request failed/');
 
         $result = $this->service->HtmltoSegments($html);
 

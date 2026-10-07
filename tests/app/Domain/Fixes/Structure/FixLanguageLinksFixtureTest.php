@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 use function MDWiki\NewHtml\Domain\Fixes\Structure\is_valid_lang_code;
 
-class FixLangsLinksTest extends TestCase
+class FixLanguageLinksFixtureTest extends TestCase
 {
     /**
      * Complete list of Wikipedia language codes (from the original array)

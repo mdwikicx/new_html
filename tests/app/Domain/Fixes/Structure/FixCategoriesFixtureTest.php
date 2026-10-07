@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
 
-class FixCatsTest extends TestCase
+class FixCategoriesFixtureTest extends TestCase
 {
     public function testRemoveCategoriesWithSingleCategory()
     {

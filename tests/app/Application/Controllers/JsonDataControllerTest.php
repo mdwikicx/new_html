@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 
-class JsonDataTest extends TestCase
+class JsonDataControllerTest extends TestCase
 {
     private $testJsonFile;
     private $testJsonFileAll;

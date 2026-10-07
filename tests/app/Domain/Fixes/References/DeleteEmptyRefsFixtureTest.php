@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
 
-class DelMtRefsTest extends TestCase
+class DeleteEmptyRefsFixtureTest extends TestCase
 {
     public function testDelEmptyRefsWithValidShortRef()
     {

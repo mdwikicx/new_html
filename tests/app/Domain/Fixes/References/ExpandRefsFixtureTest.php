@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 
-class ExpendRefsTest extends TestCase
+class ExpandRefsFixtureTest extends TestCase
 {
     public function testExpandTextRefsWithShortRefAndFullInAlltext()
     {

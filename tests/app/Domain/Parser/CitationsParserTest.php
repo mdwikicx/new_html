@@ -9,7 +9,7 @@ use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
 use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
 
-class CitationsRegTest extends TestCase
+class CitationsParserTest extends TestCase
 {
     public function testGetNameWithDoubleQuotes()
     {

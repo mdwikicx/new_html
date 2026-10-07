@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
 
-class FixTempsTest extends TestCase
+class FixTemplatesFixtureTest extends TestCase
 {
     public function testAddMissingTitleWithDrugbox()
     {

@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
 
-class FixImagesTest extends TestCase
+class FixImagesFixtureTest extends TestCase
 {
     public function testRemoveImagesWithSimpleImage()
     {

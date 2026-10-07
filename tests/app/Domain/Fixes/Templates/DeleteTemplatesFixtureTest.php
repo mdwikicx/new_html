@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 
-class DelTempsTest extends TestCase
+class DeleteTemplatesFixtureTest extends TestCase
 {
     public function testRemoveTemplatesWithShortDescription()
     {
