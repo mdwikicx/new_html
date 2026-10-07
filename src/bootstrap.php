@@ -28,7 +28,7 @@ if ($env === 'development' && file_exists(__DIR__ . '/load_env.php')) {
 }
 
 require_once __DIR__ . "/utils.php";
-require_once __DIR__ . "/src/bootstrap.php";
+require_once __DIR__ . "/app/bootstrap.php";
 
 // Set up error reporting for development
 if (defined('DEBUGX') && DEBUGX === true) {
