@@ -11,6 +11,7 @@
  */
 
 namespace MDWiki\NewHtml\Domain\Parser;
+
 /*
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 */
@@ -35,7 +36,7 @@ function get_lead_section(string $wikitext): string
     // Split by lines that start with optional whitespace then == (heading markers)
     // Use multiline mode with ^ to match start of line
     $sections = preg_split('/^\s*==+/m', $wikitext, 2);
-    $lead = $sections[0] ?? '';
+    $lead     = $sections[0] ?? '';
 
     // Trim the lead section
     $lead = trim($lead);

@@ -21,7 +21,6 @@ if (defined('DEBUGX') && DEBUGX === true) {
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
-
 /**
  * Get the revision ID for a specific title
  *
@@ -34,11 +33,15 @@ function get_title_revision(string $title, string $file): string
 
     $file_text = read_file($file);
 
-    if (empty($file_text)) return '';
+    if (empty($file_text)) {
+        return '';
+    }
 
     $data = json_decode($file_text, true);
 
-    if (!is_array($data)) return '';
+    if (! is_array($data)) {
+        return '';
+    }
 
     if (array_key_exists($title, $data)) {
         return $data[$title];
@@ -54,17 +57,23 @@ function get_title_revision(string $title, string $file): string
  * @param string $file The JSON file to update
  * @return array<string, mixed>|string The updated data array on success, empty string on failure
  */
-function add_title_revision(string $title, string $revision, string $file): array|string
+function add_title_revision(string $title, string $revision, string $file): array | string
 {
-    if (empty($title) || empty($revision)) return '';
+    if (empty($title) || empty($revision)) {
+        return '';
+    }
 
     $file_text = read_file($file);
 
-    if (empty($file_text)) return '';
+    if (empty($file_text)) {
+        return '';
+    }
 
     $data = json_decode($file_text, true);
 
-    if (!is_array($data)) return '';
+    if (! is_array($data)) {
+        return '';
+    }
 
     $data[$title] = $revision;
 

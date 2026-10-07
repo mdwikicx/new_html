@@ -11,12 +11,12 @@
 
 namespace MDWiki\NewHtml\Application\Handlers;
 
-use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
-use MDWiki\NewHtml\Services\Api\MdwikiApiService;
-use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
+use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Services\Api\MdwikiApiService;
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 /**
  * Get wikitext for a page
@@ -30,8 +30,8 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
 {
 
     $service = new MdwikiApiService();
-    $title = str_replace(" ", "_", $title);
-    $json1 = $service->getWikitextFromMdwikiRestApi($title);
+    $title   = str_replace(" ", "_", $title);
+    $json1   = $service->getWikitextFromMdwikiRestApi($title);
 
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $json1["source"], $matches)) {
@@ -46,11 +46,11 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
 
     $result = [
         "source" => $source,
-        "revid" => $revid,
-        "error" => $error,
+        "revid"  => $revid,
+        "error"  => $error,
     ];
 
-    if (!empty($revid)) {
+    if (! empty($revid)) {
         add_title_revision($title, $revid, $file);
     }
 
@@ -58,20 +58,20 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
         error_log("WikitextHandler: wikitext empty for title: $title");
         test_print("wikitext empty!.");
         return $result;
-    };
+    }
 
     test_print("source is not empty\n");
 
     if ($just_lead) {
         test_print("get_lead_section: \n");
         $full_text = $source;
-        $lead = get_lead_section($full_text);
-        if (!empty($lead)) {
+        $lead      = get_lead_section($full_text);
+        if (! empty($lead)) {
             $source = expand_text_refs($lead, $full_text);
         }
     }
     $service = new WikitextFixerService();
-    $source = $service->fix($source, $title);
+    $source  = $service->fix($source, $title);
 
     $result["source"] = $source;
 

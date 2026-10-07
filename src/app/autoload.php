@@ -1,7 +1,7 @@
 <?php
 // src/app/autoload.php
 spl_autoload_register(static function (string $class): void {
-    $prefix = 'MDWiki\NewHtml\\';
+    $prefix = 'MDWiki\\NewHtml\\';
     if (strncmp($class, $prefix, strlen($prefix)) !== 0) {
         return;
     }

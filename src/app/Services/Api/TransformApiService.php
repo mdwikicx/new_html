@@ -11,8 +11,8 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 /**
  * Service for converting wikitext to HTML using the Wikipedia REST API
@@ -35,7 +35,7 @@ class TransformApiService
         string $baseUrl = 'https://en.wikipedia.org/w/rest.php/v1',
     ) {
         $this->httpClient = $httpClient ?? new HttpClientService();
-        $this->baseUrl = $baseUrl;
+        $this->baseUrl    = $baseUrl;
     }
 
     /**
@@ -51,9 +51,9 @@ class TransformApiService
         // $titleEncoded = str_replace(" ", "_", $titleEncoded);
         $url = "{$this->baseUrl}/transform/wikitext/to/html/{$titleEncoded}";
 
-        $data = ['wikitext' => $text];
+        $data          = ['wikitext' => $text];
         $responseArray = $this->httpClient->request($url, 'POST', $data);
-        $response = $responseArray['output'];
+        $response      = $responseArray['output'];
 
         // Handle the response from the API
         if (empty($response)) {
@@ -73,7 +73,7 @@ class TransformApiService
         }
 
         // Check if response is valid HTML
-        if (!str_contains($response, "<html")) {
+        if (! str_contains($response, "<html")) {
             error_log("TransformApiService: API returned invalid HTML for title: $title");
             test_print("API returned invalid HTML: " . json_encode($data));
             return ['error' => 'Error: Wikipedia API returned invalid HTML.'];

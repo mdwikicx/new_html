@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\WikiParse;
+namespace Tests\Domain\Parser;
 
 use PHPUnit\Framework\TestCase;
 

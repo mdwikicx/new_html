@@ -7,7 +7,7 @@
  * (ref tags) from MediaWiki wikitext, including both full references
  * and short citations.
  *
- * @package MDWiki\NewHtml\WikiParse
+ * @package MDWiki\NewHtml\Domain\Parser
  */
 
 namespace MDWiki\NewHtml\Domain\Parser;

@@ -69,7 +69,7 @@ function remove_videos(string $text): string
         // file_name example: File:AwareLogo.webm
 
         $file_name = $matches[1][array_search($link, $matches[0])];
-        $ext = strtolower((string) pathinfo($file_name, PATHINFO_EXTENSION));
+        $ext       = strtolower((string) pathinfo($file_name, PATHINFO_EXTENSION));
 
         if (in_array($ext, $video_exts, true)) {
             $text = str_replace($link, '', $text);

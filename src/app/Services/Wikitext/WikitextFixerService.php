@@ -11,19 +11,19 @@
 
 namespace MDWiki\NewHtml\Services\Wikitext;
 
-use MDWiki\NewHtml\Services\Api\CommonsImageService;
+use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
+use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
+use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
+use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
+use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
+use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
+use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
+use MDWiki\NewHtml\Services\Api\CommonsImageService;
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 
-use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
-use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
-use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
-use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
-use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
-use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
-use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
-use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 // use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 
 class WikitextFixerService
@@ -73,7 +73,7 @@ class WikitextFixerService
 
         // Handle missing images and add title
         $service = new RemoveMissingImagesService($this->imageService);
-        $text = $service->run($text);
+        $text    = $service->run($text);
 
         // Add a missing title parameter to infobox templates.
         $text = add_missing_title($text, $title);

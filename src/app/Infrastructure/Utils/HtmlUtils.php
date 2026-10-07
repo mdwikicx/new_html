@@ -39,14 +39,14 @@ function del_div_error(string $html): string
  */
 function get_attrs(string $text): array
 {
-    $text = "<ref $text>";
+    $text              = "<ref $text>";
     $attrfind_tolerant = '/((?<=[\'"\s\/])[^\s\/>][^\s\/=>]*)(\s*=+\s*(\'[^\']*\'|"[^"]*"|(?![\'"])[^>\s]*))?(?:\s|\/(?!>))*/';
-    $attrs = [];
+    $attrs             = [];
 
     if (preg_match_all($attrfind_tolerant, $text, $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
-            $attr_name = strtolower($match[1]);
-            $attr_value = isset($match[3]) ? $match[3] : "";
+            $attr_name         = strtolower($match[1]);
+            $attr_value        = isset($match[3]) ? $match[3] : "";
             $attrs[$attr_name] = $attr_value;
         }
     }
@@ -69,7 +69,7 @@ function fix_link_red(string $html): string
     $attrs_to_del = ['typeof', 'data-mw-i18n', 'class'];
 
     foreach ($matches[1] as $key => $options) {
-        $content = $matches[2][$key];
+        $content   = $matches[2][$key];
         $cite_text = $matches[0][$key];
 
         // <a rel="mw:ExtLink" href="//en.wikipedia.org/w/index.php?title=Video:Pelvic_binder&amp;veaction=edit" class="external text"><span class="mw-ui-button mw-ui-progressive">Edit with VisualEditor</span></a>
@@ -94,7 +94,6 @@ function fix_link_red(string $html): string
                 $newHref = str_replace('&redlink=1', '', $newHref);
 
                 $attrs['href'] = $newHref;
-
 
                 foreach ($attrs_to_del as $attr) {
                     if (isset($attrs[$attr])) {
@@ -128,7 +127,9 @@ function fix_link_red(string $html): string
 function remove_data_parsoid(string $html): string
 {
 
-    if (empty($html)) return "";
+    if (empty($html)) {
+        return "";
+    }
 
     // replace all ( data-parsoid="{}")
     $html = preg_replace("/( data-parsoid=\"{}\")/is", '', $html);
@@ -140,7 +141,7 @@ function remove_data_parsoid(string $html): string
     $attrs_to_del = ['data-parsoid'];
 
     foreach ($matches[1] as $key => $options) {
-        $content = $matches[2][$key];
+        $content   = $matches[2][$key];
         $cite_text = $matches[0][$key];
 
         if (preg_match("/data-parsoid/is", $options)) {

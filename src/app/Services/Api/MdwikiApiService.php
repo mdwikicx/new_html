@@ -11,8 +11,8 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 /**
  * Service for fetching wikitext content from MDWiki
@@ -39,8 +39,8 @@ class MdwikiApiService
         string $baseApiUrl = 'https://mdwiki.org/w/api.php',
         string $baseRestUrl = 'https://mdwiki.org/w/rest.php/v1',
     ) {
-        $this->httpClient = $httpClient ?? new HttpClientService();
-        $this->baseApiUrl = $baseApiUrl;
+        $this->httpClient  = $httpClient ?? new HttpClientService();
+        $this->baseApiUrl  = $baseApiUrl;
         $this->baseRestUrl = $baseRestUrl;
     }
 
@@ -53,13 +53,13 @@ class MdwikiApiService
     public function handleRawRequest(string $title): array
     {
         $params = [
-            "action" => "query",
-            "format" => "json",
-            "prop" => "revisions",
-            "titles" => $title,
-            "utf8" => 1,
+            "action"        => "query",
+            "format"        => "json",
+            "prop"          => "revisions",
+            "titles"        => $title,
+            "utf8"          => 1,
             "formatversion" => "2",
-            "rvprop" => "content|ids"
+            "rvprop"        => "content|ids",
         ];
 
         $response = $this->httpClient->handleRawRequest($this->baseApiUrl, 'GET', $params);
@@ -74,17 +74,17 @@ class MdwikiApiService
     public function getWikitextFromMdwikiApi(string $title): array
     {
         $params = [
-            "action" => "query",
-            "format" => "json",
-            "prop" => "revisions",
-            "titles" => $title,
-            "utf8" => 1,
+            "action"        => "query",
+            "format"        => "json",
+            "prop"          => "revisions",
+            "titles"        => $title,
+            "utf8"          => 1,
             "formatversion" => "2",
-            "rvprop" => "content|ids"
+            "rvprop"        => "content|ids",
         ];
 
         $responseArray = $this->httpClient->request($this->baseApiUrl, 'GET', $params);
-        $response = $responseArray['output'];
+        $response      = $responseArray['output'];
 
         if (empty($response)) {
             error_log("MdwikiApiService: Failed to fetch data from MDWiki API for title: $title");
@@ -92,7 +92,7 @@ class MdwikiApiService
             return ['source' => '', 'revid' => ''];
         }
 
-        $json = json_decode($response, true);
+        $json      = json_decode($response, true);
         $revisions = $json["query"]["pages"][0]["revisions"][0] ?? [];
 
         if (empty($revisions)) {
@@ -102,10 +102,10 @@ class MdwikiApiService
         }
 
         $source = $revisions["content"] ?? '';
-        $revid = $revisions["revid"] ?? '';
+        $revid  = $revisions["revid"] ?? '';
         return [
             "source" => $source,
-            "revid" => $revid,
+            "revid"  => $revid,
         ];
     }
 
@@ -119,11 +119,11 @@ class MdwikiApiService
     {
         $titleEncoded = str_replace("/", "%2F", $title);
         $titleEncoded = str_replace(" ", "_", $titleEncoded);
-        $url = "{$this->baseRestUrl}/page/{$titleEncoded}";
+        $url          = "{$this->baseRestUrl}/page/{$titleEncoded}";
 
         $responseArray = $this->httpClient->request($url, 'GET');
-        $response = $responseArray['output'];
-        $error    = $responseArray['error'];
+        $response      = $responseArray['output'];
+        $error         = $responseArray['error'];
 
         if (empty($response)) {
             error_log("MdwikiApiService: Failed to fetch data from MDWiki REST API for title: $title");
@@ -134,12 +134,12 @@ class MdwikiApiService
         $json = json_decode($response, true);
 
         $source = $json["source"] ?? '';
-        $revid = $json["latest"]["id"] ?? '';
+        $revid  = $json["latest"]["id"] ?? '';
 
         return [
             "source" => $source,
-            "revid" => $revid,
-            "error" => $error,
+            "revid"  => $revid,
+            "error"  => $error,
         ];
     }
 }

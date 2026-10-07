@@ -1,5 +1,5 @@
 <?php
-namespace Tests\WikiParse;
+namespace Tests\Domain\Parser;
 
 use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_ref_name;
