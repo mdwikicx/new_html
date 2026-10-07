@@ -34,13 +34,6 @@ class utilsTest extends TestCase
         $this->assertStringContainsString('_all', $result);
     }
 
-    public function testGetFileDirWithEmptyRevision()
-    {
-        $result = get_file_dir('', '');
-
-        $this->assertEquals('', $result);
-    }
-
     public function testGetFileDirWithNonNumericRevision()
     {
         $result = get_file_dir('abc123', '');

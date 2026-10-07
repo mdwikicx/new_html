@@ -10,7 +10,7 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
-$lang_codes = [
+const LANG_CODES = [
     "aa",
     "ab",
     "ace",
@@ -337,13 +337,11 @@ $lang_codes = [
  * @param string $text The wikitext to process
  * @return string The wikitext with language links removed
  */
-function remove_lang_links(string $text): string
+function remove_lang_links_old(string $text): string
 {
 
-    global $lang_codes;
-
     // make patern like (ar|en|de)
-    $langs = implode('|', $lang_codes);
+    $langs = implode('|', LANG_CODES);
 
     preg_match_all("/\[\[($langs):[^\]]+\]\]/", $text, $matches);
 
@@ -356,6 +354,14 @@ function remove_lang_links(string $text): string
     // echo "</pre><br>";
 
     return $text;
+}
+
+function remove_lang_links(string $text): string
+{
+    // preg_quote احتياطًا لأي رمز يحوي أحرفًا خاصة
+    $langs = implode('|', array_map(fn($c): string => preg_quote($c, '/'), LANG_CODES));
+
+    return preg_replace("/\[\[($langs):[^\]]+\]\]/", '', $text) ?? $text;
 }
 
 /**

@@ -1,6 +1,7 @@
 <?php
 
 namespace MDWiki\NewHtmlMain\Main;
+
 /**
  * Main API endpoint for processing MDWiki page content
  *
