@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\EntryPoints;
+namespace Tests\EntryPoints;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;

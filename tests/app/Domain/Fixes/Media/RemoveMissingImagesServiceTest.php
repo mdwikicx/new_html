@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\Domain;
+namespace Tests\Domain;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 

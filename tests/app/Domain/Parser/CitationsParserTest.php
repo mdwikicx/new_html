@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\WikiParse;
+namespace Tests\WikiParse;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Parser\get_ref_name;
 use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;

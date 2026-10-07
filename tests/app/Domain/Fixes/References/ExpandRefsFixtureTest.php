@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\WikiTextFixes;
+namespace Tests\WikiTextFixes;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 

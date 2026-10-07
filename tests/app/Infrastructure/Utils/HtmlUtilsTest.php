@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\Utils;
+namespace Tests\Utils;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
 use function MDWiki\NewHtml\Infrastructure\Utils\get_attrs;

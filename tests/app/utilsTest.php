@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\Utils;
+namespace Tests\Utils;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 
 class mainTest extends bootstrap

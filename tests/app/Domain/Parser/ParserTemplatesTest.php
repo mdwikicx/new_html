@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\WikiParse;
+namespace Tests\WikiParse;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 

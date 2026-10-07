@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\Handlers;
+namespace Tests\Handlers;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
 

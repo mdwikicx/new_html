@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\WikiTextFixes;
+namespace Tests\WikiTextFixes;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;

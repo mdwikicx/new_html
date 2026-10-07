@@ -1,8 +1,8 @@
 <?php
 
-namespace FixRefs\Tests\APIServices;
+namespace Tests\APIServices;
 
-use FixRefs\Tests\bootstrap;
+use Tests\bootstrap;
 
 use MDWiki\NewHtml\Services\Api\SegmentApiService;
 
