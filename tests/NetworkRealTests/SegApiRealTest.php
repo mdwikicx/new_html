@@ -2,13 +2,13 @@
 
 namespace FixRefs\Tests\APIServices;
 
-use FixRefs\Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 
 use MDWiki\NewHtml\Services\Api\SegmentApiService;
 
 
 
-class SegApiRealTest extends bootstrap
+class SegApiRealTest extends TestCase
 {
     protected function setUp(): void
     {

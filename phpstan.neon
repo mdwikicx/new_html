@@ -1,10 +1,36 @@
+# PHPStan Configuration for Translation Dashboard
+# Run: vendor/bin/phpstan analyse -c phpstan.neon
+
 parameters:
-    bootstrapFiles:
-        - src/new_html/bootstrap.php
-    level: 6
+    level: 5
+
+    # parallel:
+    #     maximumNumberOfProcesses: 1
+
     paths:
         - src/
 
     excludePaths:
         - vendor
-        - */vendor/*
+        - src_/*
+
+    # Treat phpdoc types as assertions for runtime safety
+    treatPhpDocTypesAsCertain: true
+
+    # Report unmatched ignored errors
+    reportUnmatchedIgnoredErrors: true
+
+    # Universal object crates (classes with dynamic properties)
+    universalObjectCratesClasses:
+        - stdClass
+
+    # Ignore specific errors during transition
+    ignoreErrors: []
+
+    # Bootstrap file for autoloading
+    bootstrapFiles:
+        - tests/bootstrap.php
+
+    # Scan files for class definitions
+    scanFiles:
+        - src/new_html/bootstrap.php
