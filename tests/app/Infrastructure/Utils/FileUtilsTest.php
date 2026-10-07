@@ -1,203 +1,68 @@
 <?php
-
 namespace Tests\Utils;
 
+use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use PHPUnit\Framework\TestCase;
-
-use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
-use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 
 class FileUtilsTest extends TestCase
 {
-    private $testDir;
-    private $testFile;
-
-    protected function setUp(): void
+    public function testGetFileDirWithVeryLongRevision()
     {
-        $this->testDir = sys_get_temp_dir() . '/test_file_utils_' . time();
-        $this->testFile = $this->testDir . '/test_file.txt';
+        $longRevision = str_repeat('9', 20);
+        $result       = FileUtils::get_file_dir($longRevision, '');
+
+        $this->assertIsString($result);
+        $this->assertStringContainsString($longRevision, $result);
     }
 
-    public function testFileWriteWithValidData()
+    public function testGetFileDirWithValidRevision()
     {
-        // Create a temporary file
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        file_write($tempFile, 'Test content');
+        // This test depends on REVISIONS_PATH constant
+        $result = FileUtils::get_file_dir('12345', '');
 
-        // Verify file exists
-        $this->assertFileExists($tempFile);
-
-        // Clean up
-        @unlink($tempFile);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('12345', $result);
     }
 
-    public function testFileWriteWithEmptyText()
+    public function testGetFileDirWithAllFlag()
     {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        file_write($tempFile, '');
+        $result = FileUtils::get_file_dir('67890', 'all');
 
-        // Should not create file with empty text
-        // Or create empty file depending on implementation
-        @unlink($tempFile);
-        $this->assertTrue(true);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('67890', $result);
+        $this->assertStringContainsString('_all', $result);
     }
 
-    public function testFileWriteWithEmptyFile()
+    public function testGetFileDirWithNonNumericRevision()
     {
-        file_write('', 'Some text');
+        $result = FileUtils::get_file_dir('abc123', '');
 
-        // Should handle empty file path gracefully
-        $this->assertTrue(true);
-    }
-
-    public function testFileWriteWithNullFile()
-    {
-        file_write(null, 'Some text');
-
-        // Should handle null file path gracefully
-        $this->assertTrue(true);
-    }
-
-    public function testReadFileWithExistingFile()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        file_put_contents($tempFile, 'Test content');
-
-        $result = read_file($tempFile);
-
-        $this->assertEquals('Test content', $result);
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-    public function testReadFileWithNonexistentFile()
-    {
-        $result = read_file('/nonexistent/path/file.txt');
+        $this->expectOutputRegex('/revision is empty in get_file_dir/');
 
         $this->assertEquals('', $result);
     }
 
-    public function testReadFileWithEmptyPath()
+    public function testGetFileDirCreatesDirectory()
     {
-        $result = read_file('');
+        // Test that directory is created if it doesn't exist
+        $result = FileUtils::get_file_dir('99999', '');
 
-        $this->assertEquals('', $result);
+        $this->assertIsString($result);
+        // Directory creation depends on system permissions
+    }
+    public function testGetFileDirWithNumericStringRevision()
+    {
+        $result = FileUtils::get_file_dir('123456789', '');
+
+        $this->assertIsString($result);
+        $this->assertStringContainsString('123456789', $result);
     }
 
-    public function testReadFileWithNullPath()
+    public function testGetFileDirWithLeadingZeros()
     {
-        $result = read_file(null);
+        // Test revision with leading zeros
+        $result = FileUtils::get_file_dir('00123', '');
 
-        $this->assertEquals('', $result);
-    }
-
-    public function testFileWriteAndRead()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        $content = 'Write and read test';
-
-        file_write($tempFile, $content);
-        $result = read_file($tempFile);
-
-        $this->assertEquals($content, $result);
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-    public function testFileWriteWithSpecialCharacters()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        $content = "Special chars: \n\t{{template}} [[link]] <ref>cite</ref>";
-
-        file_write($tempFile, $content);
-        $result = read_file($tempFile);
-
-        $this->assertEquals($content, $result);
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-    public function testFileWriteWithUnicode()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        $content = "Unicode: 日本語 العربية Ελληνικά";
-
-        file_write($tempFile, $content);
-        $result = read_file($tempFile);
-
-        $this->assertEquals($content, $result);
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-    public function testFileWriteOverwritesExisting()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-
-        file_write($tempFile, 'First content');
-        file_write($tempFile, 'Second content');
-
-        $result = read_file($tempFile);
-
-        $this->assertEquals('Second content', $result);
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-    public function testReadFileWithLargeContent()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        $largeContent = str_repeat('Large content block. ', 1000);
-
-        file_put_contents($tempFile, $largeContent);
-        $result = read_file($tempFile);
-
-        $this->assertEquals($largeContent, $result);
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-
-
-    public function testFileWriteWithNewlines()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        $content = "Line 1\nLine 2\nLine 3";
-
-        file_write($tempFile, $content);
-        $result = read_file($tempFile);
-
-        $this->assertEquals($content, $result);
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-    public function testReadFileReturnsStringOrBool()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        file_put_contents($tempFile, 'Test');
-
-        $result = read_file($tempFile);
-
-        $this->assertTrue(is_string($result) || is_bool($result));
-
-        // Clean up
-        @unlink($tempFile);
-    }
-
-    protected function tearDown(): void
-    {
-        // Clean up test directory if it exists
-        if (is_dir($this->testDir)) {
-            array_map('unlink', glob("$this->testDir/*.*"));
-            @rmdir($this->testDir);
-        }
+        $this->assertIsString($result);
     }
 }

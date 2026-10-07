@@ -18,13 +18,11 @@ namespace MDWiki\NewHtmlMain\Main;
  * @package MDWiki\NewHtml
  */
 
-use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
-use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
-use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
-use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 use function MDWiki\NewHtml\Services\Html\html_to_seg;
-use function MDWiki\NewHtml\Utils\get_file_dir;
+use MDWiki\NewHtml\Controllers\JsonDataController;
+use MDWiki\NewHtml\Handlers\WikitextHandler;
+use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
@@ -38,19 +36,19 @@ use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
  */
 function get_from_json(string $title, string $all, string $file): array
 {
-    $revid = get_title_revision($title, $file);
+    $revid = JsonDataController::get_title_revision($title, $file);
 
     if (empty($revid) || ! ctype_digit($revid)) {
         return ['', ''];
     }
 
-    $file_dir = get_file_dir($revid, $all);
+    $file_dir = FileUtils::get_file_dir($revid, $all);
 
     if (! is_dir($file_dir)) {
         return ['', ''];
     }
 
-    $wikitext = read_file($file_dir . "/wikitext.txt");
+    $wikitext = FileUtils::read_file($file_dir . "/wikitext.txt");
 
     return [$wikitext, $revid];
 }
@@ -67,9 +65,9 @@ function get_wikitext_revision(string $title, string $all): array
     $from_cache = false;
 
     if (empty($all)) {
-        $json1 = get_wikitext($title, JSON_FILE, true);
+        $json1 = WikitextHandler::get_wikitext($title, JSON_FILE, true);
     } else {
-        $json1 = get_wikitext($title, JSON_FILE_ALL);
+        $json1 = WikitextHandler::get_wikitext($title, JSON_FILE_ALL);
     }
 
     $wikitext = $json1["source"];
@@ -196,7 +194,7 @@ function start(array $request, string $title): void
         exit(json_encode($data));
     }
 
-    $file_dir = get_file_dir($revision, $all);
+    $file_dir = FileUtils::get_file_dir($revision, $all);
 
     $file_wikitext = $file_dir . "/wikitext.txt";
     $file_html     = $file_dir . "/html.html";
@@ -206,9 +204,9 @@ function start(array $request, string $title): void
     $service  = new WikitextFixerService();
     $wikitext = $service->fix($wikitext, $title);
 
-    file_write($file_wikitext, $wikitext);
+    FileUtils::file_write($file_wikitext, $wikitext);
 
-    file_write($file_title, $title);
+    FileUtils::file_write($file_title, $title);
 
     [$HTML_text, $html_cache] = get_HTML_text($wikitext, $file_html, $title, $new);
 

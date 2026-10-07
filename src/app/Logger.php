@@ -8,19 +8,6 @@ final class Logger
 {
     private static ?bool $debug = null;
 
-    public static function isDebugOld(): bool
-    {
-        if (self::$debug === null) {
-            if (isset($_COOKIE['test']) && $_COOKIE['test'] === 'x') {
-                self::$debug = false;
-            } else {
-                self::$debug = isset($_REQUEST['test']) || isset($_COOKIE['test']);
-            }
-        }
-
-        return self::$debug;
-    }
-
     private static function isDebug(): bool
     {
         return self::$debug ??= ((getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? '')) === 'development');

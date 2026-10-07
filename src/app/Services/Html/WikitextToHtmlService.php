@@ -12,9 +12,8 @@
 namespace MDWiki\NewHtml\Services\Html;
 
 use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
-use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
+use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
-use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 
 class WikitextToHtmlService
@@ -70,7 +69,7 @@ class WikitextToHtmlService
     public function convertWithCache(string $wikitext, string $file_html, string $title, bool $new): array
     {
         if (! $new) {
-            $text = read_file($file_html);
+            $text = FileUtils::read_file($file_html);
             if (! empty($text)) {
                 return [$text, true];
             }
@@ -86,7 +85,7 @@ class WikitextToHtmlService
             return ["", false];
         }
 
-        file_write($file_html, $result);
+        FileUtils::file_write($file_html, $result);
 
         return [$result, false];
     }

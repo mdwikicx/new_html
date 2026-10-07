@@ -8,16 +8,10 @@
  * @package MDWiki\NewHtml
  */
 
-if (defined('DEBUGX') && DEBUGX === true) {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-}
-
 // Use modern PSR-4 autoloading
 require_once __DIR__ . "/bootstrap.php";
 
-use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
+use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use MDWiki\NewHtml\Logger;
 
 /**
@@ -29,7 +23,7 @@ use MDWiki\NewHtml\Logger;
 function get_Data(string $tyt): array
 {
     $file      = ($tyt == 'all') ? JSON_FILE_ALL : JSON_FILE;
-    $file_text = read_file($file);
+    $file_text = FileUtils::read_file($file);
     if (empty($file_text)) {
         return [];
     }
@@ -100,7 +94,7 @@ foreach ($dirs as $dir) {
     ];
 }
 
-function file_write(?string $file, string $text): void
+function fileWrite(?string $file, string $text): void
 {
     if (empty($text) || empty($file)) {
         return;
@@ -114,8 +108,8 @@ function file_write(?string $file, string $text): void
 }
 
 if ($make_dump) {
-    file_write(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
-    file_write(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
+    fileWrite(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
+    fileWrite(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
 
 header('Content-Type: application/json');

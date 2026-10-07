@@ -1,7 +1,6 @@
 <?php
 
-use function MDWiki\NewHtmlMain\Main\start;
-use function MDWiki\NewHtml\Cors\set_cors_headers;
+use MDWiki\NewHtml\Controllers\AppRouterController;
 
 /**
  * Route handler for new_html application
@@ -11,42 +10,24 @@ use function MDWiki\NewHtml\Cors\set_cors_headers;
  * - Requests with parameters -> main.php (API endpoint)
  *
  * @package MDWiki\NewHtml
+ *
+ * Test at: http://localhost:305/new_html_1/revisions.html
  */
 
-function get_content_type(string $printetxt): string
-{
-    $content_types = [
-        "wikitext" => "text/plain",
-        "html"     => "text/html",
-        "seg"      => "text/html",
-    ];
+$env = getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? 'development');
 
-    return $content_types[$printetxt] ?? "application/json";
+if ($env === 'development') {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
 }
+
+include_once __DIR__ . "/bootstrap.php";
 
 if ((empty($_GET) && empty($_POST)) || (count($_GET) == 1 && isset($_GET["test"]))) {
     // require_once __DIR__ . "/revisions.html";
     header("Location: revisions.html");
 } else {
-    $printetxt    = $_GET['printetxt'] ?? $_GET['print'] ?? '';
-    $content_type = get_content_type($printetxt);
-    header("Content-type: $content_type");
-
-    require_once __DIR__ . "/bootstrap.php";
-    set_cors_headers();
-
-    require_once __DIR__ . "/main.php";
-
-    $title = $_GET['title'] ?? '';
-    // first litter in $title must be capital
-    $title = ucfirst($title);
-
-    if (empty($title)) {
-        header("Content-type: application/json");
-        echo json_encode([
-            'error' => 'title is empty',
-        ]);
-        exit;
-    }
-    start($_GET, $title);
+    $controller = new AppRouterController();
+    $controller->handleRequest($_GET);
 }

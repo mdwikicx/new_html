@@ -11,8 +11,7 @@
 
 namespace MDWiki\NewHtml\Services\Html;
 
-use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
-use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
+use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use MDWiki\NewHtml\Services\Api\SegmentApiService;
 
 /**
@@ -24,7 +23,7 @@ use MDWiki\NewHtml\Services\Api\SegmentApiService;
 function do_html_to_seg(string $text): string
 {
     $service = new SegmentApiService();
-    $fixed = $service->HtmltoSegments($text);
+    $fixed   = $service->HtmltoSegments($text);
 
     // $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? "";
@@ -33,8 +32,14 @@ function do_html_to_seg(string $text): string
     // $result = str_replace("https://medwiki.toolforge.org/w/", "https://en.wikipedia.org/w/", $result);
     // $result = str_replace("https://medwiki.toolforge.org/wiki/", "https://en.wikipedia.org/wiki/", $result);
 
-    if ($result == 'Content for translate is not given or is empty') return "";
-    if ($result == 'Sectionwrap: Attempting to remove a non-section tag: undefined') return "";
+    if ($result == 'Content for translate is not given or is empty') {
+        return "";
+    }
+
+    if ($result == 'Sectionwrap: Attempting to remove a non-section tag: undefined') {
+        return "";
+    }
+
     return $result;
 }
 
@@ -50,19 +55,21 @@ function html_to_seg(string $text, string $file_seg): array
 
     $from_cache = false;
 
-    if (!isset($_GET['new'])) {
-        $seg_text = read_file($file_seg);
+    if (! isset($_GET['new'])) {
+        $seg_text = FileUtils::read_file($file_seg);
 
-        if (!empty($seg_text)) {
+        if (! empty($seg_text)) {
             return [$seg_text, true];
         }
     }
 
     $result = do_html_to_seg($text);
 
-    if (empty($result)) return ["", $from_cache];
+    if (empty($result)) {
+        return ["", $from_cache];
+    }
 
-    file_write($file_seg, $result);
+    FileUtils::file_write($file_seg, $result);
 
     return [$result, $from_cache];
 }

@@ -9,16 +9,14 @@
  * @package MDWiki\NewHtml
  */
 
-if (!defined('USER_AGENT')) {
+if (! defined('USER_AGENT')) {
     $user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.mdwikicx@toolforge.org)';
     define('USER_AGENT', $user_agent);
 }
 
 require_once __DIR__ . "/autoload.php";
-require_once __DIR__ . "/Utils.php";
 
-require_once __DIR__ . "/Application/Controllers/JsonDataController.php";
-require_once __DIR__ . "/Application/Handlers/WikitextHandler.php";
+require_once __DIR__ . "/Handlers/WikitextHandler.php";
 require_once __DIR__ . "/Domain/Fixes/Media/FixImagesFixture.php";
 
 require_once __DIR__ . "/Domain/Fixes/References/DeleteEmptyRefsFixture.php";

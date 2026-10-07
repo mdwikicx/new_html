@@ -4,7 +4,7 @@ namespace Tests\Handlers;
 
 use PHPUnit\Framework\TestCase;
 
-use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
+use MDWiki\NewHtml\Handlers\WikitextHandler;
 
 class WikitextHandlerTest extends TestCase
 {
@@ -16,7 +16,7 @@ class WikitextHandlerTest extends TestCase
 
     public function testGetWikitextReturnsArray()
     {
-        $result = get_wikitext('Test_Article', '');
+        $result = WikitextHandler::get_wikitext('Test_Article', '');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);
@@ -26,7 +26,7 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextWithSpacesInTitle()
     {
         // Test that spaces are replaced with underscores
-        $result = get_wikitext('Test Article', '');
+        $result = WikitextHandler::get_wikitext('Test Article', '');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);
@@ -35,7 +35,7 @@ class WikitextHandlerTest extends TestCase
 
     public function testGetWikitextReturnsWikitextAndRevid()
     {
-        $result = get_wikitext('Sample_Page', '');
+        $result = WikitextHandler::get_wikitext('Sample_Page', '');
 
         $this->assertIsString($result["source"]);
         $this->assertTrue(is_string($result["revid"]) || is_int($result["revid"]));
@@ -44,7 +44,7 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextWithEmptyAllParameter()
     {
         // When $all is empty, should get only lead section
-        $result = get_wikitext('Test_Page', '');
+        $result = WikitextHandler::get_wikitext('Test_Page', '');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);
@@ -54,7 +54,7 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextWithNonEmptyAllParameter()
     {
         // When $all is non-empty, should get full page
-        $result = get_wikitext('Test_Page', 'all');
+        $result = WikitextHandler::get_wikitext('Test_Page', 'all');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);
@@ -64,14 +64,14 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextHandlesEmptyResponse()
     {
         // Test with likely non-existent page
-        $result = get_wikitext('NonExistentPage999999', '');
+        $result = WikitextHandler::get_wikitext('NonExistentPage999999', '');
 
         $this->assertIsString($result["source"]);
     }
 
     public function testGetWikitextWithSpecialCharacters()
     {
-        $result = get_wikitext('Test/Page-Name_123', '');
+        $result = WikitextHandler::get_wikitext('Test/Page-Name_123', '');
 
         $this->assertIsArray($result);
         $this->assertIsString($result["source"]);
@@ -80,7 +80,7 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextReplacesSpacesWithUnderscores()
     {
         // Test the title transformation
-        $result = get_wikitext('Multiple  Spaces  Here', '');
+        $result = WikitextHandler::get_wikitext('Multiple  Spaces  Here', '');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);
@@ -90,7 +90,7 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextLeadSectionExtraction()
     {
         // Test that lead section is extracted when $all is empty
-        $result = get_wikitext('Test_Article', '');
+        $result = WikitextHandler::get_wikitext('Test_Article', '');
 
         $this->assertIsString($result["source"]);
         // Lead section should end with references section
@@ -100,14 +100,14 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextFullTextRetrieval()
     {
         // Test full text retrieval with non-empty $all
-        $result = get_wikitext('Test_Article', 'full');
+        $result = WikitextHandler::get_wikitext('Test_Article', 'full');
 
         $this->assertIsString($result["source"]);
     }
 
     public function testGetWikitextWithUnicodeTitle()
     {
-        $result = get_wikitext('Tëst_Articlé', '');
+        $result = WikitextHandler::get_wikitext('Tëst_Articlé', '');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);
@@ -116,7 +116,7 @@ class WikitextHandlerTest extends TestCase
 
     public function testGetWikitextEmptyTitle()
     {
-        $result = get_wikitext('', '');
+        $result = WikitextHandler::get_wikitext('', '');
 
         $this->assertIsArray($result);
         $this->assertIsString($result["source"]);
@@ -124,7 +124,7 @@ class WikitextHandlerTest extends TestCase
 
     public function testGetWikitextReturnsValidStructure()
     {
-        $result = get_wikitext('Any_Title', '');
+        $result = WikitextHandler::get_wikitext('Any_Title', '');
 
         // Verify structure: array with source and revid keys
         $this->assertIsArray($result);
@@ -136,7 +136,7 @@ class WikitextHandlerTest extends TestCase
     {
         // Test redirect handling (if source contains #REDIRECT)
         // This would need actual API access, so we just verify structure
-        $result = get_wikitext('Possible_Redirect', '');
+        $result = WikitextHandler::get_wikitext('Possible_Redirect', '');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);
@@ -146,7 +146,7 @@ class WikitextHandlerTest extends TestCase
     public function testGetWikitextWithLongTitle()
     {
         $longTitle = str_repeat('Long_Title_', 20);
-        $result = get_wikitext($longTitle, '');
+        $result = WikitextHandler::get_wikitext($longTitle, '');
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('source', $result);

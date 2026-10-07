@@ -29,16 +29,6 @@ if ($env === 'development' && file_exists(__DIR__ . '/load_env.php')) {
 
 require_once __DIR__ . "/app/bootstrap.php";
 
-// Set up error reporting for development
-if (defined('DEBUGX') && DEBUGX === true) {
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', '0');
-    error_reporting(0);
-}
-
 $home = getenv('HOME') ?: ($_ENV['HOME'] ?? '');
 
 if (! defined('REVISIONS_PATH')) {
