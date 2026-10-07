@@ -21,24 +21,17 @@
     failOnRisky="true"
     failOnWarning="true">
     <testsuites>
-        <testsuite name="default">
-            <directory>tests</directory>
-        </testsuite>
         <testsuite name="Project Test Suite">
-            <directory suffix=".php">tests</directory>
+            <directory suffix="Test.php">tests</directory>
             <exclude>tests/NetworkRealTests</exclude>
         </testsuite>
         <testsuite name="network">
-            <directory suffix=".php">tests/NetworkRealTests</directory>
+            <directory suffix="Test.php">tests/NetworkRealTests</directory>
         </testsuite>
     </testsuites>
     <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
-        <exclude>
-            <directory>vendor</directory>
-            <directory>tests</directory>
-        </exclude>
     </source>
 </phpunit>
