@@ -7,7 +7,7 @@ use FixRefs\Tests\bootstrap;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_images;
 use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
 
-class FixImagesTest extends bootstrap
+class FixImagesFixtureTest extends bootstrap
 {
     public function testRemoveImagesWithSimpleImage()
     {

@@ -7,7 +7,7 @@ use FixRefs\Tests\bootstrap;
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
 use function MDWiki\NewHtml\Domain\Fixes\Structure\is_valid_lang_code;
 
-class FixLangsLinksTest extends bootstrap
+class FixLanguageLinksFixtureTest extends bootstrap
 {
     /**
      * Complete list of Wikipedia language codes (from the original array)

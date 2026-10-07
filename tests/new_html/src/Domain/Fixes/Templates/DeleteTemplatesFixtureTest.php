@@ -7,7 +7,7 @@ use FixRefs\Tests\bootstrap;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
 use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
 
-class DelTempsTest extends bootstrap
+class DeleteTemplatesFixtureTest extends bootstrap
 {
     public function testRemoveTemplatesWithShortDescription()
     {

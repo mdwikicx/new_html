@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class MdwikiApiTest extends bootstrap
+class MdwikiApiServiceTest extends bootstrap
 {
     private ?MdwikiApiService $service;
     private ?HttpClientInterface $mockHttpClient;

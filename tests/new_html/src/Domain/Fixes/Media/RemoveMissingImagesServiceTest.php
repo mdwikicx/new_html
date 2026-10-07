@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 
-class RemoveMissingImagesTest extends bootstrap
+class RemoveMissingImagesServiceTest extends bootstrap
 {
     private ?RemoveMissingImagesService $service;
     private ?CommonsImageServiceInterface $mockImageService;

@@ -7,7 +7,7 @@ use FixRefs\Tests\bootstrap;
 use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 
-class JsonDataTest extends bootstrap
+class JsonDataControllerTest extends bootstrap
 {
     private $testJsonFile;
     private $testJsonFileAll;

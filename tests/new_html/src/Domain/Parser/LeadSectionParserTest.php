@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 
-class LeadSectionTest extends bootstrap
+class LeadSectionParserTest extends bootstrap
 {
     public function testGetLeadSectionWithSections()
     {

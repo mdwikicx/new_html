@@ -7,7 +7,7 @@ use FixRefs\Tests\bootstrap;
 use function MDWiki\NewHtml\Domain\Fixes\References\check_one_cite;
 use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
 
-class RefWorkTest extends bootstrap
+class RefWorkerFixtureTest extends bootstrap
 {
     public function testCheckOneCiteWithBadDOI()
     {

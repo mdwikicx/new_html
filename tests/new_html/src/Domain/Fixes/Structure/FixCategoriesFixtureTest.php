@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
 
-class FixCatsTest extends bootstrap
+class FixCategoriesFixtureTest extends bootstrap
 {
     public function testRemoveCategoriesWithSingleCategory()
     {

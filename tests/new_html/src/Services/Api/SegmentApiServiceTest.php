@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 use MDWiki\NewHtml\Services\Api\SegmentApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class SegApiTest extends bootstrap
+class SegmentApiServiceTest extends bootstrap
 {
     private ?SegmentApiService $service;
     private ?HttpClientInterface $mockHttpClient;

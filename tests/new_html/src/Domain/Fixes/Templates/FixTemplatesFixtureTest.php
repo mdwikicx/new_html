@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
 
-class FixTempsTest extends bootstrap
+class FixTemplatesFixtureTest extends bootstrap
 {
     public function testAddMissingTitleWithDrugbox()
     {

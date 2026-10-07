@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 
-class ExpendRefsTest extends bootstrap
+class ExpandRefsFixtureTest extends bootstrap
 {
     public function testExpandTextRefsWithShortRefAndFullInAlltext()
     {

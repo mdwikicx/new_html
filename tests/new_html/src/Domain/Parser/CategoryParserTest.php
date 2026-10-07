@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
-class CategoryTest extends bootstrap
+class CategoryParserTest extends bootstrap
 {
     public function testGetCategoriesWithSingleCategory()
     {

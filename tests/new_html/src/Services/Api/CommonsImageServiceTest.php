@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 use MDWiki\NewHtml\Services\Api\CommonsImageService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
-class CommonsApiTest extends bootstrap
+class CommonsImageServiceTest extends bootstrap
 {
     private ?CommonsImageService $service;
     private ?HttpClientInterface $mockHttpClient;

@@ -6,7 +6,7 @@ use FixRefs\Tests\bootstrap;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
 
-class DelMtRefsTest extends bootstrap
+class DeleteEmptyRefsFixtureTest extends bootstrap
 {
     public function testDelEmptyRefsWithValidShortRef()
     {
