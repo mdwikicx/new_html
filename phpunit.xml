@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="tests/bootstrap.php"
-    colors="true"
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="tests/bootstrap.php"
     testdox="true"
-    verbose="true"
->
+    stderr="true"
+    displayDetailsOnAllIssues="true"
+    displayDetailsOnIncompleteTests="true"
+    displayDetailsOnSkippedTests="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnPhpunitDeprecations="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
+    displayDetailsOnTestsThatTriggerNotices="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    colors="true"
+    stopOnFailure="false"
+    cacheDirectory=".phpunit.cache"
+    executionOrder="depends,defects"
+    beStrictAboutOutputDuringTests="true"
+    failOnRisky="true"
+    failOnWarning="true">
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory suffix=".php">tests</directory>
+            <directory suffix="Test.php">tests</directory>
             <exclude>tests/NetworkRealTests</exclude>
         </testsuite>
         <testsuite name="network">
-            <directory suffix=".php">tests/NetworkRealTests</directory>
+            <directory suffix="Test.php">tests/NetworkRealTests</directory>
         </testsuite>
     </testsuites>
-    <coverage processUncoveredFiles="true">
+    <source>
         <include>
-            <directory suffix=".php">.</directory>
+            <directory suffix=".php">src</directory>
         </include>
-        <exclude>
-            <directory>vendor</directory>
-            <directory>tests</directory>
-        </exclude>
-    </coverage>
+    </source>
 </phpunit>

@@ -1,13 +1,12 @@
 <?php
 
-namespace FixRefs\Tests;
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+namespace Tests;
 
 // Set test environment
 putenv('APP_ENV=testing');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $revisions_new_path_local = "I:/MD_TOOLS/mdwikicx.toolforge.org/revisions_new";
 if (!is_dir($revisions_new_path_local)) {
@@ -36,7 +35,7 @@ if (file_exists($vendor_path)) {
 };
 
 // Use modern PSR-4 autoloading via bootstrap
-require __DIR__ . '/../src/new_html/bootstrap.php';
+require __DIR__ . '/../src/bootstrap.php';
 
 use PHPUnit\Framework\TestCase;
 
