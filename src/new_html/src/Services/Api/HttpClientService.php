@@ -21,13 +21,18 @@ class HttpClientService implements HttpClientInterface
      * @param string $endPoint
      * @param string $method
      * @param array<string, mixed> $params
-     * @return array{printableUrl: string, httpCode: int, response: bool|string, error: string}
+     * @param bool $json
+     * @param int $timeout
+     * @param int $connectTimeout
+     * @return array{printableUrl: string, httpCode: int, response: bool|string, error: string, errno: int}
      */
     public function handleRawRequest(
         string $endPoint,
         string $method = 'GET',
         array $params = [],
         bool $json = false,
+        int $timeout = 15,
+        int $connectTimeout = 5,
     ): array {
         $ch = curl_init();
         $user_agent = defined('USER_AGENT') ? USER_AGENT : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
@@ -63,18 +68,20 @@ class HttpClientService implements HttpClientInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
         curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $connectTimeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 
         $output = curl_exec($ch);
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $errno = curl_errno($ch);
 
         return [
             'printableUrl' => $printableUrl,
             'httpCode' => $httpCode,
             'response' => $output,
-            'error' => curl_error($ch)
+            'error' => curl_error($ch),
+            'errno' => $errno,
         ];
     }
     /**
@@ -129,16 +136,25 @@ class HttpClientService implements HttpClientInterface
      * @param string $method The HTTP method to use ('GET' or 'POST')
      * @param array<string, mixed> $params Optional parameters to send with the request
      * @param bool $json Whether to send the request as JSON
-     * @return array{output: string, error_code: string, error: string}
+     * @param int $timeout Timeout in seconds
+     * @param int $connectTimeout Connection timeout in seconds
+     * @return array{output: string, error_code: string, error: string, httpCode: int}
      */
-    public function request(string $endPoint, string $method = 'GET', array $params = [], bool $json = false): array
-    {
-        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json);
+    public function request(
+        string $endPoint,
+        string $method = 'GET',
+        array $params = [],
+        bool $json = false,
+        int $timeout = 15,
+        int $connectTimeout = 5,
+    ): array {
+        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json, $timeout, $connectTimeout);
 
         $printableUrl = $rawResponse['printableUrl'];
         $httpCode = $rawResponse['httpCode'];
         $output = $rawResponse['response'];
         $error = $rawResponse['error'];
+        $errno = $rawResponse['errno'];
 
         test_print($printableUrl);
 
@@ -146,11 +162,12 @@ class HttpClientService implements HttpClientInterface
             "output" => "",
             "error_code" => "",
             "error" => "",
+            "httpCode" => $httpCode,
         ];
 
         if ($output === false) {
             $result["error"] = $error;
-            $result["error_code"] = "CURL_ERROR";
+            $result["error_code"] = ($errno === 28 || $errno === 7 || (is_string($error) && str_contains(strtolower($error), 'timeout'))) ? "TIMEOUT" : "CURL_ERROR";
             error_log("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
             test_print("endPoint: ($endPoint), cURL Error: " . $error);
             return $result;

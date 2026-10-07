@@ -399,4 +399,121 @@ class MdwikiApiTest extends bootstrap
         $this->assertEquals('', $result["source"]);
         $this->assertEquals('', $result["revid"]);
     }
+
+    public function testGetFileNameFromTitleExamples()
+    {
+        $examples = [
+            'Zinc sulfate (medical use)' => 'Zinc_sulfate_%28medical_use%29.json',
+            'Wernicke–Korsakoff syndrome' => 'Wernicke%E2%80%93Korsakoff_syndrome.json',
+            'Sodium phenylacetate/sodium benzoate' => 'Sodium_phenylacetate%2Fsodium_benzoate.json',
+            'Sofosbuvir/velpatasvir/voxilaprevir' => 'Sofosbuvir%2Fvelpatasvir%2Fvoxilaprevir.json',
+            'Sodium nitroprusside' => 'Sodium_nitroprusside.json',
+        ];
+
+        foreach ($examples as $title => $expectedFilename) {
+            $actualFilename = $this->service->getFileNameFromTitle($title);
+            $this->assertEquals($expectedFilename, $actualFilename, "Filename mismatch for title: {$title}");
+        }
+    }
+
+    public function testGetWikitextFromMdwikiRestApiFallbackToLocalFileOnTimeout()
+    {
+        $tempDir = sys_get_temp_dir() . '/rtt_members_test_' . uniqid();
+        mkdir($tempDir, 0777, true);
+
+        $title = 'Zinc sulfate (medical use)';
+        $filename = 'Zinc_sulfate_%28medical_use%29.json';
+        $jsonContent = json_encode([
+            'source' => 'Local wikitext content',
+            'latest' => ['id' => 998877]
+        ]);
+        file_put_contents($tempDir . '/' . $filename, $jsonContent);
+
+        $serviceWithTempDir = new MdwikiApiService(
+            $this->mockHttpClient,
+            'https://mdwiki.org/w/api.php',
+            'https://mdwiki.org/w/rest.php/v1',
+            $tempDir
+        );
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn(['output' => '', 'error_code' => 'TIMEOUT', 'error' => 'cURL error 28: Operation timed out']);
+
+        $result = $serviceWithTempDir->getWikitextFromMdwikiRestApi($title);
+
+        $this->assertEquals('Local wikitext content', $result['source']);
+        $this->assertEquals(998877, $result['revid']);
+        $this->assertEquals('', $result['error']);
+
+        // Clean up temp file and directory
+        unlink($tempDir . '/' . $filename);
+        rmdir($tempDir);
+    }
+
+    public function testGetWikitextFromMdwikiRestApiFallbackToLocalFileOnInvalidJson()
+    {
+        $tempDir = sys_get_temp_dir() . '/rtt_members_test_' . uniqid();
+        mkdir($tempDir, 0777, true);
+
+        $title = 'Sodium nitroprusside';
+        $filename = 'Sodium_nitroprusside.json';
+        $jsonContent = json_encode([
+            'source' => 'Local nitroprusside content',
+            'latest' => ['id' => 112233]
+        ]);
+        file_put_contents($tempDir . '/' . $filename, $jsonContent);
+
+        $serviceWithTempDir = new MdwikiApiService(
+            $this->mockHttpClient,
+            'https://mdwiki.org/w/api.php',
+            'https://mdwiki.org/w/rest.php/v1',
+            $tempDir
+        );
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn(['output' => '<html>Error Page</html>', 'error_code' => '', 'error' => '']);
+
+        $result = $serviceWithTempDir->getWikitextFromMdwikiRestApi($title);
+
+        $this->assertEquals('Local nitroprusside content', $result['source']);
+        $this->assertEquals(112233, $result['revid']);
+
+        unlink($tempDir . '/' . $filename);
+        rmdir($tempDir);
+    }
+
+    public function testGetWikitextFromMdwikiRestApiFallbackToLocalFileOnHttpError()
+    {
+        $tempDir = sys_get_temp_dir() . '/rtt_members_test_' . uniqid();
+        mkdir($tempDir, 0777, true);
+
+        $title = 'Sodium nitroprusside';
+        $filename = 'Sodium_nitroprusside.json';
+        $jsonContent = json_encode([
+            'source' => 'Local content from HTTP error fallback',
+            'latest' => ['id' => 554433]
+        ]);
+        file_put_contents($tempDir . '/' . $filename, $jsonContent);
+
+        $serviceWithTempDir = new MdwikiApiService(
+            $this->mockHttpClient,
+            'https://mdwiki.org/w/api.php',
+            'https://mdwiki.org/w/rest.php/v1',
+            $tempDir
+        );
+
+        $this->mockHttpClient
+            ->method('request')
+            ->willReturn(['output' => '', 'error_code' => '500', 'error' => 'HTTP_ERROR']);
+
+        $result = $serviceWithTempDir->getWikitextFromMdwikiRestApi($title);
+
+        $this->assertEquals('Local content from HTTP error fallback', $result['source']);
+        $this->assertEquals(554433, $result['revid']);
+
+        unlink($tempDir . '/' . $filename);
+        rmdir($tempDir);
+    }
 }
