@@ -6,23 +6,14 @@ namespace MDWiki\NewHtml\Tests\Services\Html;
 
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class WikitextToHtmlServiceTest extends TestCase
 {
-    /** @var TransformApiService&MockObject */
-    private TransformApiService $transform;
-
-    private WikitextToHtmlService $service;
-
     private string $tmpDir;
 
     protected function setUp(): void
     {
-        $this->transform = $this->createMock(TransformApiService::class);
-        $this->service = new WikitextToHtmlService($this->transform);
-
         $this->tmpDir = sys_get_temp_dir() . '/wikitext_html_test_' . uniqid();
         mkdir($this->tmpDir, 0777, true);
     }
@@ -33,6 +24,32 @@ class WikitextToHtmlServiceTest extends TestCase
             @unlink($file);
         }
         @rmdir($this->tmpDir);
+    }
+
+    // ------------------------------------------------------------------
+    // Helpers
+    // ------------------------------------------------------------------
+
+    /**
+     * Stub: يهمنا فقط ما يرجعه الـ API، ولا نتحقق من كيفية استدعائه.
+     */
+    private function serviceReturning(array $response): WikitextToHtmlService
+    {
+        $stub = $this->createStub(TransformApiService::class);
+        $stub->method('convert')->willReturn($response);
+
+        return new WikitextToHtmlService($stub);
+    }
+
+    /**
+     * Mock: نتوقع أن الـ API لا يُستدعى إطلاقًا.
+     */
+    private function serviceThatMustNotCallApi(): WikitextToHtmlService
+    {
+        $mock = $this->createMock(TransformApiService::class);
+        $mock->expects($this->never())->method('convert');
+
+        return new WikitextToHtmlService($mock);
     }
 
     // ------------------------------------------------------------------
@@ -47,92 +64,71 @@ class WikitextToHtmlServiceTest extends TestCase
     }
 
     // ------------------------------------------------------------------
-    // convert()
+    // convert(): تهمنا القيمة المرجعة (Stub)
     // ------------------------------------------------------------------
-
-    public function testConvertReturnsEmptyStringForEmptyWikitext(): void
-    {
-        $this->transform->expects($this->never())->method('convert');
-
-        $this->assertSame('', $this->service->convert('', 'Title'));
-    }
-
-    public function testConvertReplacesSpacesWithUnderscoresInTitle(): void
-    {
-        $this->transform
-            ->expects($this->once())
-            ->method('convert')
-            ->with('some text', 'My_Page_Title')
-            ->willReturn(['result' => '<p>ok</p>']);
-
-        $this->service->convert('some text', 'My Page Title');
-    }
 
     public function testConvertReturnsHtmlOnSuccess(): void
     {
-        $this->transform
-            ->method('convert')
-            ->willReturn(['result' => '<p>Hello</p>']);
+        $service = $this->serviceReturning(['result' => '<p>Hello</p>']);
 
-        $html = $this->service->convert("'''Hello'''", 'Title');
+        $html = $service->convert("'''Hello'''", 'Title');
 
         $this->assertStringContainsString('Hello', $html);
     }
 
     public function testConvertReturnsEmptyStringWhenResultIsEmpty(): void
     {
-        $this->transform
-            ->method('convert')
-            ->willReturn(['result' => '']);
+        $service = $this->serviceReturning(['result' => '']);
 
-        $this->assertSame('', $this->service->convert('text', 'Title'));
+        $this->assertSame('', $service->convert('text', 'Title'));
     }
 
     public function testConvertReturnsEmptyStringWhenResultKeyIsMissing(): void
     {
-        $this->transform
-            ->method('convert')
-            ->willReturn(['error' => 'API failure']);
+        $service = $this->serviceReturning(['error' => 'API failure']);
 
-        $this->assertSame('', $this->service->convert('text', 'Title'));
+        $this->assertSame('', $service->convert('text', 'Title'));
     }
 
     public function testConvertReturnsEmptyStringWhenApiReturnsEmptyArray(): void
     {
-        $this->transform
-            ->method('convert')
-            ->willReturn([]);
+        $service = $this->serviceReturning([]);
 
-        $this->assertSame('', $this->service->convert('text', 'Title'));
+        $this->assertSame('', $service->convert('text', 'Title'));
     }
 
     // ------------------------------------------------------------------
-    // convertWithCache()
+    // convert(): يهمنا كيف استُدعي الـ API (Mock)
     // ------------------------------------------------------------------
 
-    public function testCacheIsUsedWhenNotNewAndFileHasContent(): void
+    public function testConvertReturnsEmptyStringForEmptyWikitextWithoutCallingApi(): void
     {
-        $file = $this->tmpDir . '/cached.html';
-        file_put_contents($file, '<p>cached</p>');
+        $service = $this->serviceThatMustNotCallApi();
 
-        $this->transform->expects($this->never())->method('convert');
-
-        [$html, $fromCache] = $this->service->convertWithCache('text', $file, 'Title', false);
-
-        $this->assertSame('<p>cached</p>', $html);
-        $this->assertTrue($fromCache);
+        $this->assertSame('', $service->convert('', 'Title'));
     }
 
-    public function testApiIsCalledAndFileWrittenWhenCacheIsMissing(): void
+    public function testConvertReplacesSpacesWithUnderscoresInTitle(): void
+    {
+        $mock = $this->createMock(TransformApiService::class);
+        $mock->expects($this->once())
+            ->method('convert')
+            ->with('some text', 'My_Page_Title')
+            ->willReturn(['result' => '<p>ok</p>']);
+
+        (new WikitextToHtmlService($mock))->convert('some text', 'My Page Title');
+    }
+
+    // ------------------------------------------------------------------
+    // convertWithCache(): نتيجة فقط (Stub)
+    // ------------------------------------------------------------------
+
+    public function testApiResultIsReturnedAndFileWrittenWhenCacheIsMissing(): void
     {
         $file = $this->tmpDir . '/fresh.html';
+        $service = $this->serviceReturning(['result' => '<p>fresh</p>']);
 
-        $this->transform
-            ->expects($this->once())
-            ->method('convert')
-            ->willReturn(['result' => '<p>fresh</p>']);
-
-        [$html, $fromCache] = $this->service->convertWithCache('text', $file, 'Title', false);
+        [$html, $fromCache] = $service->convertWithCache('text', $file, 'Title', false);
 
         $this->assertStringContainsString('fresh', $html);
         $this->assertFalse($fromCache);
@@ -140,17 +136,13 @@ class WikitextToHtmlServiceTest extends TestCase
         $this->assertSame($html, file_get_contents($file));
     }
 
-    public function testApiIsCalledWhenCacheFileIsEmpty(): void
+    public function testApiResultIsUsedWhenCacheFileIsEmpty(): void
     {
         $file = $this->tmpDir . '/empty.html';
         file_put_contents($file, '');
+        $service = $this->serviceReturning(['result' => '<p>new</p>']);
 
-        $this->transform
-            ->expects($this->once())
-            ->method('convert')
-            ->willReturn(['result' => '<p>new</p>']);
-
-        [$html, $fromCache] = $this->service->convertWithCache('text', $file, 'Title', false);
+        [$html, $fromCache] = $service->convertWithCache('text', $file, 'Title', false);
 
         $this->assertStringContainsString('new', $html);
         $this->assertFalse($fromCache);
@@ -160,55 +152,65 @@ class WikitextToHtmlServiceTest extends TestCase
     {
         $file = $this->tmpDir . '/force.html';
         file_put_contents($file, '<p>old</p>');
+        $service = $this->serviceReturning(['result' => '<p>updated</p>']);
 
-        $this->transform
-            ->expects($this->once())
-            ->method('convert')
-            ->willReturn(['result' => '<p>updated</p>']);
-
-        [$html, $fromCache] = $this->service->convertWithCache('text', $file, 'Title', true);
+        [$html, $fromCache] = $service->convertWithCache('text', $file, 'Title', true);
 
         $this->assertStringContainsString('updated', $html);
+        $this->assertStringNotContainsString('old', $html);
         $this->assertFalse($fromCache);
         $this->assertStringContainsString('updated', (string) file_get_contents($file));
-    }
-
-    public function testEmptyWikitextReturnsEmptyAndDoesNotWriteFile(): void
-    {
-        $file = $this->tmpDir . '/none.html';
-
-        $this->transform->expects($this->never())->method('convert');
-
-        [$html, $fromCache] = $this->service->convertWithCache('', $file, 'Title', true);
-
-        $this->assertSame('', $html);
-        $this->assertFalse($fromCache);
-        $this->assertFileDoesNotExist($file);
     }
 
     public function testApiFailureReturnsEmptyAndDoesNotWriteFile(): void
     {
         $file = $this->tmpDir . '/failed.html';
+        $service = $this->serviceReturning(['error' => 'timeout']);
 
-        $this->transform
-            ->method('convert')
-            ->willReturn(['error' => 'timeout']);
-
-        [$html, $fromCache] = $this->service->convertWithCache('text', $file, 'Title', false);
+        [$html, $fromCache] = $service->convertWithCache('text', $file, 'Title', false);
 
         $this->assertSame('', $html);
         $this->assertFalse($fromCache);
         $this->assertFileDoesNotExist($file);
+    }
+
+    // ------------------------------------------------------------------
+    // convertWithCache(): تجنّب الـ API هو المطلوب (Mock)
+    // ------------------------------------------------------------------
+
+    public function testCacheIsUsedWhenNotNewAndFileHasContent(): void
+    {
+        $file = $this->tmpDir . '/cached.html';
+        file_put_contents($file, '<p>cached</p>');
+        $service = $this->serviceThatMustNotCallApi();
+
+        [$html, $fromCache] = $service->convertWithCache('text', $file, 'Title', false);
+
+        $this->assertSame('<p>cached</p>', $html);
+        $this->assertTrue($fromCache);
     }
 
     public function testEmptyWikitextStillReturnsCacheWhenNotNew(): void
     {
         $file = $this->tmpDir . '/cached2.html';
         file_put_contents($file, '<p>cached</p>');
+        $service = $this->serviceThatMustNotCallApi();
 
-        [$html, $fromCache] = $this->service->convertWithCache('', $file, 'Title', false);
+        [$html, $fromCache] = $service->convertWithCache('', $file, 'Title', false);
 
         $this->assertSame('<p>cached</p>', $html);
         $this->assertTrue($fromCache);
+    }
+
+    public function testEmptyWikitextReturnsEmptyAndDoesNotWriteFile(): void
+    {
+        $file = $this->tmpDir . '/none.html';
+        $service = $this->serviceThatMustNotCallApi();
+
+        [$html, $fromCache] = $service->convertWithCache('', $file, 'Title', true);
+
+        $this->assertSame('', $html);
+        $this->assertFalse($fromCache);
+        $this->assertFileDoesNotExist($file);
     }
 }
