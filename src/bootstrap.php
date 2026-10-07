@@ -6,7 +6,7 @@
  * This file initializes the application environment, loads the Composer
  * autoloader, and sets up necessary configuration constants.
  *
- * @package App
+ * @package MDWiki\NewHtml
  */
 
 // Load Composer autoloader
@@ -17,7 +17,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 } else {
     // Handle the case where the autoload file does not exist
     error_log('Autoload file not found');
-    echo ('vendor/autoload.php not found. Please run composer install to set up dependencies.');
+    echo('vendor/autoload.php not found. Please run composer install to set up dependencies.');
     throw new RuntimeException('Autoload file not found');
 }
 
@@ -42,7 +42,7 @@ if (defined('DEBUGX') && DEBUGX === true) {
 
 $home = getenv('HOME') ?: ($_ENV['HOME'] ?? '');
 
-if (!defined('REVISIONS_PATH')) {
+if (! defined('REVISIONS_PATH')) {
     $env_value = getenv('REVISIONS_DIR') ?: ($_ENV['REVISIONS_DIR'] ?? null);
     if ($env_value) {
         $rev_path = $env_value;
@@ -52,26 +52,26 @@ if (!defined('REVISIONS_PATH')) {
     define('REVISIONS_PATH', $rev_path);
 }
 
-if (!defined('JSON_FILE')) {
+if (! defined('JSON_FILE')) {
     $json_file = REVISIONS_PATH . '/json_data.json';
     define('JSON_FILE', $json_file);
 }
-if (!defined('JSON_FILE_ALL')) {
+if (! defined('JSON_FILE_ALL')) {
     $json_file_all = REVISIONS_PATH . '/json_data_all.json';
     define('JSON_FILE_ALL', $json_file_all);
 }
 
 // Initialize revisions directory if needed
-if (!is_dir(REVISIONS_PATH)) {
+if (! is_dir(REVISIONS_PATH)) {
     mkdir(REVISIONS_PATH, 0755, true);
 }
 
 // Ensure JSON data files exist
 
-if (!file_exists(JSON_FILE)) {
+if (! file_exists(JSON_FILE)) {
     file_put_contents(JSON_FILE, '{}', LOCK_EX);
 }
 
-if (!file_exists(JSON_FILE_ALL)) {
+if (! file_exists(JSON_FILE_ALL)) {
     file_put_contents(JSON_FILE_ALL, '{}', LOCK_EX);
 }
