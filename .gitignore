@@ -22,3 +22,5 @@ src/revisions_new1/*.json
 tests/text.php
 x.php
 x.py
+.phpunit.cache
+.phpunit.cache/**
