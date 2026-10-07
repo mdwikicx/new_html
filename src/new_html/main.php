@@ -19,12 +19,13 @@ namespace MDWiki\NewHtmlMain\Main;
  * @package MDWiki\NewHtml
  */
 
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
+use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
+
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
 use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
-use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
 use function MDWiki\NewHtml\Services\Html\html_to_seg;
-use function MDWiki\NewHtml\Services\Html\wiki_text_to_html;
 use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
@@ -99,7 +100,7 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
     $from_cache = false;
 
     try {
-        [$HTML_text, $from_cache] = wiki_text_to_html($wikitext, $file_html, $title, $new);
+        [$HTML_text, $from_cache] = (new WikitextToHtmlService())->convertWithCache($wikitext, $file_html, $title, $new);
         $HTML_text = remove_data_parsoid($HTML_text);
     } catch (\Exception $e) {
         error_log("HTML generation failed for title: $title. Error: " . $e->getMessage());

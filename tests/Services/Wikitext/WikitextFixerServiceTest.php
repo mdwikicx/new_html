@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
+use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 
 function expendAllTemplates(string $text, int $ljust = 17): string
 {
@@ -27,6 +28,16 @@ class WikitextFixerServiceTest extends TestCase
     {
         parent::setUp();
         $this->fixturePath = __DIR__ . '/fixtures';
+    }
+
+    /**
+     * Stub that reports every image as existing, so no image is removed and no network call is made.
+     */
+    private function makeImageServiceStub(): CommonsImageServiceInterface
+    {
+        $stub = $this->createStub(CommonsImageServiceInterface::class);
+        $stub->method('imageExists')->willReturn(true);
+        return $stub;
     }
 
     /**
@@ -69,7 +80,7 @@ class WikitextFixerServiceTest extends TestCase
         $expected = $this->loadFixture($file, 'result');
         $expected = $this->stripResult($expected);
 
-        $service = new WikitextFixerService();
+        $service = new WikitextFixerService($this->makeImageServiceStub());
         $result = $service->run($source, 'PLACEHOLDER_TEST', !$allFlag);
         $result = $this->stripResult($result);
 
@@ -125,7 +136,7 @@ class WikitextFixerServiceTest extends TestCase
 
     public function testFixWikitextWithEmptyInputReturnsEmpty(): void
     {
-        $service = new WikitextFixerService();
+        $service = new WikitextFixerService($this->makeImageServiceStub());
         $result = $service->fix('', 'PLACEHOLDER_TEST');
 
         $this->assertSame('', $result);
