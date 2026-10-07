@@ -11,7 +11,7 @@
 namespace MDWiki\NewHtml\Services\Api;
 
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Logger;
 
 class HttpClientService implements HttpClientInterface
 {
@@ -94,28 +94,28 @@ class HttpClientService implements HttpClientInterface
         $output = $rawResponse['response'];
         $error = $rawResponse['error'];
 
-        test_print($printableUrl);
+        Logger::debug($printableUrl);
 
         if ($output === false) {
-            error_log("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
-            test_print("endPoint: ($endPoint), cURL Error: " . $error);
+            Logger::error("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
+            Logger::debug("endPoint: ($endPoint), cURL Error: " . $error);
             return '';
         }
 
         if ($httpCode !== 200) {
-            error_log("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
+            Logger::error("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
 
             // Check for Cloudflare protection
             $isCloudflareProtected = false;
             if (is_string($output) && str_contains($output, 'Just a moment...')) {
                 $isCloudflareProtected = true;
-                error_log("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
-                test_print("Cloudflare protection detected: 'Just a moment...' page returned");
+                Logger::error("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
+                Logger::debug("Cloudflare protection detected: 'Just a moment...' page returned");
             }
 
-            test_print("API returned HTTP $httpCode: $httpCode");
+            Logger::debug("API returned HTTP $httpCode: $httpCode");
             if (!$isCloudflareProtected) {
-                test_print(var_export($output, true));
+                Logger::debug(var_export($output, true));
             }
             $output = '';
         }
@@ -140,7 +140,7 @@ class HttpClientService implements HttpClientInterface
         $output = $rawResponse['response'];
         $error = $rawResponse['error'];
 
-        test_print($printableUrl);
+        Logger::debug($printableUrl);
 
         $result = [
             "output" => "",
@@ -151,14 +151,14 @@ class HttpClientService implements HttpClientInterface
         if ($output === false) {
             $result["error"] = $error;
             $result["error_code"] = "CURL_ERROR";
-            error_log("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
-            test_print("endPoint: ($endPoint), cURL Error: " . $error);
+            Logger::error("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
+            Logger::debug("endPoint: ($endPoint), cURL Error: " . $error);
             return $result;
         }
         $result["output"] = $output;
 
         if ($httpCode !== 200) {
-            error_log("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
+            Logger::error("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
             $result["error"] = "HTTP_ERROR";
             $result["error_code"] = "$httpCode";
 
@@ -166,14 +166,14 @@ class HttpClientService implements HttpClientInterface
             $isCloudflareProtected = false;
             if (is_string($output) && str_contains($output, 'Just a moment...')) {
                 $isCloudflareProtected = true;
-                error_log("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
-                test_print("Cloudflare protection detected: 'Just a moment...' page returned");
+                Logger::error("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
+                Logger::debug("Cloudflare protection detected: 'Just a moment...' page returned");
                 $result["error"] = "CLOUDFLARE_PROTECTION";
             }
 
-            test_print("API returned HTTP $httpCode: $httpCode");
+            Logger::debug("API returned HTTP $httpCode: $httpCode");
             if (!$isCloudflareProtected) {
-                test_print(var_export($output, true));
+                Logger::debug(var_export($output, true));
             }
 
             $result["output"] = '';

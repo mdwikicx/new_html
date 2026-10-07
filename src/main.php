@@ -1,5 +1,4 @@
 <?php
-
 namespace MDWiki\NewHtmlMain\Main;
 
 /**
@@ -19,18 +18,16 @@ namespace MDWiki\NewHtmlMain\Main;
  * @package MDWiki\NewHtml
  */
 
-use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
-use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
-
 use function MDWiki\NewHtmlMain\Utils\get_file_dir;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
 use function MDWiki\NewHtml\Application\Handlers\get_wikitext;
-use function MDWiki\NewHtml\Services\Html\html_to_seg;
-use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
 use function MDWiki\NewHtml\Infrastructure\Utils\file_write;
 use function MDWiki\NewHtml\Infrastructure\Utils\read_file;
-use function MDWiki\NewHtml\Application\Controllers\get_title_revision;
-
+use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
+use function MDWiki\NewHtml\Services\Html\html_to_seg;
+use MDWiki\NewHtml\Logger;
+use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
+use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 /**
  * Get wikitext and revision ID from cached JSON data
@@ -43,13 +40,15 @@ function get_from_json(string $title, string $all, string $file): array
 {
     $revid = get_title_revision($title, $file);
 
-    if (empty($revid) || !ctype_digit($revid)) {
+    if (empty($revid) || ! ctype_digit($revid)) {
         return ['', ''];
     }
 
     $file_dir = get_file_dir($revid, $all);
 
-    if (!is_dir($file_dir)) return ['', ''];
+    if (! is_dir($file_dir)) {
+        return ['', ''];
+    }
 
     $wikitext = read_file($file_dir . "/wikitext.txt");
 
@@ -76,11 +75,11 @@ function get_wikitext_revision(string $title, string $all): array
     $wikitext = $json1["source"];
     $revision = $json1["revid"];
 
-    $file = (!empty($all)) ? JSON_FILE_ALL : JSON_FILE;
+    $file = (! empty($all)) ? JSON_FILE_ALL : JSON_FILE;
 
     if (empty($wikitext) || empty($revision)) {
         [$wikitext, $revision] = get_from_json($title, $all, $file);
-        $from_cache = !empty($wikitext);
+        $from_cache            = ! empty($wikitext);
     }
 
     return [$wikitext, $revision, $from_cache];
@@ -101,10 +100,10 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
 
     try {
         [$HTML_text, $from_cache] = (new WikitextToHtmlService())->convertWithCache($wikitext, $file_html, $title, $new);
-        $HTML_text = remove_data_parsoid($HTML_text);
+        $HTML_text                = remove_data_parsoid($HTML_text);
     } catch (\Exception $e) {
-        error_log("HTML generation failed for title: $title. Error: " . $e->getMessage());
-        test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
+        Logger::error("HTML generation failed for title: $title. Error: " . $e->getMessage());
+        Logger::debug("HTML generation failed for title: $title. Error: " . $e->getMessage());
         http_response_code(500);
         exit(json_encode(['error' => 'Failed to generate HTML content']));
     }
@@ -126,16 +125,21 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
 {
 
     $from_cache = false;
-    $SEG_text = "";
+    $SEG_text   = "";
 
-    if (!empty($HTML_text)) {
+    if (! empty($HTML_text)) {
         [$SEG_text, $from_cache] = html_to_seg($HTML_text, $file_seg);
 
         $SEG_text = remove_data_parsoid($SEG_text);
     }
 
-    if ($SEG_text == 'Content for translate is not given or is empty') $SEG_text = "";
-    if ($SEG_text == 'Sectionwrap: Attempting to remove a non-section tag: undefined') $SEG_text = "";
+    if ($SEG_text == 'Content for translate is not given or is empty') {
+        $SEG_text = "";
+    }
+
+    if ($SEG_text == 'Sectionwrap: Attempting to remove a non-section tag: undefined') {
+        $SEG_text = "";
+    }
 
     return [$SEG_text, $from_cache];
 }
@@ -150,7 +154,7 @@ function get_SEG_text(string $HTML_text, string $file_seg): array
 function start(array $request, string $title): void
 {
     $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
-    $new = isset($request['new']);
+    $new       = isset($request['new']);
 
     $all = $request['all'] ?? '';
     // if $title startwith Video then $all = 1
@@ -160,15 +164,15 @@ function start(array $request, string $title): void
 
     $cache_data = [
         'wikitext' => false,
-        'html' => false,
-        'seg' => false
+        'html'     => false,
+        'seg'      => false,
     ];
 
     [$wikitext, $revision, $text_cache] = get_wikitext_revision($title, $all);
 
     if ($printetxt == "wikitext") {
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
-        $service = new WikitextFixerService();
+        $service  = new WikitextFixerService();
         $wikitext = $service->fix($wikitext, $title);
         echo $wikitext;
         exit();
@@ -181,13 +185,13 @@ function start(array $request, string $title): void
         // send request error code using http_response_code
         http_response_code(404);
         $data = [
-            "sourceLanguage" => "en",
-            "title" => $title,
-            "revision" => $revision,
+            "sourceLanguage"   => "en",
+            "title"            => $title,
+            "revision"         => $revision,
             "segmentedContent" => "",
-            "categories" => [],
-            "error_type" => "title:($title) or revision:($revision) not found",
-            "error" => "No content found!",
+            "categories"       => [],
+            "error_type"       => "title:($title) or revision:($revision) not found",
+            "error"            => "No content found!",
         ];
         exit(json_encode($data));
     }
@@ -199,7 +203,7 @@ function start(array $request, string $title): void
     $file_seg      = $file_dir . "/seg.html";
     $file_title    = $file_dir . "/title.txt";
 
-    $service = new WikitextFixerService();
+    $service  = new WikitextFixerService();
     $wikitext = $service->fix($wikitext, $title);
 
     file_write($file_wikitext, $wikitext);
@@ -221,17 +225,17 @@ function start(array $request, string $title): void
     // print_data($revision, $SEG_text, $sourcelanguage, $title, $error = $error);
     $jsonData = [
 
-        "cache_data" => $cache_data,
-        "sourceLanguage" => "en",
-        "title" => $title,
-        "revision" => $revision,
+        "cache_data"       => $cache_data,
+        "sourceLanguage"   => "en",
+        "title"            => $title,
+        "revision"         => $revision,
         "segmentedContent" => $SEG_text,
-        "categories" => []
+        "categories"       => [],
     ];
 
     if (empty($HTML_text)) {
         $jsonData['error_type'] = "HTML_text:() is empty";
-        $jsonData['error'] = "No content found";
+        $jsonData['error']      = "No content found";
     } else {
         [$SEG_text, $seg_cache] = get_SEG_text($HTML_text, $file_seg);
 
@@ -242,13 +246,13 @@ function start(array $request, string $title): void
         }
 
         $jsonData['cache_data']['seg'] = $seg_cache;
-        $jsonData['segmentedContent'] = $SEG_text;
+        $jsonData['segmentedContent']  = $SEG_text;
 
         if (empty($SEG_text)) {
             // send request error code using http_response_code
             http_response_code(404);
             $jsonData['error_type'] = "SEG_text:($SEG_text) is empty";
-            $jsonData['error'] = "No content found";
+            $jsonData['error']      = "No content found";
         }
     }
 

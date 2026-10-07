@@ -13,7 +13,7 @@ namespace MDWiki\NewHtml\Domain\Fixes\References;
 
 use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Logger;
 
 /**
  * Expand short references by finding their full definitions in the text
@@ -28,14 +28,14 @@ function expand_text_refs(string $first, string $alltext): string
         $alltext = $first;
     }
 
-    test_print("expand_text_refs: \n");
+    Logger::debug("expand_text_refs: \n");
 
     $allpage_fullrefs = get_full_refs($alltext);
 
     $lead_fullrefs = get_full_refs($first);
     $lead_short_refs = get_short_citations($first);
 
-    test_print(var_export($lead_short_refs, true));
+    Logger::debug(var_export($lead_short_refs, true));
 
     foreach ($lead_short_refs as $cite) {
 
@@ -53,7 +53,7 @@ function expand_text_refs(string $first, string $alltext): string
         $rr = $allpage_fullrefs[$name] ?? "";
 
         if (!empty($rr)) {
-            test_print("expand_text_refs: name:($name), refe:($refe), rr:($rr)\n");
+            Logger::debug("expand_text_refs: name:($name), refe:($refe), rr:($rr)\n");
             $first = str_replace($refe, $rr, $first);
         }
     }

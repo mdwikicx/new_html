@@ -14,7 +14,7 @@ namespace MDWiki\NewHtml\Application\Handlers;
 use function MDWiki\NewHtml\Application\Controllers\add_title_revision;
 use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
@@ -36,7 +36,7 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $json1["source"], $matches)) {
         $title = $matches[1];
-        test_print("Redirecting to: $title\n");
+        Logger::debug("Redirecting to: $title\n");
         $json1 = $service->getWikitextFromMdwikiRestApi($title);
     }
 
@@ -55,15 +55,15 @@ function get_wikitext(string $title, string $file, bool $just_lead = false): arr
     }
 
     if (empty($source)) {
-        error_log("WikitextHandler: wikitext empty for title: $title");
-        test_print("wikitext empty!.");
+        Logger::error("WikitextHandler: wikitext empty for title: $title");
+        Logger::debug("wikitext empty!.");
         return $result;
     }
 
-    test_print("source is not empty\n");
+    Logger::debug("source is not empty\n");
 
     if ($just_lead) {
-        test_print("get_lead_section: \n");
+        Logger::debug("get_lead_section: \n");
         $full_text = $source;
         $lead      = get_lead_section($full_text);
         if (! empty($lead)) {

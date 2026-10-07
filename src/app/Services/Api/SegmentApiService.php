@@ -11,7 +11,7 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 /**
@@ -53,7 +53,7 @@ class SegmentApiService
         $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data, $this->as_json);
 
         if (! empty($responseArray['error_code']) || ! empty($responseArray['error'])) {
-            error_log("SegmentApiService: API request failed");
+            Logger::error("SegmentApiService: API request failed");
             return ['error' => 'Error: Could not reach API.'];
         }
 
@@ -61,8 +61,8 @@ class SegmentApiService
 
         // Handle the response from the API
         if (empty($response)) {
-            error_log("SegmentApiService: API request failed");
-            test_print("API request failed: " . json_encode($data));
+            Logger::error("SegmentApiService: API request failed");
+            Logger::debug("API request failed: " . json_encode($data));
             return ['error' => 'Error: Could not reach API.'];
         }
 

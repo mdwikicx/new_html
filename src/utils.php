@@ -1,7 +1,7 @@
 <?php
-
 namespace MDWiki\NewHtmlMain\Utils;
 
+use MDWiki\NewHtml\Logger;
 /**
  * Get the file directory for a specific revision
  *
@@ -11,18 +11,20 @@ namespace MDWiki\NewHtmlMain\Utils;
  */
 function get_file_dir(string $revision, string $all): string
 {
-    if (empty($revision) || !ctype_digit($revision)) {
-        error_log('Error: revision is empty in get_file_dir().');
+    if (empty($revision) || ! ctype_digit($revision)) {
+        Logger::error('Error: revision is empty in get_file_dir().');
         return '';
     }
 
     $file_dir = REVISIONS_PATH . "/$revision";
 
-    if (!empty($all)) $file_dir .= "_all";
+    if (! empty($all)) {
+        $file_dir .= "_all";
+    }
 
-    if (!is_dir($file_dir)) {
-        if (!mkdir($file_dir, 0755, true)) {
-            error_log(sprintf('Failed to create directory "%s".', $file_dir));
+    if (! is_dir($file_dir)) {
+        if (! mkdir($file_dir, 0755, true)) {
+            Logger::error(sprintf('Failed to create directory "%s".', $file_dir));
         }
     }
     return $file_dir;
@@ -46,7 +48,7 @@ function set_cors_headers(): void
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
     // Reject OPTIONS requests without origin
-    if (!$origin) {
+    if (! $origin) {
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             http_response_code(400);
             exit;
@@ -57,7 +59,7 @@ function set_cors_headers(): void
     $origin_host = parse_url($origin, PHP_URL_HOST);
 
     // Reject unauthorized origins
-    if (!in_array($origin_host, $allowed_domains, true)) {
+    if (! in_array($origin_host, $allowed_domains, true)) {
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             http_response_code(403);
             exit;

@@ -11,7 +11,7 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 /**
@@ -87,8 +87,8 @@ class MdwikiApiService
         $response      = $responseArray['output'];
 
         if (empty($response)) {
-            error_log("MdwikiApiService: Failed to fetch data from MDWiki API for title: $title");
-            test_print("Failed to fetch data from MDWiki API for title: $title");
+            Logger::error("MdwikiApiService: Failed to fetch data from MDWiki API for title: $title");
+            Logger::debug("Failed to fetch data from MDWiki API for title: $title");
             return ['source' => '', 'revid' => ''];
         }
 
@@ -96,8 +96,8 @@ class MdwikiApiService
         $revisions = $json["query"]["pages"][0]["revisions"][0] ?? [];
 
         if (empty($revisions)) {
-            error_log("MdwikiApiService: No revision data found for title: $title");
-            test_print("No revision data found for title: $title");
+            Logger::error("MdwikiApiService: No revision data found for title: $title");
+            Logger::debug("No revision data found for title: $title");
             return ['source' => '', 'revid' => ''];
         }
 
@@ -126,8 +126,8 @@ class MdwikiApiService
         $error         = $responseArray['error'];
 
         if (empty($response)) {
-            error_log("MdwikiApiService: Failed to fetch data from MDWiki REST API for title: $title");
-            test_print("Failed to fetch data from MDWiki REST API for title: $title");
+            Logger::error("MdwikiApiService: Failed to fetch data from MDWiki REST API for title: $title");
+            Logger::debug("Failed to fetch data from MDWiki REST API for title: $title");
             return ['source' => '', 'revid' => '', 'error' => $error];
         }
 
