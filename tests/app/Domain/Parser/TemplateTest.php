@@ -1,15 +1,14 @@
 <?php
-
 namespace Tests\WikiParse;
 
-use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Parser\Template;
+use PHPUnit\Framework\TestCase;
 
 class TemplateTest extends TestCase
 {
     public function testTemplateConstructor()
     {
-        $template = new Template('Infobox', ['1' => 'value1', 'param2' => 'value2']);
+        $template = new Template('Infobox', ['1' => 'value1', 'param2' => 'value2'], "");
 
         $this->assertEquals('Infobox', $template->getName());
         $this->assertEquals(['1' => 'value1', 'param2' => 'value2'], $template->getParameters());
@@ -71,7 +70,7 @@ class TemplateTest extends TestCase
     public function testTemplateToString()
     {
         $template = new Template('Cite', ['1' => 'value1', 'author' => 'John']);
-        $result = $template->toString();
+        $result   = $template->toString();
 
         $this->assertStringContainsString('{{Cite', $result);
         $this->assertStringContainsString('|value1', $result);
@@ -82,7 +81,7 @@ class TemplateTest extends TestCase
     public function testTemplateToStringWithNewLine()
     {
         $template = new Template('Cite', ['author' => 'John', 'title' => 'Book']);
-        $result = $template->toString(true);
+        $result   = $template->toString(true);
 
         $this->assertStringContainsString("\n", $result);
         $this->assertStringContainsString('{{Cite', $result);
@@ -92,7 +91,7 @@ class TemplateTest extends TestCase
     public function testTemplateToStringWithPositionalParameter()
     {
         $template = new Template('Template', [1 => 'first', 2 => 'second']);
-        $result = $template->toString();
+        $result   = $template->toString();
 
         $this->assertStringContainsString('|first', $result);
         $this->assertStringContainsString('|second', $result);
@@ -109,7 +108,7 @@ class TemplateTest extends TestCase
     public function testTemplateToStringWithLjust()
     {
         $template = new Template('Test', ['a' => 'value1', 'author' => 'value2']);
-        $result = $template->toString(false, 10);
+        $result   = $template->toString(false, 10);
 
         $this->assertStringContainsString('|a         =value1', $result);
         $this->assertStringContainsString('|author    =value2', $result);
@@ -118,7 +117,7 @@ class TemplateTest extends TestCase
     public function testTemplateGetTemplateText()
     {
         $templateText = '{{Test|param=value}}';
-        $template = new Template('Test', ['param' => 'value'], $templateText);
+        $template     = new Template('Test', ['param' => 'value'], $templateText);
 
         $this->assertEquals($templateText, $template->getTemplateText());
     }
@@ -126,7 +125,7 @@ class TemplateTest extends TestCase
     public function testTemplateToStringNew()
     {
         $template = new Template('Test', ['param' => 'value']);
-        $result = $template->toString_new();
+        $result   = $template->toString_new();
 
         $this->assertStringContainsString('{{Test', $result);
         $this->assertStringContainsString('|param=value', $result);
@@ -148,7 +147,7 @@ class TemplateTest extends TestCase
         $template->changeParameterName('second', 'middle');
 
         $params = $template->getParameters();
-        $keys = array_keys($params);
+        $keys   = array_keys($params);
         $this->assertEquals(['first', 'middle', 'third'], $keys);
     }
 }
