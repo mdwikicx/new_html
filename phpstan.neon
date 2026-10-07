@@ -25,7 +25,8 @@ parameters:
         - stdClass
 
     # Ignore specific errors during transition
-    ignoreErrors: []
+    ignoreErrors:
+        - identifier: method.alreadyNarrowedType
 
     # Bootstrap file for autoloading
     bootstrapFiles:
