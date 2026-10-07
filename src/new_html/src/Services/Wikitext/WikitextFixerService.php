@@ -13,6 +13,7 @@ namespace MDWiki\NewHtml\Services\Wikitext;
 
 use MDWiki\NewHtml\Services\Api\CommonsImageService;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
+use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 
 use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
 use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
@@ -27,9 +28,16 @@ use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
 
 class WikitextFixerService
 {
-    public function __construct()
+    private CommonsImageServiceInterface $imageService;
+
+    /**
+     * Constructor
+     *
+     * @param CommonsImageServiceInterface $imageService Service for checking image existence
+     */
+    public function __construct(?CommonsImageServiceInterface $imageService = null)
     {
-        // init
+        $this->imageService = $imageService ?? new CommonsImageService();
     }
 
     /**
@@ -64,7 +72,7 @@ class WikitextFixerService
         $text = remove_categories($text);
 
         // Handle missing images and add title
-        $service = new RemoveMissingImagesService(new CommonsImageService());
+        $service = new RemoveMissingImagesService($this->imageService);
         $text = $service->run($text);
 
         // Add a missing title parameter to infobox templates.

@@ -5,7 +5,9 @@ namespace FixRefs\Tests\APIServices;
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
+#[AllowMockObjectsWithoutExpectations]
 class MdwikiApiServiceTest extends TestCase
 {
     private ?MdwikiApiService $service;
@@ -14,7 +16,7 @@ class MdwikiApiServiceTest extends TestCase
     protected function setUp(): void
     {
         // Create a mock HTTP client
-        $this->mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
         $this->service = new MdwikiApiService($this->mockHttpClient);
     }
 
@@ -83,6 +85,8 @@ class MdwikiApiServiceTest extends TestCase
         $this->mockHttpClient
             ->method('request')
             ->willReturn(["output" => json_encode(['query' => ['pages' => [[]]]]), "error_code" => "", "error" => ""]);
+
+        $this->expectOutputRegex('/No revision data found for title/');
 
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
@@ -378,6 +382,8 @@ class MdwikiApiServiceTest extends TestCase
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
+        $this->expectOutputRegex('/Failed to fetch data from MDWiki API for title/');
+
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
         // Should return empty strings when API fails
@@ -392,6 +398,8 @@ class MdwikiApiServiceTest extends TestCase
         $this->mockHttpClient
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
+
+        $this->expectOutputRegex('/Failed to fetch data from MDWiki REST API for title/');
 
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 

@@ -237,6 +237,8 @@ class SegmentApiServiceTest extends TestCase
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
+        $this->expectOutputRegex('/API request failed/');
+
         $result = $this->service->HtmltoSegments($html);
 
         $this->assertIsArray($result);

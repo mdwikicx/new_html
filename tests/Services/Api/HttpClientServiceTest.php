@@ -5,7 +5,9 @@ namespace FixRefs\Tests\APIServices;
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\HttpClientService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
+#[AllowMockObjectsWithoutExpectations]
 class HttpClientServiceTest extends TestCase
 {
     private ?HttpClientService $httpClient;
@@ -46,7 +48,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestAcceptsGetMethod()
     {
-        $mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -66,7 +68,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestAcceptsPostMethod()
     {
-        $mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -138,7 +140,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestWithEmptyParams()
     {
-        $mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -158,7 +160,7 @@ class HttpClientServiceTest extends TestCase
      */
     public function testRequestWithSpecialCharacters()
     {
-        $mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockHttpClient->expects($this->once())
             ->method('request')
             ->with(

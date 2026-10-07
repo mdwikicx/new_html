@@ -3,6 +3,7 @@
 namespace Tests\Services\Wikitext;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
@@ -60,8 +61,8 @@ class WikitextFixerServiceTest extends TestCase
     /**
      * Tests fixing wikitext against expected result fixtures.
      *
-     * @dataProvider fixtureFilesProvider
      */
+    #[DataProvider('fixtureFilesProvider')]
     public function testFixWikitextMatchesResultFixture(string $file, bool $allFlag): void
     {
         $source = $this->loadFixture($file, 'source');
@@ -92,7 +93,7 @@ class WikitextFixerServiceTest extends TestCase
      *
      * @return array<string, array{0: string, 1: bool}>
      */
-    public function fixtureFilesProvider(): array
+    public static function fixtureFilesProvider(): array
     {
         $fixturePath = __DIR__ . '/fixtures';
         $sourceDir = $fixturePath . '/source';

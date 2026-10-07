@@ -5,7 +5,9 @@ namespace FixRefs\Tests\APIServices;
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\CommonsImageService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
+#[AllowMockObjectsWithoutExpectations]
 class CommonsImageServiceTest extends TestCase
 {
     private ?CommonsImageService $service;
@@ -14,7 +16,7 @@ class CommonsImageServiceTest extends TestCase
     protected function setUp(): void
     {
         // Create a mock HTTP client
-        $this->mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
         $this->service = new CommonsImageService($this->mockHttpClient);
     }
 

@@ -5,7 +5,9 @@ namespace FixRefs\Tests\APIServices;
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
+#[AllowMockObjectsWithoutExpectations]
 class TransformApiTest extends TestCase
 {
     private ?TransformApiService $service;
@@ -14,7 +16,7 @@ class TransformApiTest extends TestCase
     protected function setUp(): void
     {
         // Create a mock HTTP client
-        $this->mockHttpClient = $this->createStub(HttpClientInterface::class);
+        $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
         $this->service = new TransformApiService($this->mockHttpClient);
     }
 
@@ -366,6 +368,8 @@ class TransformApiTest extends TestCase
             ->method('request')
             ->willReturn(["output" => "", "error_code" => "", "error" => ""]);
 
+        $this->expectOutputRegex('/API request failed for title/');
+
         $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
@@ -382,6 +386,8 @@ class TransformApiTest extends TestCase
             ->method('request')
             ->willReturn(["output" => '<html><body>Wikimedia Error</body></html>', "error_code" => "", "error" => ""]);
 
+        $this->expectOutputRegex('/API returned error for title/');
+
         $result = $this->service->convert($wikitext, $title);
 
         $this->assertIsArray($result);
@@ -397,6 +403,8 @@ class TransformApiTest extends TestCase
         $this->mockHttpClient
             ->method('request')
             ->willReturn(["output" => 'Not valid HTML', "error_code" => "", "error" => ""]);
+
+        $this->expectOutputRegex('/API returned invalid HTML for title/');
 
         $result = $this->service->convert($wikitext, $title);
 

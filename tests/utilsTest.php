@@ -38,6 +38,8 @@ class utilsTest extends TestCase
     {
         $result = get_file_dir('abc123', '');
 
+        $this->expectOutputRegex('/revision is empty in get_file_dir/');
+
         $this->assertEquals('', $result);
     }
 
