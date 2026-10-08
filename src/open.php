@@ -1,18 +1,5 @@
 <?php
 
-/**
- * File viewer for generated content
- *
- * Serves generated files (wikitext, HTML, segments) for a given revision.
- * Validates inputs to prevent path traversal attacks.
- *
- * Request parameters:
- * - revid: Revision ID (must be numeric)
- * - file: File to view (wikitext.txt|html.html|seg.html)
- *
- * @package MDWiki\NewHtml
- */
-
 require_once __DIR__ . "/bootstrap.php";
 
 use MDWiki\NewHtml\Infrastructure\Utils\HtmlUtils;
