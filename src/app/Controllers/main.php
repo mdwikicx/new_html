@@ -1,5 +1,4 @@
 <?php
-
 namespace MDWiki\NewHtml\Controllers\main;
 
 /**
@@ -148,9 +147,8 @@ function getSegText(string $HTML_text, string $file_seg): array
  *
  * @param array<string, mixed> $request The request parameters
  * @param string $title The page title to process
- * @return void
  */
-function start(array $request, string $title): void
+function start(array $request, string $title): string | array
 {
     $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
     $new       = isset($request['new']);
@@ -192,7 +190,7 @@ function start(array $request, string $title): void
             "error_type"       => "title:($title) or revision:($revision) not found",
             "error"            => "No content found!",
         ];
-        exit(json_encode($data));
+        return $data;
     }
 
     $file_dir = FileUtils::get_file_dir($revision, $all);
@@ -213,8 +211,7 @@ function start(array $request, string $title): void
 
     if ($printetxt == "html") {
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
-        echo $HTML_text;
-        exit();
+        return $HTML_text;
     }
 
     $cache_data['html'] = $html_cache;
@@ -240,8 +237,7 @@ function start(array $request, string $title): void
 
         if ($printetxt == "seg") {
             // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
-            echo $SEG_text;
-            exit();
+            return $SEG_text;
         }
 
         $jsonData['cache_data']['seg'] = $seg_cache;
@@ -255,9 +251,5 @@ function start(array $request, string $title): void
         }
     }
 
-    // Encode data as JSON with appropriate options
-    $jsonOutput = json_encode($jsonData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
-    // Output the JSON
-    echo $jsonOutput;
+    return $jsonData;
 }

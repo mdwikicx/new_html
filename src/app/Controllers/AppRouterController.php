@@ -60,7 +60,9 @@ class AppRouterController
             $this->fail(400, 'title is empty');
         }
 
-        $this->respond(start($request, $title));
+        $result = start($request, $title);
+
+        $this->respond($result);
     }
 
     // ------------------------------------------------------------
@@ -69,11 +71,11 @@ class AppRouterController
 
     private function respond(array $data): void
     {
-        print(json_encode($data, JSON_PRETTY_PRINT));
+        // Encode data as JSON with appropriate options
+        print(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
-    /** @param string|array $error message or {code, info} array */
-    private function fail(int $statusCode, $error): never
+    private function fail(int $statusCode, string $error): never
     {
         http_response_code($statusCode);
         $this->respond(['error' => $error]);
