@@ -11,52 +11,54 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;
 
-use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
-use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
+use MDWiki\NewHtml\Domain\Parser\CitationsParser;
+use MDWiki\NewHtml\Logger;
 
-/**
- * Expand short references by finding their full definitions in the text
- *
- * @param string $first The lead section text with short refs
- * @param string $alltext The full page text containing full ref definitions
- * @return string The text with short refs expanded to full refs
- */
-function expand_text_refs(string $first, string $alltext): string
+class ExpandRefsFixture
 {
-    if (empty($alltext)) {
-        $alltext = $first;
+    /**
+     * Expand short references by finding their full definitions in the text
+     *
+     * @param string $first The lead section text with short refs
+     * @param string $alltext The full page text containing full ref definitions
+     * @return string The text with short refs expanded to full refs
+     */
+    public static function expand_text_refs(string $first, string $alltext): string
+    {
+        if (empty($alltext)) {
+            $alltext = $first;
+        }
+
+        Logger::debug("expand_text_refs: \n");
+
+        $allpage_fullrefs = CitationsParser::get_full_refs($alltext);
+
+        $lead_fullrefs   = CitationsParser::get_full_refs($first);
+        $lead_short_refs = CitationsParser::get_short_citations($first);
+
+        Logger::debug(var_export($lead_short_refs, true));
+
+        foreach ($lead_short_refs as $cite) {
+
+            $name = $cite["name"] ?? '';
+            $refe = $cite["tag"] ?? '';
+
+            if (empty($name) || empty($refe)) {
+                continue;
+            }
+
+            if (isset($lead_fullrefs[$name])) {
+                continue;
+            }
+
+            $rr = $allpage_fullrefs[$name] ?? "";
+
+            if (! empty($rr)) {
+                Logger::debug("expand_text_refs: name:($name), refe:($refe), rr:($rr)\n");
+                $first = str_replace($refe, $rr, $first);
+            }
+        }
+
+        return $first;
     }
-
-    test_print("expand_text_refs: \n");
-
-    $allpage_fullrefs = get_full_refs($alltext);
-
-    $lead_fullrefs = get_full_refs($first);
-    $lead_short_refs = get_short_citations($first);
-
-    test_print(var_export($lead_short_refs, true));
-
-    foreach ($lead_short_refs as $cite) {
-
-        $name = $cite["name"] ?? '';
-        $refe = $cite["tag"] ?? '';
-
-        if (empty($name) || empty($refe)) {
-            continue;
-        }
-
-        if (isset($lead_fullrefs[$name])) {
-            continue;
-        }
-
-        $rr = $allpage_fullrefs[$name] ?? "";
-
-        if (!empty($rr)) {
-            test_print("expand_text_refs: name:($name), refe:($refe), rr:($rr)\n");
-            $first = str_replace($refe, $rr, $first);
-        }
-    }
-
-    return $first;
 }

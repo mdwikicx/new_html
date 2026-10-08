@@ -1,20 +1,15 @@
 <?php
+namespace Tests\Domain\Parser;
 
-namespace Tests\WikiParse;
+use MDWiki\NewHtml\Domain\Parser\CitationsParser;
+use PHPUnit\Framework\TestCase;
 
-use Tests\bootstrap;
-
-use function MDWiki\NewHtml\Domain\Parser\get_ref_name;
-use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
-use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
-use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
-
-class CitationsRegTest extends bootstrap
+class CitationsParserTest extends TestCase
 {
     public function testGetNameWithDoubleQuotes()
     {
         $options = ' name="test_ref" ';
-        $result = get_ref_name($options);
+        $result  = CitationsParser::get_ref_name($options);
 
         $this->assertEquals('test_ref', $result);
     }
@@ -22,7 +17,7 @@ class CitationsRegTest extends bootstrap
     public function testGetNameWithSingleQuotes()
     {
         $options = " name='test_ref' ";
-        $result = get_ref_name($options);
+        $result  = CitationsParser::get_ref_name($options);
 
         $this->assertEquals('test_ref', $result);
     }
@@ -30,14 +25,14 @@ class CitationsRegTest extends bootstrap
     public function testGetNameWithoutQuotes(): void
     {
         $options = ' name=test_ref ';
-        $result = get_ref_name($options);
+        $result  = CitationsParser::get_ref_name($options);
 
         $this->assertEquals('test_ref', $result);
     }
 
     public function testGetNameWithEmptyOptions()
     {
-        $result = get_ref_name('');
+        $result = CitationsParser::get_ref_name('');
 
         $this->assertEquals('', $result);
     }
@@ -45,15 +40,15 @@ class CitationsRegTest extends bootstrap
     public function testGetNameWithNoName()
     {
         $options = ' group="notes" ';
-        $result = get_ref_name($options);
+        $result  = CitationsParser::get_ref_name($options);
 
         $this->assertEquals('', $result);
     }
 
     public function testGetRegCitationsWithSingleRef()
     {
-        $text = 'Some text <ref name="test">Citation content</ref> more text';
-        $result = get_regex_citations($text);
+        $text   = 'Some text <ref name="test">Citation content</ref> more text';
+        $result = CitationsParser::get_regex_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -64,8 +59,8 @@ class CitationsRegTest extends bootstrap
 
     public function testGetRegCitationsWithMultipleRefs()
     {
-        $text = '<ref name="ref1">Content 1</ref> and <ref name="ref2">Content 2</ref>';
-        $result = get_regex_citations($text);
+        $text   = '<ref name="ref1">Content 1</ref> and <ref name="ref2">Content 2</ref>';
+        $result = CitationsParser::get_regex_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -75,8 +70,8 @@ class CitationsRegTest extends bootstrap
 
     public function testGetRegCitationsWithoutName()
     {
-        $text = '<ref>Anonymous citation</ref>';
-        $result = get_regex_citations($text);
+        $text   = '<ref>Anonymous citation</ref>';
+        $result = CitationsParser::get_regex_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -89,7 +84,7 @@ class CitationsRegTest extends bootstrap
         $text = '<ref name="multi">Line 1
 Line 2
 Line 3</ref>';
-        $result = get_regex_citations($text);
+        $result = CitationsParser::get_regex_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -99,8 +94,8 @@ Line 3</ref>';
 
     public function testGetRegCitationsWithNoRefs()
     {
-        $text = 'Text without any references';
-        $result = get_regex_citations($text);
+        $text   = 'Text without any references';
+        $result = CitationsParser::get_regex_citations($text);
 
         $this->assertIsArray($result);
         $this->assertEmpty($result);
@@ -108,8 +103,8 @@ Line 3</ref>';
 
     public function testGetFullRefs()
     {
-        $text = '<ref name="ref1">Content 1</ref> text <ref name="ref2">Content 2</ref>';
-        $result = get_full_refs($text);
+        $text   = '<ref name="ref1">Content 1</ref> text <ref name="ref2">Content 2</ref>';
+        $result = CitationsParser::get_full_refs($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('ref1', $result);
@@ -120,8 +115,8 @@ Line 3</ref>';
 
     public function testGetFullRefsWithAnonymousRef()
     {
-        $text = '<ref>Anonymous</ref>';
-        $result = get_full_refs($text);
+        $text   = '<ref>Anonymous</ref>';
+        $result = CitationsParser::get_full_refs($text);
 
         $this->assertIsArray($result);
         // Anonymous refs have empty string as key
@@ -131,8 +126,8 @@ Line 3</ref>';
 
     public function testgetShortCitations()
     {
-        $text = 'Text <ref name="test" /> more text';
-        $result = get_short_citations($text);
+        $text   = 'Text <ref name="test" /> more text';
+        $result = CitationsParser::get_short_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -143,8 +138,8 @@ Line 3</ref>';
 
     public function testgetShortCitationsWithMultiple()
     {
-        $text = '<ref name="a"/> and <ref name="b" /> and <ref name="c"/>';
-        $result = get_short_citations($text);
+        $text   = '<ref name="a"/> and <ref name="b" /> and <ref name="c"/>';
+        $result = CitationsParser::get_short_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(3, $result);
@@ -155,8 +150,8 @@ Line 3</ref>';
 
     public function testgetShortCitationsWithSpaceVariations()
     {
-        $text = '<ref name="test"/><ref name="test2" /><ref name="test3"  />';
-        $result = get_short_citations($text);
+        $text   = '<ref name="test"/><ref name="test2" /><ref name="test3"  />';
+        $result = CitationsParser::get_short_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(3, $result);
@@ -164,8 +159,8 @@ Line 3</ref>';
 
     public function testgetShortCitationsWithNoShortRefs()
     {
-        $text = '<ref name="full">Content</ref>';
-        $result = get_short_citations($text);
+        $text   = '<ref name="full">Content</ref>';
+        $result = CitationsParser::get_short_citations($text);
 
         $this->assertIsArray($result);
         $this->assertEmpty($result);
@@ -173,8 +168,8 @@ Line 3</ref>';
 
     public function testGetRegCitationsWithComplexAttributes()
     {
-        $text = '<ref name="test" group="notes">Complex citation</ref>';
-        $result = get_regex_citations($text);
+        $text   = '<ref name="test" group="notes">Complex citation</ref>';
+        $result = CitationsParser::get_regex_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -184,8 +179,8 @@ Line 3</ref>';
 
     public function testgetShortCitationsWithComplexAttributes()
     {
-        $text = '<ref name="test" group="notes" />';
-        $result = get_short_citations($text);
+        $text   = '<ref name="test" group="notes" />';
+        $result = CitationsParser::get_short_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -194,8 +189,8 @@ Line 3</ref>';
 
     public function testGetFullRefsPreservesLastOccurrence()
     {
-        $text = '<ref name="dup">First</ref> text <ref name="dup">Second</ref>';
-        $result = get_full_refs($text);
+        $text   = '<ref name="dup">First</ref> text <ref name="dup">Second</ref>';
+        $result = CitationsParser::get_full_refs($text);
 
         $this->assertIsArray($result);
         // The last occurrence should overwrite
@@ -204,8 +199,8 @@ Line 3</ref>';
 
     public function testGetRegCitationsWithNestedTags()
     {
-        $text = '<ref name="cite">Text with <span>nested tags</span></ref>';
-        $result = get_regex_citations($text);
+        $text   = '<ref name="cite">Text with <span>nested tags</span></ref>';
+        $result = CitationsParser::get_regex_citations($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);

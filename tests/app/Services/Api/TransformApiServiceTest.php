@@ -11,4 +11,8 @@ use PHPUnit\Framework\TestCase;
  */
 class TransformApiServiceTest extends TestCase
 {
+    public function testPlaceholder(): void
+    {
+        $this->markTestIncomplete('Tests for PageHead are not written yet.');
+    }
 }

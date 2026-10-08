@@ -18,7 +18,9 @@ jsons_data/*.json
 load_env.php
 phpstan.phar
 src/revisions_new1/*.json
-tests/new_html/src/Services/Wikitext/fixtures/output/**
+**/fixtures/output/**
 tests/text.php
 x.php
 x.py
+.phpunit.cache
+.phpunit.cache/**

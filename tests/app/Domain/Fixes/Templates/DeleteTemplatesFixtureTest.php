@@ -1,18 +1,15 @@
 <?php
-
 namespace Tests\WikiTextFixes;
 
-use Tests\bootstrap;
+use MDWiki\NewHtml\Domain\Fixes\Templates\DeleteTemplatesFixture;
+use PHPUnit\Framework\TestCase;
 
-use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
-use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
-
-class DelTempsTest extends bootstrap
+class DeleteTemplatesFixtureTest extends TestCase
 {
     public function testRemoveTemplatesWithShortDescription()
     {
-        $text = '{{Short description|Test article}} Article content';
-        $result = remove_templates($text);
+        $text   = '{{Short description|Test article}} Article content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Short description|Test article}}', $result);
         $this->assertStringContainsString('Article content', $result);
@@ -20,8 +17,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithMultipleDeleteTargets()
     {
-        $text = '{{Featured article}} {{Good article}} Content {{Use dmy dates}}';
-        $result = remove_templates($text);
+        $text   = '{{Featured article}} {{Good article}} Content {{Use dmy dates}}';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Featured article}}', $result);
         $this->assertStringNotContainsString('{{Good article}}', $result);
@@ -31,8 +28,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithStubTemplate()
     {
-        $text = 'Article content {{Biology-stub}}';
-        $result = remove_templates($text);
+        $text   = 'Article content {{Biology-stub}}';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Biology-stub}}', $result);
         $this->assertStringContainsString('Article content', $result);
@@ -40,8 +37,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithPPTemplates()
     {
-        $text = '{{pp-protected}} {{pp-semi}} Article content';
-        $result = remove_templates($text);
+        $text   = '{{pp-protected}} {{pp-semi}} Article content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{pp-protected}}', $result);
         $this->assertStringNotContainsString('{{pp-semi}}', $result);
@@ -49,8 +46,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithArticlesPattern()
     {
-        $text = '{{Articles for deletion}} {{Articles needing cleanup}} Content';
-        $result = remove_templates($text);
+        $text   = '{{Articles for deletion}} {{Articles needing cleanup}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Articles for deletion}}', $result);
         $this->assertStringNotContainsString('{{Articles needing cleanup}}', $result);
@@ -58,8 +55,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesPreservesOtherTemplates()
     {
-        $text = '{{Short description|Test}} {{Infobox|param=value}} Content';
-        $result = remove_templates($text);
+        $text   = '{{Short description|Test}} {{Infobox|param=value}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Short description|Test}}', $result);
         $this->assertStringContainsString('{{Infobox|param=value}}', $result);
@@ -67,8 +64,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithCaseInsensitive()
     {
-        $text = '{{SHORT DESCRIPTION|Test}} {{Short Description|Test2}} Content';
-        $result = remove_templates($text);
+        $text   = '{{SHORT DESCRIPTION|Test}} {{Short Description|Test2}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('SHORT DESCRIPTION', $result);
         $this->assertStringNotContainsString('Short Description', $result);
@@ -76,8 +73,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithUnlinkedWikibase()
     {
-        $text = '{{#unlinkedwikibase:test}} Content';
-        $result = remove_templates($text);
+        $text   = '{{#unlinkedwikibase:test}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{#unlinkedwikibase:test}}', $result);
         $this->assertStringContainsString('Content', $result);
@@ -85,8 +82,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithUseSpellingTemplates()
     {
-        $text = '{{Use American English}} {{Use British spelling}} Content';
-        $result = remove_templates($text);
+        $text   = '{{Use American English}} {{Use British spelling}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('Use American English', $result);
         $this->assertStringNotContainsString('Use British spelling', $result);
@@ -94,8 +91,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithNoMatchingTemplates()
     {
-        $text = '{{Infobox|param=value}} {{Citation needed}} Content';
-        $result = remove_templates($text);
+        $text   = '{{Infobox|param=value}} {{Citation needed}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         // These templates should not be removed
         $this->assertStringContainsString('{{Infobox|param=value}}', $result);
@@ -104,23 +101,23 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithEmptyText()
     {
-        $result = remove_templates('');
+        $result = DeleteTemplatesFixture::remove_templates('');
 
         $this->assertEquals('', $result);
     }
 
     public function testRemoveTemplatesWithNoTemplates()
     {
-        $text = 'Plain text without any templates';
-        $result = remove_templates($text);
+        $text   = 'Plain text without any templates';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertEquals($text, $result);
     }
 
     public function testRemoveLeadTemplatesFindsInfobox()
     {
-        $text = 'Pre-infobox content {{Infobox medical condition|name=Test}} Article content';
-        $result = remove_lead_templates($text);
+        $text   = 'Pre-infobox content {{Infobox medical condition|name=Test}} Article content';
+        $result = DeleteTemplatesFixture::remove_lead_templates($text);
 
         $this->assertStringNotContainsString('Pre-infobox content', $result);
         $this->assertStringStartsWith('{{Infobox medical condition', $result);
@@ -128,8 +125,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveLeadTemplatesFindsDrugbox()
     {
-        $text = 'Header content {{Drugbox|name=Drug}} Main content';
-        $result = remove_lead_templates($text);
+        $text   = 'Header content {{Drugbox|name=Drug}} Main content';
+        $result = DeleteTemplatesFixture::remove_lead_templates($text);
 
         $this->assertStringNotContainsString('Header content', $result);
         $this->assertStringStartsWith('{{Drugbox', $result);
@@ -137,8 +134,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveLeadTemplatesFindsSpeciesbox()
     {
-        $text = 'Pre content {{Speciesbox|name=Species}} Article';
-        $result = remove_lead_templates($text);
+        $text   = 'Pre content {{Speciesbox|name=Species}} Article';
+        $result = DeleteTemplatesFixture::remove_lead_templates($text);
 
         $this->assertStringNotContainsString('Pre content', $result);
         $this->assertStringStartsWith('{{Speciesbox', $result);
@@ -146,8 +143,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveLeadTemplatesWithNoTargetTemplate()
     {
-        $text = 'Article content {{Other template}} more content';
-        $result = remove_lead_templates($text);
+        $text   = 'Article content {{Other template}} more content';
+        $result = DeleteTemplatesFixture::remove_lead_templates($text);
 
         // Should return text as is (trimmed)
         $this->assertEquals(trim($text), $result);
@@ -155,8 +152,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveLeadTemplatesCaseInsensitive()
     {
-        $text = 'Header {{INFOBOX medical condition|param=value}} Content';
-        $result = remove_lead_templates($text);
+        $text   = 'Header {{INFOBOX medical condition|param=value}} Content';
+        $result = DeleteTemplatesFixture::remove_lead_templates($text);
 
         $this->assertStringNotContainsString('Header', $result);
         $this->assertStringContainsString('INFOBOX', $result);
@@ -164,15 +161,15 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveLeadTemplatesWithEmptyText()
     {
-        $result = remove_lead_templates('');
+        $result = DeleteTemplatesFixture::remove_lead_templates('');
 
         $this->assertEquals('', $result);
     }
 
     public function testRemoveLeadTemplatesTrimsResult()
     {
-        $text = "   \n\n{{Infobox drug|name=Test}}   \n";
-        $result = remove_lead_templates($text);
+        $text   = "   \n\n{{Infobox drug|name=Test}}   \n";
+        $result = DeleteTemplatesFixture::remove_lead_templates($text);
 
         $this->assertStringStartsWith('{{Infobox', $result);
         $this->assertEquals(trim($result), $result);
@@ -180,8 +177,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithMultilineTemplate()
     {
-        $text = "{{Short description\n|Test description\n}} Content";
-        $result = remove_templates($text);
+        $text   = "{{Short description\n|Test description\n}} Content";
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('Short description', $result);
         $this->assertStringContainsString('Content', $result);
@@ -189,8 +186,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithNestedTemplates()
     {
-        $text = '{{Use dmy dates}} {{Infobox|nested={{Short description|Test}}}} Content';
-        $result = remove_templates($text);
+        $text   = '{{Use dmy dates}} {{Infobox|nested={{Short description|Test}}}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Use dmy dates}}', $result);
         // Infobox should be preserved even with nested short description
@@ -199,8 +196,8 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithRedirectTemplate()
     {
-        $text = '{{Redirect|Test}} Article content';
-        $result = remove_templates($text);
+        $text   = '{{Redirect|Test}} Article content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Redirect|Test}}', $result);
         $this->assertStringContainsString('Article content', $result);
@@ -208,16 +205,16 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithSprotect()
     {
-        $text = '{{Sprotect}} Content';
-        $result = remove_templates($text);
+        $text   = '{{Sprotect}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{Sprotect}}', $result);
     }
 
     public function testRemoveTemplatesWithDefaultsort()
     {
-        $text = 'Content {{DEFAULTSORT:Sort Key}}';
-        $result = remove_templates($text);
+        $text   = 'Content {{DEFAULTSORT:Sort Key}}';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('{{DEFAULTSORT:Sort Key}}', $result);
         $this->assertStringContainsString('Content', $result);
@@ -225,16 +222,16 @@ class DelTempsTest extends bootstrap
 
     public function testRemoveTemplatesWithWikipediaArticlesPattern()
     {
-        $text = '{{Wikipedia articles needing cleanup}} Content';
-        $result = remove_templates($text);
+        $text   = '{{Wikipedia articles needing cleanup}} Content';
+        $result = DeleteTemplatesFixture::remove_templates($text);
 
         $this->assertStringNotContainsString('Wikipedia articles needing cleanup', $result);
     }
 
     public function testRemoveLeadTemplatesWithMultipleInfoboxes()
     {
-        $text = 'Pre {{Infobox 1}} and {{Drugbox}} content';
-        $result = remove_lead_templates($text);
+        $text   = 'Pre {{Infobox 1}} and {{Drugbox}} content';
+        $result = DeleteTemplatesFixture::remove_lead_templates($text);
 
         // Should find first matching template
         $this->assertStringNotContainsString('Pre', $result);

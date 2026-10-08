@@ -11,8 +11,8 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Service for converting wikitext to HTML using the Wikipedia REST API
@@ -35,7 +35,7 @@ class TransformApiService
         string $baseUrl = 'https://en.wikipedia.org/w/rest.php/v1',
     ) {
         $this->httpClient = $httpClient ?? new HttpClientService();
-        $this->baseUrl = $baseUrl;
+        $this->baseUrl    = $baseUrl;
     }
 
     /**
@@ -51,31 +51,31 @@ class TransformApiService
         // $titleEncoded = str_replace(" ", "_", $titleEncoded);
         $url = "{$this->baseUrl}/transform/wikitext/to/html/{$titleEncoded}";
 
-        $data = ['wikitext' => $text];
+        $data          = ['wikitext' => $text];
         $responseArray = $this->httpClient->request($url, 'POST', $data);
-        $response = $responseArray['output'];
+        $response      = $responseArray['output'];
 
         // Handle the response from the API
         if (empty($response)) {
-            error_log("TransformApiService: API request failed for title: $title");
+            Logger::error("TransformApiService: API request failed for title: $title");
             if ($responseArray['error']) {
-                error_log("Error details: " . $responseArray['error'] . " (" . $responseArray['error_code'] . ")");
+                Logger::error("Error details: " . $responseArray['error'] . " (" . $responseArray['error_code'] . ")");
             }
-            test_print("API request failed: " . json_encode($data));
+            Logger::debug("API request failed: " . json_encode($data));
             return ['error' => 'Error: Could not reach API.'];
         }
 
         // Check if response contains an error
         if (str_contains($response, ">Wikimedia Error<")) {
-            error_log("TransformApiService: API returned error for title: $title");
-            test_print("API returned error: $response");
+            Logger::error("TransformApiService: API returned error for title: $title");
+            Logger::debug("API returned error: $response");
             return ['error' => 'Error: Wikipedia API returned an error.'];
         }
 
         // Check if response is valid HTML
-        if (!str_contains($response, "<html")) {
-            error_log("TransformApiService: API returned invalid HTML for title: $title");
-            test_print("API returned invalid HTML: " . json_encode($data));
+        if (! str_contains($response, "<html")) {
+            Logger::error("TransformApiService: API returned invalid HTML for title: $title");
+            Logger::debug("API returned invalid HTML: " . json_encode($data));
             return ['error' => 'Error: Wikipedia API returned invalid HTML.'];
         }
 

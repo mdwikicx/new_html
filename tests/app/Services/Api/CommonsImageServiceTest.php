@@ -2,11 +2,13 @@
 
 namespace Tests\APIServices;
 
-use Tests\bootstrap;
+use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\CommonsImageService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
-class CommonsApiTest extends bootstrap
+#[AllowMockObjectsWithoutExpectations]
+class CommonsImageServiceTest extends TestCase
 {
     private ?CommonsImageService $service;
     private ?HttpClientInterface $mockHttpClient;

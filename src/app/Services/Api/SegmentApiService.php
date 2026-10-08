@@ -11,8 +11,8 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
-use function MDWiki\NewHtml\Infrastructure\Debug\test_print;
 
 /**
  * Service for converting HTML to segments using the HtmltoSegments API
@@ -37,8 +37,8 @@ class SegmentApiService
         string $apiUrl = 'https://mdwikipy.toolforge.org/HtmltoSegments',
     ) {
         $this->httpClient = $httpClient ?? new HttpClientService();
-        $this->apiUrl = $apiUrl;
-        $this->as_json = $this->apiUrl == 'https://mdwikipy.toolforge.org/HtmltoSegments' ? true : false;
+        $this->apiUrl     = $apiUrl;
+        $this->as_json    = $this->apiUrl == 'https://mdwikipy.toolforge.org/HtmltoSegments' ? true : false;
     }
 
     /**
@@ -49,11 +49,11 @@ class SegmentApiService
      */
     public function HtmltoSegments(string $html): array
     {
-        $data = ['html' => $html];
+        $data          = ['html' => $html];
         $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data, $this->as_json);
 
-        if (!empty($responseArray['error_code']) || !empty($responseArray['error'])) {
-            error_log("SegmentApiService: API request failed");
+        if (! empty($responseArray['error_code']) || ! empty($responseArray['error'])) {
+            Logger::error("SegmentApiService: API request failed");
             return ['error' => 'Error: Could not reach API.'];
         }
 
@@ -61,8 +61,8 @@ class SegmentApiService
 
         // Handle the response from the API
         if (empty($response)) {
-            error_log("SegmentApiService: API request failed");
-            test_print("API request failed: " . json_encode($data));
+            Logger::error("SegmentApiService: API request failed");
+            Logger::debug("API request failed: " . json_encode($data));
             return ['error' => 'Error: Could not reach API.'];
         }
 

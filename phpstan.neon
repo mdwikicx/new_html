@@ -25,7 +25,10 @@ parameters:
         - stdClass
 
     # Ignore specific errors during transition
-    ignoreErrors: []
+    ignoreErrors:
+        - identifier: method.alreadyNarrowedType
+          path: tests/*
+          reportUnmatched: false
 
     # Bootstrap file for autoloading
     bootstrapFiles:

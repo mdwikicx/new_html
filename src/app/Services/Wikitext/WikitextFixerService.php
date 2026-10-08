@@ -11,25 +11,30 @@
 
 namespace MDWiki\NewHtml\Services\Wikitext;
 
-use MDWiki\NewHtml\Services\Api\CommonsImageService;
+use MDWiki\NewHtml\Domain\Fixes\Media\FixImagesFixture;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
-
-use function MDWiki\NewHtml\Domain\Fixes\References\del_empty_refs;
-use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_categories;
-use function MDWiki\NewHtml\Domain\Fixes\Media\remove_videos;
-use function MDWiki\NewHtml\Domain\Fixes\References\remove_bad_refs;
-use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_templates;
-use function MDWiki\NewHtml\Domain\Fixes\Templates\remove_lead_templates;
-use function MDWiki\NewHtml\Domain\Fixes\Templates\add_missing_title;
-use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
-use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
-// use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
+use MDWiki\NewHtml\Domain\Fixes\References\DeleteEmptyRefsFixture;
+use MDWiki\NewHtml\Domain\Fixes\References\ExpandRefsFixture;
+use MDWiki\NewHtml\Domain\Fixes\References\RefWorkerFixture;
+use MDWiki\NewHtml\Domain\Fixes\Structure\FixCategoriesFixture;
+use MDWiki\NewHtml\Domain\Fixes\Templates\DeleteTemplatesFixture;
+use MDWiki\NewHtml\Domain\Fixes\Templates\FixTemplatesFixture;
+use MDWiki\NewHtml\Domain\Parser\LeadSectionParser;
+use MDWiki\NewHtml\Services\Api\CommonsImageService;
+use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
 
 class WikitextFixerService
 {
-    public function __construct()
+    private CommonsImageServiceInterface $imageService;
+
+    /**
+     * Constructor
+     *
+     * @param CommonsImageServiceInterface $imageService Service for checking image existence
+     */
+    public function __construct(?CommonsImageServiceInterface $imageService = null)
     {
-        // init
+        $this->imageService = $imageService ?? new CommonsImageService();
     }
 
     /**
@@ -46,29 +51,29 @@ class WikitextFixerService
         $text = str_replace("{{Drugbox", "{{Infobox drug", $text);
 
         // Clean up templates
-        $text = remove_templates($text);
-        $text = remove_lead_templates($text);
+        $text = DeleteTemplatesFixture::remove_templates($text);
+        $text = DeleteTemplatesFixture::remove_lead_templates($text);
 
         // Clean up references
-        $text = remove_bad_refs($text);
-        $text = del_empty_refs($text);
+        $text = RefWorkerFixture::remove_bad_refs($text);
+        $text = DeleteEmptyRefsFixture::del_empty_refs($text);
 
         // Remove language links
-        // $text = remove_lang_links($text);
+        // $text = FixLanguageLinksFixture::remove_lang_links($text);
 
         // Remove videos
-        $text = remove_videos($text);
-        // $text = remove_images($text);
+        $text = FixImagesFixture::remove_videos($text);
+        // $text = FixImagesFixture::remove_images($text);
 
         // Remove categories
-        $text = remove_categories($text);
+        $text = FixCategoriesFixture::removeCategories($text);
 
         // Handle missing images and add title
-        $service = new RemoveMissingImagesService(new CommonsImageService());
-        $text = $service->run($text);
+        $service = new RemoveMissingImagesService($this->imageService);
+        $text    = $service->run($text);
 
         // Add a missing title parameter to infobox templates.
-        $text = add_missing_title($text, $title);
+        $text = FixTemplatesFixture::add_missing_title($text, $title);
         // *******************
         // *******************
 
@@ -80,10 +85,10 @@ class WikitextFixerService
      */
     public function stripTextIntoLeadSection(string $text): string
     {
-        $lead = get_lead_section($text);
+        $lead = LeadSectionParser::get_lead_section($text);
 
         if ($lead && $lead !== $text) {
-            return expand_text_refs($lead, $text);
+            return ExpandRefsFixture::expand_text_refs($lead, $text);
         }
 
         return $text;

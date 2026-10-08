@@ -18,7 +18,7 @@
 </head>
 
 <?php
-/**
+    /**
  * Wikitext fixing test page
  *
  * Provides a web interface for testing the wikitext fixing functionality.
@@ -28,22 +28,22 @@
  * @package MDWiki\NewHtml
  */
 
-require_once __DIR__ . "/bootstrap.php";
+    require_once __DIR__ . "/bootstrap.php";
 
-use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
+    use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
-$text = $_POST['text'] ?? '';
-$title = $_POST['title'] ?? '';
-$lead_only = (isset($_POST['lead_only']) && $_POST['lead_only'] == 'on');
-$lead_only_checked = $lead_only ? 'checked' : '';
+    $text              = $_POST['text'] ?? '';
+    $title             = $_POST['title'] ?? '';
+    $lead_only         = (isset($_POST['lead_only']) && $_POST['lead_only'] == 'on');
+    $lead_only_checked = $lead_only ? 'checked' : '';
 
-$msg = "";
+    $msg = "";
 
-$changed_text = $text;
+    $changed_text = $text;
 
-if ($text && $title) {
+    if ($text && $title) {
 
-    $service = new WikitextFixerService();
+    $service      = new WikitextFixerService();
     $changed_text = $service->run($text, $title, $lead_only);
 
     if ($changed_text == $text) {
@@ -59,7 +59,7 @@ if ($text && $title) {
             </div>
         HTML;
     }
-}
+    }
 echo <<<HTML
     <div class="container">
         $msg
