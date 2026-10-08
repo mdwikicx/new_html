@@ -27,7 +27,8 @@ class Cors
 
         $allowed = false;
         foreach (ALLOWED_DOMAINS as $domain) {
-            if (strpos($referer, $domain) !== false || strpos($origin, $domain) !== false) {
+            // if (strpos($referer, $domain) !== false || strpos($origin, $domain) !== false) {
+            if (parse_url($referer, PHP_URL_HOST) === $domain || parse_url($origin, PHP_URL_HOST) === $domain) {
                 $allowed = $domain;
                 break;
             }

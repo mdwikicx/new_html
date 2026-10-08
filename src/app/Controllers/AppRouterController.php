@@ -85,6 +85,7 @@ class AppRouterController
     {
         // Set CORS headers for allowed origins only
         header("Access-Control-Allow-Origin: https://$allowedDomain");
+
         header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
         header('Access-Control-Allow-Credentials: true');
