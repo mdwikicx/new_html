@@ -22,6 +22,7 @@ use MDWiki\NewHtml\Controllers\JsonDataController;
 use MDWiki\NewHtml\Handlers\WikitextHandler;
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use MDWiki\NewHtml\Infrastructure\Utils\HtmlUtils;
+use MDWiki\NewHtml\Settings;
 use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Html\HtmlToSegmentsService;
 use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
@@ -64,16 +65,20 @@ function getWikitextRevision(string $title, string $all): array
 {
     $from_cache = false;
 
+    $settings = Settings::getInstance();
+    $json_data_all = $settings->RevisionsDirPath . '/json_data_all.json';
+    $json_data = $settings->RevisionsDirPath . '/json_data.json';
+
     if (empty($all)) {
-        $json1 = WikitextHandler::getWikitext($title, JSON_FILE, true);
+        $json1 = WikitextHandler::getWikitext($title, $json_data, true);
     } else {
-        $json1 = WikitextHandler::getWikitext($title, JSON_FILE_ALL);
+        $json1 = WikitextHandler::getWikitext($title, $json_data_all);
     }
 
     $wikitext = $json1["source"];
     $revision = $json1["revid"];
 
-    $file = (! empty($all)) ? JSON_FILE_ALL : JSON_FILE;
+    $file = (! empty($all)) ? $json_data_all : $json_data;
 
     if (empty($wikitext) || empty($revision)) {
         [$wikitext, $revision] = FromJson($title, $all, $file);

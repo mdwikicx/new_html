@@ -10,11 +10,28 @@
 
 namespace MDWiki\NewHtml\Services\Api;
 
-use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use MDWiki\NewHtml\Logger;
+use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 class HttpClientService implements HttpClientInterface
 {
+    public string $userAgent;
+    private static ?self $instance = null;
+
+    public function __construct()
+    {
+        $this->userAgent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.mdwikicx@toolforge.org)';
+    }
+
+    public static function getInstance(): self
+    {
+        // used: Settings::getInstance()
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
     /**
      * Handle a raw HTTP request using cURL
      *
@@ -29,15 +46,14 @@ class HttpClientService implements HttpClientInterface
         array $params = [],
         bool $json = false
     ): array {
-        $ch = curl_init();
-        $user_agent = defined('USER_AGENT') ? USER_AGENT : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+        $ch         = curl_init();
 
         $printableUrl = $endPoint;
 
         // POST with parameters should not have the parameters in the URL
         // GET with parameters should have the parameters in the URL
-        if (!empty($params) && $method === 'GET') {
-            $queryString = http_build_query($params);
+        if (! empty($params) && $method === 'GET') {
+            $queryString  = http_build_query($params);
             $printableUrl = strpos($printableUrl, '?') === false
                 ? "$printableUrl?$queryString"
                 : "$printableUrl&$queryString";
@@ -62,7 +78,7 @@ class HttpClientService implements HttpClientInterface
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
-        curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
@@ -72,9 +88,9 @@ class HttpClientService implements HttpClientInterface
 
         return [
             'printableUrl' => $printableUrl,
-            'httpCode' => $httpCode,
-            'response' => $output,
-            'error' => curl_error($ch)
+            'httpCode'     => $httpCode,
+            'response'     => $output,
+            'error'        => curl_error($ch),
         ];
     }
     /**
@@ -90,9 +106,9 @@ class HttpClientService implements HttpClientInterface
         $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json);
 
         $printableUrl = $rawResponse['printableUrl'];
-        $httpCode = $rawResponse['httpCode'];
-        $output = $rawResponse['response'];
-        $error = $rawResponse['error'];
+        $httpCode     = $rawResponse['httpCode'];
+        $output       = $rawResponse['response'];
+        $error        = $rawResponse['error'];
 
         Logger::debug($printableUrl);
 
@@ -114,7 +130,7 @@ class HttpClientService implements HttpClientInterface
             }
 
             Logger::debug("API returned HTTP $httpCode: $httpCode");
-            if (!$isCloudflareProtected) {
+            if (! $isCloudflareProtected) {
                 Logger::debug(var_export($output, true));
             }
             $output = '';
@@ -136,20 +152,20 @@ class HttpClientService implements HttpClientInterface
         $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json);
 
         $printableUrl = $rawResponse['printableUrl'];
-        $httpCode = $rawResponse['httpCode'];
-        $output = $rawResponse['response'];
-        $error = $rawResponse['error'];
+        $httpCode     = $rawResponse['httpCode'];
+        $output       = $rawResponse['response'];
+        $error        = $rawResponse['error'];
 
         Logger::debug($printableUrl);
 
         $result = [
-            "output" => "",
+            "output"     => "",
             "error_code" => "",
-            "error" => "",
+            "error"      => "",
         ];
 
         if ($output === false) {
-            $result["error"] = $error;
+            $result["error"]      = $error;
             $result["error_code"] = "CURL_ERROR";
             Logger::error("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
             Logger::debug("endPoint: ($endPoint), cURL Error: " . $error);
@@ -159,7 +175,7 @@ class HttpClientService implements HttpClientInterface
 
         if ($httpCode !== 200) {
             Logger::error("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
-            $result["error"] = "HTTP_ERROR";
+            $result["error"]      = "HTTP_ERROR";
             $result["error_code"] = "$httpCode";
 
             // Check for Cloudflare protection
@@ -172,7 +188,7 @@ class HttpClientService implements HttpClientInterface
             }
 
             Logger::debug("API returned HTTP $httpCode: $httpCode");
-            if (!$isCloudflareProtected) {
+            if (! $isCloudflareProtected) {
                 Logger::debug(var_export($output, true));
             }
 

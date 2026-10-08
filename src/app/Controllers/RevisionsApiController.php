@@ -11,9 +11,21 @@ namespace MDWiki\NewHtml\Controllers;
 
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use MDWiki\NewHtml\Logger;
+use MDWiki\NewHtml\Settings;
 
 class RevisionsApiController
 {
+    private Settings $settings;
+    public string $json_data;
+    public string $json_data_all;
+
+    public function __construct()
+    {
+        $this->settings      = Settings::getInstance();
+        $this->json_data_all = $this->settings->RevisionsDirPath . '/json_data_all.json';
+        $this->json_data     = $this->settings->RevisionsDirPath . '/json_data.json';
+    }
+
     /**
      * Get data from JSON file based on type
      *
@@ -22,7 +34,7 @@ class RevisionsApiController
      */
     public function getData(string $tyt): array
     {
-        $file      = ($tyt == 'all') ? JSON_FILE_ALL : JSON_FILE;
+        $file      = ($tyt == 'all') ? $this->json_data_all : $this->json_data;
         $file_text = FileUtils::read_file($file);
         if (empty($file_text)) {
             return [];
@@ -53,7 +65,7 @@ class RevisionsApiController
     {
         $this->setHeader();
 
-        $dirs = array_filter(glob(REVISIONS_PATH . '/*/'), 'is_dir');
+        $dirs = array_filter(glob($this->settings->RevisionsDirPath . '/*/'), 'is_dir');
 
         // sort directories by last modified date
         usort($dirs, function ($a, $b) {
@@ -117,8 +129,8 @@ class RevisionsApiController
         }
 
         if ($make_dump) {
-            $this->fileWrite(JSON_FILE, json_encode($main_data, JSON_PRETTY_PRINT));
-            $this->fileWrite(JSON_FILE_ALL, json_encode($main_data_all, JSON_PRETTY_PRINT));
+            $this->fileWrite($this->json_data, json_encode($main_data, JSON_PRETTY_PRINT));
+            $this->fileWrite($this->json_data_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
         }
 
         $this->respond(['results' => $results]);

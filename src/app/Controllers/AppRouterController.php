@@ -3,6 +3,18 @@
 
 namespace MDWiki\NewHtml\Controllers;
 
+/**
+ * Route handler for new_html application
+ *
+ * Routes incoming requests to the appropriate handler:
+ * - Empty requests or ?test -> redirect to revisions.html (dashboard)
+ * - Requests with parameters -> main.php (API endpoint)
+ *
+ * @package MDWiki\NewHtml
+ *
+ * Test at: http://localhost:305/new_html_1/revisions.html
+ */
+
 use function MDWiki\NewHtml\Controllers\main\start;
 use MDWiki\NewHtml\Cors;
 

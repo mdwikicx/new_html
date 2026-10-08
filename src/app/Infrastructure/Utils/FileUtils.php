@@ -11,6 +11,7 @@ namespace MDWiki\NewHtml\Infrastructure\Utils;
  */
 
 use MDWiki\NewHtml\Logger;
+use MDWiki\NewHtml\Settings;
 
 class FileUtils
 {
@@ -29,7 +30,8 @@ class FileUtils
             return '';
         }
 
-        $file_dir = REVISIONS_PATH . "/$revision";
+        $settings = Settings::getInstance();
+        $file_dir = $settings->RevisionsDirPath . "/$revision";
 
         if (! empty($all)) {
             $file_dir .= "_all";

@@ -9,7 +9,7 @@ namespace MDWiki\NewHtml;
  * @property string $domain
  * @property string $userAgent
  * @property string $appEnv
- * @property string $TablesPath
+ * @property string $RevisionsDirPath
  */
 final class Settings
 {
@@ -18,7 +18,7 @@ final class Settings
     public string $ServerUrl;
     public string $userAgent;
     public string $appEnv;
-    public string $TablesPath;
+    public string $RevisionsDirPath;
 
     private static ?self $instance = null;
 
@@ -26,16 +26,23 @@ final class Settings
     {
         $this->domain    = $_SERVER['SERVER_NAME'] ?? 'localhost';
         $this->ServerUrl = $this->generateServerUrl();
-        $this->userAgent = 'mdwiki MediaWiki OAuth Client/1.0';
+        $this->userAgent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.mdwikicx@toolforge.org)';
 
-        $appEnv     = $this->envVar('APP_ENV');
-        $TablesPath = $this->envVar('TABLES_PATH');
+        $this->appEnv           = $this->envVar('APP_ENV');
+        $this->RevisionsDirPath = $this->envVar('REVISIONS_DIR');
 
-        $this->appEnv = $appEnv;
-
-        $this->TablesPath = $TablesPath;
+        $this->init();
     }
 
+    public static function getInstance(): self
+    {
+        // used: Settings::getInstance()
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
     // Prevent cloning and unserialization of the singleton instance
     private function __clone()
     {}
@@ -114,27 +121,14 @@ final class Settings
 
         return "";
     }
-
-    /**
-     * Returns the single instance of Settings for the lifetime of the request.
-     * Equivalent to @lru_cache(maxsize=1) in Python.
-     */
-    public static function getInstance(): self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-    public function OpenTablesPathFile(string $filePath): array
+    public function OpenRevisionsDirPathFile(string $filePath): array
     {
         // remove right / from filePath
         $filePath = rtrim($filePath, '/');
-        $path     = "{$this->TablesPath}/$filePath";
+        $path     = "{$this->RevisionsDirPath}/$filePath";
 
         if (! is_file($path)) {
-            Logger::debug("---- OpenTablesPathFile: file $filePath does not exist");
+            Logger::debug("---- OpenRevisionsDirPathFile: file $filePath does not exist");
             return [];
         }
         $contents = file_get_contents($path);
@@ -151,13 +145,37 @@ final class Settings
             return [];
         }
 
-        $len = count($result);
-        if (isset($result['list'])) {
-            $len = count($result['list']);
-        }
-
-        Logger::debug("---- OpenTablesPathFile File: $filePath: Exists size: $len");
+        Logger::debug("---- OpenRevisionsDirPathFile File: $filePath.");
 
         return $result;
+    }
+    public function init()
+    {
+        $home = $this->envVar('HOME');
+
+        if (! $this->RevisionsDirPath) {
+            $this->RevisionsDirPath = $home
+                ? $home . '/public_html/revisions_new1'
+                : dirname(__DIR__) . '/revisions_new1';
+        }
+
+        $json_file     = $this->RevisionsDirPath . '/json_data.json';
+        $json_file_all = $this->RevisionsDirPath . '/json_data_all.json';
+
+        // Initialize revisions directory if needed
+        if (! is_dir($this->RevisionsDirPath)) {
+            mkdir($this->RevisionsDirPath, 0755, true);
+        }
+
+        // Ensure JSON data files exist
+
+        if (! file_exists($json_file)) {
+            file_put_contents($json_file, '{}', LOCK_EX);
+        }
+
+        if (! file_exists($json_file_all)) {
+            file_put_contents($json_file_all, '{}', LOCK_EX);
+        }
+
     }
 }

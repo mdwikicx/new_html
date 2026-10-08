@@ -9,11 +9,6 @@
  * @package MDWiki\NewHtml
  */
 
-if (! defined('USER_AGENT')) {
-    $user_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.mdwikicx@toolforge.org)';
-    define('USER_AGENT', $user_agent);
-}
-
 require_once __DIR__ . "/autoload.php";
 require_once __DIR__ . "/Controllers/main.php";
 
