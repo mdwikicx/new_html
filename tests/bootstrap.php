@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests;
 
 // Set test environment
@@ -7,6 +6,8 @@ putenv('APP_ENV=testing');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+// ini_set('error_log', sys_get_temp_dir() . '/phpunit-app.log');
 
 $env_value = getenv('REVISIONS_DIR') ?: ($_ENV['REVISIONS_DIR'] ?? null);
 if (! $env_value) {
