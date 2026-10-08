@@ -61,11 +61,11 @@ main() {
             log_warn "Archiving old version to: $backup_dir"
             mv "$TARGET_DIR" "$backup_dir"
         fi
-        mv "$CLONE_DIR/src/new_html" "$TARGET_DIR"
+        mv "$CLONE_DIR/src" "$TARGET_DIR"
     else
         log_info "Updating existing installation..."
         mkdir -p "$TARGET_DIR"
-        cp -rf "$CLONE_DIR"/src/new_html/* "$TARGET_DIR/"
+        cp -rf "$CLONE_DIR"/src/* "$TARGET_DIR/"
     fi
 
     # copy composer_public_html.json to $HOME/public_html
