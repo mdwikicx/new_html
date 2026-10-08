@@ -40,10 +40,10 @@ class AppRouterController
     // Entry point
     // ------------------------------------------------------------
 
-    /** @param array<string, mixed> $request */
-    public function handleRequest(array $request): void
+    /** @param array<string, mixed> $getRequest */
+    public function handleRequest(array $getRequest): void
     {
-        $allowedDomain = Cors::is_allowed();
+        $allowedDomain = Cors::isAllowed($_SERVER);
 
         if (! $allowedDomain) {
             $this->fail(403, 'Access denied. Requests are only allowed from authorized domains.');
@@ -51,14 +51,14 @@ class AppRouterController
 
         $this->setCorsHeaders($allowedDomain);
 
-        $title = $this->normalizeTitle((string) ($request['title'] ?? ''));
+        $title = $this->normalizeTitle((string) ($getRequest['title'] ?? ''));
 
         if ($title === '') {
             $this->fail(400, 'title is empty');
         }
 
         try {
-            $result = $this->pipeline->process(PageRequest::fromArray($request, $title));
+            $result = $this->pipeline->process(PageRequest::fromArray($getRequest, $title));
         } catch (\Throwable $e) {
             Logger::error("Unhandled error for title: $title. Error: " . $e->getMessage());
             $this->fail(500, 'Internal server error');

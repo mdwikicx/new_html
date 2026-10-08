@@ -11,31 +11,30 @@ const ALLOWED_DOMAINS = [
 
 class Cors
 {
-    public static function is_allowed(): bool | string
+    public static function isAllowed(?array $serverRequest = null): bool | string
     {
-
-        $env = getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? '');
+        $serverRequest = $serverRequest ?? $_SERVER;
+        $env           = getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? '');
 
         if ($env === 'development') {
             Logger::debug("Skip Cors checking in development env");
             return true;
         }
 
-        $domains = ['medwiki.toolforge.org', 'mdwikicx.toolforge.org'];
         // Check if the request is coming from allowed domains
-        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-        $origin  = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+        $referer = isset($serverRequest['HTTP_REFERER']) ? $serverRequest['HTTP_REFERER'] : '';
+        $origin  = isset($serverRequest['HTTP_ORIGIN']) ? $serverRequest['HTTP_ORIGIN'] : '';
 
-        $isAllowed = false;
-        foreach ($domains as $domain) {
+        $allowed = false;
+        foreach (ALLOWED_DOMAINS as $domain) {
             if (strpos($referer, $domain) !== false || strpos($origin, $domain) !== false) {
-                $isAllowed = $domain;
+                $allowed = $domain;
                 break;
             }
         }
-        // log $_SERVER to file
-        // file_put_contents(__DIR__ . '/cors.log', print_r($_SERVER, true));
+        // log $serverRequest to file
+        // file_put_contents(__DIR__ . '/cors.log', print_r($serverRequest, true));
 
-        return $isAllowed;
+        return $allowed;
     }
 }

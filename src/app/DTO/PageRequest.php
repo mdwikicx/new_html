@@ -31,16 +31,16 @@ final class PageRequest
     ) {}
 
     /**
-     * @param array<string, mixed> $request usually $_GET
+     * @param array<string, mixed> $getRequest usually $_GET
      */
-    public static function fromArray(array $request, string $title): self
+    public static function fromArray(array $getRequest, string $title): self
     {
-        $format = (string) ($request['printetxt'] ?? $request['print'] ?? '');
+        $format = (string) ($getRequest['printetxt'] ?? $getRequest['print'] ?? '');
         if (! in_array($format, self::VALID_FORMATS, true)) {
             $format = self::FORMAT_JSON;
         }
 
-        $all = (string) ($request['all'] ?? '');
+        $all = (string) ($getRequest['all'] ?? '');
 
         // Video pages always use the 'all' data file
         if (str_starts_with($title, 'Video')) {
@@ -51,7 +51,7 @@ final class PageRequest
             title: $title,
             format: $format,
             all: $all,
-            new : isset($request['new']),
+            new : isset($getRequest['new']),
         );
     }
 }

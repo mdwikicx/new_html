@@ -58,7 +58,7 @@ class HtmlToSegmentsService
         $from_cache = false;
 
         if (! isset($_GET['new'])) {
-            $seg_text = FileUtils::read_file($file_seg);
+            $seg_text = FileUtils::readFile($file_seg);
 
             if (! empty($seg_text)) {
                 return [$seg_text, true];
@@ -71,7 +71,7 @@ class HtmlToSegmentsService
             return ["", $from_cache];
         }
 
-        FileUtils::file_write($file_seg, $result);
+        FileUtils::FileWrite($file_seg, $result);
 
         return [$result, $from_cache];
     }

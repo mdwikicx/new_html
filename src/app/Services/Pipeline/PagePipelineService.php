@@ -69,8 +69,8 @@ final class PagePipelineService
         $dir      = FileUtils::get_file_dir($revision, $req->all);
         $wikitext = $this->fixer->fix($wikitext, $req->title);
 
-        FileUtils::file_write($dir . '/wikitext.txt', $wikitext);
-        FileUtils::file_write($dir . '/title.txt', $req->title);
+        FileUtils::FileWrite($dir . '/wikitext.txt', $wikitext);
+        FileUtils::FileWrite($dir . '/title.txt', $req->title);
 
         try {
             [$html, $cache['html']] = $this->buildHtml($wikitext, $dir . '/html.html', $req);
@@ -144,7 +144,7 @@ final class PagePipelineService
      */
     private function fromLocalCache(string $title, string $all, string $file): array
     {
-        $revid = JsonDataController::get_title_revision($title, $file);
+        $revid = JsonDataController::getTitleRevision($title, $file);
 
         if (empty($revid) || ! ctype_digit((string) $revid)) {
             return ['', ''];
@@ -156,7 +156,7 @@ final class PagePipelineService
             return ['', ''];
         }
 
-        return [FileUtils::read_file($dir . '/wikitext.txt'), $revid];
+        return [FileUtils::readFile($dir . '/wikitext.txt'), $revid];
     }
 
     /**

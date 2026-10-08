@@ -53,7 +53,7 @@ class WikitextHandler
         ];
 
         if (! empty($revid)) {
-            JsonDataController::add_title_revision($title, $revid, $file);
+            JsonDataController::addTitleRevision($title, $revid, $file);
         }
 
         if (empty($source)) {

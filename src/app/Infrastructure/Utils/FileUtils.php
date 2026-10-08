@@ -50,19 +50,21 @@ class FileUtils
      *
      * @param string|null $file The file path to write to
      * @param string $text The content to write
-     * @return void
+     * @return bool
      */
-    public static function file_write(?string $file, string $text): void
+    public static function FileWrite(?string $file, string $text): bool
     {
         if (empty($text) || empty($file)) {
-            return;
+            return false;
         }
 
         try {
             file_put_contents($file, $text, LOCK_EX);
+            return true;
         } catch (\Exception $e) {
             Logger::error("FileUtils: Could not write to file: $file - " . $e->getMessage());
             Logger::debug("Error: Could not write to file: $file");
+            return false;
         }
     }
 
@@ -72,7 +74,7 @@ class FileUtils
      * @param string|null $file The file path to read from
      * @return bool|string The file contents, or empty string on error
      */
-    public static function read_file(?string $file): bool | string
+    public static function readFile(?string $file): bool | string
     {
 
         if (empty($file) || ! file_exists($file)) {

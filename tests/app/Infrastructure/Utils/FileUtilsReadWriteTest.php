@@ -19,7 +19,7 @@ class FileUtilsReadWriteTest extends TestCase
     {
         // Create a temporary file
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        FileUtils::file_write($tempFile, 'Test content');
+        FileUtils::FileWrite($tempFile, 'Test content');
 
         // Verify file exists
         $this->assertFileExists($tempFile);
@@ -31,7 +31,7 @@ class FileUtilsReadWriteTest extends TestCase
     public function testFileWriteWithEmptyText()
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
-        FileUtils::file_write($tempFile, '');
+        FileUtils::FileWrite($tempFile, '');
 
         // Should not create file with empty text
         // Or create empty file depending on implementation
@@ -41,7 +41,7 @@ class FileUtilsReadWriteTest extends TestCase
 
     public function testFileWriteWithEmptyFile()
     {
-        FileUtils::file_write('', 'Some text');
+        FileUtils::FileWrite('', 'Some text');
 
         // Should handle empty file path gracefully
         $this->assertTrue(true);
@@ -49,7 +49,7 @@ class FileUtilsReadWriteTest extends TestCase
 
     public function testFileWriteWithNullFile()
     {
-        FileUtils::file_write(null, 'Some text');
+        FileUtils::FileWrite(null, 'Some text');
 
         // Should handle null file path gracefully
         $this->assertTrue(true);
@@ -60,7 +60,7 @@ class FileUtilsReadWriteTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
         file_put_contents($tempFile, 'Test content');
 
-        $result = FileUtils::read_file($tempFile);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertEquals('Test content', $result);
 
@@ -70,21 +70,21 @@ class FileUtilsReadWriteTest extends TestCase
 
     public function testReadFileWithNonexistentFile()
     {
-        $result = FileUtils::read_file('/nonexistent/path/file.txt');
+        $result = FileUtils::readFile('/nonexistent/path/file.txt');
 
         $this->assertEquals('', $result);
     }
 
     public function testReadFileWithEmptyPath()
     {
-        $result = FileUtils::read_file('');
+        $result = FileUtils::readFile('');
 
         $this->assertEquals('', $result);
     }
 
     public function testReadFileWithNullPath()
     {
-        $result = FileUtils::read_file(null);
+        $result = FileUtils::readFile(null);
 
         $this->assertEquals('', $result);
     }
@@ -94,8 +94,8 @@ class FileUtilsReadWriteTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
         $content  = 'Write and read test';
 
-        FileUtils::file_write($tempFile, $content);
-        $result = FileUtils::read_file($tempFile);
+        FileUtils::FileWrite($tempFile, $content);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertEquals($content, $result);
 
@@ -108,8 +108,8 @@ class FileUtilsReadWriteTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
         $content  = "Special chars: \n\t{{template}} [[link]] <ref>cite</ref>";
 
-        FileUtils::file_write($tempFile, $content);
-        $result = FileUtils::read_file($tempFile);
+        FileUtils::FileWrite($tempFile, $content);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertEquals($content, $result);
 
@@ -122,8 +122,8 @@ class FileUtilsReadWriteTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
         $content  = "Unicode: 日本語 العربية Ελληνικά";
 
-        FileUtils::file_write($tempFile, $content);
-        $result = FileUtils::read_file($tempFile);
+        FileUtils::FileWrite($tempFile, $content);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertEquals($content, $result);
 
@@ -135,10 +135,10 @@ class FileUtilsReadWriteTest extends TestCase
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
 
-        FileUtils::file_write($tempFile, 'First content');
-        FileUtils::file_write($tempFile, 'Second content');
+        FileUtils::FileWrite($tempFile, 'First content');
+        FileUtils::FileWrite($tempFile, 'Second content');
 
-        $result = FileUtils::read_file($tempFile);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertEquals('Second content', $result);
 
@@ -152,7 +152,7 @@ class FileUtilsReadWriteTest extends TestCase
         $largeContent = str_repeat('Large content block. ', 1000);
 
         file_put_contents($tempFile, $largeContent);
-        $result = FileUtils::read_file($tempFile);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertEquals($largeContent, $result);
 
@@ -165,8 +165,8 @@ class FileUtilsReadWriteTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
         $content  = "Line 1\nLine 2\nLine 3";
 
-        FileUtils::file_write($tempFile, $content);
-        $result = FileUtils::read_file($tempFile);
+        FileUtils::FileWrite($tempFile, $content);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertEquals($content, $result);
 
@@ -179,7 +179,7 @@ class FileUtilsReadWriteTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'test_');
         file_put_contents($tempFile, 'Test');
 
-        $result = FileUtils::read_file($tempFile);
+        $result = FileUtils::readFile($tempFile);
 
         $this->assertTrue(is_string($result) || is_bool($result));
 

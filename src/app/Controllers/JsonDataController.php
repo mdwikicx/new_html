@@ -23,10 +23,10 @@ class JsonDataController
      * @param string $file The JSON file to search
      * @return string The revision ID if found, empty string otherwise
      */
-    public static function get_title_revision(string $title, string $file): string
+    public static function getTitleRevision(string $title, string $file): string
     {
 
-        $file_text = FileUtils::read_file($file);
+        $file_text = FileUtils::readFile($file);
 
         if (empty($file_text)) {
             return '';
@@ -52,13 +52,13 @@ class JsonDataController
      * @param string $file The JSON file to update
      * @return array<string, mixed>|string The updated data array on success, empty string on failure
      */
-    public static function add_title_revision(string $title, string $revision, string $file): array | string
+    public static function addTitleRevision(string $title, string $revision, string $file): array | string
     {
         if (empty($title) || empty($revision)) {
             return '';
         }
 
-        $file_text = FileUtils::read_file($file);
+        $file_text = FileUtils::readFile($file);
 
         if (empty($file_text)) {
             return '';
@@ -72,7 +72,7 @@ class JsonDataController
 
         $data[$title] = $revision;
 
-        FileUtils::file_write($file, json_encode($data));
+        FileUtils::FileWrite($file, json_encode($data));
         return $data;
     }
 }

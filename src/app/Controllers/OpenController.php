@@ -33,10 +33,10 @@ class OpenController
         header("Content-type: $content_type; charset=utf-8");
     }
 
-    public function handleRequest(array $request): void
+    public function handleRequest(array $getRequest): void
     {
-        $revid = $request['revid'] ?? '';
-        $file  = $request['file'] ?? '';
+        $revid = $getRequest['revid'] ?? '';
+        $file  = $getRequest['file'] ?? '';
 
         // Validate inputs to prevent path traversal
         // revid can be like 1234_all or 1234

@@ -10,7 +10,6 @@ namespace MDWiki\NewHtml\Controllers;
  */
 
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
-use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Settings;
 
 class RevisionsApiController
@@ -29,33 +28,14 @@ class RevisionsApiController
     /**
      * Get data from JSON file based on type
      *
-     * @param string $tyt The type of data to retrieve ('all' for complete data, otherwise main data)
+     * @param string $file The path to the JSON file
      * @return array<string, mixed> The decoded JSON data as an array
      */
-    public function getData(string $tyt): array
+    public function getData(string $file): array
     {
-        $file      = ($tyt == 'all') ? $this->json_data_all : $this->json_data;
-        $file_text = FileUtils::read_file($file);
-        if (empty($file_text)) {
-            return [];
-        }
-
-        $data = json_decode($file_text, true) ?? [];
-        return $data;
+        return $this->settings->OpenRevisionsDirPathFile($file);
     }
 
-    public function fileWrite(?string $file, string $text): void
-    {
-        if (empty($text) || empty($file)) {
-            return;
-        }
-
-        try {
-            file_put_contents($file, $text, LOCK_EX);
-        } catch (\Exception $e) {
-            Logger::error("Error: Could not write to file: $file");
-        }
-    }
     private function setHeader(): void
     {
         header("Content-type: application/json; charset=utf-8");
@@ -76,8 +56,8 @@ class RevisionsApiController
 
         $results       = [];
         $number        = 0;
-        $main_data     = $this->getData('');
-        $main_data_all = $this->getData('all');
+        $main_data     = $this->getData($this->json_data);
+        $main_data_all = $this->getData($this->json_data_all);
 
         $make_dump = empty($main_data);
 
@@ -85,6 +65,7 @@ class RevisionsApiController
             $number += 1;
 
             $wikitextFile = $dir . '/wikitext.txt';
+
             $lastModified = is_file($wikitextFile)
                 ? date('Y-m-d H:i', filemtime($wikitextFile))
                 : date('Y-m-d H:i', filemtime($dir));
@@ -129,8 +110,8 @@ class RevisionsApiController
         }
 
         if ($make_dump) {
-            $this->fileWrite($this->json_data, json_encode($main_data, JSON_PRETTY_PRINT));
-            $this->fileWrite($this->json_data_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
+            FileUtils::FileWrite($this->json_data, json_encode($main_data, JSON_PRETTY_PRINT));
+            FileUtils::FileWrite($this->json_data_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
         }
 
         $this->respond(['results' => $results]);

@@ -26,7 +26,7 @@ class JsonDataControllerTest extends TestCase
         $data = ['TestArticle' => '12345'];
         file_put_contents($this->testJsonFile, json_encode($data));
 
-        $revision = JsonDataController::get_title_revision('TestArticle', '');
+        $revision = JsonDataController::getTitleRevision('TestArticle', '');
 
         // This test depends on global file paths, skip if not accessible
         if ($revision === '') {
@@ -36,7 +36,7 @@ class JsonDataControllerTest extends TestCase
 
     public function testGetTitleRevisionWithNonexistentTitle()
     {
-        $result = JsonDataController::get_title_revision('NonexistentArticle', '');
+        $result = JsonDataController::getTitleRevision('NonexistentArticle', '');
 
         $this->assertIsString($result);
     }
@@ -47,14 +47,14 @@ class JsonDataControllerTest extends TestCase
         global $json_file;
         $originalFile = $json_file ?? '';
 
-        $result = JsonDataController::get_title_revision('AnyTitle', '');
+        $result = JsonDataController::getTitleRevision('AnyTitle', '');
 
         $this->assertIsString($result);
     }
 
     public function testAddTitleRevisionWithValidData()
     {
-        $result = JsonDataController::add_title_revision('NewArticle', '67890', '');
+        $result = JsonDataController::addTitleRevision('NewArticle', '67890', '');
 
         // Result depends on global state
         $this->assertTrue(is_array($result) || $result === '');
@@ -62,42 +62,42 @@ class JsonDataControllerTest extends TestCase
 
     public function testAddTitleRevisionWithEmptyTitle()
     {
-        $result = JsonDataController::add_title_revision('', '12345', '');
+        $result = JsonDataController::addTitleRevision('', '12345', '');
 
         $this->assertEquals('', $result);
     }
 
     public function testAddTitleRevisionWithEmptyRevision()
     {
-        $result = JsonDataController::add_title_revision('Article', '', '');
+        $result = JsonDataController::addTitleRevision('Article', '', '');
 
         $this->assertEquals('', $result);
     }
 
     public function testAddTitleRevisionWithBothEmpty()
     {
-        $result = JsonDataController::add_title_revision('', '', '');
+        $result = JsonDataController::addTitleRevision('', '', '');
 
         $this->assertEquals('', $result);
     }
 
     public function testGetTitleRevisionWithAllFlag()
     {
-        $result = JsonDataController::get_title_revision('TestArticle', 'all');
+        $result = JsonDataController::getTitleRevision('TestArticle', 'all');
 
         $this->assertIsString($result);
     }
 
     public function testAddTitleRevisionWithAllFlag()
     {
-        $result = JsonDataController::add_title_revision('Article', '12345', 'all');
+        $result = JsonDataController::addTitleRevision('Article', '12345', 'all');
 
         $this->assertTrue(is_array($result) || $result === '');
     }
 
     public function testAddTitleRevisionReturnsArrayOrEmpty()
     {
-        $result = JsonDataController::add_title_revision('Test', '123', '');
+        $result = JsonDataController::addTitleRevision('Test', '123', '');
 
         // Should return array with data or empty string
         $this->assertTrue(is_array($result) || $result === '');
@@ -105,14 +105,14 @@ class JsonDataControllerTest extends TestCase
 
     public function testGetTitleRevisionWithSpecialCharacters()
     {
-        $result = JsonDataController::get_title_revision("Article's Title", '');
+        $result = JsonDataController::getTitleRevision("Article's Title", '');
 
         $this->assertIsString($result);
     }
 
     public function testAddTitleRevisionWithSpecialCharacters()
     {
-        $result = JsonDataController::add_title_revision("Article's Title", '12345', '');
+        $result = JsonDataController::addTitleRevision("Article's Title", '12345', '');
 
         $this->assertTrue(is_array($result) || $result === '');
     }

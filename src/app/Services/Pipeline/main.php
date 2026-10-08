@@ -37,7 +37,7 @@ use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
  */
 function FromJson(string $title, string $all, string $file): array
 {
-    $revid = JsonDataController::get_title_revision($title, $file);
+    $revid = JsonDataController::getTitleRevision($title, $file);
 
     if (empty($revid) || ! ctype_digit($revid)) {
         return ['', ''];
@@ -49,7 +49,7 @@ function FromJson(string $title, string $all, string $file): array
         return ['', ''];
     }
 
-    $wikitext = FileUtils::read_file($file_dir . "/wikitext.txt");
+    $wikitext = FileUtils::readFile($file_dir . "/wikitext.txt");
 
     return [$wikitext, $revid];
 }
@@ -150,15 +150,15 @@ function getSegText(string $HTML_text, string $file_seg): array
 /**
  * Main processing function to handle page generation request
  *
- * @param array<string, mixed> $request The request parameters
+ * @param array<string, mixed> $getRequest The request parameters
  * @param string $title The page title to process
  */
-function start(array $request, string $title): string | array
+function start(array $getRequest, string $title): string | array
 {
     $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
-    $new       = isset($request['new']);
+    $new       = isset($getRequest['new']);
 
-    $all = $request['all'] ?? '';
+    $all = $getRequest['all'] ?? '';
     // if $title startwith Video then $all = 1
     if (strpos($title, 'Video') === 0) {
         $all = "1";
@@ -181,7 +181,7 @@ function start(array $request, string $title): string | array
     }
     $cache_data['wikitext'] = $text_cache;
 
-    // $revision = (isset($request['revision'])) ? $request['revision'] : $revision;
+    // $revision = (isset($getRequest['revision'])) ? $getRequest['revision'] : $revision;
 
     if (empty($wikitext) || empty($revision)) {
         // send request error code using http_response_code
@@ -208,9 +208,9 @@ function start(array $request, string $title): string | array
     $service  = new WikitextFixerService();
     $wikitext = $service->fix($wikitext, $title);
 
-    FileUtils::file_write($file_wikitext, $wikitext);
+    FileUtils::FileWrite($file_wikitext, $wikitext);
 
-    FileUtils::file_write($file_title, $title);
+    FileUtils::FileWrite($file_title, $title);
 
     [$HTML_text, $html_cache] = getHtmlText($wikitext, $file_html, $title, $new);
 

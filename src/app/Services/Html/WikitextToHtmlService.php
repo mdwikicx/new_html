@@ -68,7 +68,7 @@ class WikitextToHtmlService
     public function convertWithCache(string $wikitext, string $file_html, string $title, bool $new): array
     {
         if (! $new) {
-            $text = FileUtils::read_file($file_html);
+            $text = FileUtils::readFile($file_html);
             if (! empty($text)) {
                 return [$text, true];
             }
@@ -84,7 +84,7 @@ class WikitextToHtmlService
             return ["", false];
         }
 
-        FileUtils::file_write($file_html, $result);
+        FileUtils::FileWrite($file_html, $result);
 
         return [$result, false];
     }
