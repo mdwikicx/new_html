@@ -1,11 +1,8 @@
 <?php
-
 namespace Tests\WikiTextFixes;
 
+use MDWiki\NewHtml\Domain\Fixes\Structure\FixLanguageLinksFixture;
 use PHPUnit\Framework\TestCase;
-
-use function MDWiki\NewHtml\Domain\Fixes\Structure\remove_lang_links;
-use function MDWiki\NewHtml\Domain\Fixes\Structure\is_valid_lang_code;
 
 class FixLanguageLinksFixtureTest extends TestCase
 {
@@ -41,7 +38,7 @@ class FixLanguageLinksFixtureTest extends TestCase
         // Test that all Wikipedia language codes match the regex pattern
         foreach (self::ALL_WIKI_LANG_CODES as $code) {
             $this->assertTrue(
-                is_valid_lang_code($code),
+                FixLanguageLinksFixture::is_valid_lang_code($code),
                 "Language code '{$code}' should be valid"
             );
         }
@@ -51,23 +48,23 @@ class FixLanguageLinksFixtureTest extends TestCase
     {
         // Test codes that should NOT match
         $invalidCodes = [
-            'X',         // Too short (single uppercase)
-            'E',         // Single letter
-            '1',         // Number
-            'en1',       // Contains number
-            'EN',        // Uppercase
-            'En',        // Mixed case
-            '-en',       // Starts with hyphen
-            'en-',       // Ends with hyphen
-            '',          // Empty string
-            'test_',     // Contains underscore
-            'en.test',   // Contains dot
-            'en space',  // Contains space
+            'X',        // Too short (single uppercase)
+            'E',        // Single letter
+            '1',        // Number
+            'en1',      // Contains number
+            'EN',       // Uppercase
+            'En',       // Mixed case
+            '-en',      // Starts with hyphen
+            'en-',      // Ends with hyphen
+            '',         // Empty string
+            'test_',    // Contains underscore
+            'en.test',  // Contains dot
+            'en space', // Contains space
         ];
 
         foreach ($invalidCodes as $code) {
             $this->assertFalse(
-                is_valid_lang_code($code),
+                FixLanguageLinksFixture::is_valid_lang_code($code),
                 "Code '{$code}' should be invalid"
             );
         }
@@ -75,8 +72,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithSingleLink()
     {
-        $text = 'Article content [[en:Article]] more text';
-        $result = remove_lang_links($text);
+        $text   = 'Article content [[en:Article]] more text';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article]]', $result);
         $this->assertStringContainsString('Article content', $result);
@@ -85,8 +82,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithMultipleLinks()
     {
-        $text = '[[en:English Article]] content [[de:German Article]] [[fr:French Article]]';
-        $result = remove_lang_links($text);
+        $text   = '[[en:English Article]] content [[de:German Article]] [[fr:French Article]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:English Article]]', $result);
         $this->assertStringNotContainsString('[[de:German Article]]', $result);
@@ -96,8 +93,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksPreservesNormalLinks()
     {
-        $text = '[[Normal link]] [[en:Language link]] [[Another link]]';
-        $result = remove_lang_links($text);
+        $text   = '[[Normal link]] [[en:Language link]] [[Another link]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('[[Normal link]]', $result);
         $this->assertStringContainsString('[[Another link]]', $result);
@@ -106,23 +103,23 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithNoLanguageLinks()
     {
-        $text = 'Text without language links [[Article]] more text';
-        $result = remove_lang_links($text);
+        $text   = 'Text without language links [[Article]] more text';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertEquals($text, $result);
     }
 
     public function testRemoveLangLinksWithEmptyText()
     {
-        $result = remove_lang_links('');
+        $result = FixLanguageLinksFixture::remove_lang_links('');
 
         $this->assertEquals('', $result);
     }
 
     public function testRemoveLangLinksWithVariousLanguages()
     {
-        $text = '[[ar:مقالة]] [[ja:記事]] [[zh:文章]] [[ru:Статья]]';
-        $result = remove_lang_links($text);
+        $text   = '[[ar:مقالة]] [[ja:記事]] [[zh:文章]] [[ru:Статья]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[ar:', $result);
         $this->assertStringNotContainsString('[[ja:', $result);
@@ -132,8 +129,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksAtEndOfArticle()
     {
-        $text = "Article content.\n\n[[en:English]]\n[[de:Deutsch]]\n[[fr:Français]]";
-        $result = remove_lang_links($text);
+        $text   = "Article content.\n\n[[en:English]]\n[[de:Deutsch]]\n[[fr:Français]]";
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('Article content.', $result);
         $this->assertStringNotContainsString('[[en:', $result);
@@ -143,8 +140,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithComplexArticleNames()
     {
-        $text = '[[en:Article with spaces and (parentheses)]] content';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article with spaces and (parentheses)]] content';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article with spaces and (parentheses)]]', $result);
         $this->assertStringContainsString('content', $result);
@@ -152,8 +149,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksPreservesCategories()
     {
-        $text = '[[Category:Test]] [[en:Article]] [[Category:Another]]';
-        $result = remove_lang_links($text);
+        $text   = '[[Category:Test]] [[en:Article]] [[Category:Another]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('[[Category:Test]]', $result);
         $this->assertStringContainsString('[[Category:Another]]', $result);
@@ -162,8 +159,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithSpecialCharacters()
     {
-        $text = '[[es:Artículo con acentos]] [[de:Artikel_mit_Unterstrichen]]';
-        $result = remove_lang_links($text);
+        $text   = '[[es:Artículo con acentos]] [[de:Artikel_mit_Unterstrichen]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[es:', $result);
         $this->assertStringNotContainsString('[[de:', $result);
@@ -171,8 +168,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksInlineWithText()
     {
-        $text = 'Start [[en:Article]] middle [[fr:Article]] end';
-        $result = remove_lang_links($text);
+        $text   = 'Start [[en:Article]] middle [[fr:Article]] end';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('Start', $result);
         $this->assertStringContainsString('middle', $result);
@@ -183,8 +180,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithDuplicates()
     {
-        $text = '[[en:Article]] content [[en:Article]]';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article]] content [[en:Article]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         // Both occurrences should be removed
         $this->assertStringNotContainsString('[[en:Article]]', $result);
@@ -193,8 +190,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksPreservesTemplates()
     {
-        $text = '{{Template}} [[en:Article]] {{Another}}';
-        $result = remove_lang_links($text);
+        $text   = '{{Template}} [[en:Article]] {{Another}}';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('{{Template}}', $result);
         $this->assertStringContainsString('{{Another}}', $result);
@@ -203,8 +200,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithNewlines()
     {
-        $text = "Content\n[[en:Article]]\nMore content";
-        $result = remove_lang_links($text);
+        $text   = "Content\n[[en:Article]]\nMore content";
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString("Content\n", $result);
         $this->assertStringContainsString("More content", $result);
@@ -213,8 +210,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithMixedContent()
     {
-        $text = '[[Article]] text [[en:Lang]] {{Template}} [[Category:Cat]] [[de:Sprache]]';
-        $result = remove_lang_links($text);
+        $text   = '[[Article]] text [[en:Lang]] {{Template}} [[Category:Cat]] [[de:Sprache]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('[[Article]]', $result);
         $this->assertStringContainsString('{{Template}}', $result);
@@ -225,8 +222,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithUnderscoresAndSpaces()
     {
-        $text = '[[en:Article_with_underscores]] [[de:Article with spaces]]';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article_with_underscores]] [[de:Article with spaces]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article_with_underscores]]', $result);
         $this->assertStringNotContainsString('[[de:Article with spaces]]', $result);
@@ -234,8 +231,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksWithSectionLinks()
     {
-        $text = '[[en:Article#Section]] content';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article#Section]] content';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article#Section]]', $result);
         $this->assertStringContainsString('content', $result);
@@ -243,8 +240,8 @@ class FixLanguageLinksFixtureTest extends TestCase
 
     public function testRemoveLangLinksPreservesFileLinks()
     {
-        $text = '[[File:Image.jpg]] [[en:Article]] [[Category:Test]]';
-        $result = remove_lang_links($text);
+        $text   = '[[File:Image.jpg]] [[en:Article]] [[Category:Test]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('[[File:Image.jpg]]', $result);
         $this->assertStringContainsString('[[Category:Test]]', $result);
@@ -254,8 +251,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksWithHyphenatedCodes()
     {
         // Test that hyphenated language codes work correctly
-        $text = '[[be-tarask:Артыкул]] [[zh-min-nan:Bûn-chiuⁿ]] [[roa-rup:Articlu]]';
-        $result = remove_lang_links($text);
+        $text   = '[[be-tarask:Артыкул]] [[zh-min-nan:Bûn-chiuⁿ]] [[roa-rup:Articlu]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[be-tarask:', $result);
         $this->assertStringNotContainsString('[[zh-min-nan:', $result);
@@ -267,21 +264,21 @@ class FixLanguageLinksFixtureTest extends TestCase
         // Short codes (1-2 chars) that look like language codes but shouldn't match
         // Actually, 'xy' and 'zz' match the pattern (2+ lowercase letters)
         // so they WILL be removed as they're valid lang codes
-        $text = '[[X:Article]] [[12:Number]] [[EN:Uppercase]] [[e:Single]]';
-        $result = remove_lang_links($text);
+        $text   = '[[X:Article]] [[12:Number]] [[EN:Uppercase]] [[e:Single]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
-        // These should remain (don't match the pattern)
-        $this->assertStringContainsString('[[X:Article]]', $result);      // Uppercase
-        $this->assertStringContainsString('[[12:Number]]', $result);      // Starts with number
-        $this->assertStringContainsString('[[EN:Uppercase]]', $result);   // Uppercase
-        $this->assertStringContainsString('[[e:Single]]', $result);       // Single char
+                                                                        // These should remain (don't match the pattern)
+        $this->assertStringContainsString('[[X:Article]]', $result);    // Uppercase
+        $this->assertStringContainsString('[[12:Number]]', $result);    // Starts with number
+        $this->assertStringContainsString('[[EN:Uppercase]]', $result); // Uppercase
+        $this->assertStringContainsString('[[e:Single]]', $result);     // Single char
     }
 
     public function testRemoveLangLinksWithSimpleCode()
     {
         // Test the 'simple' language code specifically
-        $text = '[[simple:Basic English article]] content';
-        $result = remove_lang_links($text);
+        $text   = '[[simple:Basic English article]] content';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[simple:', $result);
         $this->assertStringContainsString('content', $result);
@@ -290,8 +287,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksWithPipeDisplayText()
     {
         // Language links can have pipe characters for display text
-        $text = '[[en:Article|Display Text]] content';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article|Display Text]] content';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article|Display Text]]', $result);
         $this->assertStringContainsString('content', $result);
@@ -300,8 +297,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksConsecutiveWithoutSpace()
     {
         // Multiple language links right next to each other
-        $text = 'content[[en:Article]][[de:Artikel]][[fr:Article]]text';
-        $result = remove_lang_links($text);
+        $text   = 'content[[en:Article]][[de:Artikel]][[fr:Article]]text';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article]]', $result);
         $this->assertStringNotContainsString('[[de:Artikel]]', $result);
@@ -313,8 +310,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksWithColonInArticleName()
     {
         // Article names can contain colons (e.g., namespaces)
-        $text = '[[en:User:Example]] [[de:Wikipedia:Featured article]]';
-        $result = remove_lang_links($text);
+        $text   = '[[en:User:Example]] [[de:Wikipedia:Featured article]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:User:Example]]', $result);
         $this->assertStringNotContainsString('[[de:Wikipedia:Featured article]]', $result);
@@ -323,25 +320,25 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testIsValidLangCodeWithTwoCharacterCode()
     {
         // Boundary case: exactly 2 characters (minimum)
-        $this->assertTrue(is_valid_lang_code('en'));
-        $this->assertTrue(is_valid_lang_code('de'));
-        $this->assertTrue(is_valid_lang_code('fr'));
-        $this->assertTrue(is_valid_lang_code('ja'));
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('en'));
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('de'));
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('fr'));
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('ja'));
     }
 
     public function testIsValidLangCodeWithVeryLongHyphenatedCode()
     {
         // Very long hyphenated codes should still work
-        $this->assertTrue(is_valid_lang_code('zh-min-nan'));
-        $this->assertTrue(is_valid_lang_code('be-tarask'));
-        $this->assertTrue(is_valid_lang_code('roa-rup'));
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('zh-min-nan'));
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('be-tarask'));
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('roa-rup'));
     }
 
     public function testRemoveLangLinksPreservesWhitespace()
     {
         // Whitespace around removed links should be preserved
-        $text = "Line 1\n[[en:Article]]\nLine 2";
-        $result = remove_lang_links($text);
+        $text   = "Line 1\n[[en:Article]]\nLine 2";
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString("Line 1\n", $result);
         $this->assertStringContainsString("\nLine 2", $result);
@@ -351,8 +348,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksAtVeryStartOfText()
     {
         // Language link as the first thing in the text
-        $text = '[[en:Article]] followed by content';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article]] followed by content';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article]]', $result);
         $this->assertStringContainsString('followed by content', $result);
@@ -361,8 +358,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksAtVeryEndOfText()
     {
         // Language link as the last thing in the text
-        $text = 'content before [[en:Article]]';
-        $result = remove_lang_links($text);
+        $text   = 'content before [[en:Article]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article]]', $result);
         $this->assertStringContainsString('content before', $result);
@@ -371,8 +368,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksOnlyLanguageLinks()
     {
         // Text contains only language links, nothing else
-        $text = '[[en:Article]][[de:Artikel]][[fr:Article]]';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article]][[de:Artikel]][[fr:Article]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertEquals('', $result);
     }
@@ -380,34 +377,34 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testIsValidLangCodeWithSingleCharacter()
     {
         // Single character should be invalid (minimum is 2)
-        $this->assertFalse(is_valid_lang_code('e'));
-        $this->assertFalse(is_valid_lang_code('x'));
-        $this->assertFalse(is_valid_lang_code('a'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('e'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('x'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('a'));
     }
 
     public function testIsValidLangCodeWithNumbersInCode()
     {
         // Language codes cannot contain numbers
-        $this->assertFalse(is_valid_lang_code('en1'));
-        $this->assertFalse(is_valid_lang_code('2de'));
-        $this->assertFalse(is_valid_lang_code('e3n'));
-        $this->assertFalse(is_valid_lang_code('en-123'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en1'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('2de'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('e3n'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en-123'));
     }
 
     public function testIsValidLangCodeWithMultipleHyphens()
     {
         // Multiple hyphens should work if properly formatted
-        $this->assertTrue(is_valid_lang_code('zh-min-nan'));
-        $this->assertFalse(is_valid_lang_code('en--de')); // Double hyphen
-        $this->assertFalse(is_valid_lang_code('en-')); // Trailing hyphen
-        $this->assertFalse(is_valid_lang_code('-en')); // Leading hyphen
+        $this->assertTrue(FixLanguageLinksFixture::is_valid_lang_code('zh-min-nan'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en--de')); // Double hyphen
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en-'));    // Trailing hyphen
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('-en'));    // Leading hyphen
     }
 
     public function testRemoveLangLinksDoesNotMatchUppercase()
     {
         // Uppercase language codes should not match (they're invalid)
-        $text = '[[EN:Article]] [[De:Artikel]] [[FR:Article]]';
-        $result = remove_lang_links($text);
+        $text   = '[[EN:Article]] [[De:Artikel]] [[FR:Article]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         // All should remain because they don't match the lowercase pattern
         $this->assertStringContainsString('[[EN:Article]]', $result);
@@ -418,8 +415,8 @@ class FixLanguageLinksFixtureTest extends TestCase
     public function testRemoveLangLinksWithUnicodeInArticleName()
     {
         // Article names with various Unicode characters
-        $text = '[[ja:日本語の記事]] [[ar:مقالة عربية]] [[ru:Русская статья]] [[zh:中文文章]]';
-        $result = remove_lang_links($text);
+        $text   = '[[ja:日本語の記事]] [[ar:مقالة عربية]] [[ru:Русская статья]] [[zh:中文文章]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[ja:日本語の記事]]', $result);
         $this->assertStringNotContainsString('[[ar:مقالة عربية]]', $result);
@@ -444,7 +441,7 @@ More text [[Category:Test Category]] and [[de:Deutscher Artikel]].
 
 [[zh-min-nan:Bûn-chiuⁿ]]
 TEXT;
-        $result = remove_lang_links($text);
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         // Should preserve all non-language-link content
         $this->assertStringContainsString('[[internal link]]', $result);
@@ -462,8 +459,8 @@ TEXT;
     public function testRemoveLangLinksWithTrailingSpaces()
     {
         // Language links with various whitespace
-        $text = "Before  [[en:Article]]  After";
-        $result = remove_lang_links($text);
+        $text   = "Before  [[en:Article]]  After";
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article]]', $result);
         $this->assertStringContainsString('Before', $result);
@@ -473,11 +470,11 @@ TEXT;
     public function testIsValidLangCodeWithSpecialCharacters()
     {
         // Language codes can only contain lowercase letters and hyphens
-        $this->assertFalse(is_valid_lang_code('en_us'));
-        $this->assertFalse(is_valid_lang_code('en.us'));
-        $this->assertFalse(is_valid_lang_code('en us'));
-        $this->assertFalse(is_valid_lang_code('en@us'));
-        $this->assertFalse(is_valid_lang_code('en:us'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en_us'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en.us'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en us'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en@us'));
+        $this->assertFalse(FixLanguageLinksFixture::is_valid_lang_code('en:us'));
     }
 
     public function testRemoveLangLinksRegressionAllKnownCodes()
@@ -485,12 +482,12 @@ TEXT;
         // Regression test: ensure all known Wikipedia language codes are properly removed
         $problematicCodes = [
             'be-tarask', 'bat-smg', 'cbk-zam', 'fiu-vro', 'map-bms',
-            'nds-nl', 'roa-rup', 'roa-tara', 'zh-classical', 'zh-min-nan', 'zh-yue'
+            'nds-nl', 'roa-rup', 'roa-tara', 'zh-classical', 'zh-min-nan', 'zh-yue',
         ];
 
         foreach ($problematicCodes as $code) {
-            $text = "Content [[{$code}:Article]] more text";
-            $result = remove_lang_links($text);
+            $text   = "Content [[{$code}:Article]] more text";
+            $result = FixLanguageLinksFixture::remove_lang_links($text);
 
             $this->assertStringNotContainsString("[[{$code}:", $result,
                 "Failed to remove language code: {$code}");
@@ -502,8 +499,8 @@ TEXT;
     public function testRemoveLangLinksDoesNotRemoveImageLinks()
     {
         // Ensure we don't accidentally remove Image: or File: links
-        $text = '[[Image:Test.jpg]] [[File:Another.png]] [[en:Article]]';
-        $result = remove_lang_links($text);
+        $text   = '[[Image:Test.jpg]] [[File:Another.png]] [[en:Article]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringContainsString('[[Image:Test.jpg]]', $result);
         $this->assertStringContainsString('[[File:Another.png]]', $result);
@@ -513,8 +510,8 @@ TEXT;
     public function testRemoveLangLinksWithParenthesesAndBrackets()
     {
         // Article names can have complex punctuation
-        $text = '[[en:Article (disambiguation)]] [[de:Begriff [Erklärung]]]';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article (disambiguation)]] [[de:Begriff [Erklärung]]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article (disambiguation)]]', $result);
         // Note: [Erklärung] inside might cause issues with regex, but should still work
@@ -524,8 +521,8 @@ TEXT;
     public function testRemoveLangLinksWithQueryParameters()
     {
         // Article names with query-like parameters
-        $text = '[[en:Article?action=edit]] [[de:Artikel&param=value]]';
-        $result = remove_lang_links($text);
+        $text   = '[[en:Article?action=edit]] [[de:Artikel&param=value]]';
+        $result = FixLanguageLinksFixture::remove_lang_links($text);
 
         $this->assertStringNotContainsString('[[en:Article?action=edit]]', $result);
         $this->assertStringNotContainsString('[[de:Artikel&param=value]]', $result);

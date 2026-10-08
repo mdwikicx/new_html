@@ -86,7 +86,7 @@ class HtmlUtils
 
             if (preg_match("/mw:LocalizedAttrs/is", $options)) {
 
-                $attrs = get_attrs($options);
+                $attrs = self::get_attrs($options);
 
                 $href = $attrs['href'] ?? '';
 
@@ -148,7 +148,7 @@ class HtmlUtils
 
             if (preg_match("/data-parsoid/is", $options)) {
 
-                $attrs = get_attrs($options);
+                $attrs = self::get_attrs($options);
 
                 foreach ($attrs_to_del as $attr) {
                     if (isset($attrs[$attr])) {

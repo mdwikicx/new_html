@@ -9,23 +9,26 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\Structure;
 
-use function MDWiki\NewHtml\Domain\Parser\get_categories;
+use MDWiki\NewHtml\Domain\Parser\CategoryParser;
 
-/**
- * Remove all category tags from wikitext
- *
- * @param string $text The wikitext to process
- * @return string The wikitext with categories removed
- */
-function remove_categories(string $text): string
+class FixCategoriesFixture
 {
+    /**
+     * Remove all category tags from wikitext
+     *
+     * @param string $text The wikitext to process
+     * @return string The wikitext with categories removed
+     */
+    public static function removeCategories(string $text): string
+    {
 
-    $categories = get_categories($text);
+        $categories = CategoryParser::get_categories($text);
 
-    foreach ($categories as $name => $cat) {
-        // echo "delete category: " . $name . "<br>";
-        $text = str_replace($cat, '', $text);
+        foreach ($categories as $name => $cat) {
+            // echo "delete category: " . $name . "<br>";
+            $text = str_replace($cat, '', $text);
+        }
+
+        return $text;
     }
-
-    return $text;
 }

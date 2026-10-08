@@ -9,6 +9,7 @@
  */
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;
+
 /*
 
 https://en.wikipedia.org/wiki/Special:AbuseFilter/894
@@ -20,7 +21,7 @@ https://en.wikipedia.org/wiki/Special:AbuseFilter/891
 
 */
 
-use function MDWiki\NewHtml\Domain\Parser\get_regex_citations;
+use MDWiki\NewHtml\Domain\Parser\CitationsParser;
 
 /**
  * Check if the citation contains self-published information and filter it out.
@@ -69,45 +70,48 @@ const SELFPUB_PATTERN = "/(publisher|work)\s*[=,:]\s*(Author\s*House|CreateSpace
  */
 const SELFPUB_URL_PATTERN = "/(authorhouse\.com|createspace\.\w{2,3}|grosvenorhousepublishing\.com|iuniverse\.com|lulu\.com|mellenpress\.com|trafford\.com|xlibris\.com)/i";
 
-function check_one_cite(string $cite): bool
+class RefWorkerFixture
 {
+    public static function check_one_cite(string $cite): bool
+    {
 
-    // echo $cite . "<br";
-    //---
-    $cite_d = $cite;
-    $cite_d = preg_replace(DOI_PATTERN, '', $cite_d);
-    $cite_d = preg_replace(OPEN_ACCESS_JOURNALS_PATTERN, '', $cite_d);
-    $cite_d = preg_replace(SELFPUB_PATTERN, '', $cite_d);
-    $cite_d = preg_replace(SELFPUB_URL_PATTERN, '', $cite_d);
-    //---
-    if ($cite != $cite_d) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Removes bad references from the provided text based on citation tags.
- *
- * @param string $text The text containing references to check and potentially remove
- * @return string The text with bad references removed
- */
-function remove_bad_refs(string $text): string
-{
-
-    $citations = get_regex_citations($text);
-
-    foreach ($citations as $citation) {
-        $citation_tag = $citation["tag"];
+        // echo $cite . "<br";
         //---
-        $is_bad_citation = check_one_cite($citation_tag);
+        $cite_d = $cite;
+        $cite_d = preg_replace(DOI_PATTERN, '', $cite_d);
+        $cite_d = preg_replace(OPEN_ACCESS_JOURNALS_PATTERN, '', $cite_d);
+        $cite_d = preg_replace(SELFPUB_PATTERN, '', $cite_d);
+        $cite_d = preg_replace(SELFPUB_URL_PATTERN, '', $cite_d);
         //---
-        if ($is_bad_citation) {
-            // echo htmlentities($citation_tag) . "<br>";
-            $text = str_replace($citation_tag, "", $text);
+        if ($cite != $cite_d) {
+            return true;
         }
+
+        return false;
     }
 
-    return $text;
+    /**
+     * Removes bad references from the provided text based on citation tags.
+     *
+     * @param string $text The text containing references to check and potentially remove
+     * @return string The text with bad references removed
+     */
+    public static function remove_bad_refs(string $text): string
+    {
+
+        $citations = CitationsParser::get_regex_citations($text);
+
+        foreach ($citations as $citation) {
+            $citation_tag = $citation["tag"];
+            //---
+            $is_bad_citation = self::check_one_cite($citation_tag);
+            //---
+            if ($is_bad_citation) {
+                // echo htmlentities($citation_tag) . "<br>";
+                $text = str_replace($citation_tag, "", $text);
+            }
+        }
+
+        return $text;
+    }
 }

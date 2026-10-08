@@ -331,47 +331,50 @@ const LANG_CODES = [
     "zu",
 ];
 
-/**
- * Remove language links from wikitext
- *
- * @param string $text The wikitext to process
- * @return string The wikitext with language links removed
- */
-function remove_lang_links_old(string $text): string
+class FixLanguageLinksFixture
 {
+    /**
+     * Remove language links from wikitext
+     *
+     * @param string $text The wikitext to process
+     * @return string The wikitext with language links removed
+     */
+    public static function remove_lang_links_old(string $text): string
+    {
 
-    // make patern like (ar|en|de)
-    $langs = implode('|', LANG_CODES);
+        // make patern like (ar|en|de)
+        $langs = implode('|', LANG_CODES);
 
-    preg_match_all("/\[\[($langs):[^\]]+\]\]/", $text, $matches);
+        preg_match_all("/\[\[($langs):[^\]]+\]\]/", $text, $matches);
 
-    foreach ($matches[0] as $link) {
-        $text = str_replace($link, '', $text);
+        foreach ($matches[0] as $link) {
+            $text = str_replace($link, '', $text);
+        }
+
+        // echo "<pre>";
+        // echo htmlentities(var_export($matches, true));
+        // echo "</pre><br>";
+
+        return $text;
     }
 
-    // echo "<pre>";
-    // echo htmlentities(var_export($matches, true));
-    // echo "</pre><br>";
+    public static function remove_lang_links(string $text): string
+    {
+        // preg_quote احتياطًا لأي رمز يحوي أحرفًا خاصة
+        $langs = implode('|', array_map(fn($c): string => preg_quote($c, '/'), LANG_CODES));
 
-    return $text;
-}
+        return preg_replace("/\[\[($langs):[^\]]+\]\]/", '', $text) ?? $text;
+    }
 
-function remove_lang_links(string $text): string
-{
-    // preg_quote احتياطًا لأي رمز يحوي أحرفًا خاصة
-    $langs = implode('|', array_map(fn($c): string => preg_quote($c, '/'), LANG_CODES));
-
-    return preg_replace("/\[\[($langs):[^\]]+\]\]/", '', $text) ?? $text;
-}
-
-/**
- * Check if a given code matches Wikipedia language code pattern
- *
- * @param string $code The code to validate
- * @return bool True if the code matches the language code pattern
- */
-function is_valid_lang_code(string $code): bool
-{
-    // Pattern: 2+ lowercase letters, optionally followed by hyphen-letter groups
-    return (bool) preg_match('/^[a-z]{2,}(?:-[a-z]+)*$/', $code);
+    /**
+     * Check if a given code matches Wikipedia language code pattern
+     *
+     * @param string $code The code to validate
+     * @return bool True if the code matches the language code pattern
+     */
+    public static function is_valid_lang_code(string $code): bool
+    {
+        // Pattern: 2+ lowercase letters, optionally followed by hyphen-letter groups
+        return (bool) preg_match('/^[a-z]{2,}(?:-[a-z]+)*$/', $code);
+    }
 }

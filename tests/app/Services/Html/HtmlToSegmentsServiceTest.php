@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Services\Html;
 
 use PHPUnit\Framework\TestCase;

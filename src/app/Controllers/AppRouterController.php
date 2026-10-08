@@ -3,6 +3,7 @@
 
 namespace MDWiki\NewHtml\Controllers;
 
+use function MDWiki\NewHtml\Controllers\main\start;
 use MDWiki\NewHtml\Cors;
 
 class AppRouterController
@@ -32,7 +33,7 @@ class AppRouterController
         header('Access-Control-Max-Age: 86400');
     }
 
-    public function handleContentType(array $request): void
+    private function handleContentType(array $request): void
     {
         $printetxt    = $request['printetxt'] ?? $request['print'] ?? '';
         $content_type = $this->getContentType($printetxt);
@@ -59,7 +60,7 @@ class AppRouterController
             $this->fail(400, 'title is empty');
         }
 
-        $this->respond($this->start($request, $title));
+        $this->respond(start($request, $title));
     }
 
     // ------------------------------------------------------------

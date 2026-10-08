@@ -11,9 +11,9 @@
 
 namespace MDWiki\NewHtml\Handlers;
 
-use function MDWiki\NewHtml\Domain\Fixes\References\expand_text_refs;
-use function MDWiki\NewHtml\Domain\Parser\get_lead_section;
 use MDWiki\NewHtml\Controllers\JsonDataController;
+use MDWiki\NewHtml\Domain\Fixes\References\ExpandRefsFixture;
+use MDWiki\NewHtml\Domain\Parser\LeadSectionParser;
 use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
@@ -28,7 +28,7 @@ class WikitextHandler
  * @param bool $just_lead Whether to process only the lead section
  * @return array{source: string, revid: string|int, error: string}
  */
-    public static function get_wikitext(string $title, string $file, bool $just_lead = false): array
+    public static function getWikitext(string $title, string $file, bool $just_lead = false): array
     {
 
         $service = new MdwikiApiService();
@@ -65,11 +65,11 @@ class WikitextHandler
         Logger::debug("source is not empty\n");
 
         if ($just_lead) {
-            Logger::debug("get_lead_section: \n");
+            Logger::debug("LeadSectionParser::get_lead_section: \n");
             $full_text = $source;
-            $lead      = get_lead_section($full_text);
+            $lead      = LeadSectionParser::get_lead_section($full_text);
             if (! empty($lead)) {
-                $source = expand_text_refs($lead, $full_text);
+                $source = ExpandRefsFixture::expand_text_refs($lead, $full_text);
             }
         }
         $service = new WikitextFixerService();

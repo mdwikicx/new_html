@@ -15,7 +15,7 @@
 
 require_once __DIR__ . "/bootstrap.php";
 
-use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
+use MDWiki\NewHtml\Infrastructure\Utils\HtmlUtils;
 
 $revid = $_GET['revid'] ?? '';
 $file  = $_GET['file'] ?? '';
@@ -50,7 +50,7 @@ $text = file_get_contents($file_path) ?: '';
 
 if (! empty($text)) {
     if ($file == "seg.html" || $file == "html.html") {
-        $text = remove_data_parsoid($text);
+        $text = HtmlUtils::remove_data_parsoid($text);
     }
 }
 

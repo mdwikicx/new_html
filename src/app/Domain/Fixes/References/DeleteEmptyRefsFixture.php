@@ -11,37 +11,39 @@
 
 namespace MDWiki\NewHtml\Domain\Fixes\References;
 
-use function MDWiki\NewHtml\Domain\Parser\get_full_refs;
-use function MDWiki\NewHtml\Domain\Parser\get_short_citations;
+use MDWiki\NewHtml\Domain\Parser\CitationsParser;
 
-/**
- * Delete empty short refs or expand them with full ref definitions
- *
- * @param string $first The text containing short refs
- * @return string The text with empty refs removed and expandable refs replaced
- */
-function del_empty_refs(string $first): string
+class DeleteEmptyRefsFixture
 {
+    /**
+     * Delete empty short refs or expand them with full ref definitions
+     *
+     * @param string $first The text containing short refs
+     * @return string The text with empty refs removed and expandable refs replaced
+     */
+    public static function del_empty_refs(string $first): string
+    {
 
-    $refs = get_full_refs($first);
-    // echo  "refs:" . count($refs) . "<br>";
+        $refs = CitationsParser::get_full_refs($first);
+        // echo  "refs:" . count($refs) . "<br>";
 
-    $short_refs = get_short_citations($first);
-    // echo  "short_refs:" . count($short_refs) . "<br>";
+        $short_refs = CitationsParser::get_short_citations($first);
+        // echo  "short_refs:" . count($short_refs) . "<br>";
 
-    foreach ($short_refs as $cite) {
-        $name = $cite["name"];
-        $refe = $cite["tag"];
+        foreach ($short_refs as $cite) {
+            $name = $cite["name"];
+            $refe = $cite["tag"];
 
-        $rr = $refs[$name] ?? false;
-        if ($rr) {
-            // if $rr already in $first : continue
-            if (strpos($first, $rr) === false) {
-                $first = str_replace($refe, $rr, $first);
+            $rr = $refs[$name] ?? false;
+            if ($rr) {
+                // if $rr already in $first : continue
+                if (strpos($first, $rr) === false) {
+                    $first = str_replace($refe, $rr, $first);
+                }
+            } else {
+                $first = str_replace($refe, "", $first);
             }
-        } else {
-            $first = str_replace($refe, "", $first);
         }
+        return $first;
     }
-    return $first;
 }

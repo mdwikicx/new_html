@@ -14,62 +14,65 @@ namespace MDWiki\NewHtml\Services\Html;
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use MDWiki\NewHtml\Services\Api\SegmentApiService;
 
-/**
- * Convert HTML to segments using the API
- *
- * @param string $text The HTML text to convert
- * @return string The segmented result or empty string on failure
- */
-function do_html_to_seg(string $text): string
+class HtmlToSegmentsService
 {
-    $service = new SegmentApiService();
-    $fixed   = $service->HtmltoSegments($text);
+    /**
+     * Convert HTML to segments using the API
+     *
+     * @param string $text The HTML text to convert
+     * @return string The segmented result or empty string on failure
+     */
+    private static function do_html_to_seg(string $text): string
+    {
+        $service = new SegmentApiService();
+        $fixed   = $service->HtmltoSegments($text);
 
-    // $error  = $fixed['error'] ?? '';
-    $result = $fixed['result'] ?? "";
+        // $error  = $fixed['error'] ?? '';
+        $result = $fixed['result'] ?? "";
 
-    // $result = str_replace("https://medwiki.toolforge.org/md/", "https://en.wikipedia.org/w/", $result);
-    // $result = str_replace("https://medwiki.toolforge.org/w/", "https://en.wikipedia.org/w/", $result);
-    // $result = str_replace("https://medwiki.toolforge.org/wiki/", "https://en.wikipedia.org/wiki/", $result);
+        // $result = str_replace("https://medwiki.toolforge.org/md/", "https://en.wikipedia.org/w/", $result);
+        // $result = str_replace("https://medwiki.toolforge.org/w/", "https://en.wikipedia.org/w/", $result);
+        // $result = str_replace("https://medwiki.toolforge.org/wiki/", "https://en.wikipedia.org/wiki/", $result);
 
-    if ($result == 'Content for translate is not given or is empty') {
-        return "";
-    }
-
-    if ($result == 'Sectionwrap: Attempting to remove a non-section tag: undefined') {
-        return "";
-    }
-
-    return $result;
-}
-
-/**
- * Convert HTML to segments with caching support
- *
- * @param string $text The HTML text to convert
- * @param string $file_seg The path to the cached segments file
- * @return array{0: string, 1: bool} Array containing [segments, from_cache]
- */
-function html_to_seg(string $text, string $file_seg): array
-{
-
-    $from_cache = false;
-
-    if (! isset($_GET['new'])) {
-        $seg_text = FileUtils::read_file($file_seg);
-
-        if (! empty($seg_text)) {
-            return [$seg_text, true];
+        if ($result == 'Content for translate is not given or is empty') {
+            return "";
         }
+
+        if ($result == 'Sectionwrap: Attempting to remove a non-section tag: undefined') {
+            return "";
+        }
+
+        return $result;
     }
 
-    $result = do_html_to_seg($text);
+    /**
+     * Convert HTML to segments with caching support
+     *
+     * @param string $text The HTML text to convert
+     * @param string $file_seg The path to the cached segments file
+     * @return array{0: string, 1: bool} Array containing [segments, from_cache]
+     */
+    public static function html_to_seg(string $text, string $file_seg): array
+    {
 
-    if (empty($result)) {
-        return ["", $from_cache];
+        $from_cache = false;
+
+        if (! isset($_GET['new'])) {
+            $seg_text = FileUtils::read_file($file_seg);
+
+            if (! empty($seg_text)) {
+                return [$seg_text, true];
+            }
+        }
+
+        $result = self::do_html_to_seg($text);
+
+        if (empty($result)) {
+            return ["", $from_cache];
+        }
+
+        FileUtils::file_write($file_seg, $result);
+
+        return [$result, $from_cache];
     }
-
-    FileUtils::file_write($file_seg, $result);
-
-    return [$result, $from_cache];
 }

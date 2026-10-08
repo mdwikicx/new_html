@@ -1,17 +1,15 @@
 <?php
-
 namespace Tests\Domain\Parser;
 
+use MDWiki\NewHtml\Domain\Parser\CategoryParser;
 use PHPUnit\Framework\TestCase;
-
-use function MDWiki\NewHtml\Domain\Parser\get_categories;
 
 class CategoryParserTest extends TestCase
 {
     public function testGetCategoriesWithSingleCategory()
     {
-        $text = "Some text [[Category:Medicine]] more text";
-        $result = get_categories($text);
+        $text   = "Some text [[Category:Medicine]] more text";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -21,8 +19,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithMultipleCategories()
     {
-        $text = "Text [[Category:Health]] and [[Category:Science]] content";
-        $result = get_categories($text);
+        $text   = "Text [[Category:Health]] and [[Category:Science]] content";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -32,8 +30,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithSortKey()
     {
-        $text = "[[Category:People|Smith, John]]";
-        $result = get_categories($text);
+        $text   = "[[Category:People|Smith, John]]";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -43,8 +41,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithWhitespace()
     {
-        $text = "[[  Category  :  Medicine  ]]";
-        $result = get_categories($text);
+        $text   = "[[  Category  :  Medicine  ]]";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -53,8 +51,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithCaseInsensitive()
     {
-        $text = "[[category:Health]] [[CATEGORY:Science]]";
-        $result = get_categories($text);
+        $text   = "[[category:Health]] [[CATEGORY:Science]]";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -62,8 +60,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithNoCategories()
     {
-        $text = "Some text without any categories";
-        $result = get_categories($text);
+        $text   = "Some text without any categories";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertEmpty($result);
@@ -71,7 +69,7 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithEmptyText()
     {
-        $result = get_categories("");
+        $result = CategoryParser::get_categories("");
 
         $this->assertIsArray($result);
         $this->assertEmpty($result);
@@ -79,8 +77,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithMultiplePipes()
     {
-        $text = "[[Category:Articles|Sort|Extra]]";
-        $result = get_categories($text);
+        $text   = "[[Category:Articles|Sort|Extra]]";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('Articles', $result);
@@ -88,8 +86,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithSpecialCharacters()
     {
-        $text = "[[Category:Articles with special-characters_and.spaces]]";
-        $result = get_categories($text);
+        $text   = "[[Category:Articles with special-characters_and.spaces]]";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
@@ -97,8 +95,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithDuplicateCategories()
     {
-        $text = "[[Category:Test]] some text [[Category:Test]]";
-        $result = get_categories($text);
+        $text   = "[[Category:Test]] some text [[Category:Test]]";
+        $result = CategoryParser::get_categories($text);
 
         // Should only keep the last occurrence
         $this->assertIsArray($result);
@@ -108,8 +106,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesWithMultilineText()
     {
-        $text = "Line 1\n[[Category:First]]\nLine 2\n[[Category:Second]]\nLine 3";
-        $result = get_categories($text);
+        $text   = "Line 1\n[[Category:First]]\nLine 2\n[[Category:Second]]\nLine 3";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -119,8 +117,8 @@ class CategoryParserTest extends TestCase
 
     public function testGetCategoriesTrimsSpacesInCategoryName()
     {
-        $text = "[[Category:  Spaced Name  ]]";
-        $result = get_categories($text);
+        $text   = "[[Category:  Spaced Name  ]]";
+        $result = CategoryParser::get_categories($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('Spaced Name', $result);

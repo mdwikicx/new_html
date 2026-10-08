@@ -11,9 +11,8 @@
 
 namespace MDWiki\NewHtml\Services\Html;
 
-use function MDWiki\NewHtml\Infrastructure\Utils\del_div_error;
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
-use function MDWiki\NewHtml\Infrastructure\Utils\fix_link_red;
+use MDWiki\NewHtml\Infrastructure\Utils\HtmlUtils;
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 
 class WikitextToHtmlService
@@ -51,8 +50,8 @@ class WikitextToHtmlService
             return "";
         }
 
-        $result = del_div_error($result);
-        $result = fix_link_red($result);
+        $result = HtmlUtils::del_div_error($result);
+        $result = HtmlUtils::fix_link_red($result);
 
         return $result;
     }

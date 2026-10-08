@@ -1,5 +1,6 @@
 <?php
-namespace MDWiki\NewHtmlMain\Main;
+
+namespace MDWiki\NewHtml\Controllers\main;
 
 /**
  * Main API endpoint for processing MDWiki page content
@@ -18,12 +19,12 @@ namespace MDWiki\NewHtmlMain\Main;
  * @package MDWiki\NewHtml
  */
 
-use function MDWiki\NewHtml\Infrastructure\Utils\remove_data_parsoid;
-use function MDWiki\NewHtml\Services\Html\html_to_seg;
 use MDWiki\NewHtml\Controllers\JsonDataController;
 use MDWiki\NewHtml\Handlers\WikitextHandler;
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
+use MDWiki\NewHtml\Infrastructure\Utils\HtmlUtils;
 use MDWiki\NewHtml\Logger;
+use MDWiki\NewHtml\Services\Html\HtmlToSegmentsService;
 use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
@@ -34,7 +35,7 @@ use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
  * @param string $file
  * @return array{0: string, 1: string} Array containing [wikitext, revision_id]
  */
-function get_from_json(string $title, string $all, string $file): array
+function FromJson(string $title, string $all, string $file): array
 {
     $revid = JsonDataController::get_title_revision($title, $file);
 
@@ -60,14 +61,14 @@ function get_from_json(string $title, string $all, string $file): array
  * @param string $all Whether to use 'all' data file (non-empty) or main file (empty)
  * @return array{0: string, 1: string, 2: bool} Array containing [wikitext, revision_id, from_cache]
  */
-function get_wikitext_revision(string $title, string $all): array
+function getWikitextRevision(string $title, string $all): array
 {
     $from_cache = false;
 
     if (empty($all)) {
-        $json1 = WikitextHandler::get_wikitext($title, JSON_FILE, true);
+        $json1 = WikitextHandler::getWikitext($title, JSON_FILE, true);
     } else {
-        $json1 = WikitextHandler::get_wikitext($title, JSON_FILE_ALL);
+        $json1 = WikitextHandler::getWikitext($title, JSON_FILE_ALL);
     }
 
     $wikitext = $json1["source"];
@@ -76,7 +77,7 @@ function get_wikitext_revision(string $title, string $all): array
     $file = (! empty($all)) ? JSON_FILE_ALL : JSON_FILE;
 
     if (empty($wikitext) || empty($revision)) {
-        [$wikitext, $revision] = get_from_json($title, $all, $file);
+        [$wikitext, $revision] = FromJson($title, $all, $file);
         $from_cache            = ! empty($wikitext);
     }
 
@@ -92,13 +93,13 @@ function get_wikitext_revision(string $title, string $all): array
  * @param bool $new Whether to force regeneration (true) or use cache (false)
  * @return array{0: string, 1: bool} Array containing [html_content, from_cache]
  */
-function get_HTML_text(string $wikitext, string $file_html, string $title, bool $new): array
+function getHtmlText(string $wikitext, string $file_html, string $title, bool $new): array
 {
     $from_cache = false;
 
     try {
         [$HTML_text, $from_cache] = (new WikitextToHtmlService())->convertWithCache($wikitext, $file_html, $title, $new);
-        $HTML_text                = remove_data_parsoid($HTML_text);
+        $HTML_text                = HtmlUtils::remove_data_parsoid($HTML_text);
     } catch (\Exception $e) {
         Logger::error("HTML generation failed for title: $title. Error: " . $e->getMessage());
         Logger::debug("HTML generation failed for title: $title. Error: " . $e->getMessage());
@@ -119,16 +120,16 @@ function get_HTML_text(string $wikitext, string $file_html, string $title, bool 
  * @param string $file_seg The path to the cached segments file
  * @return array{0: string, 1: bool} Array containing [segments, from_cache]
  */
-function get_SEG_text(string $HTML_text, string $file_seg): array
+function getSegText(string $HTML_text, string $file_seg): array
 {
 
     $from_cache = false;
     $SEG_text   = "";
 
     if (! empty($HTML_text)) {
-        [$SEG_text, $from_cache] = html_to_seg($HTML_text, $file_seg);
+        [$SEG_text, $from_cache] = HtmlToSegmentsService::html_to_seg($HTML_text, $file_seg);
 
-        $SEG_text = remove_data_parsoid($SEG_text);
+        $SEG_text = HtmlUtils::remove_data_parsoid($SEG_text);
     }
 
     if ($SEG_text == 'Content for translate is not given or is empty') {
@@ -166,7 +167,7 @@ function start(array $request, string $title): void
         'seg'      => false,
     ];
 
-    [$wikitext, $revision, $text_cache] = get_wikitext_revision($title, $all);
+    [$wikitext, $revision, $text_cache] = getWikitextRevision($title, $all);
 
     if ($printetxt == "wikitext") {
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
@@ -208,7 +209,7 @@ function start(array $request, string $title): void
 
     FileUtils::file_write($file_title, $title);
 
-    [$HTML_text, $html_cache] = get_HTML_text($wikitext, $file_html, $title, $new);
+    [$HTML_text, $html_cache] = getHtmlText($wikitext, $file_html, $title, $new);
 
     if ($printetxt == "html") {
         // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
@@ -235,7 +236,7 @@ function start(array $request, string $title): void
         $jsonData['error_type'] = "HTML_text:() is empty";
         $jsonData['error']      = "No content found";
     } else {
-        [$SEG_text, $seg_cache] = get_SEG_text($HTML_text, $file_seg);
+        [$SEG_text, $seg_cache] = getSegText($HTML_text, $file_seg);
 
         if ($printetxt == "seg") {
             // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
