@@ -28,8 +28,11 @@ class WikitextHandler
  * @param bool $just_lead Whether to process only the lead section
  * @return array{source: string, revid: string|int, error: string}
  */
-    public static function getWikitext(string $title, string $file, bool $just_lead = false): array
-    {
+    public static function getWikitext(
+        string $title,
+        string $file,
+        bool $just_lead = false
+    ): array {
 
         $service = new MdwikiApiService();
         $title   = str_replace(" ", "_", $title);

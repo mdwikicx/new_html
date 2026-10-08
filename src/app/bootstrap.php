@@ -9,24 +9,14 @@
  * @package MDWiki\NewHtml
  */
 
-require_once __DIR__ . "/autoload.php";
-
-require_once __DIR__ . "/Handlers/WikitextHandler.php";
-require_once __DIR__ . "/Domain/Fixes/Media/FixImagesFixture.php";
-
-require_once __DIR__ . "/Domain/Fixes/References/DeleteEmptyRefsFixture.php";
-require_once __DIR__ . "/Domain/Fixes/References/ExpandRefsFixture.php";
-require_once __DIR__ . "/Domain/Fixes/References/RefWorkerFixture.php";
-require_once __DIR__ . "/Domain/Fixes/Structure/FixCategoriesFixture.php";
-require_once __DIR__ . "/Domain/Fixes/Structure/FixLanguageLinksFixture.php";
-require_once __DIR__ . "/Domain/Fixes/Templates/DeleteTemplatesFixture.php";
-require_once __DIR__ . "/Domain/Fixes/Templates/FixTemplatesFixture.php";
-
-require_once __DIR__ . "/Domain/Parser/CategoryParser.php";
-require_once __DIR__ . "/Domain/Parser/CitationsParser.php";
-require_once __DIR__ . "/Domain/Parser/LeadSectionParser.php";
-
-require_once __DIR__ . "/Infrastructure/Utils/FileUtils.php";
-require_once __DIR__ . "/Infrastructure/Utils/HtmlUtils.php";
-
-require_once __DIR__ . "/Services/Html/HtmlToSegmentsService.php";
+spl_autoload_register(static function (string $class): void {
+    $prefix = 'MDWiki\\NewHtml\\';
+    if (strncmp($class, $prefix, strlen($prefix)) !== 0) {
+        return;
+    }
+    $relative = substr($class, strlen($prefix));
+    $file     = __DIR__ . '/' . str_replace('\\', '/', $relative) . '.php';
+    if (is_file($file)) {
+        require $file;
+    }
+});
