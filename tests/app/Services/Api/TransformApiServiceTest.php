@@ -1,6 +1,7 @@
 <?php
 namespace Tests\APIServices;
 
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -17,8 +18,15 @@ class TransformApiServiceTest extends TestCase
         // Create a mock HTTP client
         $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
         $this->service        = new TransformApiService($this->mockHttpClient);
+        Logger::setSink(function (string $level, string $message): void {
+            error_log($message);
+        });
     }
 
+    protected function tearDown(): void
+    {
+        Logger::reset();
+    }
     /**
      * Helper method to setup mock response
      *

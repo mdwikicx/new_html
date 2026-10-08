@@ -1,11 +1,11 @@
 <?php
-
 namespace Tests\APIServices;
 
-use PHPUnit\Framework\TestCase;
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
 class MdwikiApiServiceTest extends TestCase
@@ -17,9 +17,17 @@ class MdwikiApiServiceTest extends TestCase
     {
         // Create a mock HTTP client
         $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
-        $this->service = new MdwikiApiService($this->mockHttpClient);
+        $this->service        = new MdwikiApiService($this->mockHttpClient);
+
+        Logger::setSink(function (string $level, string $message): void {
+            error_log($message);
+        });
     }
 
+    protected function tearDown(): void
+    {
+        Logger::reset();
+    }
     /**
      * Helper to create a successful API response
      *
@@ -36,12 +44,12 @@ class MdwikiApiServiceTest extends TestCase
                         'revisions' => [
                             [
                                 'content' => $content,
-                                'revid' => $revid
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'revid'   => $revid,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -57,16 +65,16 @@ class MdwikiApiServiceTest extends TestCase
         return json_encode([
             'source' => $source,
             'latest' => [
-                'id' => $revid
-            ]
+                'id' => $revid,
+            ],
         ]);
     }
 
     public function testGetWikitextFromMdwikiApiWithValidTitle()
     {
-        $title = 'Aspirin';
+        $title    = 'Aspirin';
         $wikitext = '==Aspirin==\nAspirin is a medication.';
-        $revid = '12345';
+        $revid    = '12345';
 
         $this->mockHttpClient
             ->method('request')
@@ -111,9 +119,9 @@ class MdwikiApiServiceTest extends TestCase
 
     public function testGetWikitextFromMdwikiRestApiWithValidTitle()
     {
-        $title = 'Diabetes';
+        $title    = 'Diabetes';
         $wikitext = '==Diabetes==\nDiabetes is a disease.';
-        $revid = '67890';
+        $revid    = '67890';
 
         $this->mockHttpClient
             ->method('request')
@@ -157,7 +165,7 @@ class MdwikiApiServiceTest extends TestCase
 
     public function testGetWikitextFromMdwikiApiWithSpecialCharacters()
     {
-        $title = 'Crohn\'s disease';
+        $title    = 'Crohn\'s disease';
         $wikitext = '==Crohn\'s disease==\nContent';
 
         $this->mockHttpClient
@@ -173,7 +181,7 @@ class MdwikiApiServiceTest extends TestCase
 
     public function testGetWikitextFromMdwikiRestApiWithSpaces()
     {
-        $title = 'Heart attack';
+        $title    = 'Heart attack';
         $wikitext = '==Heart attack==\nContent';
 
         $this->mockHttpClient
@@ -196,7 +204,7 @@ class MdwikiApiServiceTest extends TestCase
     public function testGetWikitextFromMdwikiRestApiWithSlash()
     {
         // Test title with slash (should be encoded)
-        $title = 'Test/Subpage';
+        $title    = 'Test/Subpage';
         $wikitext = '==Test/Subpage==\nContent';
 
         $this->mockHttpClient
@@ -218,7 +226,7 @@ class MdwikiApiServiceTest extends TestCase
 
     public function testGetWikitextFromMdwikiApiReturnsValidWikitext()
     {
-        $title = 'Paracetamol';
+        $title    = 'Paracetamol';
         $wikitext = str_repeat('Wiki content here. ', 50); // Long wikitext
 
         $this->mockHttpClient
@@ -234,7 +242,7 @@ class MdwikiApiServiceTest extends TestCase
 
     public function testGetWikitextFromMdwikiRestApiReturnsValidWikitext()
     {
-        $title = 'Cancer';
+        $title    = 'Cancer';
         $wikitext = str_repeat('Cancer content here. ', 50); // Long wikitext
 
         $this->mockHttpClient
@@ -288,7 +296,7 @@ class MdwikiApiServiceTest extends TestCase
         $result = $this->service->getWikitextFromMdwikiApi($title);
 
         // Revision ID should be numeric
-        $this->assertMatchesRegularExpression('/^\d+$/', (string)$result["revid"]);
+        $this->assertMatchesRegularExpression('/^\d+$/', (string) $result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiRestApiRevisionIdFormat()
@@ -303,14 +311,14 @@ class MdwikiApiServiceTest extends TestCase
         $result = $this->service->getWikitextFromMdwikiRestApi($title);
 
         // Revision ID should be numeric
-        $this->assertMatchesRegularExpression('/^\d+$/', (string)$result["revid"]);
+        $this->assertMatchesRegularExpression('/^\d+$/', (string) $result["revid"]);
     }
 
     public function testGetWikitextFromMdwikiApiConsistency()
     {
-        $title = 'Diabetes';
+        $title    = 'Diabetes';
         $wikitext = 'Consistent content';
-        $revid = '11111';
+        $revid    = '11111';
 
         $this->mockHttpClient
             ->method('request')
@@ -320,9 +328,9 @@ class MdwikiApiServiceTest extends TestCase
         $result2 = $this->service->getWikitextFromMdwikiApi($title);
 
         $wikitext1 = $result1['source'];
-        $revid1 = $result1['revid'];
+        $revid1    = $result1['revid'];
         $wikitext2 = $result2['source'];
-        $revid2 = $result2['revid'];
+        $revid2    = $result2['revid'];
 
         // Same title should return same revision
         $this->assertEquals($revid1, $revid2);
@@ -332,7 +340,7 @@ class MdwikiApiServiceTest extends TestCase
     public function testGetWikitextFromMdwikiRestApiWithUnderscore()
     {
         // REST API should handle underscores
-        $title = 'Heart_disease';
+        $title    = 'Heart_disease';
         $wikitext = '==Heart disease==\nContent';
 
         $this->mockHttpClient
@@ -353,9 +361,9 @@ class MdwikiApiServiceTest extends TestCase
 
     public function testBothApisReturnSimilarData()
     {
-        $title = 'Tuberculosis';
+        $title    = 'Tuberculosis';
         $wikitext = '==Tuberculosis==\nSame content from both APIs.';
-        $revid = '99999';
+        $revid    = '99999';
 
         $this->mockHttpClient
             ->method('request')
