@@ -61,8 +61,12 @@ class AppRouterController
         }
 
         $result = start($request, $title);
-
-        $this->respond($result);
+        if (is_array($result)) {
+            $this->respond($result);
+        } else {
+            print($result);
+        }
+        exit(0);
     }
 
     // ------------------------------------------------------------
