@@ -31,12 +31,6 @@ use MDWiki\NewHtml\Settings;
 
 final class PagePipelineService
 {
-    /** Messages returned by the segmentation service that mean "no content". */
-    private const SEG_EMPTY_MESSAGES = [
-        'Content for translate is not given or is empty',
-        'Sectionwrap: Attempting to remove a non-section tag: undefined',
-    ];
-
     private WikitextFixerService $fixer;
     private WikitextToHtmlService $htmlService;
     private string $jsonFile;
@@ -201,7 +195,7 @@ final class PagePipelineService
     {
         [$html, $fromCache] = $this->htmlService->convertWithCache($wikitext, $fileHtml, $req->title, $req->new);
 
-        $html = HtmlUtils::remove_data_parsoid($html);
+        $html = HtmlUtils::removeParsoidData($html);
 
         if ($html === $wikitext) {
             $html = '';
@@ -219,14 +213,8 @@ final class PagePipelineService
      */
     private function buildSegments(string $html, string $fileSeg): array
     {
-        [$seg, $fromCache] = HtmlToSegmentsService::html_to_seg($html, $fileSeg);
-
-        $seg = HtmlUtils::remove_data_parsoid($seg);
-
-        if (in_array($seg, self::SEG_EMPTY_MESSAGES, true)) {
-            $seg = '';
-        }
-
+        [$seg, $fromCache] = (new HtmlToSegmentsService())->load($html, $fileSeg);
+        $seg               = HtmlUtils::removeParsoidData($seg);
         return [$seg, $fromCache];
     }
 

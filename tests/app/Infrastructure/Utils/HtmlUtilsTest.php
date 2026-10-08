@@ -9,7 +9,7 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorRemovesSingleErrorDiv()
     {
         $html   = '<div>Normal content</div><div class="error">Error message</div><div>More content</div>';
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertStringNotContainsString('Error message', $result);
         $this->assertStringContainsString('Normal content', $result);
@@ -19,7 +19,7 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorRemovesMultipleErrorDivs()
     {
         $html   = '<div class="error">Error 1</div><div>Content</div><div class="error">Error 2</div>';
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertStringNotContainsString('Error 1', $result);
         $this->assertStringNotContainsString('Error 2', $result);
@@ -29,7 +29,7 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorPreservesNonErrorDivs()
     {
         $html   = '<div class="info">Info</div><div class="error">Error</div><div class="warning">Warning</div>';
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertStringContainsString('Info', $result);
         $this->assertStringContainsString('Warning', $result);
@@ -39,14 +39,14 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorWithNoErrorDivs()
     {
         $html   = '<div>Content 1</div><div>Content 2</div>';
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertEquals($html, $result);
     }
 
     public function testDelDivErrorWithEmptyHtml()
     {
-        $result = HtmlUtils::del_div_error('');
+        $result = HtmlUtils::delDivError('');
 
         $this->assertEquals('', $result);
     }
@@ -54,7 +54,7 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorWithSingleQuotes()
     {
         $html   = "<div class='error'>Error message</div>";
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertStringNotContainsString('Error message', $result);
     }
@@ -62,7 +62,7 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorWithNestedContent()
     {
         $html   = '<div class="error">Error with <span>nested</span> content</div>';
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertStringNotContainsString('Error with', $result);
         $this->assertStringNotContainsString('nested', $result);
@@ -71,7 +71,7 @@ class HtmlUtilsTest extends TestCase
     public function testGetAttrsWithSimpleAttribute()
     {
         $text   = 'href="http://example.com"';
-        $result = HtmlUtils::get_attrs($text);
+        $result = HtmlUtils::getAttrs($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('href', $result);
@@ -81,7 +81,7 @@ class HtmlUtilsTest extends TestCase
     public function testGetAttrsWithMultipleAttributes()
     {
         $text   = 'href="http://example.com" class="link" id="main"';
-        $result = HtmlUtils::get_attrs($text);
+        $result = HtmlUtils::getAttrs($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('href', $result);
@@ -92,7 +92,7 @@ class HtmlUtilsTest extends TestCase
     public function testGetAttrsWithSingleQuotes()
     {
         $text   = "href='http://example.com' class='link'";
-        $result = HtmlUtils::get_attrs($text);
+        $result = HtmlUtils::getAttrs($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('href', $result);
@@ -102,14 +102,14 @@ class HtmlUtilsTest extends TestCase
     public function testGetAttrsWithNoQuotes()
     {
         $text   = 'href=http://example.com class=link';
-        $result = HtmlUtils::get_attrs($text);
+        $result = HtmlUtils::getAttrs($text);
 
         $this->assertIsArray($result);
     }
 
     public function testGetAttrsWithEmptyText()
     {
-        $result = HtmlUtils::get_attrs('');
+        $result = HtmlUtils::getAttrs('');
 
         $this->assertIsArray($result);
     }
@@ -117,7 +117,7 @@ class HtmlUtilsTest extends TestCase
     public function testGetAttrsCaseInsensitive()
     {
         $text   = 'HREF="http://example.com" CLASS="link"';
-        $result = HtmlUtils::get_attrs($text);
+        $result = HtmlUtils::getAttrs($text);
 
         $this->assertIsArray($result);
         // Attributes should be lowercase
@@ -128,7 +128,7 @@ class HtmlUtilsTest extends TestCase
     public function testFixLinkRedRemovesEditLinks()
     {
         $html   = '<a rel="mw:ExtLink" href="//en.wikipedia.org/w/index.php?title=Video:Test&veaction=edit" class="external text"><span class="mw-ui-button mw-ui-progressive">Edit with VisualEditor</span></a>';
-        $result = HtmlUtils::fix_link_red($html);
+        $result = HtmlUtils::fixRedlinks($html);
 
         $this->assertStringNotContainsString('Edit with VisualEditor', $result);
     }
@@ -136,7 +136,7 @@ class HtmlUtilsTest extends TestCase
     public function testFixLinkRedFixesRedLinks()
     {
         $html   = '<a typeof="mw:LocalizedAttrs" href="/wiki/Test?action=edit&redlink=1">Red Link</a>';
-        $result = HtmlUtils::fix_link_red($html);
+        $result = HtmlUtils::fixRedlinks($html);
 
         $this->assertStringNotContainsString('action=edit', $result);
         $this->assertStringNotContainsString('redlink=1', $result);
@@ -145,7 +145,7 @@ class HtmlUtilsTest extends TestCase
     public function testFixLinkRedPreservesNormalLinks()
     {
         $html   = '<a href="/wiki/Article">Normal Link</a>';
-        $result = HtmlUtils::fix_link_red($html);
+        $result = HtmlUtils::fixRedlinks($html);
 
         $this->assertStringContainsString('Normal Link', $result);
         $this->assertStringContainsString('href="/wiki/Article"', $result);
@@ -154,14 +154,14 @@ class HtmlUtilsTest extends TestCase
     public function testFixLinkRedWithNoLinks()
     {
         $html   = '<p>Content without links</p>';
-        $result = HtmlUtils::fix_link_red($html);
+        $result = HtmlUtils::fixRedlinks($html);
 
         $this->assertEquals($html, $result);
     }
 
     public function testFixLinkRedWithEmptyHtml()
     {
-        $result = HtmlUtils::fix_link_red('');
+        $result = HtmlUtils::fixRedlinks('');
 
         $this->assertEquals('', $result);
     }
@@ -169,7 +169,7 @@ class HtmlUtilsTest extends TestCase
     public function testRemoveDataParsoidRemovesAttribute()
     {
         $html   = '<a href="/wiki/Article" data-parsoid="{}">Link</a>';
-        $result = HtmlUtils::remove_data_parsoid($html);
+        $result = HtmlUtils::removeParsoidData($html);
 
         $this->assertStringNotContainsString('data-parsoid', $result);
         $this->assertStringContainsString('href="/wiki/Article"', $result);
@@ -179,7 +179,7 @@ class HtmlUtilsTest extends TestCase
     public function testRemoveDataParsoidWithComplexData()
     {
         $html   = '<a href="/wiki/Article" data-parsoid=\'{"dsr":[0,10,2,2]}\'>Link</a>';
-        $result = HtmlUtils::remove_data_parsoid($html);
+        $result = HtmlUtils::removeParsoidData($html);
 
         $this->assertStringNotContainsString('data-parsoid', $result);
         $this->assertStringContainsString('Link', $result);
@@ -188,7 +188,7 @@ class HtmlUtilsTest extends TestCase
     public function testRemoveDataParsoidWithMultipleLinks()
     {
         $html   = '<a data-parsoid="{}">Link1</a> <a data-parsoid="{}">Link2</a>';
-        $result = HtmlUtils::remove_data_parsoid($html);
+        $result = HtmlUtils::removeParsoidData($html);
 
         $this->assertStringNotContainsString('data-parsoid', $result);
         $this->assertStringContainsString('Link1', $result);
@@ -197,7 +197,7 @@ class HtmlUtilsTest extends TestCase
 
     public function testRemoveDataParsoidWithEmptyHtml()
     {
-        $result = HtmlUtils::remove_data_parsoid('');
+        $result = HtmlUtils::removeParsoidData('');
 
         $this->assertEquals('', $result);
     }
@@ -205,7 +205,7 @@ class HtmlUtilsTest extends TestCase
     public function testRemoveDataParsoidPreservesOtherAttributes()
     {
         $html   = '<a href="/wiki/Article" class="link" data-parsoid="{}">Link</a>';
-        $result = HtmlUtils::remove_data_parsoid($html);
+        $result = HtmlUtils::removeParsoidData($html);
 
         $this->assertStringContainsString('href="/wiki/Article"', $result);
         $this->assertStringContainsString('class="link"', $result);
@@ -215,7 +215,7 @@ class HtmlUtilsTest extends TestCase
     public function testRemoveDataParsoidWithNoDataParsoid()
     {
         $html   = '<a href="/wiki/Article">Normal Link</a>';
-        $result = HtmlUtils::remove_data_parsoid($html);
+        $result = HtmlUtils::removeParsoidData($html);
 
         $this->assertEquals($html, $result);
     }
@@ -223,7 +223,7 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorWithMultilineDiv()
     {
         $html   = "<div class=\"error\">\nMultiline\nerror\nmessage\n</div>";
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertStringNotContainsString('Multiline', $result);
         $this->assertStringNotContainsString('error', $result);
@@ -232,7 +232,7 @@ class HtmlUtilsTest extends TestCase
     public function testGetAttrsWithComplexUrl()
     {
         $text   = 'href="http://example.com/path?param=value&other=test"';
-        $result = HtmlUtils::get_attrs($text);
+        $result = HtmlUtils::getAttrs($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('href', $result);
@@ -241,7 +241,7 @@ class HtmlUtilsTest extends TestCase
     public function testFixLinkRedWithMultipleRedLinks()
     {
         $html   = '<a typeof="mw:LocalizedAttrs" href="/test?action=edit&redlink=1">Red1</a> <a typeof="mw:LocalizedAttrs" href="/test2?action=edit&redlink=1">Red2</a>';
-        $result = HtmlUtils::fix_link_red($html);
+        $result = HtmlUtils::fixRedlinks($html);
 
         $this->assertStringNotContainsString('action=edit', $result);
         $this->assertStringNotContainsString('redlink=1', $result);
@@ -250,7 +250,7 @@ class HtmlUtilsTest extends TestCase
     public function testRemoveDataParsoidWithRegexPatterns()
     {
         $html   = '<div data-parsoid="{}">Content</div><span data-parsoid=\'{"test":"value"}\'>More</span>';
-        $result = HtmlUtils::remove_data_parsoid($html);
+        $result = HtmlUtils::removeParsoidData($html);
 
         $this->assertStringNotContainsString('data-parsoid', $result);
         $this->assertStringContainsString('Content', $result);
@@ -260,7 +260,7 @@ class HtmlUtilsTest extends TestCase
     public function testDelDivErrorWithAdjacentDivs()
     {
         $html   = '<div>Before</div><div class="error">Error</div><div>After</div>';
-        $result = HtmlUtils::del_div_error($html);
+        $result = HtmlUtils::delDivError($html);
 
         $this->assertStringContainsString('<div>Before</div>', $result);
         $this->assertStringContainsString('<div>After</div>', $result);
@@ -270,7 +270,7 @@ class HtmlUtilsTest extends TestCase
     public function testGetAttrsWithDataAttributes()
     {
         $text   = 'href="test" data-value="123" data-name="test"';
-        $result = HtmlUtils::get_attrs($text);
+        $result = HtmlUtils::getAttrs($text);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('href', $result);
@@ -279,7 +279,7 @@ class HtmlUtilsTest extends TestCase
     public function testFixLinkRedRemovesTypeofAttribute()
     {
         $html   = '<a typeof="mw:LocalizedAttrs" href="/wiki/Test?action=edit">Link</a>';
-        $result = HtmlUtils::fix_link_red($html);
+        $result = HtmlUtils::fixRedlinks($html);
 
         // Should remove typeof and other attributes when processing red links
         $this->assertIsString($result);
@@ -288,7 +288,7 @@ class HtmlUtilsTest extends TestCase
     public function testRemoveDataParsoidWithNestedLinks()
     {
         $html   = '<div><a data-parsoid="{}">Link 1</a> and <a data-parsoid="{}">Link 2</a></div>';
-        $result = HtmlUtils::remove_data_parsoid($html);
+        $result = HtmlUtils::removeParsoidData($html);
 
         $this->assertStringNotContainsString('data-parsoid', $result);
         $this->assertStringContainsString('Link 1', $result);
