@@ -3,7 +3,18 @@ namespace MDWiki\NewHtml\Services\Pipeline;
 
 /**
  * Orchestrates: fetch wikitext -> fix -> HTML -> segments.
- * Replaces Controllers/main.php. Never echoes, exits or sets headers.
+ * This file handles HTTP requests to generate page content from MDWiki.
+ * It orchestrates the full pipeline: fetching wikitext, applying fixes,
+ * converting to HTML, and segmenting the content.
+ *
+ * Request parameters:
+ * - title: Page title to process
+ * - new: Force regeneration of cached content
+ * - all: Use 'all' data file for Video pages
+ * - printetxt: Output format (wikitext|html|seg)
+ * - print: Alias for printetxt
+ *
+ * @package MDWiki\NewHtml
  */
 
 use MDWiki\NewHtml\Controllers\JsonDataController;
@@ -56,11 +67,14 @@ final class PagePipelineService
         [$wikitext, $revision, $cache['wikitext']] = $this->fetchWikitext($req);
 
         if ($req->format === PageRequest::FORMAT_WIKITEXT) {
+            // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
+            $text = $this->fixer->fix($wikitext, $req->title);
             return PageResult::text(
                 PageRequest::FORMAT_WIKITEXT,
-                $this->fixer->fix($wikitext, $req->title)
+                $text
             );
         }
+        // $revision = (isset($getRequest['revision'])) ? $getRequest['revision'] : $revision;
 
         if (empty($wikitext) || empty($revision)) {
             return $this->notFound($req->title, $revision);
@@ -77,10 +91,14 @@ final class PagePipelineService
         } catch (\Throwable $e) {
             Logger::error("HTML generation failed for title: {$req->title}. Error: " . $e->getMessage());
             Logger::debug("HTML generation failed for title: {$req->title}. Error: " . $e->getMessage());
-            return PageResult::json(500, ['error' => 'Failed to generate HTML content']);
+            return PageResult::json(
+                500,
+                ['error' => 'Failed to generate HTML content']
+            );
         }
 
         if ($req->format === PageRequest::FORMAT_HTML) {
+            // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
             return PageResult::text(PageRequest::FORMAT_HTML, $html);
         }
 
@@ -96,6 +114,7 @@ final class PagePipelineService
         [$seg, $cache['seg']] = $this->buildSegments($html, $dir . '/seg.html');
 
         if ($req->format === PageRequest::FORMAT_SEG) {
+            // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
             return PageResult::text(PageRequest::FORMAT_SEG, $seg);
         }
 
@@ -103,6 +122,7 @@ final class PagePipelineService
         $data['segmentedContent'] = $seg;
 
         if (empty($seg)) {
+            // send request error code using http_response_code
             $data['error_type'] = 'SEG_text:() is empty';
             $data['error']      = 'No content found';
             return PageResult::json(404, $data);
@@ -116,7 +136,12 @@ final class PagePipelineService
     // ------------------------------------------------------------
 
     /**
-     * @return array{0: string, 1: string, 2: bool} [wikitext, revision, from_cache]
+     * Get wikitext and revision ID for a page, either from API or cache
+     *
+     * @param PageRequest $req
+     *  string $req->all The page title to fetch
+     *  string $req->all Whether to use 'all' data file (non-empty) or main file (empty)
+     * @return array{0: string, 1: string, 2: bool} [wikitext, revision, fromCache]
      */
     private function fetchWikitext(PageRequest $req): array
     {
@@ -140,6 +165,10 @@ final class PagePipelineService
     }
 
     /**
+     * Get wikitext and revision ID from cached JSON data
+     *
+     * @param string $title The page title
+     * @param string $file
      * @return array{0: string, 1: string} [wikitext, revision]
      */
     private function fromLocalCache(string $title, string $all, string $file): array
@@ -160,7 +189,12 @@ final class PagePipelineService
     }
 
     /**
-     * @return array{0: string, 1: bool} [html, from_cache]
+     * Convert wikitext to HTML with caching support
+     *
+     * @param string $wikitext The wikitext to convert
+     * @param string $fileHtml The path to the cached HTML file
+     * @param PageRequest $req
+     * @return array{0: string, 1: bool} [html, fromCache]
      * @throws \Throwable when conversion fails
      */
     private function buildHtml(string $wikitext, string $fileHtml, PageRequest $req): array
@@ -177,7 +211,11 @@ final class PagePipelineService
     }
 
     /**
-     * @return array{0: string, 1: bool} [segments, from_cache]
+     * Convert HTML to segments with caching support
+     *
+     * @param string $html The HTML text to convert to segments
+     * @param string $fileSeg The path to the cached segments file
+     * @return array{0: string, 1: bool} [segments, fromCache]
      */
     private function buildSegments(string $html, string $fileSeg): array
     {
@@ -198,6 +236,8 @@ final class PagePipelineService
 
     /**
      * @param array<string, bool> $cache
+     * @param string $title
+     * @param string $revision
      * @return array<string, mixed>
      */
     private function baseData(string $title, string $revision, array $cache): array
@@ -224,4 +264,5 @@ final class PagePipelineService
             'error'            => 'No content found!',
         ]);
     }
+
 }

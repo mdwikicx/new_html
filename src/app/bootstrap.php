@@ -10,7 +10,6 @@
  */
 
 require_once __DIR__ . "/autoload.php";
-require_once __DIR__ . "/Controllers/main.php";
 
 require_once __DIR__ . "/Handlers/WikitextHandler.php";
 require_once __DIR__ . "/Domain/Fixes/Media/FixImagesFixture.php";
