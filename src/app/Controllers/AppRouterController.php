@@ -1,4 +1,5 @@
 <?PHP
+
 // src/app/Controllers/AppRouterController.php
 
 namespace MDWiki\NewHtml\Controllers;
@@ -18,40 +19,18 @@ namespace MDWiki\NewHtml\Controllers;
 use function MDWiki\NewHtml\Controllers\main\start;
 use MDWiki\NewHtml\Cors;
 
+/**
+ * HTTP layer only: CORS, validation, status codes, headers, output.
+ */
 class AppRouterController
 {
+    private const JSON_FLAGS = JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT;
 
     // ------------------------------------------------------------
     // Entry point
     // ------------------------------------------------------------
 
-    public function getContentType(string $printetxt): string
-    {
-        $content_types = [
-            "wikitext" => "text/plain",
-            "html"     => "text/html",
-            "seg"      => "text/html",
-        ];
-
-        return $content_types[$printetxt] ?? "application/json";
-    }
-    public function setCorsheaders(string $allowedDomain): void
-    {
-        // Set CORS headers for allowed origins only
-        header("Access-Control-Allow-Origin: https://$allowedDomain");
-        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-        header('Access-Control-Allow-Headers: Content-Type, Authorization');
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 86400');
-    }
-
-    private function handleContentType(array $request): void
-    {
-        $printetxt    = $request['printetxt'] ?? $request['print'] ?? '';
-        $content_type = $this->getContentType($printetxt);
-        header("Content-type: $content_type; charset=utf-8");
-    }
-
+    /** @param array<string, mixed> $request */
     public function handleRequest(array $request): void
     {
         $this->handleContentType($request);
@@ -62,33 +41,67 @@ class AppRouterController
             $this->fail(403, 'Access denied. Requests are only allowed from authorized domains.');
         }
 
-        $this->setCorsheaders($allowedDomain);
+        $this->setCorsHeaders($allowedDomain);
 
-        $title = $request['title'] ?? '';
-        // first litter in $title must be capital
-        $title = ucfirst($title);
+        $title = $this->normalizeTitle((string) ($request['title'] ?? ''));
 
-        if (empty($title)) {
+        if ($title === '') {
             $this->fail(400, 'title is empty');
         }
 
         $result = start($request, $title);
-        if (is_array($result)) {
-            $this->respond($result);
-        } else {
-            print($result);
-        }
-        exit(0);
+        $this->respond($result);
     }
 
+    // ------------------------------------------------------------
+    // Helpers
+    // ------------------------------------------------------------
+
+    public function getContentType(string $format): string
+    {
+        return match ($format) {
+            'wikitext' => 'text/plain',
+            'html'     => 'text/html',
+            'seg'      => 'text/html',
+            default    => 'application/json',
+        };
+    }
+
+    public function setCorsHeaders(string $allowedDomain): void
+    {
+        // Set CORS headers for allowed origins only
+        header("Access-Control-Allow-Origin: https://$allowedDomain");
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');
+    }
+
+    /** Uppercase the first character (UTF-8 safe). */
+    private function normalizeTitle(string $title): string
+    {
+        if ($title === '') {
+            return '';
+        }
+        return mb_strtoupper(mb_substr($title, 0, 1)) . mb_substr($title, 1);
+    }
+
+    private function handleContentType(array $request): void
+    {
+        $printetxt   = $request['printetxt'] ?? $request['print'] ?? '';
+        $contentType = $this->getContentType($printetxt);
+        header('Content-Type: ' . $contentType . '; charset=utf-8');
+    }
     // ------------------------------------------------------------
     // Response helpers
     // ------------------------------------------------------------
 
-    private function respond(array $data): void
+    private function respond(string | array $data): void
     {
         // Encode data as JSON with appropriate options
-        print(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        echo is_array($data)
+            ? json_encode($data, self::JSON_FLAGS)
+            : $data;
     }
 
     private function fail(int $statusCode, string $error): never
