@@ -45,27 +45,6 @@ class MdwikiApiService
     }
 
     /**
-     * Get raw API response from MDWiki API for a given page title
-     *
-     * @param string $title The title of the page to fetch
-     * @return array{error: string, httpCode: mixed, response: bool|string} The raw API response (JSON string) or error information
-     */
-    public function handleRawRequest(string $title): array
-    {
-        $params = [
-            "action"        => "query",
-            "format"        => "json",
-            "prop"          => "revisions",
-            "titles"        => $title,
-            "utf8"          => 1,
-            "formatversion" => "2",
-            "rvprop"        => "content|ids",
-        ];
-
-        $response = $this->httpClient->handleRawRequest($this->baseApiUrl, 'GET', $params);
-        return $response;
-    }
-    /**
      * Get wikitext content from MDWiki API
      *
      * @param string $title The title of the page to fetch

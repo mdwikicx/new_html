@@ -34,10 +34,8 @@ class HttpClientService implements HttpClientInterface
     }
 
     /**
-     * Handle a raw HTTP request using cURL
+     * Perform a raw cURL request.
      *
-     * @param string $endPoint
-     * @param string $method
      * @param array<string, mixed> $params
      * @return array{printableUrl: string, httpCode: int, response: bool|string, error: string, errno: int}
      */
@@ -49,63 +47,58 @@ class HttpClientService implements HttpClientInterface
         ?int $timeout = null,
         ?int $connectTimeout = null
     ): array {
-        $ch = curl_init();
+        $method = strtoupper($method);
+        $url    = $this->buildUrl($endPoint, $method, $params);
 
-        $printableUrl = $endPoint;
-
-        // POST with parameters should not have the parameters in the URL
-        // GET with parameters should have the parameters in the URL
-        if (! empty($params) && $method === 'GET') {
-            $queryString  = http_build_query($params);
-            $printableUrl = strpos($printableUrl, '?') === false
-                ? "$printableUrl?$queryString"
-                : "$printableUrl&$queryString";
-            $endPoint = $printableUrl;
+        $ch = curl_init($url);
+        if ($ch === false) {
+            return [
+                'printableUrl' => $url,
+                'httpCode'     => 0,
+                'response'     => false,
+                'error'        => 'curl_init failed',
+                'errno'        => -1,
+            ];
         }
 
-        curl_setopt($ch, CURLOPT_URL, $endPoint);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            // CURLOPT_COOKIEJAR => "cookie.txt",
+            CURLOPT_USERAGENT      => $this->userAgent,
+            CURLOPT_CONNECTTIMEOUT => $connectTimeout ?? $this->defaultConnectTimeout,
+            CURLOPT_TIMEOUT        => $timeout ?? $this->defaultTimeout,
+        ]);
 
         if ($method === 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
             if ($json) {
-                $jsonBody = json_encode($params);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($jsonBody),
-                ]);
+                $body = json_encode($params, JSON_THROW_ON_ERROR);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             } else {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
             }
         }
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $connectTimeout ?? 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout ?? 15);
-
-        $output   = curl_exec($ch);
-        $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $errno    = curl_errno($ch);
-        $error    = curl_error($ch);
-
-        return [
-            'printableUrl' => $printableUrl,
-            'httpCode'     => $httpCode,
+        $output = curl_exec($ch);
+        $result = [
+            'printableUrl' => $url,
+            'httpCode'     => (int) curl_getinfo($ch, CURLINFO_HTTP_CODE),
             'response'     => $output,
-            'error'        => $error,
-            'errno'        => $errno,
+            'error'        => curl_error($ch),
+            'errno'        => curl_errno($ch),
         ];
+
+        curl_close($ch);
+
+        return $result;
     }
+
     /**
-     * Handle URL requests with support for GET and POST methods
+     * Perform a request and return a normalized result.
      *
-     * @param string $endPoint The API endpoint URL
-     * @param string $method The HTTP method to use ('GET' or 'POST')
-     * @param array<string, mixed> $params Optional parameters to send with the request
-     * @param bool $json Whether to send the request as JSON
-     * @return array{output: string, error_code: string, error: string}
+     * @param array<string, mixed> $params
+     * @return array{output: string, error_code: string, error: string, errno: int}
      */
     public function request(
         string $endPoint,
@@ -115,53 +108,59 @@ class HttpClientService implements HttpClientInterface
         ?int $timeout = null,
         ?int $connectTimeout = null
     ): array {
-        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json, $timeout, $connectTimeout);
+        $raw = $this->handleRawRequest($endPoint, $method, $params, $json, $timeout, $connectTimeout);
 
-        $printableUrl = $rawResponse['printableUrl'];
-        $httpCode     = $rawResponse['httpCode'];
-        $output       = $rawResponse['response'];
-        $error        = $rawResponse['error'];
+        $url      = $raw['printableUrl'];
+        $httpCode = $raw['httpCode'];
+        $output   = $raw['response'];
 
-        Logger::debug($printableUrl);
+        Logger::debug($url);
 
         $result = [
-            "output"     => "",
-            "error_code" => "",
-            "error"      => "",
-            "errno"      => $rawResponse['errno'],
+            'output'     => '',
+            'error_code' => '',
+            'error'      => '',
+            'errno'      => $raw['errno'],
         ];
 
         if ($output === false) {
-            $result["error"]      = $error;
-            $result["error_code"] = "CURL_ERROR";
-            Logger::error("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
-            Logger::debug("endPoint: ($endPoint), cURL Error: " . $error);
+            Logger::error("HttpClientService: cURL error for $url - {$raw['error']}");
+            $result['error']      = $raw['error'];
+            $result['error_code'] = 'CURL_ERROR';
             return $result;
         }
-        $result["output"] = $output;
 
         if ($httpCode !== 200) {
-            Logger::error("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
-            $result["error"]      = "HTTP_ERROR";
-            $result["error_code"] = "$httpCode";
+            Logger::error("HttpClientService: HTTP $httpCode for URL: $url");
+            $result['error']      = 'HTTP_ERROR';
+            $result['error_code'] = (string) $httpCode;
 
             // Check for Cloudflare protection
-            $isCloudflareProtected = false;
-            if (is_string($output) && str_contains($output, 'Just a moment...')) {
-                $isCloudflareProtected = true;
-                Logger::error("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
-                Logger::debug("Cloudflare protection detected: 'Just a moment...' page returned");
-                $result["error"] = "CLOUDFLARE_PROTECTION";
-            }
-
-            Logger::debug("API returned HTTP $httpCode: $httpCode");
-            if (! $isCloudflareProtected) {
+            if ($this->isCloudflareChallenge($output)) {
+                Logger::error("HttpClientService: Cloudflare protection detected for URL: $url");
+                $result['error'] = 'CLOUDFLARE_PROTECTION';
+            } else {
                 Logger::debug(var_export($output, true));
             }
 
-            $result["output"] = '';
+            return $result;
         }
 
+        $result['output'] = $output;
         return $result;
+    }
+
+    /** @param array<string, mixed> $params */
+    private function buildUrl(string $endPoint, string $method, array $params): string
+    {
+        if ($method !== 'GET' || $params === []) {
+            return $endPoint;
+        }
+        return $endPoint . (str_contains($endPoint, '?') ? '&' : '?') . http_build_query($params);
+    }
+
+    private function isCloudflareChallenge(string $body): bool
+    {
+        return str_contains($body, 'Just a moment...');
     }
 }
