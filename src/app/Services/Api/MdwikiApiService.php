@@ -110,36 +110,46 @@ class MdwikiApiService
     }
 
     /**
+     * [NEW] Encode a title: spaces -> "_" then rawurlencode on the whole string.
+     * Used for both the API URL and the local file name.
+     */
+    public static function encodeTitle(string $title): string
+    {
+        return rawurlencode(str_replace(' ', '_', $title));
+    }
+
+    /**
      * Get wikitext content from MDWiki REST API
      *
      * @param string $title The title of the page to fetch
-     * @return array{source: string, revid: string|int, error: string}
+     * @return array{source: string, revid: string|int, error: string, failed: bool}
      */
     public function getWikitextFromMdwikiRestApi(string $title): array
     {
-        $titleEncoded = str_replace("/", "%2F", $title);
-        $titleEncoded = str_replace(" ", "_", $titleEncoded);
+        $titleEncoded = self::encodeTitle($title);
         $url          = "{$this->baseRestUrl}/page/{$titleEncoded}";
 
-        $responseArray = $this->httpClient->request($url, 'GET');
-        $response      = $responseArray['output'];
-        $error         = $responseArray['error'];
+        $result = $this->httpClient->request($url, 'GET', [], false, 3, 3);
+        $error  = $result['error'];
 
-        if (empty($response)) {
-            Logger::error("MdwikiApiService: Failed to fetch data from MDWiki REST API for title: $title");
-            Logger::debug("Failed to fetch data from MDWiki REST API for title: $title");
-            return ['source' => '', 'revid' => '', 'error' => $error];
+        if ($result['error_code'] === 'CURL_ERROR') {
+            $error = $result['errno'] === CURLE_OPERATION_TIMEDOUT
+                ? 'timeout'
+                : "connection failed ({$result['errno']}): {$result['error']}";
         }
 
-        $json = json_decode($response, true);
+        $json = $result['output'] !== '' ? json_decode($result['output'], true) : null;
 
-        $source = $json["source"] ?? '';
-        $revid  = $json["latest"]["id"] ?? '';
+        if (! is_array($json)) {
+            Logger::error("MdwikiApiService: Failed to fetch data from MDWiki REST API for title: $title ($error)");
+            return ['source' => '', 'revid' => '', 'error' => $error ?: 'invalid json', 'failed' => true];
+        }
 
         return [
-            "source" => $source,
-            "revid"  => $revid,
-            "error"  => $error,
+            'source' => $json['source'] ?? '',
+            'revid'  => $json['latest']['id'] ?? '',
+            'error'  => $error,
+            'failed' => false,
         ];
     }
 }

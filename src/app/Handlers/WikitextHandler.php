@@ -20,14 +20,14 @@ use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 class WikitextHandler
 {
-/**
- * Get wikitext for a page
- *
- * @param string $title The page title to fetch
- * @param string $file The file to save the title and revision to
- * @param bool $just_lead Whether to process only the lead section
- * @return array{source: string, revid: string|int, error: string}
- */
+    /**
+     * Get wikitext for a page
+     *
+     * @param string $title The page title to fetch
+     * @param string $file The file to save the title and revision to
+     * @param bool $just_lead Whether to process only the lead section
+     * @return array{source: string, revid: string|int, error: string}
+     */
     public static function getWikitext(
         string $title,
         string $file,
