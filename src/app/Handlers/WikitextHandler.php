@@ -15,7 +15,7 @@ use MDWiki\NewHtml\Controllers\JsonDataController;
 use MDWiki\NewHtml\Domain\Fixes\References\ExpandRefsFixture;
 use MDWiki\NewHtml\Domain\Parser\LeadSectionParser;
 use MDWiki\NewHtml\Logger;
-use MDWiki\NewHtml\Services\Api\MdwikiApiService;
+use MDWiki\NewHtml\Services\Api\MdwikiRestFallbackService;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
 
 class WikitextHandler
@@ -34,15 +34,15 @@ class WikitextHandler
         bool $just_lead = false
     ): array {
 
-        $service = new MdwikiApiService();
+        $service = new MdwikiRestFallbackService();
         $title   = str_replace(" ", "_", $title);
-        $json1   = $service->getWikitextFromMdwikiRestApi($title);
+        $json1   = $service->getWikitext($title);
 
         // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
         if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $json1["source"], $matches)) {
             $title = $matches[1];
             Logger::debug("Redirecting to: $title\n");
-            $json1 = $service->getWikitextFromMdwikiRestApi($title);
+            $json1 = $service->getWikitext($title);
         }
 
         $source = $json1["source"];
