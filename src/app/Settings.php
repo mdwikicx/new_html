@@ -19,6 +19,8 @@ final class Settings
     public string $userAgent;
     public string $appEnv;
     public string $RevisionsDirPath;
+    public string $jsonFile;
+    public string $jsonFileAll;
 
     private static ?self $instance = null;
 
@@ -30,6 +32,8 @@ final class Settings
 
         $this->appEnv           = $this->envVar('APP_ENV');
         $this->RevisionsDirPath = $this->envVar('REVISIONS_DIR');
+        $this->jsonFile         = $this->RevisionsDirPath . '/json_data.json';
+        $this->jsonFileAll      = $this->RevisionsDirPath . '/json_data_all.json';
 
         $this->init();
     }
@@ -159,9 +163,6 @@ final class Settings
                 : dirname(__DIR__) . '/revisions_new1';
         }
 
-        $json_file     = $this->RevisionsDirPath . '/json_data.json';
-        $json_file_all = $this->RevisionsDirPath . '/json_data_all.json';
-
         // Initialize revisions directory if needed
         if (! is_dir($this->RevisionsDirPath)) {
             mkdir($this->RevisionsDirPath, 0755, true);
@@ -169,12 +170,12 @@ final class Settings
 
         // Ensure JSON data files exist
 
-        if (! file_exists($json_file)) {
-            file_put_contents($json_file, '{}', LOCK_EX);
+        if (! file_exists($this->jsonFile)) {
+            file_put_contents($this->jsonFile, '{}', LOCK_EX);
         }
 
-        if (! file_exists($json_file_all)) {
-            file_put_contents($json_file_all, '{}', LOCK_EX);
+        if (! file_exists($this->jsonFileAll)) {
+            file_put_contents($this->jsonFileAll, '{}', LOCK_EX);
         }
 
     }

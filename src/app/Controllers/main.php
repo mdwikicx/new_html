@@ -66,8 +66,8 @@ function getWikitextRevision(string $title, string $all): array
     $from_cache = false;
 
     $settings = Settings::getInstance();
-    $json_data_all = $settings->RevisionsDirPath . '/json_data_all.json';
-    $json_data = $settings->RevisionsDirPath . '/json_data.json';
+    $json_data_all = $settings->jsonFileAll;
+    $json_data = $settings->jsonFile;
 
     if (empty($all)) {
         $json1 = WikitextHandler::getWikitext($title, $json_data, true);

@@ -16,6 +16,7 @@ use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Html\HtmlToSegmentsService;
 use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
 use MDWiki\NewHtml\Services\Wikitext\WikitextFixerService;
+use MDWiki\NewHtml\Settings;
 
 final class PagePipelineService
 {
@@ -38,8 +39,10 @@ final class PagePipelineService
     ) {
         $this->fixer       = $fixer ?? new WikitextFixerService();
         $this->htmlService = $htmlService ?? new WikitextToHtmlService();
-        $this->jsonFile    = $jsonFile ?? JSON_FILE;
-        $this->jsonFileAll = $jsonFileAll ?? JSON_FILE_ALL;
+
+        $settings          = Settings::getInstance();
+        $this->jsonFile    = $jsonFile ?? $settings->jsonFile;
+        $this->jsonFileAll = $jsonFileAll ?? $settings->jsonFileAll;
     }
 
     // ------------------------------------------------------------

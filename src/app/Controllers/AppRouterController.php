@@ -16,8 +16,11 @@ namespace MDWiki\NewHtml\Controllers;
  * Test at: http://localhost:305/new_html_1/revisions.html
  */
 
-use function MDWiki\NewHtml\Controllers\main\start;
 use MDWiki\NewHtml\Cors;
+use MDWiki\NewHtml\DTO\PageRequest;
+use MDWiki\NewHtml\DTO\PageResult;
+use MDWiki\NewHtml\Logger;
+use MDWiki\NewHtml\Services\Pipeline\PagePipelineService;
 
 /**
  * HTTP layer only: CORS, validation, status codes, headers, output.
@@ -26,6 +29,13 @@ class AppRouterController
 {
     private const JSON_FLAGS = JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT;
 
+    private PagePipelineService $pipeline;
+
+    public function __construct(?PagePipelineService $pipeline = null)
+    {
+        $this->pipeline = $pipeline ?? new PagePipelineService();
+    }
+
     // ------------------------------------------------------------
     // Entry point
     // ------------------------------------------------------------
@@ -33,8 +43,6 @@ class AppRouterController
     /** @param array<string, mixed> $request */
     public function handleRequest(array $request): void
     {
-        $this->handleContentType($request);
-
         $allowedDomain = Cors::is_allowed();
 
         if (! $allowedDomain) {
@@ -49,7 +57,13 @@ class AppRouterController
             $this->fail(400, 'title is empty');
         }
 
-        $result = start($request, $title);
+        try {
+            $result = $this->pipeline->process(PageRequest::fromArray($request, $title));
+        } catch (\Throwable $e) {
+            Logger::error("Unhandled error for title: $title. Error: " . $e->getMessage());
+            $this->fail(500, 'Internal server error');
+        }
+
         $this->respond($result);
     }
 
@@ -86,19 +100,17 @@ class AppRouterController
         return mb_strtoupper(mb_substr($title, 0, 1)) . mb_substr($title, 1);
     }
 
-    private function handleContentType(array $request): void
-    {
-        $printetxt   = $request['printetxt'] ?? $request['print'] ?? '';
-        $contentType = $this->getContentType($printetxt);
-        header('Content-Type: ' . $contentType . '; charset=utf-8');
-    }
     // ------------------------------------------------------------
     // Response helpers
     // ------------------------------------------------------------
 
-    private function respond(string | array $data): void
+    private function respond(PageResult $result): void
     {
+        http_response_code($result->status);
+        header('Content-Type: ' . $this->getContentType($result->format) . '; charset=utf-8');
+
         // Encode data as JSON with appropriate options
+        $data = $result->body;
         echo is_array($data)
             ? json_encode($data, self::JSON_FLAGS)
             : $data;
@@ -106,8 +118,7 @@ class AppRouterController
 
     private function fail(int $statusCode, string $error): never
     {
-        http_response_code($statusCode);
-        $this->respond(['error' => $error]);
+        $this->respond(PageResult::json($statusCode, ['error' => $error]));
         exit(1);
     }
 }

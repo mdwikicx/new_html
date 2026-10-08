@@ -22,8 +22,8 @@ class RevisionsApiController
     public function __construct()
     {
         $this->settings      = Settings::getInstance();
-        $this->json_data_all = $this->settings->RevisionsDirPath . '/json_data_all.json';
-        $this->json_data     = $this->settings->RevisionsDirPath . '/json_data.json';
+        $this->json_data_all = $this->settings->jsonFileAll;
+        $this->json_data     = $this->settings->jsonFile;
     }
 
     /**
