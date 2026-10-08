@@ -12,5 +12,4 @@ interface HttpClientInterface
 {
     public function handleRawRequest(string $endPoint, string $method = 'GET', array $params = [], bool $json = false, ?int $timeout = null, ?int $connectTimeout = null): array;
     public function request(string $endPoint, string $method = 'GET', array $params = [], bool $json = false, ?int $timeout = null, ?int $connectTimeout = null): array;
-    public function request_string(string $endPoint, string $method = 'GET', array $params = [], bool $json = false, ?int $timeout = null, ?int $connectTimeout = null): string;
 }

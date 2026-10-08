@@ -1,5 +1,6 @@
 <?php
 
+declare (strict_types = 1);
 /**
  * HTTP Client Service for making API requests
  *
@@ -15,23 +16,23 @@ use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 
 class HttpClientService implements HttpClientInterface
 {
-    public string $userAgent;
+    public const DEFAULT_USER_AGENT =
+        'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.mdwikicx@toolforge.org)';
+
     private static ?self $instance = null;
 
-    public function __construct()
-    {
-        $this->userAgent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.mdwikicx@toolforge.org)';
+    public function __construct(
+        public readonly string $userAgent = self::DEFAULT_USER_AGENT,
+        private readonly int $defaultTimeout = 15,
+        private readonly int $defaultConnectTimeout = 5,
+    ) {
     }
 
     public static function getInstance(): self
     {
-        // used: Settings::getInstance()
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+        return self::$instance ??= new self();
     }
+
     /**
      * Handle a raw HTTP request using cURL
      *
@@ -96,60 +97,6 @@ class HttpClientService implements HttpClientInterface
             'error'        => $error,
             'errno'        => $errno,
         ];
-    }
-    /**
-     * Handle URL requests with support for GET and POST methods
-     *
-     * @param string $endPoint The API endpoint URL
-     * @param string $method The HTTP method to use ('GET' or 'POST')
-     * @param array<string, mixed> $params Optional parameters to send with the request
-     * @param bool $json Whether to send the parameters as JSON
-     * @param int|null $timeout Optional timeout for the request in seconds
-     * @param int|null $connectTimeout Optional timeout for the connection in seconds
-     * @return string The response body, or empty string on failure
-     */
-    public function request_string(
-        string $endPoint,
-        string $method = 'GET',
-        array $params = [],
-        bool $json = false,
-        ?int $timeout = null,
-        ?int $connectTimeout = null
-    ): string {
-        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json, $timeout, $connectTimeout);
-
-        $printableUrl = $rawResponse['printableUrl'];
-        $httpCode     = $rawResponse['httpCode'];
-        $output       = $rawResponse['response'];
-        $error        = $rawResponse['error'];
-
-        Logger::debug($printableUrl);
-
-        if ($output === false) {
-            Logger::error("HttpClientService: cURL error for endPoint: $endPoint - " . $error);
-            Logger::debug("endPoint: ($endPoint), cURL Error: " . $error);
-            return '';
-        }
-
-        if ($httpCode !== 200) {
-            Logger::error("HttpClientService: API returned HTTP $httpCode for URL: $printableUrl");
-
-            // Check for Cloudflare protection
-            $isCloudflareProtected = false;
-            if (is_string($output) && str_contains($output, 'Just a moment...')) {
-                $isCloudflareProtected = true;
-                Logger::error("HttpClientService: Cloudflare protection detected for URL: $printableUrl");
-                Logger::debug("Cloudflare protection detected: 'Just a moment...' page returned");
-            }
-
-            Logger::debug("API returned HTTP $httpCode: $httpCode");
-            if (! $isCloudflareProtected) {
-                Logger::debug(var_export($output, true));
-            }
-            $output = '';
-        }
-
-        return $output;
     }
     /**
      * Handle URL requests with support for GET and POST methods
