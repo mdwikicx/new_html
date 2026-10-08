@@ -38,15 +38,17 @@ class HttpClientService implements HttpClientInterface
      * @param string $endPoint
      * @param string $method
      * @param array<string, mixed> $params
-     * @return array{printableUrl: string, httpCode: int, response: bool|string, error: string}
+     * @return array{printableUrl: string, httpCode: int, response: bool|string, error: string, errno: int}
      */
     public function handleRawRequest(
         string $endPoint,
         string $method = 'GET',
         array $params = [],
-        bool $json = false
+        bool $json = false,
+        ?int $timeout = null,
+        ?int $connectTimeout = null
     ): array {
-        $ch         = curl_init();
+        $ch = curl_init();
 
         $printableUrl = $endPoint;
 
@@ -79,18 +81,20 @@ class HttpClientService implements HttpClientInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
         curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $connectTimeout ?? 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout ?? 15);
 
-        $output = curl_exec($ch);
-
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $output   = curl_exec($ch);
+        $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $errno    = curl_errno($ch);
+        $error    = curl_error($ch);
 
         return [
             'printableUrl' => $printableUrl,
             'httpCode'     => $httpCode,
             'response'     => $output,
-            'error'        => curl_error($ch),
+            'error'        => $error,
+            'errno'        => $errno,
         ];
     }
     /**
@@ -99,11 +103,20 @@ class HttpClientService implements HttpClientInterface
      * @param string $endPoint The API endpoint URL
      * @param string $method The HTTP method to use ('GET' or 'POST')
      * @param array<string, mixed> $params Optional parameters to send with the request
+     * @param bool $json Whether to send the parameters as JSON
+     * @param int|null $timeout Optional timeout for the request in seconds
+     * @param int|null $connectTimeout Optional timeout for the connection in seconds
      * @return string The response body, or empty string on failure
      */
-    public function request_string(string $endPoint, string $method = 'GET', array $params = [], bool $json = false): string
-    {
-        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json);
+    public function request_string(
+        string $endPoint,
+        string $method = 'GET',
+        array $params = [],
+        bool $json = false,
+        ?int $timeout = null,
+        ?int $connectTimeout = null
+    ): string {
+        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json, $timeout, $connectTimeout);
 
         $printableUrl = $rawResponse['printableUrl'];
         $httpCode     = $rawResponse['httpCode'];
@@ -147,9 +160,15 @@ class HttpClientService implements HttpClientInterface
      * @param bool $json Whether to send the request as JSON
      * @return array{output: string, error_code: string, error: string}
      */
-    public function request(string $endPoint, string $method = 'GET', array $params = [], bool $json = false): array
-    {
-        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json);
+    public function request(
+        string $endPoint,
+        string $method = 'GET',
+        array $params = [],
+        bool $json = false,
+        ?int $timeout = null,
+        ?int $connectTimeout = null
+    ): array {
+        $rawResponse = $this->handleRawRequest($endPoint, $method, $params, $json, $timeout, $connectTimeout);
 
         $printableUrl = $rawResponse['printableUrl'];
         $httpCode     = $rawResponse['httpCode'];
@@ -162,6 +181,7 @@ class HttpClientService implements HttpClientInterface
             "output"     => "",
             "error_code" => "",
             "error"      => "",
+            "errno"      => $rawResponse['errno'],
         ];
 
         if ($output === false) {
