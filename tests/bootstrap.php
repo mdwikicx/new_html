@@ -10,17 +10,12 @@ error_reporting(E_ALL);
 
 $env_value = getenv('REVISIONS_DIR') ?: ($_ENV['REVISIONS_DIR'] ?? null);
 if (! $env_value) {
-    $revisions_new_path_local = "I:/MD_TOOLS/mdwikicx.toolforge.org/revisions_new";
-    if (! is_dir($revisions_new_path_local)) {
-        putenv(
-            'REVISIONS_DIR='
-            . rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR)
-            . DIRECTORY_SEPARATOR
-            . 'mdwiki-newhtml-revisions'
-        );
-    } else {
-        putenv('REVISIONS_DIR=' . $revisions_new_path_local);
-    }
+    putenv(
+        'REVISIONS_DIR='
+        . rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR)
+        . DIRECTORY_SEPARATOR
+        . 'mdwiki-newhtml-revisions'
+    );
 }
 
 // Check environment variable to enable network tests
