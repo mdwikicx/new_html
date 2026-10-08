@@ -4,7 +4,7 @@ src/
 │   ├── Controllers/
 │   │   ├── AppRouterController.php
 │   │   ├── JsonDataController.php
-│   │   ├── main.php
+│   │   ├── OpenController.php
 │   │   └── RevisionsApiController.php
 │   ├── Domain/
 │   │   ├── Fixes/
@@ -28,6 +28,9 @@ src/
 │   │       ├── ParserTemplate.php
 │   │       ├── ParserTemplates.php
 │   │       └── Template.php
+│   ├── DTO/
+│   │   ├── PageRequest.php
+│   │   └── PageResult.php
 │   ├── Handlers/
 │   │   └── WikitextHandler.php
 │   ├── Infrastructure/
@@ -47,18 +50,18 @@ src/
 │   │   ├── Interfaces/
 │   │   │   ├── CommonsImageServiceInterface.php
 │   │   │   └── HttpClientInterface.php
-│   │   ├── Wikitext/
-│   │   │   └── WikitextFixerService.php
-│   │   └── PagePipelineService.php
-│   ├── autoload.php
+│   │   ├── Pipeline/
+│   │   │   └── PagePipelineService.php
+│   │   └── Wikitext/
+│   │       └── WikitextFixerService.php
 │   ├── bootstrap.php
 │   ├── Cors.php
-│   └── Logger.php
+│   ├── Logger.php
+│   └── Settings.php
 ├── bootstrap.php
 ├── fix.php
 ├── index.php
 ├── open.php
-├── revisions_api.php
-└── Settings.php
+└── revisions_api.php
 
 ```

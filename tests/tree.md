@@ -28,7 +28,6 @@ tests/
 │   ├── Handlers/
 │   │   └── WikitextHandlerTest.php
 │   ├── Infrastructure/
-│   │   ├── Debug/
 │   │   └── Utils/
 │   │       ├── FileUtilsReadWriteTest.php
 │   │       ├── FileUtilsTest.php
