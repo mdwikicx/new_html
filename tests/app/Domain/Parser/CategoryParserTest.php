@@ -4,6 +4,9 @@ namespace Tests\Domain\Parser;
 use MDWiki\NewHtml\Domain\Parser\CategoryParser;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(CategoryParser::class)]
 class CategoryParserTest extends TestCase
 {
     public function testGetCategoriesWithSingleCategory()

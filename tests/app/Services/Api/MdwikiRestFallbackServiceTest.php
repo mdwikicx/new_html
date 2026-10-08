@@ -8,7 +8,10 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
 #[AllowMockObjectsWithoutExpectations]
+#[CoversClass(MdwikiRestFallbackService::class)]
 class MdwikiRestFallbackServiceTest extends TestCase
 {
     /** @var MdwikiApiService&MockObject */

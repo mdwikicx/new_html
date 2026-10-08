@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(TransformApiReal::class)]
 class TransformApiRealTest extends TestCase
 {
     protected function setUp(): void

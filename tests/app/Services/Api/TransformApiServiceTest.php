@@ -5,9 +5,11 @@ use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Api\TransformApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[CoversClass(TransformApiService::class)]
 class TransformApiServiceTest extends TestCase
 {
     private ?TransformApiService $service;

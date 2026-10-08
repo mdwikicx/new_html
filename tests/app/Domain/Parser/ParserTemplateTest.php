@@ -5,6 +5,9 @@ namespace Tests\Domain\Parser;
 use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Parser\ParserTemplate;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(ParserTemplate::class)]
 class ParserTemplateTest extends TestCase
 {
     public function testParserTemplateSimple()

@@ -20,6 +20,9 @@ function expendAllTemplates(string $text, int $ljust = 17): string
  *
  * @covers \MDWiki\NewHtml\Services\Wikitext\WikitextFixerService
  */
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(WikitextFixerService::class)]
 class WikitextFixerServiceTest extends TestCase
 {
     private string $fixturePath;

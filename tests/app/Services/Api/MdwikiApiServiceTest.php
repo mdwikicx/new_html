@@ -5,9 +5,11 @@ use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Services\Api\MdwikiApiService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[CoversClass(MdwikiApiService::class)]
 class MdwikiApiServiceTest extends TestCase
 {
     private ?MdwikiApiService $service;

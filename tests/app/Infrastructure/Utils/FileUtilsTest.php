@@ -5,6 +5,9 @@ use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(FileUtils::class)]
 class FileUtilsTest extends TestCase
 {
     protected function setUp(): void

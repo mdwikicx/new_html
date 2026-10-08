@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\Media\FixImagesFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(FixImagesFixture::class)]
 class FixImagesFixtureTest extends TestCase
 {
     public function testRemoveImagesWithSimpleImage()

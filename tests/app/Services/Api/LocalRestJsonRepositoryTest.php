@@ -3,9 +3,11 @@ namespace MDWiki\NewHtml\Tests\Services\Api;
 
 use MDWiki\NewHtml\Services\Api\LocalRestJsonRepository;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[CoversClass(LocalRestJsonRepository::class)]
 class LocalRestJsonRepositoryTest extends TestCase
 {
     private string $rootDir;

@@ -4,6 +4,9 @@ namespace Tests\Utils;
 use MDWiki\NewHtml\Infrastructure\Utils\HtmlUtils;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(HtmlUtils::class)]
 class HtmlUtilsTest extends TestCase
 {
     public function testDelDivErrorRemovesSingleErrorDiv()
