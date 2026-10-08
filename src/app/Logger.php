@@ -7,6 +7,14 @@ namespace MDWiki\NewHtml;
 final class Logger
 {
     private static ?bool $debug = null;
+    private static function write(string $message): void
+    {
+        $isTesting = (getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? '')) === 'testing';
+        if ($isTesting) {
+            return;
+        }
+        error_log($message);
+    }
 
     private static function isDebug(): bool
     {
@@ -16,12 +24,12 @@ final class Logger
     public static function debug(mixed $s): void
     {
         if (self::isDebug()) {
-            error_log('[debug] ' . (is_string($s) ? $s : print_r($s, true)));
+            self::write('[debug] ' . (is_string($s) ? $s : print_r($s, true)));
         }
     }
 
     public static function error(string $message): void
     {
-        error_log($message);
+        self::write($message);
     }
 }
