@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 use MDWiki\NewHtml\Handlers\WikitextHandler;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(WikitextHandler::class)]
 class WikitextHandlerTest extends TestCase
 {
     protected function setUp(): void

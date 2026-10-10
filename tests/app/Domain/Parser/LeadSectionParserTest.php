@@ -4,6 +4,9 @@ namespace Tests\Domain\Parser;
 use MDWiki\NewHtml\Domain\Parser\LeadSectionParser;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(LeadSectionParser::class)]
 class LeadSectionParserTest extends TestCase
 {
     public function testGetLeadSectionWithSections()

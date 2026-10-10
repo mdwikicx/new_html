@@ -1,11 +1,26 @@
 <?php
 namespace Tests\Utils;
 
+use MDWiki\NewHtml\Logger;
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(FileUtils::class)]
 class FileUtilsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        Logger::setSink(function (string $level, string $message): void {
+            error_log($message);
+        });
+    }
+
+    protected function tearDown(): void
+    {
+        Logger::reset();
+    }
     public function testGetFileDirWithVeryLongRevision()
     {
         $longRevision = str_repeat('9', 20);

@@ -4,6 +4,9 @@ namespace Tests\Domain\Parser;
 use MDWiki\NewHtml\Domain\Parser\CitationsParser;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(CitationsParser::class)]
 class CitationsParserTest extends TestCase
 {
     public function testGetNameWithDoubleQuotes()

@@ -62,7 +62,7 @@ class OpenController
 
         if (! empty($text)) {
             if ($file == "seg.html" || $file == "html.html") {
-                $text = HtmlUtils::remove_data_parsoid($text);
+                $text = HtmlUtils::removeParsoidData($text);
             }
         }
 

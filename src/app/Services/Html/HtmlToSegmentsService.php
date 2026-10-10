@@ -1,5 +1,6 @@
 <?php
 
+declare (strict_types = 1);
 /**
  * HTML segmentation services
  *
@@ -16,47 +17,33 @@ use MDWiki\NewHtml\Services\Api\SegmentApiService;
 
 class HtmlToSegmentsService
 {
-    /**
-     * Convert HTML to segments using the API
-     *
-     * @param string $text The HTML text to convert
-     * @return string The segmented result or empty string on failure
-     */
-    private static function do_html_to_seg(string $text): string
-    {
-        $service = new SegmentApiService();
-        $fixed   = $service->HtmltoSegments($text);
+    public const REPLACE_URLS = [
+        "https://medwiki.toolforge.org/md/"   => "https://en.wikipedia.org/w/",
+        "https://medwiki.toolforge.org/w/"    => "https://en.wikipedia.org/w/",
+        "https://medwiki.toolforge.org/wiki/" => "https://en.wikipedia.org/wiki/",
+    ];
 
-        // $error  = $fixed['error'] ?? '';
-        $result = $fixed['result'] ?? "";
+    /** Messages returned by the segmentation service that mean "no content". */
+    private const SEG_EMPTY_MESSAGES = [
+        'Content for translate is not given or is empty',
+        'Sectionwrap: Attempting to remove a non-section tag: undefined',
+    ];
 
-        // $result = str_replace("https://medwiki.toolforge.org/md/", "https://en.wikipedia.org/w/", $result);
-        // $result = str_replace("https://medwiki.toolforge.org/w/", "https://en.wikipedia.org/w/", $result);
-        // $result = str_replace("https://medwiki.toolforge.org/wiki/", "https://en.wikipedia.org/wiki/", $result);
-
-        if ($result == 'Content for translate is not given or is empty') {
-            return "";
-        }
-
-        if ($result == 'Sectionwrap: Attempting to remove a non-section tag: undefined') {
-            return "";
-        }
-
-        return $result;
+    public function __construct(
+        private ?SegmentApiService $api = null,
+    ) {
+        $this->api ??= new SegmentApiService();
     }
 
     /**
-     * Convert HTML to segments with caching support
+     * Convert HTML to segments with caching support.
      *
-     * @param string $text The HTML text to convert
+     * @param string $text     The HTML text to convert
      * @param string $file_seg The path to the cached segments file
-     * @return array{0: string, 1: bool} Array containing [segments, from_cache]
+     * @return array{0: string, 1: bool} [segments, fromCache]
      */
-    public static function html_to_seg(string $text, string $file_seg): array
+    public function load(string $text, string $file_seg): array
     {
-
-        $from_cache = false;
-
         if (! isset($_GET['new'])) {
             $seg_text = FileUtils::readFile($file_seg);
 
@@ -65,14 +52,39 @@ class HtmlToSegmentsService
             }
         }
 
-        $result = self::do_html_to_seg($text);
+        $result = $this->requestNewContent($text);
 
         if (empty($result)) {
-            return ["", $from_cache];
+            return ['', false];
         }
 
         FileUtils::FileWrite($file_seg, $result);
 
-        return [$result, $from_cache];
+        return [$result, false];
+    }
+
+    /**
+     * Convert HTML to segments using the API
+     *
+     * @param string $text The HTML text to convert
+     * @return string The segmented result or empty string on failure
+     */
+    private function requestNewContent(string $text): string
+    {
+        $fixed  = $this->api->HtmltoSegments($text);
+        $result = $fixed['result'] ?? '';
+
+        return self::modifyTextSegments($result);
+    }
+
+    private static function modifyTextSegments(string $text): string
+    {
+        foreach (self::REPLACE_URLS as $from => $to) {
+            $text = str_replace($from, $to, $text);
+        }
+        if (in_array($text, self::SEG_EMPTY_MESSAGES, true)) {
+            $text = '';
+        }
+        return $text;
     }
 }

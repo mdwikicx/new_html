@@ -51,13 +51,13 @@ class CommonsImageService implements CommonsImageServiceInterface
         $params = [
             'action' => 'query',
             'titles' => 'File:' . $filename,
-            'format' => 'json'
+            'format' => 'json',
         ];
 
         $url = "https://commons.wikimedia.org/w/api.php";
 
         $responseArray = $this->httpClient->request($url, 'GET', $params);
-        if (!empty($responseArray['error_code']) || !empty($responseArray['error'])) {
+        if (! empty($responseArray['error_code']) || ! empty($responseArray['error'])) {
             return true; // Assume exists on API failure
         }
         $response = $responseArray['output'];
@@ -68,7 +68,7 @@ class CommonsImageService implements CommonsImageServiceInterface
 
         $json = json_decode($response, true);
         foreach ($json['query']['pages'] ?? [] as $page) {
-            return !isset($page['missing']);
+            return ! isset($page['missing']);
         }
         return false;
     }

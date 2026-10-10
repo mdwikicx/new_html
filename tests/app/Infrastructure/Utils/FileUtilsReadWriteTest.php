@@ -4,6 +4,9 @@ namespace Tests\Utils;
 use MDWiki\NewHtml\Infrastructure\Utils\FileUtils;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(FileUtilsReadWrite::class)]
 class FileUtilsReadWriteTest extends TestCase
 {
     private $testDir;

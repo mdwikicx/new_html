@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\Structure\FixLanguageLinksFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(FixLanguageLinksFixture::class)]
 class FixLanguageLinksFixtureTest extends TestCase
 {
     /**
