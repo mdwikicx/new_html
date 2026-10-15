@@ -34,4 +34,11 @@
             <directory suffix=".php">src</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <text outputFile="php://stdout" showUncoveredFiles="true" />
+
+            <html outputDirectory="coverage-report" lowUpperBound="50" highLowerBound="80" />
+        </report>
+    </coverage>
 </phpunit>
