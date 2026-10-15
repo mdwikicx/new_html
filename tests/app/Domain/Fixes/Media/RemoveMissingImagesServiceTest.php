@@ -1,11 +1,12 @@
 <?php
-
 namespace Tests\Domain;
 
-use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Fixes\Media\RemoveMissingImagesService;
 use MDWiki\NewHtml\Services\Interfaces\CommonsImageServiceInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
+#[CoversClass(RemoveMissingImagesService::class)]
 class RemoveMissingImagesServiceTest extends TestCase
 {
     private ?RemoveMissingImagesService $service;
@@ -23,7 +24,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     {
         // Create a mock image service
         $this->mockImageService = $this->createStub(CommonsImageServiceInterface::class);
-        $this->service = new RemoveMissingImagesService($this->mockImageService);
+        $this->service          = new RemoveMissingImagesService($this->mockImageService);
     }
 
     /**
@@ -47,7 +48,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInfoboxImageExists()
     {
         $this->setupMockImageExists([
-            'AwareLogo.png' => true
+            'AwareLogo.png' => true,
         ]);
 
         $input = "|name ={{PAGENAME}}\n|image =AwareLogo.png\n|caption =This is a valid image\n|specialty =[[Orthopedics]]";
@@ -64,7 +65,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInfoboxImageMissing()
     {
         $this->setupMockImageExists([
-            'Non_existent_image_xyz789.png' => false
+            'Non_existent_image_xyz789.png' => false,
         ]);
 
         $input = "|name ={{PAGENAME}}\n|image =Non_existent_image_xyz789.png\n|caption =This caption should be removed\n|specialty =[[Orthopedics]]";
@@ -98,8 +99,8 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInfoboxMultipleImagesMixed()
     {
         $this->setupMockImageExists([
-            'AwareLogo.png' => true,
-            'Missing_image_xyz123456.png' => false
+            'AwareLogo.png'               => true,
+            'Missing_image_xyz123456.png' => false,
         ]);
 
         $input = "|name ={{PAGENAME}}\n|image =AwareLogo.png\n|caption =Valid caption\n|image2 =Missing_image_xyz123456.png\n|caption2 =This should be removed\n|specialty =[[Orthopedics]]";
@@ -117,7 +118,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInlineImageExists()
     {
         $this->setupMockImageExists([
-            'AwareLogo.png' => true
+            'AwareLogo.png' => true,
         ]);
 
         $input = "This is some text with an image:\n[[File:AwareLogo.png|thumb|A valid image caption]]\nMore text here.";
@@ -133,7 +134,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInlineImageMissing()
     {
         $this->setupMockImageExists([
-            'Non_existent_image_xyz654.png' => false
+            'Non_existent_image_xyz654.png' => false,
         ]);
 
         $input = "This is some text with an image:\n[[File:Non_existent_image_xyz654.png|thumb|This should be removed]]\nMore text here.";
@@ -151,8 +152,8 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInlineMultipleImagesMixed()
     {
         $this->setupMockImageExists([
-            'AwareLogo.png' => true,
-            'Missing_file_xyz987.jpg' => false
+            'AwareLogo.png'           => true,
+            'Missing_file_xyz987.jpg' => false,
         ]);
 
         $input = "Start of article.\n[[File:AwareLogo.png|thumb|Keep this image]]\nSome middle text.\n[[File:Missing_file_xyz987.jpg|left|200px|Remove this]]\nEnd of article.";
@@ -170,7 +171,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInlineImageNestedLinks()
     {
         $this->setupMockImageExists([
-            'Missing_image_nested_xyz321.png' => false
+            'Missing_image_nested_xyz321.png' => false,
         ]);
 
         $input = "[[File:Missing_image_nested_xyz321.png|thumb|See [[Orthopedics]] for more info]]";
@@ -188,7 +189,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInlineImagePrefixMissing()
     {
         $this->setupMockImageExists([
-            'Non_existent_old_xyz111.png' => false
+            'Non_existent_old_xyz111.png' => false,
         ]);
 
         $input = "[[Image:Non_existent_old_xyz111.png|thumb|Old style image link]]";
@@ -206,7 +207,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testInlineImagePrefixExists()
     {
         $this->setupMockImageExists([
-            'AwareLogo.png' => true
+            'AwareLogo.png' => true,
         ]);
 
         $input = "[[Image:AwareLogo.png|thumb|Old style but valid]]";
@@ -223,8 +224,8 @@ class RemoveMissingImagesServiceTest extends TestCase
     {
         $this->setupMockImageExists([
             'Non_existent_infobox_xyz222.png' => false,
-            'Gallstones.png' => true,
-            'Another_missing_xyz333.jpg' => false
+            'Gallstones.png'                  => true,
+            'Another_missing_xyz333.jpg'      => false,
         ]);
 
         $input = "{{Infobox disease|name={{PAGENAME}}|image=Non_existent_infobox_xyz222.png|caption=Remove this caption|specialty=[[Orthopedics]]}}This article discusses the condition.[[File:Gallstones.png|thumb|right|A valid inline image]]More information here.[[File:Another_missing_xyz333.jpg|left|Remove this too]]End of article.";
@@ -260,7 +261,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testComplexNestedCaptionNccommons()
     {
         $this->setupMockImageExists([
-            'AwareLogo.png' => false
+            'AwareLogo.png' => false,
         ]);
 
         $input = "[[File:AwareLogo.png|thumb|upright=1.3|Logo of the [[WHO]] Aware [[Classification]]]]__NOTOC__";
@@ -273,7 +274,7 @@ class RemoveMissingImagesServiceTest extends TestCase
     public function testComplexNestedCaptionCommons()
     {
         $this->setupMockImageExists([
-            'Gallstones.png' => true
+            'Gallstones.png' => true,
         ]);
 
         $input = "[[File:Gallstones.png|thumb|upright=1.3|Gallstones typically form in the [[gallbladder]] and may result in symptoms if they block the biliary system.]]";

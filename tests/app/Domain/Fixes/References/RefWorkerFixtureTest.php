@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\References\RefWorkerFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(RefWorkerFixture::class)]
 class RefWorkerFixtureTest extends TestCase
 {
     public function testCheckOneCiteWithBadDOI()

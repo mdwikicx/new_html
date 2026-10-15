@@ -5,6 +5,7 @@ declare (strict_types = 1);
 
 namespace MDWiki\NewHtml;
 
+use MDWiki\NewHtml\Logger;
 /**
  * @property string $domain
  * @property string $userAgent

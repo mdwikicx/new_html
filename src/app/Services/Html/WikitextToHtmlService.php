@@ -50,8 +50,8 @@ class WikitextToHtmlService
             return "";
         }
 
-        $result = HtmlUtils::del_div_error($result);
-        $result = HtmlUtils::fix_link_red($result);
+        $result = HtmlUtils::delDivError($result);
+        $result = HtmlUtils::fixRedlinks($result);
 
         return $result;
     }
@@ -63,7 +63,7 @@ class WikitextToHtmlService
      * @param string $file_html The path to the cached HTML file
      * @param string $title The page title for context
      * @param bool $new Whether to force regeneration (true) or use cache (false)
-     * @return array{0: string, 1: bool} Array containing [html_content, from_cache]
+     * @return array{0: string, 1: bool} Array containing [htmlContent, fromCache]
      */
     public function convertWithCache(string $wikitext, string $file_html, string $title, bool $new): array
     {

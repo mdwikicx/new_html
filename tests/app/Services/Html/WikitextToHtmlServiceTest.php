@@ -8,6 +8,9 @@ use MDWiki\NewHtml\Services\Api\TransformApiService;
 use MDWiki\NewHtml\Services\Html\WikitextToHtmlService;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(WikitextToHtmlService::class)]
 class WikitextToHtmlServiceTest extends TestCase
 {
     private string $tmpDir;

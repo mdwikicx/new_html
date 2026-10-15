@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\References\DeleteEmptyRefsFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(DeleteEmptyRefsFixture::class)]
 class DeleteEmptyRefsFixtureTest extends TestCase
 {
     public function testDelEmptyRefsWithValidShortRef()

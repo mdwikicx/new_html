@@ -50,7 +50,12 @@ class SegmentApiService
     public function HtmltoSegments(string $html): array
     {
         $data          = ['html' => $html];
-        $responseArray = $this->httpClient->request($this->apiUrl, 'POST', $data, $this->as_json);
+        $responseArray = $this->httpClient->request(
+            $this->apiUrl,
+            'POST',
+            $data,
+            $this->as_json
+        );
 
         if (! empty($responseArray['error_code']) || ! empty($responseArray['error'])) {
             Logger::error("SegmentApiService: API request failed");

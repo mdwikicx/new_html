@@ -18,7 +18,7 @@ class HtmlUtils
      * @param string $html The HTML to process
      * @return string The HTML with error divs removed
      */
-    public static function del_div_error(string $html): string
+    public static function delDivError(string $html): string
     {
 
         preg_match_all("/<div([^\/>]*?)>(.+?)<\/div>/is", $html, $matches);
@@ -39,7 +39,7 @@ class HtmlUtils
      * @param string $text The text containing attributes
      * @return array<string, string> Array of attribute name-value pairs
      */
-    public static function get_attrs(string $text): array
+    public static function getAttrs(string $text): array
     {
         $text              = "<ref $text>";
         $attrfind_tolerant = '/((?<=[\'"\s\/])[^\s\/>][^\s\/=>]*)(\s*=+\s*(\'[^\']*\'|"[^"]*"|(?![\'"])[^>\s]*))?(?:\s|\/(?!>))*/';
@@ -63,7 +63,7 @@ class HtmlUtils
      * @param string $html The HTML to process
      * @return string The HTML with fixed links
      */
-    public static function fix_link_red(string $html): string
+    public static function fixRedlinks(string $html): string
     {
 
         preg_match_all("/<a([^>]*?)>(.+?)<\/a>/is", $html, $matches);
@@ -86,7 +86,7 @@ class HtmlUtils
 
             if (preg_match("/mw:LocalizedAttrs/is", $options)) {
 
-                $attrs = self::get_attrs($options);
+                $attrs = self::getAttrs($options);
 
                 $href = $attrs['href'] ?? '';
 
@@ -126,7 +126,7 @@ class HtmlUtils
      * @param string $html The HTML to process
      * @return string The HTML with data-parsoid attributes removed
      */
-    public static function remove_data_parsoid(string $html): string
+    public static function removeParsoidData(string $html): string
     {
 
         if (empty($html)) {
@@ -148,7 +148,7 @@ class HtmlUtils
 
             if (preg_match("/data-parsoid/is", $options)) {
 
-                $attrs = self::get_attrs($options);
+                $attrs = self::getAttrs($options);
 
                 foreach ($attrs_to_del as $attr) {
                     if (isset($attrs[$attr])) {

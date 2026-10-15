@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\References\ExpandRefsFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(ExpandRefsFixture::class)]
 class ExpandRefsFixtureTest extends TestCase
 {
     public function testExpandTextRefsWithShortRefAndFullInAlltext()

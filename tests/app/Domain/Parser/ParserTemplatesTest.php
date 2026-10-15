@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Domain\Parser\ParserTemplates;
 
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(ParserTemplates::class)]
 class ParserTemplatesTest extends TestCase
 {
 

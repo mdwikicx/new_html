@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 use MDWiki\NewHtml\Services\Api\CommonsImageService;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(CommonsApiReal::class)]
 class CommonsApiRealTest extends TestCase
 {
     /**

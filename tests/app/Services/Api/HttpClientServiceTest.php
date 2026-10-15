@@ -1,13 +1,14 @@
 <?php
-
 namespace Tests\APIServices;
 
-use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\HttpClientService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[CoversClass(HttpClientService::class)]
 class HttpClientServiceTest extends TestCase
 {
     private ?HttpClientService $httpClient;
@@ -199,8 +200,8 @@ class HttpClientServiceTest extends TestCase
             });
 
         // Simulate a service using the HTTP client
-        $usersResponse = $mockHttpClient->request('https://api.example.com/users', 'GET');
-        $postsResponse = $mockHttpClient->request('https://api.example.com/posts', 'GET');
+        $usersResponse   = $mockHttpClient->request('https://api.example.com/users', 'GET');
+        $postsResponse   = $mockHttpClient->request('https://api.example.com/posts', 'GET');
         $unknownResponse = $mockHttpClient->request('https://api.example.com/unknown', 'GET');
 
         $this->assertEquals('{"users": [1, 2, 3]}', $usersResponse['output']);
@@ -219,7 +220,7 @@ class HttpClientServiceTest extends TestCase
                 return ["output" => json_encode(['method' => strtoupper($method)]), "error_code" => "", "error" => ""];
             });
 
-        $getResult = $mockHttpClient->request('https://example.com', 'GET');
+        $getResult  = $mockHttpClient->request('https://example.com', 'GET');
         $postResult = $mockHttpClient->request('https://example.com', 'post');
         $PostResult = $mockHttpClient->request('https://example.com', 'POST');
 

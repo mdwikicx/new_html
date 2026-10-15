@@ -21,5 +21,5 @@ jobs:
                   key: ${{ secrets.KEY }}
                   script: |
                       become mdwikicx bash -lc "
-                        toolforge-jobs run update --image php8.2 --command ~/shs/update_new_all.sh --wait
+                        toolforge-jobs run update --image php8.2 --command ~/shs/update_newhtml.sh --wait
                       "

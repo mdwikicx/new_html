@@ -8,6 +8,9 @@ use MDWiki\NewHtml\Services\Api\SegmentApiService;
 
 
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(SegApiReal::class)]
 class SegApiRealTest extends TestCase
 {
     protected function setUp(): void

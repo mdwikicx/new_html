@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\Structure\FixCategoriesFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(FixCategoriesFixture::class)]
 class FixCategoriesFixtureTest extends TestCase
 {
     public function testRemoveCategoriesWithSingleCategory()

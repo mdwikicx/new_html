@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\Templates\FixTemplatesFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(FixTemplatesFixture::class)]
 class FixTemplatesFixtureTest extends TestCase
 {
     public function testAddMissingTitleWithDrugbox()

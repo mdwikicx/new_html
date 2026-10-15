@@ -1,9 +1,11 @@
 <?php
 namespace Tests\EntryPoints;
 
-use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Controllers\JsonDataController;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
+#[CoversClass(JsonDataController::class)]
 class JsonDataControllerTest extends TestCase
 {
     private $testJsonFile;

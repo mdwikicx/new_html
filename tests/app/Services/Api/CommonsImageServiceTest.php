@@ -1,13 +1,14 @@
 <?php
-
 namespace Tests\APIServices;
 
-use PHPUnit\Framework\TestCase;
 use MDWiki\NewHtml\Services\Api\CommonsImageService;
 use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
+#[CoversClass(CommonsImageService::class)]
 class CommonsImageServiceTest extends TestCase
 {
     private ?CommonsImageService $service;
@@ -17,7 +18,7 @@ class CommonsImageServiceTest extends TestCase
     {
         // Create a mock HTTP client
         $this->mockHttpClient = $this->createMock(HttpClientInterface::class);
-        $this->service = new CommonsImageService($this->mockHttpClient);
+        $this->service        = new CommonsImageService($this->mockHttpClient);
     }
 
     /**
@@ -33,11 +34,11 @@ class CommonsImageServiceTest extends TestCase
                 'pages' => [
                     [
                         'pageid' => 12345,
-                        'ns' => 6,
-                        'title' => 'File:' . $filename
-                    ]
-                ]
-            ]
+                        'ns'     => 6,
+                        'title'  => 'File:' . $filename,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -53,12 +54,12 @@ class CommonsImageServiceTest extends TestCase
             'query' => [
                 'pages' => [
                     [
-                        'ns' => 6,
-                        'title' => 'File:' . $filename,
-                        'missing' => ''
-                    ]
-                ]
-            ]
+                        'ns'      => 6,
+                        'title'   => 'File:' . $filename,
+                        'missing' => '',
+                    ],
+                ],
+            ],
         ]);
     }
 

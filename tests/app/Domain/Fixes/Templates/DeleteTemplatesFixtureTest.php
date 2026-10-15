@@ -4,6 +4,9 @@ namespace Tests\WikiTextFixes;
 use MDWiki\NewHtml\Domain\Fixes\Templates\DeleteTemplatesFixture;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(DeleteTemplatesFixture::class)]
 class DeleteTemplatesFixtureTest extends TestCase
 {
     public function testRemoveTemplatesWithShortDescription()
