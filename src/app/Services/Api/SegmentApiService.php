@@ -22,8 +22,8 @@ use MDWiki\NewHtml\Services\Interfaces\HttpClientInterface;
 class SegmentApiService
 {
     private HttpClientInterface $httpClient;
-    private string $apiUrl;
-    private bool $as_json;
+    private string              $apiUrl;
+    private bool                $as_json;
 
     /**
      * Constructor
@@ -33,12 +33,12 @@ class SegmentApiService
      */
     public function __construct(
         ?HttpClientInterface $httpClient = null,
-        // string $apiUrl = 'https://ncc2c.toolforge.org/HtmltoSegments',
-        string $apiUrl = 'https://mdwikipy.toolforge.org/HtmltoSegments',
+        string $apiUrl = 'https://ncc2c.toolforge.org/HtmltoSegments',
+        // string $apiUrl = 'https://mdwiki.toolforge.org/HtmltoSegments',
     ) {
         $this->httpClient = $httpClient ?? new HttpClientService();
-        $this->apiUrl     = $apiUrl;
-        $this->as_json    = $this->apiUrl == 'https://mdwikipy.toolforge.org/HtmltoSegments' ? true : false;
+        $this->apiUrl = $apiUrl;
+        $this->as_json = $this->apiUrl == 'https://mdwiki.toolforge.org/HtmltoSegments' ? true : false;
     }
 
     /**
@@ -49,7 +49,7 @@ class SegmentApiService
      */
     public function HtmltoSegments(string $html): array
     {
-        $data          = ['html' => $html];
+        $data = ['html' => $html];
         $responseArray = $this->httpClient->request(
             $this->apiUrl,
             'POST',
@@ -57,7 +57,7 @@ class SegmentApiService
             $this->as_json
         );
 
-        if (! empty($responseArray['error_code']) || ! empty($responseArray['error'])) {
+        if (!empty($responseArray['error_code']) || !empty($responseArray['error'])) {
             Logger::error("SegmentApiService: API request failed");
             return ['error' => 'Error: Could not reach API.'];
         }
