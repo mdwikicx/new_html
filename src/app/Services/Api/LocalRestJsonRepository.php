@@ -27,7 +27,7 @@ class LocalRestJsonRepository
             $info = function_exists('posix_getpwuid') ? posix_getpwuid(posix_getuid()) : false;
             $home = $info['dir'] ?? '';
         }
-        return rtrim($home, '/') . '/data/rtt_members';
+        return rtrim($home, '/') . '/data/rtt_members/members';
     }
 
     /**
@@ -41,7 +41,7 @@ class LocalRestJsonRepository
         }
 
         $file = realpath($dir . '/' . self::titleToFileName($title));
-        if ($file === false || strpos($file, $dir . DIRECTORY_SEPARATOR) !== 0 || ! is_file($file)) {
+        if ($file === false || strpos($file, $dir . DIRECTORY_SEPARATOR) !== 0 || !is_file($file)) {
             return null;
         }
 
@@ -51,7 +51,7 @@ class LocalRestJsonRepository
         }
 
         $json = json_decode($content, true);
-        if (json_last_error() !== JSON_ERROR_NONE || ! is_array($json)) {
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($json)) {
             Logger::error("LocalRestJsonRepository: invalid json in local file for title: $title");
             return null;
         }
