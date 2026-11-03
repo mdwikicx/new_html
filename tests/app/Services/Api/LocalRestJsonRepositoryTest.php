@@ -12,12 +12,17 @@ class LocalRestJsonRepositoryTest extends TestCase
 {
     private string $rootDir;
     private string $dataDir;
+    private string $mapPath;
 
     protected function setUp(): void
     {
-        // Each test gets its own isolated temp directory
+        // Each test gets its own isolated temp directory.
+        // Layout mirrors production:
+        //   {root}/titles_map.json   -> title => file name
+        //   {root}/data/*.json       -> cached pages (the "members" dir)
         $this->rootDir = sys_get_temp_dir() . '/local_rest_repo_' . uniqid('', true);
         $this->dataDir = $this->rootDir . '/data';
+        $this->mapPath = $this->rootDir . '/titles_map.json';
         mkdir($this->dataDir, 0777, true);
     }
 
@@ -27,66 +32,134 @@ class LocalRestJsonRepositoryTest extends TestCase
     }
 
     // ------------------------------------------------------------------
-    // titleToFileName
-    // ------------------------------------------------------------------
-
-    public function testTitleToFileNameReplacesSpacesWithUnderscores(): void
-    {
-        $this->assertSame('Heart_failure.json', LocalRestJsonRepository::titleToFileName('Heart failure'));
-    }
-
-    public function testTitleToFileNameEncodesSlash(): void
-    {
-        $this->assertSame('A%2FB.json', LocalRestJsonRepository::titleToFileName('A/B'));
-    }
-
-    public function testTitleToFileNameEncodesNonAsciiCharacters(): void
-    {
-        $this->assertSame('%D9%82%D9%84%D8%A8.json', LocalRestJsonRepository::titleToFileName('قلب'));
-    }
-
-    // ------------------------------------------------------------------
     // find: success cases
     // ------------------------------------------------------------------
 
     public function testFindReturnsDecodedJsonForExistingFile(): void
     {
         $payload = ['source' => 'Some wikitext', 'latest' => ['id' => 123]];
-        $this->writeFile('Heart_failure.json', json_encode($payload));
-
-        $repo = new LocalRestJsonRepository($this->dataDir);
-
-        $this->assertSame($payload, $repo->find('Heart_failure'));
-    }
-
-    public function testFindTreatsSpacesAndUnderscoresAsTheSameTitle(): void
-    {
-        $payload = ['source' => 'Text', 'latest' => ['id' => 1]];
-        $this->writeFile('Heart_failure.json', json_encode($payload));
+        $this->addPage('Heart failure', 'Heart_failure.json', json_encode($payload));
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
         $this->assertSame($payload, $repo->find('Heart failure'));
     }
 
+    public function testFindTreatsSpacesAndUnderscoresAsTheSameTitle(): void
+    {
+        $payload = ['source' => 'Text', 'latest' => ['id' => 1]];
+        // The map is keyed by the title with spaces (as returned by the category API)
+        $this->addPage('Heart failure', 'Heart_failure.json', json_encode($payload));
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertSame($payload, $repo->find('Heart failure'));
+        $this->assertSame($payload, $repo->find('Heart_failure'));
+    }
+
     public function testFindSupportsTitlesContainingSlash(): void
     {
         $payload = ['source' => 'Slash title', 'latest' => ['id' => 2]];
-        $this->writeFile('A%2FB.json', json_encode($payload));
+        $this->addPage('A/B', 'A%2FB.json', json_encode($payload));
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
         $this->assertSame($payload, $repo->find('A/B'));
     }
 
+    public function testFindSupportsTitlesContainingParentheses(): void
+    {
+        // Characters that are hard to derive by hand are exactly why the map exists
+        $payload = ['source' => 'Zinc', 'latest' => ['id' => 4]];
+        $this->addPage(
+            'Zinc sulfate (medical use)',
+            'Zinc_sulfate_%28medical_use%29.json',
+            json_encode($payload)
+        );
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertSame($payload, $repo->find('Zinc sulfate (medical use)'));
+    }
+
     public function testFindSupportsNonAsciiTitles(): void
     {
         $payload = ['source' => 'Arabic title', 'latest' => ['id' => 3]];
-        $this->writeFile(LocalRestJsonRepository::titleToFileName('قلب'), json_encode($payload));
+        $this->addPage('قلب', rawurlencode('قلب') . '.json', json_encode($payload));
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
         $this->assertSame($payload, $repo->find('قلب'));
+    }
+
+    public function testFindUsesExplicitMapPath(): void
+    {
+        $payload = ['source' => 'Custom map', 'latest' => ['id' => 5]];
+        file_put_contents($this->dataDir . '/Custom_file.json', json_encode($payload));
+
+        $customMap = $this->rootDir . '/elsewhere_map.json';
+        file_put_contents($customMap, json_encode(['Custom title' => 'Custom_file.json']));
+
+        $repo = new LocalRestJsonRepository($this->dataDir, $customMap);
+
+        $this->assertSame($payload, $repo->find('Custom title'));
+    }
+
+    // ------------------------------------------------------------------
+    // titleToFileName
+    // ------------------------------------------------------------------
+
+    public function testTitleToFileNameReturnsNameFromMap(): void
+    {
+        $this->writeMap(['Heart failure' => 'Heart_failure.json']);
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertSame('Heart_failure.json', $repo->titleToFileName('Heart failure'));
+        $this->assertSame('Heart_failure.json', $repo->titleToFileName('Heart_failure'));
+    }
+
+    public function testTitleToFileNameReturnsNullForUnknownTitle(): void
+    {
+        $this->writeMap(['Heart failure' => 'Heart_failure.json']);
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertNull($repo->titleToFileName('Unknown title'));
+    }
+
+    public function testTitleToFileNameReturnsNullWhenMapIsMissing(): void
+    {
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertNull($repo->titleToFileName('Anything'));
+    }
+
+    public function testMapIsLoadedOnlyOnceAfterSuccess(): void
+    {
+        $this->writeMap(['First' => 'First.json']);
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+        $this->assertSame('First.json', $repo->titleToFileName('First'));
+
+        // Changes to the map after the first successful load are not picked up
+        $this->writeMap(['Second' => 'Second.json']);
+
+        $this->assertSame('First.json', $repo->titleToFileName('First'));
+        $this->assertNull($repo->titleToFileName('Second'));
+    }
+
+    public function testMapLoadIsRetriedAfterFailure(): void
+    {
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        // First call: the map does not exist yet
+        $this->assertNull($repo->titleToFileName('Late'));
+
+        // The map appears later; a failed load must not be cached
+        $this->writeMap(['Late' => 'Late.json']);
+
+        $this->assertSame('Late.json', $repo->titleToFileName('Late'));
     }
 
     // ------------------------------------------------------------------
@@ -100,16 +173,47 @@ class LocalRestJsonRepositoryTest extends TestCase
         $this->assertNull($repo->find('Anything'));
     }
 
-    public function testFindReturnsNullWhenFileDoesNotExist(): void
+    public function testFindReturnsNullWhenMapFileIsMissing(): void
     {
+        // The page file exists, but without a map there is no way to resolve it
+        file_put_contents($this->dataDir . '/Heart_failure.json', json_encode(['source' => 'x']));
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertNull($repo->find('Heart failure'));
+    }
+
+    public function testFindReturnsNullWhenMapIsInvalidJson(): void
+    {
+        file_put_contents($this->mapPath, '{ not json');
+        file_put_contents($this->dataDir . '/Heart_failure.json', json_encode(['source' => 'x']));
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertNull($repo->find('Heart failure'));
+    }
+
+    public function testFindReturnsNullWhenTitleIsNotInMap(): void
+    {
+        $this->addPage('Heart failure', 'Heart_failure.json', json_encode(['source' => 'x']));
+
         $repo = new LocalRestJsonRepository($this->dataDir);
 
         $this->assertNull($repo->find('Not_cached'));
     }
 
+    public function testFindReturnsNullWhenMappedFileDoesNotExist(): void
+    {
+        $this->writeMap(['Ghost' => 'Ghost.json']);
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertNull($repo->find('Ghost'));
+    }
+
     public function testFindReturnsNullForInvalidJson(): void
     {
-        $this->writeFile('Broken.json', '{ this is not json');
+        $this->addPage('Broken', 'Broken.json', '{ this is not json');
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
@@ -119,7 +223,7 @@ class LocalRestJsonRepositoryTest extends TestCase
     public function testFindReturnsNullWhenJsonIsNotAnArray(): void
     {
         // A valid JSON scalar must be rejected because callers expect an array
-        $this->writeFile('Scalar.json', '"just a string"');
+        $this->addPage('Scalar', 'Scalar.json', '"just a string"');
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
@@ -129,6 +233,7 @@ class LocalRestJsonRepositoryTest extends TestCase
     public function testFindReturnsNullWhenPathIsADirectory(): void
     {
         mkdir($this->dataDir . '/Folder.json');
+        $this->writeMap(['Folder' => 'Folder.json']);
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
@@ -146,21 +251,35 @@ class LocalRestJsonRepositoryTest extends TestCase
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
+        // The title is not in the map, so nothing is resolved
         $this->assertNull($repo->find('../secret'));
+    }
+
+    public function testFindRejectsMapEntryPointingOutsideBaseDirectory(): void
+    {
+        // Even a (tampered) map entry must not be able to leave the base directory
+        file_put_contents($this->rootDir . '/secret.json', json_encode(['source' => 'secret']));
+        $this->writeMap(['Evil' => '../secret.json']);
+
+        $repo = new LocalRestJsonRepository($this->dataDir);
+
+        $this->assertNull($repo->find('Evil'));
     }
 
     public function testFindRejectsSymlinkPointingOutsideBaseDirectory(): void
     {
-        if (! function_exists('symlink') || DIRECTORY_SEPARATOR === '\\') {
+        if (!function_exists('symlink') || DIRECTORY_SEPARATOR === '\\') {
             $this->markTestSkipped('Symlinks are not reliably supported on this platform.');
         }
 
         $outside = $this->rootDir . '/outside.json';
         file_put_contents($outside, json_encode(['source' => 'outside']));
 
-        if (! @symlink($outside, $this->dataDir . '/Linked.json')) {
+        if (!@symlink($outside, $this->dataDir . '/Linked.json')) {
             $this->markTestSkipped('Could not create a symlink in this environment.');
         }
+
+        $this->writeMap(['Linked' => 'Linked.json']);
 
         $repo = new LocalRestJsonRepository($this->dataDir);
 
@@ -172,14 +291,33 @@ class LocalRestJsonRepositoryTest extends TestCase
     // Helpers
     // ------------------------------------------------------------------
 
-    private function writeFile(string $name, string $content): void
+    /**
+     * Write a page file into the data dir and register it in titles_map.json.
+     */
+    private function addPage(string $title, string $fileName, string $content): void
     {
-        file_put_contents($this->dataDir . '/' . $name, $content);
+        file_put_contents($this->dataDir . '/' . $fileName, $content);
+
+        $map = [];
+        if (is_file($this->mapPath)) {
+            $map = json_decode((string) file_get_contents($this->mapPath), true) ?: [];
+        }
+        $map[$title] = $fileName;
+
+        $this->writeMap($map);
+    }
+
+    /**
+     * @param array<string, string> $map
+     */
+    private function writeMap(array $map): void
+    {
+        file_put_contents($this->mapPath, json_encode($map, JSON_UNESCAPED_UNICODE));
     }
 
     private function removeDir(string $dir): void
     {
-        if (! is_dir($dir) || is_link($dir)) {
+        if (!is_dir($dir) || is_link($dir)) {
             return;
         }
 
@@ -190,7 +328,7 @@ class LocalRestJsonRepositoryTest extends TestCase
 
             $path = $dir . '/' . $item;
 
-            if (is_dir($path) && ! is_link($path)) {
+            if (is_dir($path) && !is_link($path)) {
                 $this->removeDir($path);
             } else {
                 // unlink() also removes symlinks without following them
