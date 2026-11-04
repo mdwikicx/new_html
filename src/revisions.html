@@ -62,6 +62,25 @@
     <div class="container-fluid mt-4">
         <div class="card">
             <div class="card-header">
+                <div class="row">
+                    <form method="get" action="/new_html_1/" class="row g-3">
+                        <div class="col-md-5">
+                            <input type="text" name="title" class="form-control" id="title" placeholder="Title"
+                                value="Thalassemia" required>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" name="new" id="new" value="1" checked>
+                                <label class="form-check-label" for="new"> New </label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-plus-lg"></i> Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="card-body">
                 <table class="table compact table-striped" id="main_table">
