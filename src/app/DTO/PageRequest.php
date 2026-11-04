@@ -28,7 +28,8 @@ final class PageRequest
         public readonly string $format,
         public readonly string $all,
         public readonly bool $new,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $getRequest usually $_GET
@@ -36,9 +37,10 @@ final class PageRequest
     public static function fromArray(array $getRequest, string $title): self
     {
         $format = (string) ($getRequest['printetxt'] ?? $getRequest['print'] ?? '');
-        if (! in_array($format, self::VALID_FORMATS, true)) {
+        if (!in_array($format, self::VALID_FORMATS, true)) {
             $format = self::FORMAT_JSON;
         }
+        $title = str_replace('_', ' ', $title);
 
         $all = (string) ($getRequest['all'] ?? '');
 
@@ -51,7 +53,7 @@ final class PageRequest
             title: $title,
             format: $format,
             all: $all,
-            new : isset($getRequest['new']),
+        new: isset($getRequest['new']),
         );
     }
 }
