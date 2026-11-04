@@ -16,7 +16,7 @@ namespace MDWiki\NewHtml\Controllers;
  * Test at: http://localhost:305/new_html_1/revisions.html
  */
 
-use MDWiki\NewHtml\Cors;
+// use MDWiki\NewHtml\Cors;
 use MDWiki\NewHtml\DTO\PageRequest;
 use MDWiki\NewHtml\DTO\PageResult;
 use MDWiki\NewHtml\Logger;
@@ -43,13 +43,13 @@ class AppRouterController
     /** @param array<string, mixed> $getRequest */
     public function handleRequest(array $getRequest): void
     {
-        $allowedDomain = Cors::isAllowed($_SERVER);
+        // $allowedDomain = Cors::isAllowed($_SERVER);
 
-        if (! $allowedDomain) {
-            $this->fail(403, 'Access denied. Requests are only allowed from authorized domains.');
-        }
+        // if (! $allowedDomain) {
+        //     $this->fail(403, 'Access denied. Requests are only allowed from authorized domains.');
+        // }
 
-        $this->setCorsHeaders($allowedDomain);
+        // $this->setCorsHeaders($allowedDomain);
 
         $title = $this->normalizeTitle((string) ($getRequest['title'] ?? ''));
 
