@@ -45,7 +45,7 @@ class AppRouterController
     {
         $allowedDomain = Cors::isAllowed($_SERVER);
 
-        if (! $allowedDomain) {
+        if (!$allowedDomain) {
             $this->fail(403, 'Access denied. Requests are only allowed from authorized domains.');
         }
 

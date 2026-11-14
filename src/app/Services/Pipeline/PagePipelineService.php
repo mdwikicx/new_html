@@ -31,10 +31,10 @@ use MDWiki\NewHtml\Settings;
 
 final class PagePipelineService
 {
-    private WikitextFixerService $fixer;
+    private WikitextFixerService  $fixer;
     private WikitextToHtmlService $htmlService;
-    private string $jsonFile;
-    private string $jsonFileAll;
+    private string                $jsonFile;
+    private string                $jsonFileAll;
 
     public function __construct(
         ?WikitextFixerService $fixer = null,
@@ -42,11 +42,11 @@ final class PagePipelineService
         ?string $jsonFile = null,
         ?string $jsonFileAll = null,
     ) {
-        $this->fixer       = $fixer ?? new WikitextFixerService();
+        $this->fixer = $fixer ?? new WikitextFixerService();
         $this->htmlService = $htmlService ?? new WikitextToHtmlService();
 
-        $settings          = Settings::getInstance();
-        $this->jsonFile    = $jsonFile ?? $settings->jsonFile;
+        $settings = Settings::getInstance();
+        $this->jsonFile = $jsonFile ?? $settings->jsonFile;
         $this->jsonFileAll = $jsonFileAll ?? $settings->jsonFileAll;
     }
 
@@ -74,7 +74,7 @@ final class PagePipelineService
             return $this->notFound($req->title, $revision);
         }
 
-        $dir      = FileUtils::get_file_dir($revision, $req->all);
+        $dir = FileUtils::get_file_dir($revision, $req->all);
         $wikitext = $this->fixer->fix($wikitext, $req->title);
 
         FileUtils::FileWrite($dir . '/wikitext.txt', $wikitext);
@@ -101,7 +101,7 @@ final class PagePipelineService
         if (empty($html)) {
             // NOTE: status 200 kept for backward compatibility with the old main.php
             $data['error_type'] = 'HTML_text:() is empty';
-            $data['error']      = 'No content found';
+            $data['error'] = 'No content found';
             return PageResult::json(200, $data);
         }
 
@@ -112,13 +112,13 @@ final class PagePipelineService
             return PageResult::text(PageRequest::FORMAT_SEG, $seg);
         }
 
-        $data['cache_data']       = $cache;
+        $data['cache_data'] = $cache;
         $data['segmentedContent'] = $seg;
 
         if (empty($seg)) {
             // send request error code using http_response_code
             $data['error_type'] = 'SEG_text:() is empty';
-            $data['error']      = 'No content found';
+            $data['error'] = 'No content found';
             return PageResult::json(404, $data);
         }
 
@@ -152,7 +152,7 @@ final class PagePipelineService
 
         if (empty($wikitext) || empty($revision)) {
             [$wikitext, $revision] = $this->fromLocalCache($req->title, $req->all, $file);
-            return [$wikitext, $revision, ! empty($wikitext)];
+            return [$wikitext, $revision, !empty($wikitext)];
         }
 
         return [$wikitext, $revision, false];
@@ -169,13 +169,13 @@ final class PagePipelineService
     {
         $revid = JsonDataController::getTitleRevision($title, $file);
 
-        if (empty($revid) || ! ctype_digit((string) $revid)) {
+        if (empty($revid) || !ctype_digit((string) $revid)) {
             return ['', ''];
         }
 
         $dir = FileUtils::get_file_dir($revid, $all);
 
-        if (! is_dir($dir)) {
+        if (!is_dir($dir)) {
             return ['', ''];
         }
 
@@ -214,7 +214,7 @@ final class PagePipelineService
     private function buildSegments(string $html, string $fileSeg): array
     {
         [$seg, $fromCache] = (new HtmlToSegmentsService())->load($html, $fileSeg);
-        $seg               = HtmlUtils::removeParsoidData($seg);
+        $seg = HtmlUtils::removeParsoidData($seg);
         return [$seg, $fromCache];
     }
 
